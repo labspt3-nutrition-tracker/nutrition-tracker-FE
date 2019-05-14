@@ -16,7 +16,7 @@ const LoginOrRegisterContainer = styled.div`
 
 const LoginOrRegisterForm = styled.form`
     background:#3685B5;
-    width:20%;
+    width:15%;
     height:300px;
     padding:100px;
     display:flex;
@@ -30,7 +30,8 @@ const LoginOrRegisterForm = styled.form`
 
 const StyledButton = withStyles({
     root: {
-        background: '#40A798'
+        background: '#40A798',
+        width: '150px'
     }
 })(Fab)
 
