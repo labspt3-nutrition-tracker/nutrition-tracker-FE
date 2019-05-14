@@ -20,12 +20,16 @@ class Billing extends React.Component{
 
     // }
 
-    handleChange(e){
-        this.setState({ [e.target.name]: e.target.value})
+    handleChange = (e) => {
+        console.log(e.target.value)
+        this.setState({ ...this.state, [e.target.name]: e.target.value})
     }
 
-    handleSubmit(e){
+    handleSubmit = (e) => {
+        console.log(e)
         e.preventDefault();
+console.log('handle submit');
+const { firstName, lastName, email } = this.state;
 
     }
 
@@ -33,21 +37,21 @@ class Billing extends React.Component{
         return (
             <>
                 <form onSubmit={this.handleSubmit}>
-                    <Input 
+                    <input 
                         type="text"
                         name="firstName"
                         placeholder={this.state.firstName}
                         handleChange={this.handleChange}
                         value={this.state.firstName}
                     />
-                     <Input 
+                     <input 
                         type="text"
                         name="lastName"
                         placeholder={this.state.lastName}
                         handleChange={this.handleChange}
                         value={this.state.lastName}
                     />
-                     <Input 
+                     <input 
                         type="text"
                         name="email"
                         placeholder={this.state.email}
@@ -55,7 +59,7 @@ class Billing extends React.Component{
                         value={this.state.email}
                     />
                 </form>
-                <Button variant="contained" color="primary">
+                <Button variant="contained" type="submit "color="primary">
                 Submit changes
                 </Button>
             </>
