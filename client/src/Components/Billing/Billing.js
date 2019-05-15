@@ -1,6 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles/index';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const BillingSubmitButton = withStyles({
     root: {
@@ -14,17 +17,30 @@ const BillingSubmitButton = withStyles({
     }
 })(Button);
 
+const BillingCheckLabel = withStyles({
+    root: {
+        color: '#3685B5',
+        '&$checked': {
+            color: '#3685B5',
+          },
+    },
+    checked: {}
+})
+
 
 class Billing extends React.Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
-            'firstName': '',
-            'lastName': '',
-            'email': '',
-            'password': '',
-            'paymentInfo': '',
-            'subscriptionType': ''
+            firstName: '',
+            lastName: '',
+            email: '',
+            creditCardNumber: '',
+            expiration: '',
+            cvv: '',
+            subscriptionType: '',
+            checkedLabel: false,
+            checkedDummy: false
         }
     }
     
@@ -32,10 +48,9 @@ class Billing extends React.Component{
 
     // }
 
-    handleChange = (e) => {
+    handleChange = input => (e) => {
+        this.setState({ [input]: e.target.value})
         console.log(e.target.value)
-        console.log(e)
-        this.setState({ [e.target.name]: e.target.value})
     }
 
     handleSubmit = (e) => {
@@ -46,6 +61,7 @@ class Billing extends React.Component{
     }
 
     render(){
+        const { classes } = this.props;
         return (
             <>
                 <form onSubmit={this.handleSubmit}>
@@ -53,23 +69,67 @@ class Billing extends React.Component{
                         type="text"
                         name="firstName"
                         placeholder="First Name"
-                        onChange={this.handleChange}
+                        onChange={this.handleChange('firstName')}
                         value={this.state.firstName}
                     />
                      <input 
                         type="text"
                         name="lastName"
                         placeholder="Last Name"
-                        onChange={this.handleChange}
+                        onChange={this.handleChange('lastName')}
                         value={this.state.lastName}
                     />
                      <input 
                         type="text"
                         name="email"
                         placeholder="Email"
-                        onChange={this.handleChange}
+                        onChange={this.handleChange('email')}
                         value={this.state.email}
                     />
+                     <input 
+                        type="text"
+                        name="creditCardNumber"
+                        placeholder="CC#"
+                        onChange={this.handleChange('creditCardNumber')}
+                        value={this.state.creditCardNumber}
+                    />
+                     <input 
+                        type="text"
+                        name="expiration"
+                        placeholder="Expiration Date"
+                        onChange={this.handleChange('expiration')}
+                        value={this.state.expiration}
+                    />
+                     <input 
+                        type="text"
+                        name="cvv"
+                        placeholder="cvv"
+                        onChange={this.handleChange('cvv')}
+                        value={this.state.cvv}
+                    />
+                    <label>
+          <input
+            name="checkedDummy"
+            type="checkbox"
+            checked={this.state.icheckedDummy}
+            onChange={this.handleChange} />
+                 monthly subscription - $ 5.99
+        </label>
+                <FormControlLabel
+          control={
+            <Checkbox
+              name={this.state.checkedLabel}
+            //   type='checkbox'
+              onChange={this.handleChange('checkedLabel')}
+              value={this.state.checkedLabel}
+              classes={{
+                root: classes.root,
+                checked: classes.checked,
+              }}
+            />
+          }
+          label="1 Year Subscription - $9.99"
+        />
                 </form>
                 <BillingSubmitButton variant="contained" type="submit" size="large">
                     Buy Now
@@ -84,4 +144,8 @@ class Billing extends React.Component{
 
 }
 
-export default Billing;
+Billing.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
+
+export default withStyles(BillingCheckLabel)(Billing);
