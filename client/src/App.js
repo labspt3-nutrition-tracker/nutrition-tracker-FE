@@ -1,6 +1,8 @@
 import React from 'react';
-import {Route, Link} from 'react-router-dom';
 import './App.css';
+import { Route } from 'react-router-dom';
+import Dashboard from './Components/Dashboard/Dashboard';
+import Home from './Components/Home/Home';
 
 import Billing from './Components/Billing/Billing';
 import StatsView from './Components/Stats/StatsView';
@@ -8,6 +10,10 @@ import StatsView from './Components/Stats/StatsView';
 const App = () => {
   return (
     <div className="App">
+      <main>
+        <Route exact path="/" component={Home} />
+        <Route path="/dashboard" component={Dashboard} />
+      </main>
       <div>
         <Route 
         exact path="/billing" render={() => <Billing /> }/>
