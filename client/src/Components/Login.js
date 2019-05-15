@@ -38,7 +38,8 @@ const StyledButton = withStyles({
 class LoginOrRegister extends React.Component {
     constructor(props){
         super(props);
-        this.state = {
+        state = {
+            login: false,
             username: '',
             password: ''
         }
@@ -54,14 +55,17 @@ class LoginOrRegister extends React.Component {
     }
 
     render(){
+        const  {login, username, password} = this.state;
         return(
             <LoginOrRegisterContainer>
+
+                <h2>{login ? 'Sign Up': 'Login'}</h2>
                 <LoginOrRegisterForm>
                     <TextField
                         label="Username"
                         placeholder="Username"
                         margin="dense"
-                        onChange={this.handleChange('username')}
+                        onChange={this.handleChange(username)}
                     />
 
                     <TextField
@@ -70,7 +74,7 @@ class LoginOrRegister extends React.Component {
                         type="password"
                         autoComplete="current-password"
                         margin="dense"
-                        onChange={this.handleChange('password')}
+                        onChange={this.handleChange(password)}
                     />
 
                     <StyledButton

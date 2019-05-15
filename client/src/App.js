@@ -1,6 +1,5 @@
 import React from 'react';
 import Login from './Components/Login';
-import Setting from './Components/Settings';
 import './App.css';
 import { Route } from 'react-router-dom';
 import Dashboard from './Components/Dashboard/Dashboard';
@@ -18,7 +17,7 @@ const App = () => {
         <Route path="/dashboard" component={Dashboard} />
       </main>
       <div>
-        <Route 
+        <Route
         exact path="/billing" render={() => <Billing /> }/>
         <Route
         exact path="/stats" render={() => <StatsView /> }/>
