@@ -8,6 +8,7 @@ import Home from './Components/Home/Home';
 
 import Billing from './Components/Billing/Billing';
 import StatsView from './Components/Stats/StatsView';
+import Settings from './Components/Settings';
 
 const App = () => {
   return (
@@ -21,6 +22,10 @@ const App = () => {
         exact path="/billing" render={() => <Billing /> }/>
         <Route
         exact path="/stats" render={() => <StatsView /> }/>
+        <Route
+        exact path="/login" render={() => <Login/>} />
+        <Route
+        exact path="/settings" render={() => <Settings/>} />
       </div>
     </div>
   );
