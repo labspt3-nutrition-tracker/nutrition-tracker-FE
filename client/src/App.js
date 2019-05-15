@@ -1,4 +1,6 @@
 import React from 'react';
+import Login from './Components/Login';
+import Setting from './Components/Settings';
 import './App.css';
 import { Route } from 'react-router-dom';
 import Dashboard from './Components/Dashboard/Dashboard';
