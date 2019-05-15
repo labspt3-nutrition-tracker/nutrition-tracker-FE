@@ -33,7 +33,7 @@ const StyledButton = withStyles({
         background: '#40A798',
         width: '150px'
     }
-})(Fab)
+})(Fab);
 
 class LoginOrRegister extends React.Component {
     constructor(props){
