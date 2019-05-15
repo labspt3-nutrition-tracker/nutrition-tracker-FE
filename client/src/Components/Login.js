@@ -4,6 +4,8 @@ import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 
+import Auth from './Auth/Auth';
+
 const LoginOrRegisterContainer = styled.div`
     background:#FCFCFB;
     display:flex;
@@ -16,7 +18,7 @@ const LoginOrRegisterContainer = styled.div`
 
 const LoginOrRegisterForm = styled.form`
     background:#3685B5;
-    width:15%;
+    width:10%;
     height:300px;
     padding:100px;
     display:flex;
@@ -38,7 +40,7 @@ const StyledButton = withStyles({
 class LoginOrRegister extends React.Component {
     constructor(props){
         super(props);
-        state = {
+        this.state = {
             login: false,
             username: '',
             password: ''
@@ -51,21 +53,26 @@ class LoginOrRegister extends React.Component {
     }
 
     handleSubmit(e){
+        const auth = new Auth();
+
+        auth.login();
         e.preventDefault();
     }
 
     render(){
-        const  {login, username, password} = this.state;
         return(
             <LoginOrRegisterContainer>
-
-                <h2>{login ? 'Sign Up': 'Login'}</h2>
                 <LoginOrRegisterForm>
+                    {this.state.login && (
+                        <div>
+                            <h1>test</h1>
+                        </div>
+                    )}
                     <TextField
                         label="Username"
                         placeholder="Username"
                         margin="dense"
-                        onChange={this.handleChange(username)}
+                        onChange={this.handleChange('username')}
                     />
 
                     <TextField
@@ -74,12 +81,13 @@ class LoginOrRegister extends React.Component {
                         type="password"
                         autoComplete="current-password"
                         margin="dense"
-                        onChange={this.handleChange(password)}
+                        onChange={this.handleChange('password')}
                     />
 
                     <StyledButton
                         variant="extended"
                         size="large"
+                        onClick={this.handleSubmit}
                     >
                         Submit
                     </StyledButton>
