@@ -58,6 +58,7 @@ html {
 body {
   font-size: 1.6rem;
 }
+
 .container {
   width: 100%;
   max-width: 900px;
@@ -65,8 +66,9 @@ body {
 }
 
 .logo {
-  font-size: 2rem;
+  font-size: 3rem;
 }
+
 
 .home {
   min-height: 500px;
