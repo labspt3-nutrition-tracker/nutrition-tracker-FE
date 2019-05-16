@@ -16,7 +16,7 @@ const App = () => {
         <Route path="/dashboard" component={Dashboard} />
       </main>
       <div>
-        <Route 
+        <Route
         exact path="/billing" render={() => <Billing /> }/>
         <Route
         exact path="/stats" render={() => <StatsView /> }/>

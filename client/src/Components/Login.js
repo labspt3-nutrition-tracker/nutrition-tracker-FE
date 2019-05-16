@@ -4,6 +4,8 @@ import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 
+import Auth from './Auth/Auth';
+
 const LoginOrRegisterContainer = styled.div`
     background:#FCFCFB;
     display:flex;
@@ -16,7 +18,7 @@ const LoginOrRegisterContainer = styled.div`
 
 const LoginOrRegisterForm = styled.form`
     background:#3685B5;
-    width:15%;
+    width:10%;
     height:300px;
     padding:100px;
     display:flex;
@@ -39,6 +41,7 @@ class LoginOrRegister extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            login: false,
             username: '',
             password: ''
         }
@@ -50,6 +53,9 @@ class LoginOrRegister extends React.Component {
     }
 
     handleSubmit(e){
+        const auth = new Auth();
+
+        auth.login();
         e.preventDefault();
     }
 
@@ -57,6 +63,11 @@ class LoginOrRegister extends React.Component {
         return(
             <LoginOrRegisterContainer>
                 <LoginOrRegisterForm>
+                    {this.state.login && (
+                        <div>
+                            <h1>test</h1>
+                        </div>
+                    )}
                     <TextField
                         label="Username"
                         placeholder="Username"
@@ -76,6 +87,7 @@ class LoginOrRegister extends React.Component {
                     <StyledButton
                         variant="extended"
                         size="large"
+                        onClick={this.handleSubmit}
                     >
                         Submit
                     </StyledButton>

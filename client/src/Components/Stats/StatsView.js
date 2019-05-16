@@ -3,7 +3,8 @@ import StatsDashboard from './StatsDashboard';
 import {withStyles} from '@material-ui/core/styles/index';
 import Button from '@material-ui/core/Button';
 
-class Stats extends React.Component{
+
+class StatsView extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -33,4 +34,4 @@ class Stats extends React.Component{
     }
 }
 
-export default Stats;
+export default StatsView;
