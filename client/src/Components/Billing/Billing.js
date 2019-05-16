@@ -96,7 +96,7 @@ class Billing extends React.Component {
         <Grid
           container
           spacing={5}
-          lg={4}
+          lg={8}
           direction="row"
           justify="center"
           alignItems="center"
