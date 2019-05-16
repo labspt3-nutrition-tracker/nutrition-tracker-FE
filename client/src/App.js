@@ -1,13 +1,13 @@
-import React from 'react';
-import Login from './Components/Login';
-import Setting from './Components/Settings';
-import './App.css';
-import { Route } from 'react-router-dom';
-import Dashboard from './Components/Dashboard/Dashboard';
-import Home from './Components/Home/Home';
+import React from "react";
+import Login from "./Components/Login";
+import Setting from "./Components/Settings";
+import "./App.css";
+import { Route } from "react-router-dom";
+import Dashboard from "./Components/Dashboard/Dashboard";
+import Home from "./Components/Home/Home";
 
-import Billing from './Components/Billing/Billing';
-import StatsView from './Components/Stats/StatsView';
+import Billing from "./Components/Billing/Billing";
+import StatsView from "./Components/Stats/StatsView";
 
 const App = () => {
   return (
@@ -17,13 +17,11 @@ const App = () => {
         <Route path="/dashboard" component={Dashboard} />
       </main>
       <div>
-        <Route 
-        exact path="/billing" render={() => <Billing /> }/>
-        <Route
-        exact path="/stats" render={() => <StatsView /> }/>
+        <Route exact path="/billing" render={() => <Billing />} />
+        <Route exact path="/stats" render={() => <StatsView />} />
       </div>
     </div>
   );
-}
+};
 
 export default App;

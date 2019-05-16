@@ -10,33 +10,59 @@ import red from "@material-ui/core/colors/red";
 import { NavLink } from "react-router-dom";
 // import WithTheme from './WithTheme';
 
-// const theme = createMuiTheme({
-//   palette: {
-//     primary: blue,
-//     secondary: blue
-//   },
-//   typography: {
-//     htmlFontSize: 16
-//   }
-// });
-
-const styles = {
-  root: {
-    flexGrow: 1
+const theme = createMuiTheme({
+  palette: {
+    primary: blue,
+    secondary: blue
   },
-  grow: {
-    flexGrow: 1
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20
+  typography: {
+    fontSize: 25
   }
-};
+});
 
-function ButtonAppBar(props) {
-  const { classes } = props;
+// const styles = {
+//   root: {
+//     flexGrow: 1
+//   },
+//   grow: {
+//     flexGrow: 1
+//   },
+//   menuButton: {
+//     marginLeft: -12,
+//     marginRight: 20
+//   }
+// };
+
+// function ButtonAppBar(props) {
+//   const { classes } = props;
+//   return (
+//     <div className={classes.root}>
+//       <AppBar position="static">
+//         <Toolbar>
+//           <NavLink to="/">
+//             <Button color="inherit">Home</Button>
+//           </NavLink>
+//           <NavLink to="/login">
+//             <Button color="inherit">Login</Button>
+//           </NavLink>
+//           <NavLink to="/settings">
+//             <Button color="inherit">Account</Button>
+//           </NavLink>
+//           <NavLink to="/reports">
+//             <Button color="inherit">Reports</Button>
+//           </NavLink>
+//           <NavLink to="/dashboard">
+//             <Button color="inherit">Dashboard</Button>
+//           </NavLink>
+//         </Toolbar>
+//       </AppBar>
+//     </div>
+//   );
+// }
+
+function ButtonAppBar() {
   return (
-    <div className={classes.root}>
+    <MuiThemeProvider theme={theme}>
       <AppBar position="static">
         <Toolbar>
           <NavLink to="/">
@@ -56,27 +82,13 @@ function ButtonAppBar(props) {
           </NavLink>
         </Toolbar>
       </AppBar>
-    </div>
+    </MuiThemeProvider>
   );
 }
-
-// function ButtonAppBar() {
-//   return (
-//     <MuiThemeProvider theme={theme}>
-//       <AppBar position="static">
-//         <Toolbar>
-//           <Button color="primary">Home</Button>
-//           <Button color="secondary">Account</Button>
-//           <Button color="secondary">Reports</Button>
-//         </Toolbar>
-//       </AppBar>
-//     </MuiThemeProvider>
-//   );
-// }
 
 ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ButtonAppBar);
-// export default ButtonAppBar;
+// export default withStyles(styles)(ButtonAppBar);
+export default ButtonAppBar;
