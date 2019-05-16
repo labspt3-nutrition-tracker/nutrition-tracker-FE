@@ -8,7 +8,6 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
 // import red from "@material-ui/core/colors/red";
 import { NavLink } from "react-router-dom";
-// import WithTheme from './WithTheme';
 
 const theme = createMuiTheme({
   palette: {
@@ -16,9 +15,10 @@ const theme = createMuiTheme({
     secondary: blue
   },
   typography: {
-    fontSize: 25
-  }
-});
+    fontSize: 25,
+    useNextVariants: true,
+  },
+})
 
 // const styles = {
 //   root: {
