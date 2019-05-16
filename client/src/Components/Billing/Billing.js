@@ -1,4 +1,5 @@
 import React from "react";
+import Header from "../Reusables/Header";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles/index";
@@ -93,6 +94,7 @@ class Billing extends React.Component {
     return (
       // <div className={classes.root}>
       <BillingContainer>
+       <Header />
         <Grid
           container
           spacing={8}
