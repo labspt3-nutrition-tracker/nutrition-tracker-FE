@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
+import AccountNav from '../AccountNav';
 
 const theme = createMuiTheme({
     palette: {
@@ -16,7 +17,7 @@ const theme = createMuiTheme({
     },
   })
 
-const StatsDashboard = props => {
+const StatsDashboard = () => {
     return (
         <>
         <MuiThemeProvider theme={theme}>
@@ -32,7 +33,10 @@ const StatsDashboard = props => {
          <div>
             <Button color="primary">Log</Button>
             <Button color="secondary">Eating Healthy</Button>
-            <Button color="secondary">Account</Button>
+            <Button color="secondary">Account
+            <Route
+        exact path="/account" render={() => <AccountNav /> }/>
+            </Button>
          </div>
         </MuiThemeProvider>
       

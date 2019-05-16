@@ -1,7 +1,9 @@
 import React from 'react';
-import StatsDashboard from './StatsDashboard';
 import {withStyles} from '@material-ui/core/styles/index';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import StatsDashboard from './StatsDashboard';
+import FoodLogStats from './FoodLogStats';
 
 
 class StatsView extends React.Component{
@@ -27,9 +29,19 @@ class StatsView extends React.Component{
     render(){
         return (
             <>
+                <Grid
+            container
+            spacing={5}
+            lg={4}
+            direction="row"
+            justify="center"
+            alignItems="center"
+            >
                 <StatsDashboard />
-                
+                <FoodLogStats />
+            </Grid>
             </>
+         
         )
     }
 }

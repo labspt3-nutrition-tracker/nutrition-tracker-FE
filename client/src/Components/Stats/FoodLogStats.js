@@ -1,4 +1,7 @@
 import React from 'react';
+import styled from 'styled-components';
+import Grid from '@material-ui/core/Grid';
+
 
 
 class FoodLogStats extends React.Component{
@@ -27,6 +30,25 @@ class FoodLogStats extends React.Component{
 render(){
     return (
         <>
+        <Grid
+            container
+            spacing={5}
+            lg={4}
+            direction="row"
+            justify="center"
+            alignItems="center"
+            >
+        <div>
+        
+            Food Log
+            <div>Progress Chart here</div>
+            <div>Bar chart here</div>
+        </div>
+        <div>
+            Nutritional Stats
+
+        </div>
+        </Grid>
         </>
     )
 }
