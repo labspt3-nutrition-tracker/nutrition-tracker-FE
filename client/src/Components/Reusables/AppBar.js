@@ -1,36 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-// import { withStyles } from '@material-ui/core/styles';
-// import AppBar from '@material-ui/core/AppBar';
-// import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
-// import WithTheme from './WithTheme';
+import React from "react";
+import PropTypes from "prop-types";
+// import { withStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Button from "@material-ui/core/Button";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import blue from "@material-ui/core/colors/blue";
+// import red from "@material-ui/core/colors/red";
+import { NavLink } from "react-router-dom";
 
 const theme = createMuiTheme({
   palette: {
     primary: blue,
-    secondary: blue,
+    secondary: blue
   },
   typography: {
-    htmlFontSize: 16,
+    fontSize: 25,
     useNextVariants: true,
   },
 })
 
-
 // const styles = {
 //   root: {
-//     flexGrow: 1,
+//     flexGrow: 1
 //   },
 //   grow: {
-//     flexGrow: 1,
+//     flexGrow: 1
 //   },
 //   menuButton: {
 //     marginLeft: -12,
-//     marginRight: 20,
-//   },
+//     marginRight: 20
+//   }
 // };
 
 // function ButtonAppBar(props) {
@@ -39,9 +39,21 @@ const theme = createMuiTheme({
 //     <div className={classes.root}>
 //       <AppBar position="static">
 //         <Toolbar>
-//           <Button color="inherit">Home</Button>
-//           <Button color="inherit">Account</Button>
-//           <Button color="inherit">Reports</Button>
+//           <NavLink to="/">
+//             <Button color="inherit">Home</Button>
+//           </NavLink>
+//           <NavLink to="/login">
+//             <Button color="inherit">Login</Button>
+//           </NavLink>
+//           <NavLink to="/settings">
+//             <Button color="inherit">Account</Button>
+//           </NavLink>
+//           <NavLink to="/reports">
+//             <Button color="inherit">Reports</Button>
+//           </NavLink>
+//           <NavLink to="/dashboard">
+//             <Button color="inherit">Dashboard</Button>
+//           </NavLink>
 //         </Toolbar>
 //       </AppBar>
 //     </div>
@@ -51,15 +63,31 @@ const theme = createMuiTheme({
 function ButtonAppBar() {
   return (
     <MuiThemeProvider theme={theme}>
-      <Button color="primary">Home</Button>
-      <Button color="secondary">Account</Button>
-      <Button color="secondary">Reports</Button>
+      <AppBar position="static">
+        <Toolbar>
+          <NavLink to="/">
+            <Button color="inherit">Home</Button>
+          </NavLink>
+          <NavLink to="/login">
+            <Button color="inherit">Login</Button>
+          </NavLink>
+          <NavLink to="/billing">
+            <Button color="inherit">Account</Button>
+          </NavLink>
+          <NavLink to="/stats">
+            <Button color="inherit">Reports</Button>
+          </NavLink>
+          <NavLink to="/dashboard">
+            <Button color="inherit">Dashboard</Button>
+          </NavLink>
+        </Toolbar>
+      </AppBar>
     </MuiThemeProvider>
-  )
+  );
 }
 
 ButtonAppBar.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 // export default withStyles(styles)(ButtonAppBar);

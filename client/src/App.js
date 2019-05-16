@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Login from './Components/Login';
 import './App.css';
@@ -16,10 +17,8 @@ const App = () => {
         <Route path="/dashboard" component={Dashboard} />
       </main>
       <div>
-        <Route
-        exact path="/billing" render={() => <Billing /> }/>
-        <Route
-        exact path="/stats" render={() => <StatsView /> }/>
+        <Route exact path="/billing" render={() => <Billing />} />
+        <Route exact path="/stats" render={() => <StatsView />} />
         <Route
         exact path="/login" render={() => <Login/>} />
         <Route
@@ -27,6 +26,6 @@ const App = () => {
       </div>
     </div>
   );
-}
+};
 
 export default App;

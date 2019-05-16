@@ -49,7 +49,9 @@ table {
 
 
 /* Begin custom styles  */
-
+* {
+  box-sizing: border-box;
+}
 html {
   font-size: 62.5%;
   font-family: Roboto, sans-serif;
@@ -61,18 +63,15 @@ body {
 
 .container {
   width: 100%;
-  max-width: 900px;
+  max-width: 1400px;
   margin: 0 auto;
-}
-
-.logo {
-  font-size: 3rem;
+  padding: 50px;
 }
 
 
 .home {
   min-height: 500px;
-  background: url(./Assets/home-bg.jpg) no-repeat;
+  background: url(./Assets/home-bg.jpg);
   background-size: 100%;
   color: #ffffff;
 }
@@ -96,14 +95,6 @@ body {
   font-size: 1.8rem;
 }
 
-.features-con {
-  background: rgba(255,255,255, .5);
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 50px 20px;
-}
-
 .feature-box {
   border: 1px solid black;
   display: flex;
@@ -120,4 +111,9 @@ body {
 
 .feature-img img {
   width: 100%;
+}
+
+.form-field {
+  margin-bottom: 10px;
+  font-size: 1.6rem;
 }
