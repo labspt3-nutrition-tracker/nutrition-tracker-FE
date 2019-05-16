@@ -5,6 +5,7 @@ import logo from "../../Assets/logo-black.png";
 
 const Logo = styled.div`
   max-width: 100px;
+  padding-left: 24px;
 `;
 
 const Header = () => (
