@@ -21,19 +21,19 @@ const Home = () => (
         <div className="features-con">
           <div className="feature-box">
             <div className="feature-img">
-              <img src="http://lorempixel.com/200/200/food" />
+              <img src="http://lorempixel.com/200/200/food" alt="food"/>
             </div>
             <div className="feature-text">Lorem Ipsum</div>
           </div>
           <div className="feature-box">
             <div className="feature-img">
-              <img src="http://lorempixel.com/200/200/technics" />
+              <img src="http://lorempixel.com/200/200/technics" alt="technics"/>
             </div>
             <div className="feature-text">Lorem Ipsum</div>
           </div>
           <div className="feature-box">
             <div className="feature-img">
-              <img src="http://lorempixel.com/200/200/people" />
+              <img src="http://lorempixel.com/200/200/people" alt="people"/>
             </div>
             <div className="feature-text">Lorem Ipsum</div>
           </div>
