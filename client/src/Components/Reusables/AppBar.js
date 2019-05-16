@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+// import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
-import red from "@material-ui/core/colors/red";
+// import red from "@material-ui/core/colors/red";
 import { NavLink } from "react-router-dom";
 // import WithTheme from './WithTheme';
 
@@ -71,10 +71,10 @@ function ButtonAppBar() {
           <NavLink to="/login">
             <Button color="inherit">Login</Button>
           </NavLink>
-          <NavLink to="/settings">
+          <NavLink to="/billing">
             <Button color="inherit">Account</Button>
           </NavLink>
-          <NavLink to="/reports">
+          <NavLink to="/stats">
             <Button color="inherit">Reports</Button>
           </NavLink>
           <NavLink to="/dashboard">
