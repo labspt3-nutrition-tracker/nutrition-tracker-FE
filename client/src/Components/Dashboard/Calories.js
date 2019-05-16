@@ -1,20 +1,34 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const CalCon = styled.div`
+  padding: 20px;
+`
+
+const CalTitle = styled.h3`
+  font-size: 2rem;
+  font-weight: bold;
+`
+
+const CalAmt = styled.div`
+  font-size: 4rem;
+`
 
 const Calories = () => (
-  <div>
+  <CalCon>
     <div className="cal-current">
-      <h3>Current Calories Today</h3>
-      <div>1200</div>
+      <CalTitle>Current Calories Today</CalTitle>
+      <CalAmt>1200</CalAmt>
     </div>
     <div className="cal-remain">
-      <h3>Remaining Calories Today</h3>
-      <div>800</div>
+      <CalTitle>Remaining Calories Today</CalTitle>
+      <CalAmt>800</CalAmt>
     </div>
     <div className="cal-goal">
-      <h3>Daily Calorie Goal</h3>
-      <div>2000</div>
+      <CalTitle>Daily Calorie Goal</CalTitle>
+      <CalAmt>2000</CalAmt>
     </div>
-  </div>
+  </CalCon>
 )
 
 export default Calories;
