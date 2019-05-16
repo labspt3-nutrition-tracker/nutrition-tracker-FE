@@ -14,9 +14,15 @@ class FoodLogStats extends React.Component{
             carbs: '',
             protein: '',
             fat: '',
-            random:''
+            currentTotalChartEntries: {
+                carbs: 1000,
+                protein: 400,
+                fat: 10
+            }
         }
     }
+
+ 
 
     handleChange = input => e => {
         this.setState({ [input]: e.target.value})
@@ -32,7 +38,7 @@ render(){
         <>
         <Grid
             container
-            spacing={5}
+            spacing={8}
             lg={4}
             direction="row"
             justify="center"

@@ -31,7 +31,7 @@ class StatsView extends React.Component{
             <>
                 <Grid
             container
-            spacing={5}
+            spacing={8}
             lg={4}
             direction="row"
             justify="center"
