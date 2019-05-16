@@ -1,4 +1,5 @@
 import React from 'react';
+import {Route, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -11,23 +12,36 @@ const theme = createMuiTheme({
     },
     typography: {
       htmlFontSize: 24,
+      useNextVariants: true,
     },
   })
 
-const StatsDateCard = props => {
+const StatsDashboard = props => {
     return (
         <>
         <MuiThemeProvider theme={theme}>
+        <div>
             <Button color="primary">Daily</Button>
             <Button color="secondary">Weekly</Button>
             <Button color="secondary">Monthly</Button>
+         </div>
+
         </MuiThemeProvider>
+
+        <MuiThemeProvider theme={theme}>
+         <div>
+            <Button color="primary">Log</Button>
+            <Button color="secondary">Eating Healthy</Button>
+            <Button color="secondary">Account</Button>
+         </div>
+        </MuiThemeProvider>
+      
         </>
     )
 }
 
-StatsDateCard.propTypes = {
+StatsDashboard.propTypes = {
     classes: PropTypes.object.isRequired,
   };
 
-export default StatsDateCard;
+export default StatsDashboard;

@@ -1,5 +1,5 @@
 import React from 'react';
-import StatsDateCard from './StatsDateCard';
+import StatsDashboard from './StatsDashboard';
 import {withStyles} from '@material-ui/core/styles/index';
 import Button from '@material-ui/core/Button';
 
@@ -26,7 +26,7 @@ class Stats extends React.Component{
     render(){
         return (
             <>
-                <StatsDateCard />
+                <StatsDashboard />
                 
             </>
         )

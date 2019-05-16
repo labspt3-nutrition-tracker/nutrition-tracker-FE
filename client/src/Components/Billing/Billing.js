@@ -108,37 +108,34 @@ class Billing extends React.Component{
                         value={this.state.cvv}
                     />
                     <label>
-          <input
-            name="checkedDummy"
-            type="checkbox"
-            checked={this.state.icheckedDummy}
-            onChange={this.handleChange} />
-                 monthly subscription - $ 5.99
-        </label>
-                <FormControlLabel
-          control={
-            <Checkbox
-              name={this.state.checkedLabel}
-            //   type='checkbox'
-              onChange={this.handleChange('checkedLabel')}
-              value={this.state.checkedLabel}
-              classes={{
-                root: classes.root,
-                checked: classes.checked,
-              }}
-            />
-          }
-          label="1 Year Subscription - $9.99"
-        />
+                <input
+                    name="checkedDummy"
+                    type="checkbox"
+                    checked={this.state.icheckedDummy}
+                    onChange={this.handleChange} />
+                        monthly subscription - $ 5.99
+                </label>
+                        <FormControlLabel
+                control={
+                    <Checkbox
+                    name={this.state.checkedLabel}
+                    //   type='checkbox'
+                    onChange={this.handleChange('checkedLabel')}
+                    value={this.state.checkedLabel}
+                    classes={{
+                        root: classes.root,
+                        checked: classes.checked,
+                    }}
+                    />
+                }
+                label="1 Year Subscription - $9.99"
+                />
                 </form>
                 <BillingSubmitButton variant="contained" type="submit" size="large">
                     Buy Now
                 </BillingSubmitButton>
-                {/* <Button variant="contained" type="submit" color="#3685B5" size="large">
-                Submit changes
-                </Button> */}
 
-            </>
+         </>
         )
     }
 
