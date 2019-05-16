@@ -24,7 +24,7 @@ onInputChange = (e) => {
 
   render() {
     return (
-      <Form onsubmit={}>
+      <Form>
         <input className="form-field" type="text" placeholder="Add food here..." />
         <select className="form-field" name="meal-category">
           <option value="breakfast">breakfast</option>
