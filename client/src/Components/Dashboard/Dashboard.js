@@ -3,6 +3,7 @@ import Header from "../Reusables/Header";
 import Calories from "./Calories";
 import EntryForm from "./EntryForm";
 import FoodEntry from "./FoodEntry";
+import styled from "styled-components";
 
 class Dashboard extends Component {
   state = {
@@ -70,16 +71,28 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="dashboard">
+        <Header />
         <div className="container">
-          <Header />
-          <div className="dash-title">Today's Food Entries</div>
-          <FoodEntry entries={this.state.currentFoodEntries} />
-          <EntryForm />
+          <DashTitle>Today's Food Entries</DashTitle>
+          <hr />
           <Calories />
+          <InfoCon>
+            <FoodEntry entries={this.state.currentFoodEntries} />
+            <EntryForm />
+          </InfoCon>
         </div>
       </div>
     );
   }
 }
 
+const DashTitle = styled.div`
+  font-size: 3rem;
+  text-align: center;
+`;
+
+const InfoCon = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 export default Dashboard;

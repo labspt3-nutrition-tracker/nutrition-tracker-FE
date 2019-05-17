@@ -3,6 +3,9 @@ import styled from 'styled-components';
 
 const CalCon = styled.div`
   padding: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
 `
 
 const CalTitle = styled.h3`

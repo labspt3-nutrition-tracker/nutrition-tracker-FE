@@ -1,65 +1,74 @@
 import React from "react";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
-import { NavLink } from "react-router-dom";
+import AppBar from "../Reusables/AppBar";
+import styled from "styled-components";
+import logo from "../../Assets/logo-white.png";
 
+const Logo = styled.div`
+  max-width: 100px;
+`;
+
+const Main = styled.div`
+  padding-top: 100px;
+`;
+
+const Tagline = styled.div`
+  font-size: 3.5rem;
+  letter-spacing: 2px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+`;
+
+const Features = styled.div`
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 50px 20px;
+  margin: 50px auto;
+`;
 const Home = () => (
   <div className="home">
     <div className="container">
       <header className="header-home">
-        <div className="logo">Nutrition Buddy</div>
+        <Logo>
+          <img src={logo} alt="Created my free logo at LogoMakr.com" />
+        </Logo>
         <div>
-          <Toolbar>
-            <NavLink to="/">
-              <Button color="inherit">Home</Button>
-            </NavLink>
-            <NavLink to="/login">
-              <Button color="inherit">Login</Button>
-            </NavLink>
-            <NavLink to="/settings">
-              <Button color="inherit">Account</Button>
-            </NavLink>
-            <NavLink to="/reports">
-              <Button color="inherit">Reports</Button>
-            </NavLink>
-            <NavLink to="/dashboard">
-              <Button color="inherit">Dashboard</Button>
-            </NavLink>
-          </Toolbar>
+          <AppBar />
         </div>
       </header>
-      <main>
+      <Main>
         <div className="home-text">
-          <div className="tagline">
+          <Tagline>
             Quick, easy food tracking to help you accomplish your health goals
-          </div>
+          </Tagline>
           <div className="detail">
             Deflector power at maximum. Energy discharge in six seconds. Warp
             reactor core primary coolant failure. Fluctuate phaser resonance
             frequencies.
           </div>
         </div>
-        <div className="features-con">
+        <Features>
           <div className="feature-box">
             <div className="feature-img">
-              <img src="http://lorempixel.com/200/200/food" />
+              <img src="http://lorempixel.com/200/200/food" alt="food"/>
             </div>
             <div className="feature-text">Lorem Ipsum</div>
           </div>
           <div className="feature-box">
             <div className="feature-img">
-              <img src="http://lorempixel.com/200/200/technics" />
+              <img src="http://lorempixel.com/200/200/technics" alt="technics"/>
             </div>
             <div className="feature-text">Lorem Ipsum</div>
           </div>
           <div className="feature-box">
             <div className="feature-img">
-              <img src="http://lorempixel.com/200/200/people" />
+              <img src="http://lorempixel.com/200/200/people" alt="people"/>
             </div>
             <div className="feature-text">Lorem Ipsum</div>
           </div>
-        </div>
-      </main>
+        </Features>
+      </Main>
     </div>
   </div>
 );
