@@ -1,16 +1,16 @@
 import React from "react";
-import PropTypes from "prop-types";
+import Header from "../Reusables/Header";
+import BillingPlans from "./BillingPlans";
+import { Link } from 'react-router-dom';
+// import Modal from 'react-modal';
 import styled from "styled-components";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles/index";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import CssBaseline from '@material-ui/core/CssBaseline';
+
 
 // const styles = theme => ({
 //   root: {
@@ -67,6 +67,7 @@ class Billing extends React.Component {
       creditCardNumber: "",
       expiration: "",
       cvv: "",
+      showModal: false,
       subscriptionType: "",
       checkedLabel: false,
       checkedDummy: false
@@ -75,6 +76,20 @@ class Billing extends React.Component {
 
   // componentDidMount() {
 
+  // }
+
+
+  // openModal = () => {
+  //   this.setState({ showModal: true});
+  // }
+
+  // // Close out the modal / say no paying for super user account
+  // closeModal = () => {
+  //   this.setState({ showModal: false});
+  // }
+
+  // handleModal = () => {
+  //   this.setState({ showModal: false})
   // }
 
   handleChange = input => e => {
@@ -91,8 +106,14 @@ class Billing extends React.Component {
   render(props) {
     const { classes } = this.props;
     return (
-      // <div className={classes.root}>
+      <div>
+           <Header />
+           {/* <BillingPlans /> */}
+    <div className="BillingModal"
+    isOpen={this.state.showModal}
+    >
       <BillingContainer>
+        <button><Link to="/billing-plan">Close</Link></button>
         <Grid
           container
           spacing={8}
@@ -172,11 +193,10 @@ class Billing extends React.Component {
           <BillingSubmitButton variant="contained" type="submit" size="large">
             Buy Now
           </BillingSubmitButton>
-          {/* <Button variant="contained" type="submit" color="#3685B5" size="large">
-                Submit changes
-                </Button> */}
         </Grid>
       </BillingContainer>
+      </div>
+      </div>
     );
   }
 }

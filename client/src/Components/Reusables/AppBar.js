@@ -71,7 +71,7 @@ function ButtonAppBar() {
           <NavLink to="/login">
             <Button color="inherit">Login</Button>
           </NavLink>
-          <NavLink to="/billing">
+          <NavLink to="/account">
             <Button color="inherit">Account</Button>
           </NavLink>
           <NavLink to="/stats">

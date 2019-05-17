@@ -8,6 +8,8 @@ import Home from './Components/Home/Home';
 import Billing from './Components/Billing/Billing';
 import StatsView from './Components/Stats/StatsView';
 import Settings from './Components/Settings';
+import AccountNav from "./Components/AccountNav";
+import BillingPlans from './Components/Billing/BillingPlans';
 
 const App = () => {
   return (
@@ -17,6 +19,7 @@ const App = () => {
         <Route path="/dashboard" component={Dashboard} />
       </main>
       <div>
+        <Route exact path="/billing-plan" render={() => <BillingPlans />} /> 
         <Route exact path="/billing" render={() => <Billing />} />
         <Route exact path="/stats" render={() => <StatsView />} />
         <Route
@@ -24,6 +27,7 @@ const App = () => {
         <Route
         exact path="/settings" render={() => <Settings/>} />
       </div>
+      <Route path="/account" render={() => <AccountNav />} />
     </div>
   );
 };
