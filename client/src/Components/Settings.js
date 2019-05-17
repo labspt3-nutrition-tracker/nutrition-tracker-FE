@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from "./Reusables/Header";
 import styled from 'styled-components';
 import Fab from '@material-ui/core/Fab';
 import TextField from "@material-ui/core/TextField";
@@ -39,6 +40,7 @@ const LogoutContainer = styled.div`
 const Settings = props => {
     return(
         <SettingsContainer>
+            <Header />
             <LogoutContainer>
                 <StyledLogoutButton
                 variant="extended"
