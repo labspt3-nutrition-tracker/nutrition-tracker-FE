@@ -10,22 +10,17 @@ const FoodLogStats = props => {
         Daily Stats:{" "}
         {daily.map(calorie => (
           <div key={calorie}>
-            {calorie.carbs}
-            {calorie.protein} {calorie.fat}
+            Total Carbs: {calorie.carbs}
+            Total Protein: {calorie.protein} Total Fat: {calorie.fat}
           </div>
         ))}
       </div>
-      {/* <div className="meals meals-breakfast">
-        {props.entries.breakfast.map(meal => {
-          return <div className="food">{meal.food}</div>;
-        })}
-      </div> */}
       <div>
         Weekly Stats:{" "}
         {weekly.map(calorie => (
           <div key={calorie}>
-            {calorie.carbs}
-            {calorie.protein} {calorie.fat}{" "}
+             Total Carbs: {calorie.carbs}
+             Total Protein: {calorie.protein} Total Fat: {calorie.fat}{" "}
           </div>
         ))}
       </div>
@@ -33,8 +28,8 @@ const FoodLogStats = props => {
         Monthly Stats:{" "}
         {monthly.map(calorie => (
           <div key={calorie}>
-            {calorie.carbs}
-            {calorie.protein} {calorie.fat}
+            Total Carbs: {calorie.carbs}
+            Total Protein:{calorie.protein}Total Fat: {calorie.fat}
           </div>
         ))}
       </div>

@@ -7,7 +7,7 @@ const AccountNav = () => {
         <>
             <Header />
             <div>
-            <Link to={'/billing'}>Billing</Link>
+            <Link to={'/billing-plan'}>Billing</Link>
             </div>
             <div>
             <Link to={'/settings'}>Settings</Link>
