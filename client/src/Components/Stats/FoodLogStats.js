@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 const FoodLogStats = props => {
   const { daily, weekly, monthly } = props.calories;
   return (
-    <>
+    <DivContainer>
       <div>
         Daily Stats:{" "}
         {daily.map(calorie => (
@@ -33,7 +33,7 @@ const FoodLogStats = props => {
           </div>
         ))}
       </div>
-    </>
+    </DivContainer>
   );
 };
 
@@ -90,3 +90,13 @@ const FoodLogStats = props => {
 // }
 
 export default FoodLogStats;
+
+
+const DivContainer = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+width: 100%;
+max-width: 1000px;
+`
