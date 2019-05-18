@@ -51,6 +51,20 @@ class StatsView extends React.Component {
     return (
       <>
         <Header />
+              {/* <AppBar position="static" color="default" className={classes.appBar}>
+        {/* <Toolbar>
+          <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
+            Company name
+          </Typography>
+          <Button>Features</Button>
+          <Button>Enterprise</Button>
+          <Button>Support</Button>
+          <Button color="primary" variant="outlined">
+            Login
+          </Button>
+        </Toolbar> 
+      </AppBar> */}
+
         <Grid
           container
           spacing={8}

@@ -69,8 +69,8 @@ const tiers = [
     title: 'Free User',
     price: '0',
     description: [
-        '10 users included',
-         '2 GB of storage', 
+        'Calorie entry',
+         'One week food diary options', 
          'Help center access',
           'Email support'
         ],
@@ -82,9 +82,9 @@ const tiers = [
     subheader: 'Most popular',
     price: '15',
     description: [
-      '20 users included',
-      'Access to weekly and monthly reports',
-      'Help center access',
+      'calorie entry',
+      'Access to all report types',
+      'Food Analysis',
       'Priority for future releases, such as connecting with a personal trainer!',
     ],
     buttonText: 'Get started',
@@ -99,7 +99,7 @@ const tiers = [
       'Help center access',
       'Phone & email support',
     ],
-    buttonText: 'Contact us',
+    buttonText: 'Login with User Account',
     buttonVariant: 'outlined',
   },
 ];
@@ -112,19 +112,6 @@ function Pricing(props) {
     <React.Fragment>
       <CssBaseline />
       <Header />
-      <AppBar position="static" color="default" className={classes.appBar}>
-        {/* <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-            Company name
-          </Typography>
-          <Button>Features</Button>
-          <Button>Enterprise</Button>
-          <Button>Support</Button>
-          <Button color="primary" variant="outlined">
-            Login
-          </Button>
-        </Toolbar> */}
-      </AppBar>
       <main className={classes.layout}>
         {/* Hero unit */}
         <div className={classes.heroContent}>
@@ -165,10 +152,14 @@ function Pricing(props) {
                     </Typography>
                   ))}
                 </CardContent>
-                <CardActions className={classes.cardActions}>
-                  <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing" >
+                <CardActions className={classes.cardActions}
+              > 
+              action={tier.title === 'Super User' ? <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing" >   {tier.buttonText}
+                </Button>  : <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/login" >   {tier.buttonText}
+                </Button> }
+                  {/* <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing"   >
                     {tier.buttonText}
-                  </Button>
+                  </Button> */}
                 </CardActions>
               </Card>
             </Grid>

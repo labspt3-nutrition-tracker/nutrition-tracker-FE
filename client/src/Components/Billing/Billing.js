@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../Reusables/Header";
-import BillingPlans from "./BillingPlans";
+// import BillingPlans from "./BillingPlans";
 import { Link } from 'react-router-dom';
 // import Modal from 'react-modal';
 import styled from "styled-components";
@@ -91,6 +91,7 @@ class Billing extends React.Component {
   // handleModal = () => {
   //   this.setState({ showModal: false})
   // }
+
 
   handleChange = input => e => {
     this.setState({ [input]: e.target.value });
