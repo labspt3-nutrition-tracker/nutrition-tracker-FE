@@ -80,7 +80,7 @@ const tiers = [
   {
     title: 'Super User',
     subheader: 'Most popular',
-    price: '15',
+    price: '7',
     description: [
       'calorie entry',
       'Access to all report types',
@@ -92,7 +92,7 @@ const tiers = [
   },
   {
     title: 'Trainer (for future release)',
-    price: '20',
+    price: '10',
     description: [
       'Have access to your client\'s profiles!',
       'Give advice to clients',
