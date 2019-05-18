@@ -29,19 +29,21 @@ import Button from '@material-ui/core/Button';
 
 const AccountNav = () => {
     return (
-        <DivContainer>
-            <Header />
-            <CssBaseline />
-            <ButtonDiv>
-                <AccountButton>
-                <Link to={'/billing-plan'}>Billing</Link>
-                </AccountButton>
-                <AccountButton>
-                <Link to={'/settings'}>Settings</Link>
-                </AccountButton>
-                           
-            </ButtonDiv>
-        </DivContainer>
+        <>
+           <Header />
+            <DivContainer>
+                <CssBaseline />
+                <ButtonDiv>
+                    <AccountButton>
+                    <Link to={'/billing-plan'}>Billing</Link>
+                    </AccountButton>
+                    <AccountButton>
+                    <Link to={'/settings'}>Settings</Link>
+                    </AccountButton>
+                            
+                </ButtonDiv>
+            </DivContainer>
+        </>
     )
 }
 
