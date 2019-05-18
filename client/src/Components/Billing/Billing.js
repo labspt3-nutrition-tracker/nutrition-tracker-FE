@@ -27,8 +27,20 @@ const BillingContainer = styled.div`
 `;
 
 const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+    height: 40,
+    width: 100,
+    color: "white",
+    textDecoration: "none",
+    disableUnderline: true,
+  },
   container: {
     display: 'flex',
+    width: '1000px',
+    maxWidth: '1500px',
+    justifyContent: 'center',
+    alignItems: 'center',
     flexWrap: 'wrap',
   },
   textField: {
@@ -41,6 +53,9 @@ const styles = theme => ({
   },
   menu: {
     width: 200,
+  },
+  withoutLabel: {
+    marginTop: theme.spacing.unit * 3,
   },
 });
 
@@ -66,16 +81,6 @@ const BillingSubmitButton = withStyles({
     }
   }
 })(Button);
-
-// const BillingCheckLabel = withStyles({
-//   root: {
-//     color: "#3685B5",
-//     "&$checked": {
-//       color: "#3685B5"
-//     }
-//   },
-//   checked: {}
-// });
 
 class Billing extends React.Component {
   constructor(props) {
@@ -112,16 +117,13 @@ class Billing extends React.Component {
     return (
       <div>
            <Header />
-    {/* <div className="BillingModal"
-    isOpen={this.state.showModal}
-    > */}
       {/* <BillingContainer> */}
-        <button><Link to="/billing-plan">Close</Link></button>
+        <Button color="secondary" variant="contained" className={classes.button}><Link to="/billing-plan">Close</Link></Button>
         <Grid
           container
-          spacing={8}
-          lg={8}
-          direction="row"
+          spacing={0}
+          // lg={8}
+          direction="column"
           justify="center"
           alignItems="center"
         >
@@ -202,15 +204,15 @@ class Billing extends React.Component {
               <TextField
                 required
                 select
-                label="With Select"
+                label="Plan Type"
                 className={classes.textField}
                 value={this.state.subscriptionType}
                 onChange={this.handleChange('subscriptionType')}
                 margin="normal"
                 variant="filled"
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">Plan Type</InputAdornment>,
-                }}
+                // InputProps={{
+                //   startAdornment: <InputAdornment position="start">Plan Type</InputAdornment>,
+                // }}
               >
                 {plans.map(option => (
                   <MenuItem key={option.value} value={option.value}>
