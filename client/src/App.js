@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Login from './Components/Login';
+import Login from './Components/Auth/Login';
 import './App.css';
 import { Route } from 'react-router-dom';
 import Dashboard from './Components/Dashboard/Dashboard';
@@ -19,7 +19,7 @@ const App = () => {
         <Route path="/dashboard" component={Dashboard} />
       </main>
       <div>
-        <Route exact path="/billing-plan" render={() => <BillingPlans />} /> 
+        <Route exact path="/billing-plan" render={() => <BillingPlans />} />
         <Route exact path="/billing" render={() => <Billing />} />
         <Route exact path="/stats" render={() => <StatsView />} />
         <Route
