@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../Reusables/Header";
-// import BillingPlans from "./BillingPlans";
 import { Link } from 'react-router-dom';
 import styled from "styled-components";
 // import Checkbox from "@material-ui/core/Checkbox";

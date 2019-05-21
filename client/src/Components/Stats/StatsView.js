@@ -1,10 +1,30 @@
 import React from "react";
 import Header from "../Reusables/Header";
+import classNames from 'classnames';
 import { withStyles } from "@material-ui/core/styles/index";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import StatsDashboard from "./StatsDashboard";
 import FoodLogStats from "./FoodLogStats";
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+    height: 40,
+    width: 100,
+    color: "white",
+    textDecoration: "none",
+    disableUnderline: true,
+  },
+  container: {
+    display: 'flex',
+    width: '1000px',
+    maxWidth: '1500px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  }
+});
 
 class StatsView extends React.Component {
   constructor(props) {
@@ -48,23 +68,12 @@ class StatsView extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <>
-        <Header />
-              {/* <AppBar position="static" color="default" className={classes.appBar}>
-        {/* <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-            Company name
-          </Typography>
-          <Button>Features</Button>
-          <Button>Enterprise</Button>
-          <Button>Support</Button>
-          <Button color="primary" variant="outlined">
-            Login
-          </Button>
-        </Toolbar> 
-      </AppBar> */}
 
+        
+        <Header />
         <Grid
           container
           spacing={8}
@@ -73,12 +82,15 @@ class StatsView extends React.Component {
           justify="center"
           alignItems="center"
         >
+         <div className={classes.container} >
           <StatsDashboard />
           <FoodLogStats calories={this.state.statCalendarEntries} />
+          </div>
         </Grid>
+  
       </>
     );
   }
 }
 
-export default StatsView;
+export default withStyles(styles)(StatsView);
