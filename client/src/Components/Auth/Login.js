@@ -1,4 +1,5 @@
 import React from "react";
+import Header from "../Reusables/Header";
 import { GoogleLogin } from 'react-google-login';
 import styled from "styled-components";
 import { GraphQLClient } from 'graphql-request'
@@ -58,6 +59,8 @@ const LoginOrRegister = ({ classes }) => {
   }
 
   return (
+    <>
+            <Header />
     <LoginOrRegisterContainer>
       <FormContainer>
           <LoginOrRegisterForm>
@@ -71,6 +74,7 @@ const LoginOrRegister = ({ classes }) => {
           </LoginOrRegisterForm>
       </FormContainer>
     </LoginOrRegisterContainer>
+    </>
   );
 }
 
