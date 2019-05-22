@@ -14,11 +14,9 @@ import BillingPlans from './Components/Billing/BillingPlans';
 const App = () => {
   return (
     <div className="App">
-      <main>
+      <div>
         <Route exact path="/" component={Home} />
         <Route path="/dashboard" component={Dashboard} />
-      </main>
-      <div>
         <Route exact path="/billing-plan" render={() => <BillingPlans />} />
         <Route exact path="/billing" render={() => <Billing />} />
         <Route exact path="/stats" render={() => <StatsView />} />

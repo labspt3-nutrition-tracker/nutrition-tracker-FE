@@ -17,5 +17,9 @@
     "url": "https://github.com/labspt3-nutrition-tracker/nutrition-tracker-FE/issues"
   },
   "homepage": "https://github.com/labspt3-nutrition-tracker/nutrition-tracker-FE#readme",
-  "dependencies": {}
+  "dependencies": {
+    "apollo-boost": "^0.4.0",
+    "graphql": "^14.3.0",
+    "react-apollo": "^2.5.5"
+  }
 }
