@@ -11,13 +11,14 @@ const Meal = styled.div`
 `;
 
 class FoodEntry extends React.Component {
+  
   render() {
     return (
       <div>
         <Meal>
           <MealCategory>Latest Entry</MealCategory>
           <div className="meals meals-breakfast">
-            {props.entries.breakfast.map(meal => {
+            {this.props.entries.breakfast.map(meal => {
               return <div className="food">{meal.food}</div>;
             })}
           </div>
@@ -25,7 +26,7 @@ class FoodEntry extends React.Component {
         <Meal>
           <MealCategory>Lunch</MealCategory>
           <div className="meals meals-lunch">
-            {props.entries.lunch.map(meal => {
+            {this.props.entries.lunch.map(meal => {
               return <div className="food">{meal.food}</div>;
             })}
           </div>
@@ -33,7 +34,7 @@ class FoodEntry extends React.Component {
         <Meal>
           <MealCategory>Dinner</MealCategory>
           <div className="meals meals-dinner">
-            {props.entries.dinner.map(meal => {
+            {this.props.entries.dinner.map(meal => {
               return <div className="food">{meal.food}</div>;
             })}
           </div>
@@ -41,7 +42,7 @@ class FoodEntry extends React.Component {
         <Meal>
           <MealCategory>Snacks</MealCategory>
           <div className="meals meals-snacks">
-            {props.entries.snacks.map(meal => {
+            {this.props.entries.snacks.map(meal => {
               return <div className="food">{meal.food}</div>;
             })}
           </div>
