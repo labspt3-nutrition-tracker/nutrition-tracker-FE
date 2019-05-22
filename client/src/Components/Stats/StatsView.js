@@ -1,10 +1,30 @@
 import React from "react";
 import Header from "../Reusables/Header";
+import classNames from 'classnames';
 import { withStyles } from "@material-ui/core/styles/index";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import StatsDashboard from "./StatsDashboard";
 import FoodLogStats from "./FoodLogStats";
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+    height: 40,
+    width: 100,
+    color: "white",
+    textDecoration: "none",
+    disableUnderline: true,
+  },
+  container: {
+    display: 'flex',
+    width: '1000px',
+    maxWidth: '1500px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  }
+});
 
 class StatsView extends React.Component {
   constructor(props) {
@@ -48,8 +68,11 @@ class StatsView extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <>
+
+        
         <Header />
         <Grid
           container
@@ -59,12 +82,15 @@ class StatsView extends React.Component {
           justify="center"
           alignItems="center"
         >
+         <div className={classes.container} >
           <StatsDashboard />
           <FoodLogStats calories={this.state.statCalendarEntries} />
+          </div>
         </Grid>
+  
       </>
     );
   }
 }
 
-export default StatsView;
+export default withStyles(styles)(StatsView);

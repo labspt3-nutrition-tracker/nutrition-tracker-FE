@@ -1,29 +1,19 @@
 import React from "react";
 import Header from "../Reusables/Header";
-import BillingPlans from "./BillingPlans";
 import { Link } from 'react-router-dom';
-// import Modal from 'react-modal';
 import styled from "styled-components";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+// import Checkbox from "@material-ui/core/Checkbox";
+// import FormControlLabel from "@material-ui/core/FormControlLabel";
 import PropTypes from "prop-types";
+import classNames from 'classnames';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from "@material-ui/core/styles/index";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 
 
-// const styles = theme => ({
-//   root: {
-//     padding: theme.spacing.unit * 4,
-//     margin: 'auto',
-//     maxWidth: 500,
-//     background: "#FCFCFB",
-//     display: "flex",
-//     justifyContent: "center",
-//     alignContent: "center"
-//   }
-
-// });
 
 const BillingContainer = styled.div`
   background: #fcfcfb;
@@ -34,6 +24,50 @@ const BillingContainer = styled.div`
   width: 100%;
   height: 100vh;
 `;
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+    height: 40,
+    width: 100,
+    color: "white",
+    textDecoration: "none",
+    disableUnderline: true,
+  },
+  container: {
+    display: 'flex',
+    width: '1000px',
+    maxWidth: '1500px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    flexBasis: 200,
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+  },
+  dense: {
+    marginTop: 16,
+  },
+  menu: {
+    width: 200,
+  },
+  withoutLabel: {
+    marginTop: theme.spacing.unit * 3,
+  },
+});
+
+const plans = [
+  {
+    plan: 'Monthly',
+    label: 7
+  },
+  {
+    plan: 'Yearly',
+    label: 70
+  }
+]
 
 const BillingSubmitButton = withStyles({
   root: {
@@ -47,16 +81,6 @@ const BillingSubmitButton = withStyles({
   }
 })(Button);
 
-const BillingCheckLabel = withStyles({
-  root: {
-    color: "#3685B5",
-    "&$checked": {
-      color: "#3685B5"
-    }
-  },
-  checked: {}
-});
-
 class Billing extends React.Component {
   constructor(props) {
     super(props);
@@ -67,10 +91,7 @@ class Billing extends React.Component {
       creditCardNumber: "",
       expiration: "",
       cvv: "",
-      showModal: false,
       subscriptionType: "",
-      checkedLabel: false,
-      checkedDummy: false
     };
   }
 
@@ -79,21 +100,8 @@ class Billing extends React.Component {
   // }
 
 
-  // openModal = () => {
-  //   this.setState({ showModal: true});
-  // }
-
-  // // Close out the modal / say no paying for super user account
-  // closeModal = () => {
-  //   this.setState({ showModal: false});
-  // }
-
-  // handleModal = () => {
-  //   this.setState({ showModal: false})
-  // }
-
-  handleChange = input => e => {
-    this.setState({ [input]: e.target.value });
+  handleChange = name => e => {
+    this.setState({ [name]: e.target.value });
     console.log(e.target.value);
   };
 
@@ -108,94 +116,116 @@ class Billing extends React.Component {
     return (
       <div>
            <Header />
-           {/* <BillingPlans /> */}
-    <div className="BillingModal"
-    isOpen={this.state.showModal}
-    >
-      <BillingContainer>
-        <button><Link to="/billing-plan">Close</Link></button>
+      {/* <BillingContainer> */}
+        <Button color="secondary" variant="contained" className={classes.button}><Link to="/billing-plan">Close</Link></Button>
         <Grid
           container
-          spacing={8}
-          lg={8}
-          direction="row"
+          spacing={0}
+          // lg={8}
+          direction="column"
           justify="center"
           alignItems="center"
         >
-          <form onSubmit={this.handleSubmit}>
-            <input
+          {/* <form onSubmit={this.handleSubmit}> */}
+          <form className={classes.container} noValidate autoComplete="off">
+            <TextField
+              required
+              id="filled-required"
+              label="Required"
               type="text"
-              name="firstName"
-              placeholder="First Name"
+              label="First Name"
+              className={classes.textField}
               onChange={this.handleChange("firstName")}
               value={this.state.firstName}
+              margin="normal"
+            variant="filled"
             />
-            <input
+            <TextField
+              required
+              id="filled-required"
               type="text"
-              name="lastName"
-              placeholder="Last Name"
+              label="Last Name"
+              className={classes.textField}
               onChange={this.handleChange("lastName")}
               value={this.state.lastName}
+              margin="normal"
+            variant="filled"
             />
-            <input
-              type="text"
+            <TextField
+              required
+              id="filled-email-input"
+              label="Email "
+              className={classes.textField}
+              type="email"
               name="email"
-              placeholder="Email"
               onChange={this.handleChange("email")}
               value={this.state.email}
+              autoComplete="email"
+              margin="normal"
+              variant="filled"
             />
-            <input
-              type="text"
-              name="creditCardNumber"
-              placeholder="CC#"
+             <TextField
+              required
+              id="filled-number"
+              label="CC #"
+              className={classes.textField}
+              type="CC#"
               onChange={this.handleChange("creditCardNumber")}
               value={this.state.creditCardNumber}
+              autoComplete="CC #"
+              margin="normal"
+              variant="filled"
             />
-            <input
-              type="text"
-              name="expiration"
-              placeholder="Expiration Date"
+              <TextField
+              required
+              id="filled-number"
+              label="expiration date"
+              className={classes.textField}
+              type="expiration"
               onChange={this.handleChange("expiration")}
               value={this.state.expiration}
+              autoComplete="expiration"
+              margin="normal"
+              variant="filled"
             />
-            <input
-              type="text"
-              name="cvv"
-              placeholder="cvv"
+               <TextField
+              required
+              id="filled-number"
+              label="cvv"
+              className={classes.textField}
+              type="cvv"
               onChange={this.handleChange("cvv")}
               value={this.state.cvv}
+              autoComplete="cvv"
+              margin="normal"
+              variant="filled"
             />
-            <label>
-              <input
-                name="checkedDummy"
-                type="checkbox"
-                checked={this.state.icheckedDummy}
-                onChange={this.handleChange}
-              />
-              monthly subscription - $ 5.99
-            </label>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name={this.state.checkedLabel}
-                  //   type='checkbox'
-                  onChange={this.handleChange("checkedLabel")}
-                  value={this.state.checkedLabel}
-                  classes={{
-                    root: classes.root,
-                    checked: classes.checked
-                  }}
-                />
-              }
-              label="1 Year Subscription - $9.99"
-            />
+              <TextField
+                required
+                select
+                label="Plan Type"
+                className={classes.textField}
+                value={this.state.subscriptionType}
+                onChange={this.handleChange('subscriptionType')}
+                margin="normal"
+                variant="filled"
+                // InputProps={{
+                //   startAdornment: <InputAdornment position="start">Plan Type</InputAdornment>,
+                // }}
+              >
+                {plans.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                      {option.plan}: {option.label}
+                  </MenuItem>
+                ))}
+            </TextField>
           </form>
           <BillingSubmitButton variant="contained" type="submit" size="large">
             Buy Now
           </BillingSubmitButton>
         </Grid>
-      </BillingContainer>
-      </div>
+      {/* </BillingContainer> */}
+      {/* </div> */}
       </div>
     );
   }
@@ -205,4 +235,4 @@ Billing.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(BillingCheckLabel)(Billing);
+export default withStyles(styles)(Billing);
