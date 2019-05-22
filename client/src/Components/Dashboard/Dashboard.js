@@ -10,7 +10,7 @@ class Dashboard extends Component {
     newFoodEntry: {
       food: "",
       date: "",
-      servingQty: 0,
+      qty: 0,
       category: ""
     },
     currentFoodEntries: {
@@ -68,6 +68,11 @@ class Dashboard extends Component {
     }
   };
 
+  addEntry = e => {
+    e.preventDefault();
+
+  }
+
   render() {
     return (
       <div className="dashboard">
@@ -77,8 +82,8 @@ class Dashboard extends Component {
           <hr />
           <Calories />
           <InfoCon>
-            <FoodEntry entries={this.state.currentFoodEntries} />
-            <EntryForm />
+            <FoodEntry entries={this.state.currentFoodEntries} latest={this.props.latest}/>
+            <EntryForm addEntry={this.addEntry}/>
           </InfoCon>
         </div>
       </div>

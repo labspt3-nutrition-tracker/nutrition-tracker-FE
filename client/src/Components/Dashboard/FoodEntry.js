@@ -13,7 +13,7 @@ const Meal = styled.div`
 const FoodEntry = props => (
   <div>
     <Meal>
-      <MealCategory>Breakfast</MealCategory>
+      <MealCategory>Latest Entry</MealCategory>
       <div className="meals meals-breakfast">
         {props.entries.breakfast.map(meal => {
           return <div className="food">{meal.food}</div>;
