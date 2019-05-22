@@ -1,4 +1,5 @@
 import React from "react";
+import Header from "./Reusables/Header";
 import styled from "styled-components";
 import Fab from "@material-ui/core/Fab";
 import TextField from "@material-ui/core/TextField";
@@ -77,39 +78,42 @@ class LoginOrRegister extends React.Component {
 
   render() {
     return (
-      <LoginOrRegisterContainer>
-        <FormContainer>
-            <LoginOrRegisterForm>
-                <MuiThemeProvider theme={theme}>
-                    <TextField
-                        fullWidth
-                        label="Username"
-                        placeholder="Username"
-                        margin="normal"
-                        onChange={this.handleChange("username")}
-                    />
+      <>
+        <Header />
+          <LoginOrRegisterContainer>
+            <FormContainer>
+                <LoginOrRegisterForm>
+                    <MuiThemeProvider theme={theme}>
+                        <TextField
+                            fullWidth
+                            label="Username"
+                            placeholder="Username"
+                            margin="normal"
+                            onChange={this.handleChange("username")}
+                        />
 
-                    <TextField
-                        fullWidth
-                        required
-                        label="Password"
-                        type="password"
-                        autoComplete="current-password"
-                        margin="normal"
-                        onChange={this.handleChange("password")}
-                    />
+                        <TextField
+                            fullWidth
+                            required
+                            label="Password"
+                            type="password"
+                            autoComplete="current-password"
+                            margin="normal"
+                            onChange={this.handleChange("password")}
+                        />
 
-                    <StyledButton
-                        variant="extended"
-                        size="large"
-                        onClick={this.handleSubmit}
-                    >
-                    Submit
-                    </StyledButton>
-                </MuiThemeProvider>
-            </LoginOrRegisterForm>
-        </FormContainer>
-      </LoginOrRegisterContainer>
+                        <StyledButton
+                            variant="extended"
+                            size="large"
+                            onClick={this.handleSubmit}
+                        >
+                        Submit
+                        </StyledButton>
+                    </MuiThemeProvider>
+                </LoginOrRegisterForm>
+            </FormContainer>
+          </LoginOrRegisterContainer>
+      </>
     );
   }
 }
