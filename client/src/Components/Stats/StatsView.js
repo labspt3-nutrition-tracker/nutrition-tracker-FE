@@ -80,7 +80,6 @@ class StatsView extends React.Component {
         >
          <div className={classes.container} >
           <StatsDashboard />
-          <div>FOO</div>
           <FoodLogStats calories={this.state.statCalendarEntries} />
           </div>
         </Grid>

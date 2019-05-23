@@ -5,6 +5,7 @@ import './App.css';
 import Header from './Components/Reusables/Header';
 import { Route } from 'react-router-dom';
 import Dashboard from './Components/Dashboard/Dashboard';
+import Journal from './Components/Journal/Journal';
 import Home from './Components/Home/Home';
 import Billing from './Components/Billing/Billing';
 import StatsView from './Components/Stats/StatsView';
@@ -28,6 +29,8 @@ const App = () => {
         exact path="/login" render={() => <Login/>} />
         <Route
         exact path="/settings" render={() => <Settings/>} />
+        <Route 
+          path="/journal" render={() => <Journal/>} / >
       </div>
       <Route path="/account" render={() => <AccountNav />} />
     </div>
