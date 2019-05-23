@@ -11,17 +11,15 @@ import Billing from './Components/Billing/Billing';
 import StatsView from './Components/Stats/StatsView';
 import Settings from './Components/Settings';
 import AccountNav from "./Components/AccountNav";
-import BillingPlans from './Components/Billing/BillingPlans';
+import BillingPlans from "./Components/Billing/BillingPlans";
 
 const App = () => {
   return (
     <div className="App">
-          <Header />
-      <main>
+      <Header />
+      <div>
         <Route exact path="/" component={Home} />
         <Route path="/dashboard" component={Dashboard} />
-      </main>
-      <div>
         <Route exact path="/billing-plan" render={() => <BillingPlans />} />
         <Route exact path="/billing" render={() => <Billing />} />
         <Route exact path="/stats" render={() => <StatsView />} />
