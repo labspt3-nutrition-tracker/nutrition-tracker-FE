@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../Reusables/Header";
 import { Link } from 'react-router-dom';
-import styled from "styled-components";
+// import styled from "styled-components";
 // import Checkbox from "@material-ui/core/Checkbox";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
 import PropTypes from "prop-types";
@@ -15,15 +15,15 @@ import TextField from '@material-ui/core/TextField';
 
 
 
-const BillingContainer = styled.div`
-  background: #fcfcfb;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  height: 100vh;
-`;
+// const BillingContainer = styled.div`
+//   background: #fcfcfb;
+//   display: flex;
+//   justify-content: center;
+//   align-content: center;
+//   flex-wrap: wrap;
+//   width: 100%;
+//   height: 100vh;
+// `;
 
 const styles = theme => ({
   button: {
@@ -115,7 +115,6 @@ class Billing extends React.Component {
     const { classes } = this.props;
     return (
       <div>
-           <Header />
       {/* <BillingContainer> */}
         <Button color="secondary" variant="contained" className={classes.button}><Link to="/billing-plan">Close</Link></Button>
         <Grid
@@ -127,7 +126,7 @@ class Billing extends React.Component {
           alignItems="center"
         >
           {/* <form onSubmit={this.handleSubmit}> */}
-          <form className={classes.container} noValidate autoComplete="off">
+          <form className={classes.container} noValidate autoComplete="off" onSubmit={this.handleSubmit}>
             <TextField
               required
               id="filled-required"

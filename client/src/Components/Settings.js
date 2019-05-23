@@ -40,7 +40,6 @@ const LogoutContainer = styled.div`
 const Settings = props => {
     return(
         <>
-        <Header />
             <SettingsContainer>
             
                 <LogoutContainer>

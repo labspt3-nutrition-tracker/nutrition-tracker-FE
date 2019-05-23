@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Header from '../Reusables/Header';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
+// import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -106,7 +106,6 @@ function Pricing(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Header />
       <main className={classes.layout}>
         {/* Hero unit */}
         <div className={classes.heroContent}>
