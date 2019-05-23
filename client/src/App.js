@@ -2,6 +2,7 @@
 import React from 'react';
 import Login from './Components/Auth/Login';
 import './App.css';
+import Header from './Components/Reusables/Header';
 import { Route } from 'react-router-dom';
 import Dashboard from './Components/Dashboard/Dashboard';
 import Home from './Components/Home/Home';
@@ -14,6 +15,7 @@ import BillingPlans from './Components/Billing/BillingPlans';
 const App = () => {
   return (
     <div className="App">
+          <Header />
       <main>
         <Route exact path="/" component={Home} />
         <Route path="/dashboard" component={Dashboard} />

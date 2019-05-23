@@ -60,7 +60,6 @@ const LoginOrRegister = ({ classes }) => {
 
   return (
     <>
-            <Header />
     <LoginOrRegisterContainer>
       <FormContainer>
           <LoginOrRegisterForm>

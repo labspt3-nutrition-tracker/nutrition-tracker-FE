@@ -71,9 +71,6 @@ class StatsView extends React.Component {
     const { classes } = this.props;
     return (
       <>
-
-        
-        <Header />
         <Grid
           container
           spacing={8}

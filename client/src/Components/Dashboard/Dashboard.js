@@ -71,7 +71,6 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="dashboard">
-        <Header />
         <div className="container">
           <DashTitle>Today's Food Entries</DashTitle>
           <hr />
