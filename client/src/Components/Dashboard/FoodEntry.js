@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 const MealCategory = styled.h3`
   font-size: 2rem;
@@ -10,12 +12,39 @@ const Meal = styled.div`
   padding: 10px;
 `;
 
+const ENTRIES_QUERY = gql`
+  query {
+    getUsers {
+      id
+      firstName
+      lastName
+    }
+  }
+`;
+
 class FoodEntry extends React.Component {
-  
   render() {
     return (
       <div>
-        <Meal>
+        <div>
+          <div>List of Users:</div>
+          <Query query={ENTRIES_QUERY}>
+            {({ loading, error, data }) => {
+              if (loading) return <div>Fetching Entries</div>;
+              if (error) return <div>Fetching Entries</div>;
+              const entriesToRender = data.getUsers;
+              console.log(entriesToRender);
+              return (
+                <div>
+                  {entriesToRender.map(entry => (
+                    <div key={entry.id}>{entry.firstName}</div>
+                  ))}
+                </div>
+              );
+            }}
+          </Query>
+        </div>
+        {/* <Meal>
           <MealCategory>Latest Entry</MealCategory>
           <div className="meals meals-breakfast">
             {this.props.entries.breakfast.map(meal => {
@@ -46,7 +75,7 @@ class FoodEntry extends React.Component {
               return <div className="food">{meal.food}</div>;
             })}
           </div>
-        </Meal>
+        </Meal> */}
       </div>
     );
   }
