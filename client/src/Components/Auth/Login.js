@@ -1,7 +1,14 @@
 import React from "react";
 import { GoogleLogin } from 'react-google-login';
 import styled from "styled-components";
-import { GraphQLClient } from 'graphql-request'
+import ApolloClient from "apollo-boost";
+import { gql } from "apollo-boost";
+import { Mutation, Query } from 'react-apollo';
+require('dotenv').config()
+
+
+
+
 const LoginOrRegisterContainer = styled.div`
   background: #fcfcfb;
   display: flex;
@@ -33,41 +40,53 @@ const FormContainer = styled.div`
     width:50%;
 `;
 
-const ME_QUERY = `
-  {
-    me {
-      _id
-      name
+const ME_QUERY = gql`
+  mutation addUser($input: UserInput){
+    firstName
+  }
+`;
+
+const USER_EXIST = gql`
+  query getUserBy($filter: String!){
+    getUserBy(filter: $filter){
       email
     }
   }
 `;
 
-const LoginOrRegister = ({ classes }) => {
+const LoginOrRegister = () => {
 
   const onSuccess = async googleUser => {
     console.log({googleUser})
     const idToken = googleUser.getAuthResponse().id_token;
-    const client = new GraphQLClient('http://localhost:4000', {
+
+    const client = new ApolloClient({
+      uri:'https://nutrition-tracker-be.herokuapp.com',
       headers: {authorization: idToken}
     })
-
-    const data = await client.request(ME_QUERY)
-
-    console.log(data)
   }
+
+  const userId = "leila@leila.com"
 
   return (
     <LoginOrRegisterContainer>
       <FormContainer>
           <LoginOrRegisterForm>
-              <div>
-                <GoogleLogin
-                  style={{height:10}}
-                  clientId="1047286164516-jv47gpee2568sc3bindc9ra3vua101t3.apps.googleusercontent.com"
-                  onSuccess={onSuccess}
-                />
-              </div>
+            <Query query={USER_EXIST} variables={{userId}}>
+              { ({ loading, error, data}) => {
+                console.log(data)
+                return (
+                  <div>
+                    <GoogleLogin
+                      style={{height:10}}
+                      clientId='1047286164516-jv47gpee2568sc3bindc9ra3vua101t3.apps.googleusercontent.com'
+                      onSuccess={onSuccess}
+                    />
+                  </div>
+                )
+              }}
+            </Query>
+
           </LoginOrRegisterForm>
       </FormContainer>
     </LoginOrRegisterContainer>
