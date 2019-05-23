@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../Reusables/Header";
 import { GoogleLogin } from 'react-google-login';
 import styled from "styled-components";
 import { GraphQLClient } from 'graphql-request'
