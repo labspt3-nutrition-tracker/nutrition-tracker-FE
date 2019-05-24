@@ -77,6 +77,7 @@ class LoginOrRegister extends React.Component {
     console.log(googleUser.profileObj.email)
     const email = googleUser.profileObj.email;
     const idToken = googleUser.getAuthResponse().id_token;
+    localStorage.setItem('token', idToken);
 
 
 
