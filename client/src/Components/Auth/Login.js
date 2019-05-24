@@ -1,4 +1,5 @@
 import React from "react";
+import LoginForm from "./LoginForm";
 import { GoogleLogin } from 'react-google-login';
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
@@ -40,9 +41,11 @@ const FormContainer = styled.div`
     width:50%;
 `;
 
-const ME_QUERY = gql`
-  mutation addUser($input: UserInput){
-    firstName
+const ADD_USER = gql`
+  mutation addUser($input: UserInput!){
+    addUser(input: $input){
+      id
+    }
   }
 `;
 
@@ -92,6 +95,25 @@ class LoginOrRegister extends React.Component {
     })
   }
 
+  handleChange = (label, value) => {
+    this.setState({
+      [label]: value
+    })
+  }
+
+  createUser = userObj => {
+    const client = new ApolloClient({
+      uri:'https://nutrition-tracker-be.herokuapp.com'
+    })
+
+    client.mutate({
+      mutation: ADD_USER,
+      variables: {
+        input: userObj
+      }
+    }).then(response => console.log(response.data))
+  }
+
   userId = () => {
     return 1
   }
@@ -104,10 +126,11 @@ class LoginOrRegister extends React.Component {
               <Query query={USER_EXIST}>
                 { ({ loading, error, data}) => {
                   console.log(this.state.userExist)
+                  console.log(this.state)
                   return (
                     <div>
                       {
-                        this.state.userExist ? <form><input/></form> : <GoogleLogin
+                        this.state.userExist ? <LoginForm addUser={this.createUser} handleChange={this.handleChange} props={this.state}/> : <GoogleLogin
                         style={{height:10}}
                         clientId='1047286164516-jv47gpee2568sc3bindc9ra3vua101t3.apps.googleusercontent.com'
                         onSuccess={this.onSuccess}
