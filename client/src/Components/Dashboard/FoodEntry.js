@@ -12,33 +12,83 @@ const Meal = styled.div`
   padding: 10px;
 `;
 
-const ENTRIES_QUERY = gql`
-  query {
-    getUsers {
-      id
-      firstName
-      lastName
-    }
-  }
-`;
-
 class FoodEntry extends React.Component {
+
+  state = {
+    currentUser: 2
+  };
+  
   render() {
+    const ENTRIES_QUERY = gql`
+      query {
+        getFoodEntriesByUserId(userId: ${this.state.currentUser}) {
+          date
+          food_id {
+            id
+            foodName
+          }
+          meal_category_id {
+            id
+            mealCategoryName
+          }
+        }
+      }
+    `;
     return (
       <div>
         <div>
-          <div>List of Users:</div>
+          <div>Today's Meals:</div>
           <Query query={ENTRIES_QUERY}>
             {({ loading, error, data }) => {
               if (loading) return <div>Fetching Entries</div>;
+
               if (error) return <div>Fetching Entries</div>;
-              const entriesToRender = data.getUsers;
-              console.log(entriesToRender);
+
+              const foodEntries = data.getFoodEntriesByUserId;
+              console.log(foodEntries);
+
+              const Breakfast = foodEntries.filter(function(entry) {
+                return entry.meal_category_id.mealCategoryName === "Breakfast";
+              });
+
+              const Lunch = foodEntries.filter(function(entry) {
+                return entry.meal_category_id.mealCategoryName === "Lunch";
+              });
+
+              const Dinner = foodEntries.filter(function(entry) {
+                return entry.meal_category_id.mealCategoryName === "Dinner";
+              });
+
+              const Snack = foodEntries.filter(function(entry) {
+                return entry.meal_category_id.mealCategoryName === "Snack";
+              });
+
               return (
                 <div>
-                  {entriesToRender.map(entry => (
-                    <div key={entry.id}>{entry.firstName}</div>
-                  ))}
+                  <Meal>
+                    <MealCategory>Breakfast</MealCategory>
+                    {Breakfast.map(entry => (
+                      <div key={entry.id}>{entry.food_id.foodName}</div>
+                    ))}
+                  </Meal>
+                  <Meal>
+                    <MealCategory>Lunch</MealCategory>
+                    {Lunch.map(entry => (
+                      <div key={entry.id}>{entry.food_id.foodName}</div>
+                    ))}
+                  </Meal>
+                  <Meal>
+                    <MealCategory>Dinner</MealCategory>
+                    {Dinner.map(entry => (
+                      <div key={entry.id}>{entry.food_id.foodName}</div>
+                    ))}
+                  </Meal>
+                  <Meal>
+                    <MealCategory>Snack</MealCategory>
+                    {Snack.map(entry => (
+                      <div key={entry.id}>{entry.food_id.foodName}</div>
+                    ))}
+                  </Meal>
                 </div>
               );
             }}
