@@ -1,24 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Header from "./Reusables/Header";
+import CssBaseline from '@material-ui/core/CssBaseline'
+// import Button from '@material-ui/core/Button';
+
 
 const AccountNav = () => {
     return (
-        <DivContainer>
-            <Header />
-            <ButtonDiv>
-                <AccountButton>
-                <Link to={'/billing-plan'}>Billing</Link>
-                </AccountButton>
-                <AccountButton>
-                <Link to={'/settings'}>Settings</Link>
-                </AccountButton>
-                           
-            </ButtonDiv>
-        </DivContainer>
+        <>
+            <DivContainer>
+                <CssBaseline />
+                <ButtonDiv>
+                    <AccountButton>
+                    <Link to={'/billing-plan'}>Billing</Link>
+                    </AccountButton>
+                    <AccountButton>
+                    <Link to={'/settings'}>Settings</Link>
+                    </AccountButton>
+                            
+                </ButtonDiv>
+            </DivContainer>
+        </>
     )
 }
+
+
 
 export default AccountNav;
 

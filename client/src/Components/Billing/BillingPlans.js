@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Header from '../Reusables/Header';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
+// import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -56,12 +56,7 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       paddingBottom: theme.spacing.unit * 2,
     },
-  },
-  footer: {
-    marginTop: theme.spacing.unit * 8,
-    borderTop: `1px solid ${theme.palette.divider}`,
-    padding: `${theme.spacing.unit * 6}px 0`,
-  },
+  }
 });
 
 const tiers = [
@@ -69,8 +64,8 @@ const tiers = [
     title: 'Free User',
     price: '0',
     description: [
-        '10 users included',
-         '2 GB of storage', 
+        'Calorie entry',
+         'One week food diary options', 
          'Help center access',
           'Email support'
         ],
@@ -80,11 +75,11 @@ const tiers = [
   {
     title: 'Super User',
     subheader: 'Most popular',
-    price: '15',
+    price: '7',
     description: [
-      '20 users included',
-      'Access to weekly and monthly reports',
-      'Help center access',
+      'calorie entry',
+      'Access to all report types',
+      'Food Analysis',
       'Priority for future releases, such as connecting with a personal trainer!',
     ],
     buttonText: 'Get started',
@@ -92,14 +87,14 @@ const tiers = [
   },
   {
     title: 'Trainer (for future release)',
-    price: '20',
+    price: '10',
     description: [
       'Have access to your client\'s profiles!',
       'Give advice to clients',
       'Help center access',
       'Phone & email support',
     ],
-    buttonText: 'Contact us',
+    buttonText: 'Login with User Account',
     buttonVariant: 'outlined',
   },
 ];
@@ -111,20 +106,6 @@ function Pricing(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Header />
-      <AppBar position="static" color="default" className={classes.appBar}>
-        {/* <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-            Company name
-          </Typography>
-          <Button>Features</Button>
-          <Button>Enterprise</Button>
-          <Button>Support</Button>
-          <Button color="primary" variant="outlined">
-            Login
-          </Button>
-        </Toolbar> */}
-      </AppBar>
       <main className={classes.layout}>
         {/* Hero unit */}
         <div className={classes.heroContent}>
@@ -165,10 +146,14 @@ function Pricing(props) {
                     </Typography>
                   ))}
                 </CardContent>
-                <CardActions className={classes.cardActions}>
-                  <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing" >
+                <CardActions className={classes.cardActions}
+              > 
+              action={tier.title === 'Super User' ? <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing" >   {tier.buttonText}
+                </Button>  : <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/login" >   {tier.buttonText}
+                </Button> }
+                  {/* <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing"   >
                     {tier.buttonText}
-                  </Button>
+                  </Button> */}
                 </CardActions>
               </Card>
             </Grid>

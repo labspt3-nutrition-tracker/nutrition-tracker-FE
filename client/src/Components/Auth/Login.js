@@ -105,6 +105,7 @@ class LoginOrRegister extends React.Component {
     })
   }
 
+<<<<<<< HEAD
   createUser = userObj => {
     const client = new ApolloClient({
       uri:'https://nutrition-tracker-be.herokuapp.com'
@@ -125,6 +126,13 @@ class LoginOrRegister extends React.Component {
       <LoginOrRegisterContainer>
         <FormContainer>
             <LoginOrRegisterForm>
+=======
+  return (
+    <>
+    <LoginOrRegisterContainer>
+      <FormContainer>
+          <LoginOrRegisterForm>
+>>>>>>> 2bc87e7434cc382ecb5ce3eb46c5fe3db9efcb17
               <div>
                 {
                   this.state.checkExistence ? ( <LoginForm addUser={this.createUser} handleChange={this.handleChange} props={this.state}/>
@@ -136,11 +144,19 @@ class LoginOrRegister extends React.Component {
                       /> )
                 }
               </div>
+<<<<<<< HEAD
             </LoginOrRegisterForm>
         </FormContainer>
       </LoginOrRegisterContainer>
     );
   }
+=======
+          </LoginOrRegisterForm>
+      </FormContainer>
+    </LoginOrRegisterContainer>
+    </>
+  );
+>>>>>>> 2bc87e7434cc382ecb5ce3eb46c5fe3db9efcb17
 }
 
 export default LoginOrRegister;
