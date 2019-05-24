@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../Reusables/Header";
 import classNames from 'classnames';
 import { withStyles } from "@material-ui/core/styles/index";
 import Button from "@material-ui/core/Button";
@@ -71,9 +70,6 @@ class StatsView extends React.Component {
     const { classes } = this.props;
     return (
       <>
-
-        
-        <Header />
         <Grid
           container
           spacing={8}
