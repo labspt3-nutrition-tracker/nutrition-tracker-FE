@@ -10,7 +10,7 @@ import Billing from './Components/Billing/Billing';
 import StatsView from './Components/Stats/StatsView';
 import AccountNav from "./Components/AccountNav";
 import BillingPlans from './Components/Billing/BillingPlans';
-require('dotenv').config()
+
 
 const App = () => {
   return (
