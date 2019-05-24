@@ -18,7 +18,6 @@ const App = () => {
       <main>
         <Route exact path="/" component={Home} />
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/login" component={Login} />
         <Route path="/settings" component={Settings} />
       </main>
       <div>

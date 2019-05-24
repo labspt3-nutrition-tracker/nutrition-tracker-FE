@@ -1,5 +1,6 @@
 import React from "react";
 import LoginForm from "./LoginForm";
+import { Redirect } from 'react-router-dom'
 import { GoogleLogin } from 'react-google-login';
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
@@ -50,8 +51,8 @@ const ADD_USER = gql`
 `;
 
 const USER_EXIST = gql`
-  query getUserById($userId: ID!){
-    getUserById(userId: $userId){
+  query getUserBy($param: String!, $value: String!){
+    getUserBy(param: $param, value: $value){
       email
     }
   }
@@ -62,7 +63,8 @@ class LoginOrRegister extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      userExist: false,
+      toDashboard: false,
+      checkExistence: false,
       firstName: "",
       lastName: "",
       username: "",
@@ -89,11 +91,12 @@ class LoginOrRegister extends React.Component {
     client.query({
       query: USER_EXIST,
       variables: {
-        userId: 1
+        param: "email",
+        value: email
       }
-    }).then(response => { if(response.data.getUserById.email){
-      this.setState({ userExist: true})}
-    })
+    }).then(response => {
+      this.setState({toDashboard: !this.state.toDashboard})
+    }).catch(err => this.setState({checkExistence: !this.state.checkExistence}))
   }
 
   handleChange = (label, value) => {
@@ -114,35 +117,25 @@ class LoginOrRegister extends React.Component {
       }
     }).then(response => console.log(response.data))
   }
-
-  userId = () => {
-    return 1
-  }
-
   render(){
+    if (this.state.toDashboard === true){
+      return <Redirect to="/dashboard"/>
+    }
     return (
       <LoginOrRegisterContainer>
         <FormContainer>
             <LoginOrRegisterForm>
-              <Query query={USER_EXIST}>
-                { ({ loading, error, data}) => {
-                  console.log(this.state.userExist)
-                  console.log(this.state)
-                  return (
-                    <div>
-                      {
-                        this.state.userExist ? <LoginForm addUser={this.createUser} handleChange={this.handleChange} props={this.state}/> : <GoogleLogin
-                        style={{height:10}}
-                        clientId='1047286164516-jv47gpee2568sc3bindc9ra3vua101t3.apps.googleusercontent.com'
-                        onSuccess={this.onSuccess}
-                        userExist
-                      />
-                      }
-                    </div>
-                  )
-                }}
-              </Query>
-
+              <div>
+                {
+                  this.state.checkExistence ? ( <LoginForm addUser={this.createUser} handleChange={this.handleChange} props={this.state}/>
+                    ):(
+                      <GoogleLogin
+                      style={{height:10}}
+                      clientId='1047286164516-jv47gpee2568sc3bindc9ra3vua101t3.apps.googleusercontent.com'
+                      onSuccess={this.onSuccess}
+                      /> )
+                }
+              </div>
             </LoginOrRegisterForm>
         </FormContainer>
       </LoginOrRegisterContainer>

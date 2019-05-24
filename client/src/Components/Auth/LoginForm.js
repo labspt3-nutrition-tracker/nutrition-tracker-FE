@@ -7,7 +7,6 @@ class LoginForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            userExist: false,
             firstName: "",
             lastName: "",
             username: "",
@@ -42,52 +41,59 @@ class LoginForm extends React.Component {
     render(){
         return (
             <div>
-                <h1>Sign Up</h1>
-                <form onSubmit={this.bundleUserInfo}>
-                    <TextField
-                        id="firstName"
-                        name="firstName"
-                        label="firstName"
-                        value={this.state.firstName}
-                        margin="dense"
-                        onChange={this.handleChange}
-                    />
-                    <TextField
-                        id="lastName"
-                        name="lastName"
-                        label="lastName"
-                        value={this.state.lastName}
-                        margin="dense"
-                        onChange={this.handleChange}
-                    />
-                    <TextField
-                        id="username"
-                        name="username"
-                        label="username"
-                        value={this.state.username}
-                        margin="dense"
-                        onChange={this.handleChange}
-                    />
-                    <TextField
-                        id="email"
-                        name="email"
-                        label="email"
-                        value={this.state.email}
-                        margin="dense"
-                        onChange={this.handleChange}
-                    />
-                    <TextField
-                        id="userType"
-                        name="userType"
-                        label="userType"
-                        value={this.state.userType}
-                        margin="dense"
-                        onChange={this.handleChange}
-                    />
-                    <Button variant="contained" color="primary" type="submit">
-                        Submit
-                    </Button>
-                </form>
+                {this.props.addUser ? (
+                    <div>
+                        <h1>Sign Up</h1>
+                        <form onSubmit={this.bundleUserInfo}>
+                            <TextField
+                                id="firstName"
+                                name="firstName"
+                                label="firstName"
+                                value={this.state.firstName}
+                                margin="dense"
+                                onChange={this.handleChange}
+                            />
+                            <TextField
+                                id="lastName"
+                                name="lastName"
+                                label="lastName"
+                                value={this.state.lastName}
+                                margin="dense"
+                                onChange={this.handleChange}
+                            />
+                            <TextField
+                                id="username"
+                                name="username"
+                                label="username"
+                                value={this.state.username}
+                                margin="dense"
+                                onChange={this.handleChange}
+                            />
+                            <TextField
+                                id="email"
+                                name="email"
+                                label="email"
+                                value={this.state.email}
+                                margin="dense"
+                                onChange={this.handleChange}
+                            />
+                            <TextField
+                                id="userType"
+                                name="userType"
+                                label="userType"
+                                value={this.state.userType}
+                                margin="dense"
+                                onChange={this.handleChange}
+                            />
+                            <Button variant="contained" color="primary" type="submit">
+                                Submit
+                            </Button>
+                        </form>
+                    </div>
+                ) : (
+                    <div>Loading...</div>
+                )}
+
             </div>
         )
     }
