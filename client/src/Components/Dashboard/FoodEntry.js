@@ -13,11 +13,10 @@ const Meal = styled.div`
 `;
 
 class FoodEntry extends React.Component {
-
   state = {
     currentUser: 2
   };
-  
+
   render() {
     const ENTRIES_QUERY = gql`
       query {
@@ -34,6 +33,7 @@ class FoodEntry extends React.Component {
         }
       }
     `;
+
     return (
       <div>
         <div>
@@ -44,7 +44,23 @@ class FoodEntry extends React.Component {
 
               if (error) return <div>Fetching Entries</div>;
 
-              const foodEntries = data.getFoodEntriesByUserId;
+              const dateToday = new Date();
+              const month = dateToday.getMonth();
+              const day = dateToday.getDate();
+              const year = dateToday.getFullYear();
+
+              let foodEntries = data.getFoodEntriesByUserId;
+
+              foodEntries = foodEntries.filter(entry => {
+                const dateEntry = new Date(entry.date);
+                const entryMonth = dateEntry.getMonth();
+                const entryDay = dateEntry.getDate();
+                const entryYear = dateEntry.getFullYear();
+                return (
+                  entryMonth === month && entryDay === day && entryYear === year
+                );
+              });
+
               console.log(foodEntries);
 
               const Breakfast = foodEntries.filter(function(entry) {
@@ -94,38 +110,6 @@ class FoodEntry extends React.Component {
             }}
           </Query>
         </div>
-        {/* <Meal>
-          <MealCategory>Latest Entry</MealCategory>
-          <div className="meals meals-breakfast">
-            {this.props.entries.breakfast.map(meal => {
-              return <div className="food">{meal.food}</div>;
-            })}
-          </div>
-        </Meal>
-        <Meal>
-          <MealCategory>Lunch</MealCategory>
-          <div className="meals meals-lunch">
-            {this.props.entries.lunch.map(meal => {
-              return <div className="food">{meal.food}</div>;
-            })}
-          </div>
-        </Meal>
-        <Meal>
-          <MealCategory>Dinner</MealCategory>
-          <div className="meals meals-dinner">
-            {this.props.entries.dinner.map(meal => {
-              return <div className="food">{meal.food}</div>;
-            })}
-          </div>
-        </Meal>
-        <Meal>
-          <MealCategory>Snacks</MealCategory>
-          <div className="meals meals-snacks">
-            {this.props.entries.snacks.map(meal => {
-              return <div className="food">{meal.food}</div>;
-            })}
-          </div>
-        </Meal> */}
       </div>
     );
   }
