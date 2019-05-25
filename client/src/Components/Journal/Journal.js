@@ -25,11 +25,22 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: 1,
-    }
-  }
+      datePicked: ""
+    };
+  };
 
-  componentWillReceiveProps(newProps){
-      this.setState({foodEntries: newProps.FOODENTRYQUERY.data})
+  handleDateClick = date => {
+    this.setState({ datePicked: date });
+  };
+
+  componentDidMount() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = mm + "/" + dd + "/" + yyyy;
+    this.setState({ datePicked: today });
   }
 
   render(){
@@ -59,15 +70,18 @@ class Journal extends React.Component {
           if (error) return <div>Cannot Load</div>;
 
           const foodEntries = data.getFoodEntriesByUserId;
-          console.log(foodEntries);
 
         return (
           <JournalContainer>
            <JournalEntryDiv>
-              <JournalEntry foodEntries={foodEntries} />
+              <JournalEntry
+                foodEntries={foodEntries}
+                datePicked={this.state.datePicked} />
             </JournalEntryDiv>
             <CalendarDiv>
-              <Calendar />
+              <Calendar
+                datePicked={this.state.datePicked}
+                handleDateClick={this.handleDateClick}/>
             </CalendarDiv>
 
           </JournalContainer>
