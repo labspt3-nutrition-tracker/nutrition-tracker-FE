@@ -9,10 +9,6 @@
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "apollo-boost": "^0.4.0",
-<<<<<<< HEAD
-    "dotenv": "^8.0.0",
-=======
->>>>>>> 2bc87e7434cc382ecb5ce3eb46c5fe3db9efcb17
     "graphql": "^14.3.0",
     "graphql-request": "^1.8.2",
     "prop-types": "^15.7.2",
