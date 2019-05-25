@@ -6,10 +6,10 @@ class JournalEntry extends React.Component {
   constructor(props) {
     super(props);
 
-    const { foodEntries } = props;
+    const { foodEntries, datePicked } = props;
     this.state = {
       currentUser: 1,
-      foodEntries: foodEntries
+      foodEntries: foodEntries,
     };
   }
 
@@ -32,8 +32,10 @@ class JournalEntry extends React.Component {
     const Snack = this.state.foodEntries.filter(function(entry) {
       return entry.meal_category_id.mealCategoryName === "Snack";
     });
+
     return (
       <div>
+        <h1>{this.props.datePicked}</h1>
         <h1> Breakfast</h1>
         <div>
                 {Breakfast.length > 0
