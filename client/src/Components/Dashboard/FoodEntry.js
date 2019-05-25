@@ -42,7 +42,7 @@ class FoodEntry extends React.Component {
             {({ loading, error, data }) => {
               if (loading) return <div>Fetching Entries</div>;
 
-              if (error) return <div>Fetching Entries</div>;
+              if (error) return <div>Error</div>;
 
               const dateToday = new Date();
               const month = dateToday.getMonth();
