@@ -3,7 +3,8 @@ import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
+import { defaults } from "react-chartjs-2";
 
 class FoodLogStats extends React.Component {
   state = {
@@ -41,15 +42,17 @@ class FoodLogStats extends React.Component {
     const meals = this.state.entries.map(entry => entry.meal);
     const total = calories.reduce((total, cal) => total + cal, 0);
 
+    defaults.global.defaultFontColor = "#0826EA";
+
     const data = {
       labels: meals,
       datasets: [
         {
           label: "Calories",
-          backgroundColor: "#2196F3",
-          borderColor: "#176AE3",
-          borderWidth: 2,
-          hoverBorderColor: "#176AE3",
+          backgroundColor: "#F4B4C3",
+          borderColor: "#2196F3",
+          pointRadius: 6,
+          fill: "false",
           data: calories
         }
       ]
@@ -57,22 +60,23 @@ class FoodLogStats extends React.Component {
 
     return (
       <div className={classes.root}>
+        <h2 className={classes.header}>{new Date().toDateString()}</h2>
         <Grid container justify='center' alignItems='center'>
           <Grid item xs={3} className={classes.caloriesInfo}>
             {this.state.entries.map(entry => (
-              <div key={entry.meal} class={classes.info}>
+              <div key={entry.meal}>
                 <span className={classes.title}>{entry.meal}</span>
-                <div className={classes.value}>{entry.cal}</div>
+                <div className={classes.value}>{entry.cal} kcal</div>
               </div>
             ))}
             <div class={classes.info}>
               <span className={classes.title}>Total:</span>
-              <div className={classes.value}>{total}</div>
+              <div className={classes.value}>{total} kcal</div>
             </div>
           </Grid>
           <Grid item xs={9} className={classes.graph}>
             <h2>Calories / Meal Category</h2>
-            <Bar
+            <Line
               ref='chart'
               data={data}
               options={{
@@ -118,19 +122,24 @@ const styles = theme => ({
     justifyContent: "space-between",
     alignItems: "flex-start",
     width: "100%",
-    height: "400px"
+    height: "400px",
+    fontSize: "2.5rem"
+  },
+  header: {
+    textAlign: "center",
+    fontSize: "3.5rem",
+    marginBottom: "20px",
+    color: "#2196F3"
   },
   graph: {
-    border: "1px solid #0826EA",
+    border: "3px solid #F4B4C3",
     padding: "20px"
   },
   title: {
-    fontSize: "2.5rem",
-    color: "#0826EA"
+    color: "#2196F3"
   },
   value: {
-    marginTop: "10px",
-    fontSize: "2rem"
+    marginTop: "10px"
   }
 });
 
