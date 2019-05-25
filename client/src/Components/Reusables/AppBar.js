@@ -80,6 +80,9 @@ function ButtonAppBar() {
           <NavLink to="/dashboard">
             <Button color="inherit">Dashboard</Button>
           </NavLink>
+          <NavLink to="/journal">
+            <Button color="inherit">Journal</Button>
+          </NavLink>
         </Toolbar>
       </AppBar>
     </MuiThemeProvider>
