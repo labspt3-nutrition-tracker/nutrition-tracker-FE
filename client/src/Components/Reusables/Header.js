@@ -8,12 +8,12 @@ const Logo = styled.div`
   padding-left: 24px;
 `;
 
-const Header = () => (
+const Header = (props) => (
   <div>
     <Logo>
       <img src={logo} alt="Created my free logo at LogoMakr.com" />
     </Logo>
-    <AppBar />
+    <AppBar updateSearch={props.updateSearch}  searchInput={props.inputSearch}/>
   </div>
 );
 
