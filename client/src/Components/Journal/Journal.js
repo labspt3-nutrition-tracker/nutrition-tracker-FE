@@ -1,88 +1,84 @@
 import React from 'react';
+import styled from 'styled-components';
 import Calendar from './Calendar';
 import JournalEntry from './JournalEntry';
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
+const JournalContainer = styled.div`
+  margin: 3%;
+  display: flex;
+`;
 
-// import { Link } from 'react-router-dom';
+const JournalEntryDiv = styled.div`
+  width: 25%;
+`;
+
+const CalendarDiv = styled.div`
+  width: 70%;
+  height: 800px;
+  border: 3px solid black;
+`;
 
 class Journal extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            foodEntries: [
-            ],
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: 1,
+    }
+  }
 
+  componentWillReceiveProps(newProps){
+      this.setState({foodEntries: newProps.FOODENTRYQUERY.data})
+  }
+
+  render(){
+    const FOODENTRYQUERY = gql`
+      query{
+        getFoodEntriesByUserId(userId: ${this.state.currentUser}){
+          id
+          date
+          food_id{
+            id
+            foodName
+          }
+          meal_category_id{
+            id
+            mealCategoryName
+          }
         }
-    }
+      }
+    `;
 
+    return(
+      <div>
+        <Query query={FOODENTRYQUERY}>
 
+        {({ loading, error, data }) => {
+          if (loading) return <div>Fetching Entries</div>;
+          if (error) return <div>Cannot Load</div>;
 
-componentDidMount(){
-    
-}
+          const foodEntries = data.getFoodEntriesByUserId;
+          console.log(foodEntries);
 
-    render(){
-        const foodEntries = [
-            {
-              "food_id": {
-                "id": "3",
-                "foodName": "apple"
-              },
-              "meal_category_id": {
-                "id": "3",
-                "mealCategoryName": "Lunch"
-              }
-            },
-            {
-              "food_id": {
-                "id": "4",
-                "foodName": "orange"
-              },
-              "meal_category_id": {
-                "id": "3",
-                "mealCategoryName": "Lunch"
-              }
-            }
-          ]
         return (
-            <>
-            <h1> Breakfast</h1>
+          <JournalContainer>
+           <JournalEntryDiv>
+              <JournalEntry foodEntries={foodEntries} />
+            </JournalEntryDiv>
+            <CalendarDiv>
+              <Calendar />
+            </CalendarDiv>
 
-            <div>{Object.keys(foodEntries).map(function(key) {
-                if (foodEntries[key].meal_category_id.mealCategoryName === 'Breakfast' && foodEntries[key].food_id.foodName !== ''){
-             return <div>
-                     {/* <h1> {foodEntries[key].meal_category_id.mealCategoryName}</h1> */}
-                     <h3> {foodEntries[key].food_id.foodName}</h3>
-                    </div> 
-                } else { 
-                   return <div> No Breakfast have been added </div>
-                }    
-            })}</div>
-
-<h1> Lunch</h1>
-
-<div>{Object.keys(foodEntries).map(function(key) {
-    if (foodEntries[key].meal_category_id.mealCategoryName === 'Lunch')
-return <div>
-         {/* <h1> {foodEntries[key].meal_category_id.mealCategoryName}</h1> */}
-         <h3> {foodEntries[key].food_id.foodName}</h3>
-        </div>
-})}</div>
-
-<h1> Dinner</h1>
-
-<div>{Object.keys(foodEntries).map(function(key) {
-    if (foodEntries[key].meal_category_id.mealCategoryName === 'Dinner')
-return <div>
-         {/* <h1> {foodEntries[key].meal_category_id.mealCategoryName}</h1> */}
-         <h3> {foodEntries[key].food_id.foodName}</h3>
-        </div>
-})}</div>
-            <Calendar />
-            <JournalEntry />
-            </>
+          </JournalContainer>
         )
-    }
+        }}
+        </Query>
+
+
+      </div>
+    )
+  }
 }
 
 export default Journal;
