@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Header from "../Reusables/Header";
 import Calories from "./Calories";
 import EntryForm from "./EntryForm";
 import FoodEntry from "./FoodEntry";
