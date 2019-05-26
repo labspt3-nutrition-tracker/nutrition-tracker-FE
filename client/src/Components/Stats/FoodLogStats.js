@@ -28,7 +28,6 @@ class WeekFoodLogStats extends Component {
       day = day - 86400000;
     }
     const { foodEntries } = this.props;
-    // const { lines } = this.state;
     const breakfastCalories = [];
     const lunchCalories = [];
     const dinnerCalories = [];
@@ -100,15 +99,21 @@ class WeekFoodLogStats extends Component {
               <div key={entry.meal}>
                 <span className={classes.title}>{entry.meal}</span>
                 <div className={classes.value}>
-                  {entry.cal.map((day, i) => (
-                    <div key={day + i}>
-                      {day !== 0 && (
-                        <div className={classes.value}>
-                          - {new Date(lines[i]).toDateString()}: {day} kcal
+                  {entry.cal.length === 0 ? (
+                    "No Calories Entry"
+                  ) : (
+                    <>
+                      {entry.cal.map((cal, i) => (
+                        <div key={cal + i}>
+                          {cal !== 0 && (
+                            <div className={classes.value}>
+                              - {new Date(lines[i]).toDateString()}: {cal} kcal
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  ))}
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
             ))}

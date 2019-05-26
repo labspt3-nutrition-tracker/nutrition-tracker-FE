@@ -1,6 +1,4 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-
 import { GraphQLClient } from "graphql-request";
 
 import StatsDashboard from "./StatsDashboard";
@@ -33,13 +31,11 @@ class StatsView extends React.Component {
   render() {
     return (
       <>
-        {/* <Grid container spacing={8} justify='center' alignItems='center'> */}
         <div>
           <StatsDashboard chartChange={this.handleChartChange} />
           {this.state.chart === "day" && <FoodLogStats foodEntries={this.state.foodEntries} days='1' />}
           {this.state.chart === "week" && <FoodLogStats foodEntries={this.state.foodEntries} days='7' />}
         </div>
-        {/* </Grid> */}
       </>
     );
   }
