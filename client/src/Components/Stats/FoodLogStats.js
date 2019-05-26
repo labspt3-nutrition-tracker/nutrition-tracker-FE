@@ -9,36 +9,35 @@ import { calFunctions } from "../../util/getCal";
 class WeekFoodLogStats extends Component {
   state = {
     entries: [],
-    days: []
+    lines: []
   };
 
   componentDidMount = () => {
-    const days = [];
-    let day = Date.now();
-    for (let i = 0; i < Number(this.props.days); i++) {
-      days.push(day);
-      day = day - 86400000;
-    }
-    this.setState({ days: days });
     this.updateEntries();
   };
 
   componentDidUpdate = prevProps => {
-    if (prevProps.foodEntries !== this.props.foodEntries) this.updateEntries();
+    if (prevProps.foodEntries !== this.props.foodEntries || prevProps.days !== this.props.days) this.updateEntries();
   };
 
   updateEntries = () => {
+    const lines = [];
+    let day = Date.now();
+    for (let i = 0; i < Number(this.props.days); i++) {
+      lines.push(day);
+      day = day - 86400000;
+    }
     const { foodEntries } = this.props;
-    const { days } = this.state;
+    // const { lines } = this.state;
     const breakfastCalories = [];
     const lunchCalories = [];
     const dinnerCalories = [];
     const snackCalories = [];
     for (let i = 0; i < Number(this.props.days); i++) {
-      breakfastCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Breakfast", days[i]));
-      lunchCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Lunch", days[i]));
-      dinnerCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Dinner", days[i]));
-      snackCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Snack", days[i]));
+      breakfastCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Breakfast", lines[i]));
+      lunchCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Lunch", lines[i]));
+      dinnerCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Dinner", lines[i]));
+      snackCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Snack", lines[i]));
     }
     this.setState({
       entries: [
@@ -46,7 +45,8 @@ class WeekFoodLogStats extends Component {
         { meal: "Lunch", cal: lunchCalories },
         { meal: "Dinner", cal: dinnerCalories },
         { meal: "Snack", cal: snackCalories }
-      ]
+      ],
+      lines: lines
     });
   };
 
@@ -65,15 +65,15 @@ class WeekFoodLogStats extends Component {
     defaults.global.defaultFontColor = "#2196F3";
     const { classes } = this.props;
 
-    const { days } = this.state;
+    const { lines } = this.state;
     const meals = this.state.entries.map(entry => entry.meal);
-    const lines = [];
+    const graphs = [];
     for (let i = 0; i < Number(this.props.days); i++) {
       const calories = this.state.entries.map(entry => entry.cal[i]);
       if (calories.filter(cal => cal !== 0).length !== 0)
-        lines.push({ label: new Date(days[i]).toDateString(), data: calories });
+        graphs.push({ label: new Date(lines[i]).toDateString(), data: calories });
     }
-    const datasets = lines.map((line, i) => {
+    const datasets = graphs.map((line, i) => {
       const lineColor = this.makeRandomColor();
       return {
         label: line.label,
@@ -104,7 +104,7 @@ class WeekFoodLogStats extends Component {
                     <div key={day + i}>
                       {day !== 0 && (
                         <div className={classes.value}>
-                          - {new Date(days[i]).toDateString()}: {day} kcal
+                          - {new Date(lines[i]).toDateString()}: {day} kcal
                         </div>
                       )}
                     </div>
@@ -150,7 +150,7 @@ const styles = theme => ({
     justifyContent: "space-between",
     alignItems: "flex-start",
     width: "100%",
-    height: "500px",
+    minHeight: "300px",
     fontSize: "2rem"
   },
   header: {

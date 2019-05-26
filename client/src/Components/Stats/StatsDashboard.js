@@ -1,38 +1,36 @@
 import React from "react";
-// import { Route, Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import blue from "@material-ui/core/colors/blue";
-// import AccountNav from "../AccountNav";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: blue,
-    secondary: blue
+const styles = theme => ({
+  root: {
+    flexGrow: 1
   },
-  typography: {
-    htmlFontSize: 24,
-    useNextVariants: true
+  tab: {
+    fontSize: "2rem",
+    color: "#2196F3"
   }
 });
 
-const StatsDashboard = () => {
+function StatsDashboard(props) {
+  const { classes } = props;
+  const [value, setValue] = React.useState("day");
+
+  function handleChange(event, newValue) {
+    setValue(newValue);
+    props.chartChange(newValue);
+  }
+
   return (
-    <>
-      <MuiThemeProvider theme={theme}>
-        <div>
-          <Button color="primary">Daily</Button>
-          <Button color="secondary">Weekly</Button>
-          <Button color="secondary">Monthly</Button>
-        </div>
-      </MuiThemeProvider>
-    </>
+    <Paper className={classes.root}>
+      <Tabs value={value} onChange={handleChange} indicatorColor='primary' textColor='primary' centered>
+        <Tab label='Day' value='day' className={classes.tab} />
+        <Tab label='Week' value='week' className={classes.tab} />
+      </Tabs>
+    </Paper>
   );
-};
+}
 
-StatsDashboard.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default StatsDashboard;
+export default withStyles(styles)(StatsDashboard);
