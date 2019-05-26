@@ -11,7 +11,8 @@ const BASE_URL = "https://nutrition-tracker-be.herokuapp.com/";
 
 class StatsView extends React.Component {
   state = {
-    foodEntries: []
+    foodEntries: [],
+    chart: "week"
   };
 
   componentDidMount = async () => {
@@ -31,7 +32,8 @@ class StatsView extends React.Component {
         {/* <Grid container spacing={8} justify='center' alignItems='center'> */}
         <div>
           {/* <StatsDashboard /> */}
-          <FoodLogStats foodEntries={this.state.foodEntries} />
+          {this.state.chart === "day" && <FoodLogStats foodEntries={this.state.foodEntries} days='1' />}
+          {this.state.chart === "week" && <FoodLogStats foodEntries={this.state.foodEntries} days='7' />}
         </div>
         {/* </Grid> */}
       </>

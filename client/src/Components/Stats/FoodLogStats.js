@@ -1,17 +1,25 @@
-import React from "react";
-import styled from "styled-components";
+import React, { Component } from "react";
+import { Line } from "react-chartjs-2";
+import { defaults } from "react-chartjs-2";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 
-import { Bar, Line } from "react-chartjs-2";
-import { defaults } from "react-chartjs-2";
+import { calFunctions } from "../../util/getCal";
 
-class FoodLogStats extends React.Component {
+class WeekFoodLogStats extends Component {
   state = {
-    entries: []
+    entries: [],
+    days: []
   };
 
   componentDidMount = () => {
+    const days = [];
+    let day = Date.now();
+    for (let i = 0; i < Number(this.props.days); i++) {
+      days.push(day);
+      day = day - 86400000;
+    }
+    this.setState({ days: days });
     this.updateEntries();
   };
 
@@ -21,11 +29,17 @@ class FoodLogStats extends React.Component {
 
   updateEntries = () => {
     const { foodEntries } = this.props;
-    console.log(foodEntries);
-    const breakfastCalories = this.getCaloriesByMealCat(foodEntries, "Breakfast");
-    const lunchCalories = this.getCaloriesByMealCat(foodEntries, "Lunch");
-    const dinnerCalories = this.getCaloriesByMealCat(foodEntries, "Dinner");
-    const snackCalories = this.getCaloriesByMealCat(foodEntries, "Snack");
+    const { days } = this.state;
+    const breakfastCalories = [];
+    const lunchCalories = [];
+    const dinnerCalories = [];
+    const snackCalories = [];
+    for (let i = 0; i < Number(this.props.days); i++) {
+      breakfastCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Breakfast", days[i]));
+      lunchCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Lunch", days[i]));
+      dinnerCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Dinner", days[i]));
+      snackCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Snack", days[i]));
+    }
     this.setState({
       entries: [
         { meal: "Breakfast", cal: breakfastCalories },
@@ -36,45 +50,70 @@ class FoodLogStats extends React.Component {
     });
   };
 
-  render() {
-    const { classes } = this.props;
-    const calories = this.state.entries.map(entry => entry.cal);
-    const meals = this.state.entries.map(entry => entry.meal);
-    const total = calories.reduce((total, cal) => total + cal, 0);
+  makeRandomColor() {
+    var c = "";
+    while (c.length < 6) {
+      c += Math.random()
+        .toString(16)
+        .substr(-6)
+        .substr(-1);
+    }
+    return "#" + c;
+  }
 
-    defaults.global.defaultFontColor = "#0826EA";
+  render() {
+    defaults.global.defaultFontColor = "#2196F3";
+    const { classes } = this.props;
+
+    const { days } = this.state;
+    const meals = this.state.entries.map(entry => entry.meal);
+    const lines = [];
+    for (let i = 0; i < Number(this.props.days); i++) {
+      const calories = this.state.entries.map(entry => entry.cal[i]);
+      if (calories.filter(cal => cal !== 0).length !== 0)
+        lines.push({ label: new Date(days[i]).toDateString(), data: calories });
+    }
+    const datasets = lines.map((line, i) => {
+      const lineColor = this.makeRandomColor();
+      return {
+        label: line.label,
+        backgroundColor: lineColor,
+        borderColor: lineColor,
+        pointRadius: 6,
+        fill: "false",
+        data: line.data
+      };
+    });
 
     const data = {
       labels: meals,
-      datasets: [
-        {
-          label: "Calories",
-          backgroundColor: "#F4B4C3",
-          borderColor: "#2196F3",
-          pointRadius: 6,
-          fill: "false",
-          data: calories
-        }
-      ]
+      datasets: datasets
     };
+    const message = Number(this.props.days) !== 1 ? "the last " + this.props.days + " days" : "today";
 
     return (
       <div className={classes.root}>
-        <h2 className={classes.header}>{new Date().toDateString()}</h2>
+        <h2 className={classes.header}>Calories for {message}</h2>
         <Grid container justify='center' alignItems='center'>
-          <Grid item xs={3} className={classes.caloriesInfo}>
+          <Grid item xs={4} className={classes.caloriesInfo}>
             {this.state.entries.map(entry => (
               <div key={entry.meal}>
                 <span className={classes.title}>{entry.meal}</span>
-                <div className={classes.value}>{entry.cal} kcal</div>
+                <div className={classes.value}>
+                  {entry.cal.map((day, i) => (
+                    <div key={day + i}>
+                      {day !== 0 && (
+                        <div className={classes.value}>
+                          - {new Date(days[i]).toDateString()}: {day} kcal
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
-            <div class={classes.info}>
-              <span className={classes.title}>Total:</span>
-              <div className={classes.value}>{total} kcal</div>
-            </div>
           </Grid>
-          <Grid item xs={9} className={classes.graph}>
+          <Grid item xs={8} className={classes.graph}>
             <h2>Calories / Meal Category</h2>
             <Line
               ref='chart'
@@ -97,24 +136,13 @@ class FoodLogStats extends React.Component {
       </div>
     );
   }
-  getCaloriesByMealCat = (entries, filter) => {
-    return entries
-      .filter(entry => {
-        const today = new Date().toDateString();
-        const date = new Date(entry.date).toDateString();
-        return date === today;
-      })
-      .filter(entry => entry.meal_category_id.mealCategoryName === filter)
-      .map(entry => entry.servingQty * entry.food_id.caloriesPerServ)
-      .reduce((total, cal) => total + cal, 0);
-  };
 }
 
 const styles = theme => ({
   root: {
     width: "100%",
     margin: "50px auto",
-    maxWidth: "1000px"
+    maxWidth: "1200px"
   },
   caloriesInfo: {
     display: "flex",
@@ -122,8 +150,8 @@ const styles = theme => ({
     justifyContent: "space-between",
     alignItems: "flex-start",
     width: "100%",
-    height: "400px",
-    fontSize: "2.5rem"
+    height: "500px",
+    fontSize: "2rem"
   },
   header: {
     textAlign: "center",
@@ -136,11 +164,13 @@ const styles = theme => ({
     padding: "20px"
   },
   title: {
-    color: "#2196F3"
+    color: "#2196F3",
+    fontSize: "2.5rem"
   },
+  day: {},
   value: {
-    marginTop: "10px"
+    margin: "10px 0"
   }
 });
 
-export default withStyles(styles)(FoodLogStats);
+export default withStyles(styles)(WeekFoodLogStats);
