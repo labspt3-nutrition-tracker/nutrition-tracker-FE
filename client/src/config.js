@@ -1,0 +1,4 @@
+const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
+const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_API_ID;
+
+export { EDAMAM_API_ID, EDAMAM_API_KEY } 

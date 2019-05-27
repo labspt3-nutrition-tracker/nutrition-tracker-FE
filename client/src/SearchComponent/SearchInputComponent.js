@@ -19,7 +19,7 @@ const SearchInputComponent = props => {
         onChange={props.updateSearch}
         name="searchInput"
         value={props.searchInput}/>
-        <button>Search</button>
+        <button onClick={props.getFoodData}>Search</button>
         </SearchBoxContainer>
     )
 }

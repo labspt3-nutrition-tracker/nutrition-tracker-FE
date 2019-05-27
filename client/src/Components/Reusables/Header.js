@@ -13,7 +13,7 @@ const Header = (props) => (
     <Logo>
       <img src={logo} alt="Created my free logo at LogoMakr.com" />
     </Logo>
-    <AppBar updateSearch={props.updateSearch}  searchInput={props.inputSearch}/>
+    <AppBar updateSearch={props.updateSearch}  searchInput={props.inputSearch} getFoodData={props.getFoodData}/>
   </div>
 );
 
