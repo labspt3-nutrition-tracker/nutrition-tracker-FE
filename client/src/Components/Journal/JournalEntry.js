@@ -32,8 +32,9 @@ class JournalEntry extends React.Component {
     const Snack = this.state.foodEntries.filter(function(entry) {
       return entry.meal_category_id.mealCategoryName === "Snack";
     });
-
+    console.log(this.props.foodEntries)
     return (
+     
       <div>
         <h1>{this.props.datePicked}</h1>
         <h1> Breakfast</h1>
@@ -46,7 +47,7 @@ class JournalEntry extends React.Component {
                         </div>
                       );
                     })
-                  : "No Breakfast have been added"}
+                  : "No Breakfast entries have been added"}
               </div>
               <h2> Lunch</h2>
               <div>
@@ -58,7 +59,7 @@ class JournalEntry extends React.Component {
                         </div>
                       );
                     })
-                  : "No Lunch have been added"}
+                  : "No Lunch entries have been added"}
               </div>
               <h1>Dinner</h1>
               <div>
@@ -70,7 +71,7 @@ class JournalEntry extends React.Component {
                         </div>
                       );
                     })
-                  : "No Dinner have been added"}
+                  : "No Dinner entries have been added"}
               </div>
 
               <h1>Snacks</h1>

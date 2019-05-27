@@ -10,7 +10,7 @@ class Calendar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      date: ""
+      date: []
     };
   }
 
@@ -20,6 +20,8 @@ class Calendar extends React.Component {
       date: arg.date
     });
     console.log(this.state.date);
+    console.log("arg", arg)
+    console.log('arg date', arg.date)
     this.props.handleDateClick(arg.dateStr);
     console.log("date props:", this.props.datePicked);
   };

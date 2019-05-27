@@ -25,7 +25,7 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: 1,
-      datePicked: ""
+      datePicked: []
     };
   };
 
@@ -35,11 +35,16 @@ class Journal extends React.Component {
 
   componentDidMount() {
     var today = new Date();
+    var options = {weekday: 'long'};
+    var day = new Intl.DateTimeFormat('en-US', options).format()
+    console.log(new Intl.DateTimeFormat('en-US', options).format());
+    // Monday
+    var dayweek = String(today.getDay()).padStart(day);
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
 
-    today = mm + "/" + dd + "/" + yyyy;
+    today = day + ", " + mm + "/" + dd + "/" + yyyy;
     this.setState({ datePicked: today });
   }
 
