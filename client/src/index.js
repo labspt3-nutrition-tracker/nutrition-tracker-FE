@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> d22314bbced5ef527f84492f4704a3d5ec6d53bb
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";

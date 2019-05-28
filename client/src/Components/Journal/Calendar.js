@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-// import FullCalendar from '@fullcalendar/react'
-// import dayGridPlugin from '@fullcalendar/daygrid'
-// import timeGridPlugin from '@fullcalendar/timegrid'
-// import interactionPlugin from '@fullcalendar/interaction' // needed for dayClick
-
-const Calendar = () => {
-    return (
-        <div>
-            <h1>Calendar</h1>
-        </div>
-    )
-}
-
-export default Calendar;
-=======
 import React from "react";
 import moment from 'moment';
 import FullCalendar from "@fullcalendar/react";
@@ -64,4 +47,3 @@ class Calendar extends React.Component {
 }
 
 export default Calendar;
->>>>>>> d22314bbced5ef527f84492f4704a3d5ec6d53bb

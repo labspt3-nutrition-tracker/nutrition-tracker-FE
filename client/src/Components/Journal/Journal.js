@@ -38,7 +38,6 @@ class Journal extends React.Component {
 
   componentDidMount() {
     // var today = new Date();
-    var date = moment().format('ddd MMMM D YYYY')
     // var options = {weekday: 'short'};
     // var day = new Intl.DateTimeFormat('en-US', options).format();
     // console.log(new Intl.DateTimeFormat('en-US', options).format());
@@ -46,8 +45,9 @@ class Journal extends React.Component {
     // var dd = String(today.getDate()).padStart(2, "0");
     // var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     // var yyyy = today.getFullYear();
-    
     // today = day + " " + mm + " " + dd + " " + yyyy;
+
+    let date = moment().format('ddd MMMM D YYYY')
     this.setState({ datePicked: date });
   }
 
@@ -86,6 +86,7 @@ class Journal extends React.Component {
           <JournalContainer>
            <JournalEntryDiv>
               <JournalEntry
+
                 modifiedDate={this.state.datePicked}
                 foodEntries={foodEntries}
                 datePicked={this.state.datePicked} />

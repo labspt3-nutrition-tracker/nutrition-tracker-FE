@@ -17,7 +17,11 @@ class JournalEntry extends React.Component {
 
   render() {
 
-    const modifiedEntry = this.state.foodEntries.filter(this.props.modifiedDate);
+    // const modifiedEntry = this.state.foodEntries.filter(function(entry){
+    //   if ('Breakfast' || 'Lunch' || 'Dinner' || 'Snack' === this.props.pickDate){
+    //     return entry.meal_category_id.mealCategoryName
+    //   }
+    // });
 
     // set as new foodentries
     const Breakfast = this.state.foodEntries.filter(function(entry) {

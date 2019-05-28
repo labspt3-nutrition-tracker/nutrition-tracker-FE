@@ -60,89 +60,6 @@ const USER_EXIST = gql`
 
 class LoginOrRegister extends React.Component {
 
-<<<<<<< HEAD
-  constructor(props){
-    super(props);
-    this.state = {
-      toDashboard: false,
-      checkExistence: false,
-      firstName: "",
-      lastName: "",
-      username: "",
-      email: "",
-      userType: "",
-      calorieGoal:0,
-      weight:0
-    }
-
-  }
-  onSuccess = async googleUser => {
-    console.log(googleUser.profileObj.email)
-    const email = googleUser.profileObj.email;
-    const idToken = googleUser.getAuthResponse().id_token;
-    localStorage.setItem('token', idToken);
-
-
-
-    const client = new ApolloClient({
-      uri:'https://nutrition-tracker-be.herokuapp.com',
-      headers: {authorization: idToken}
-    })
-
-    client.query({
-      query: USER_EXIST,
-      variables: {
-        param: "email",
-        value: email
-      }
-    }).then(response => {
-      this.setState({toDashboard: !this.state.toDashboard})
-    }).catch(err => this.setState({checkExistence: !this.state.checkExistence}))
-  }
-
-  handleChange = (label, value) => {
-    this.setState({
-      [label]: value
-    })
-  }
-
-  createUser = userObj => {
-    const client = new ApolloClient({
-      uri:'https://nutrition-tracker-be.herokuapp.com'
-    })
-
-    client.mutate({
-      mutation: ADD_USER,
-      variables: {
-        input: userObj
-      }
-    }).then(response => console.log(response.data))
-  }
-  render(){
-    if (this.state.toDashboard === true){
-      return <Redirect to="/dashboard"/>
-    }
-    return (
-      <LoginOrRegisterContainer>
-        <FormContainer>
-            <LoginOrRegisterForm>
-              <div>
-                {
-                  this.state.checkExistence ? ( <LoginForm addUser={this.createUser} handleChange={this.handleChange} props={this.state}/>
-                    ):(
-                      <GoogleLogin
-                      style={{height:10}}
-                      clientId='1047286164516-jv47gpee2568sc3bindc9ra3vua101t3.apps.googleusercontent.com'
-                      onSuccess={this.onSuccess}
-                      /> )
-                }
-              </div>
-            </LoginOrRegisterForm>
-        </FormContainer>
-      </LoginOrRegisterContainer>
-    );
-  }
-=======
  constructor(props){
    super(props);
    this.state = {
@@ -224,7 +141,6 @@ class LoginOrRegister extends React.Component {
      </LoginOrRegisterContainer>
    );
  }
->>>>>>> d22314bbced5ef527f84492f4704a3d5ec6d53bb
 }
 
 export default LoginOrRegister;
