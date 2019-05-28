@@ -1,4 +1,5 @@
 import React from "react";
+import moment from 'moment';
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -15,7 +16,13 @@ class JournalEntry extends React.Component {
 
 
   render() {
-    // filter by date
+
+    // const modifiedEntry = this.state.foodEntries.filter(function(entry){
+    //   if ('Breakfast' || 'Lunch' || 'Dinner' || 'Snack' === this.props.pickDate){
+    //     return entry.meal_category_id.mealCategoryName
+    //   }
+    // });
+
     // set as new foodentries
     const Breakfast = this.state.foodEntries.filter(function(entry) {
       return entry.meal_category_id.mealCategoryName === "Breakfast";
@@ -32,8 +39,9 @@ class JournalEntry extends React.Component {
     const Snack = this.state.foodEntries.filter(function(entry) {
       return entry.meal_category_id.mealCategoryName === "Snack";
     });
-
+    console.log(this.props.foodEntries)
     return (
+     
       <div>
         <h1>{this.props.datePicked}</h1>
         <h1> Breakfast</h1>
@@ -46,7 +54,7 @@ class JournalEntry extends React.Component {
                         </div>
                       );
                     })
-                  : "No Breakfast have been added"}
+                  : "No Breakfast entries have been added"}
               </div>
               <h2> Lunch</h2>
               <div>
@@ -58,7 +66,7 @@ class JournalEntry extends React.Component {
                         </div>
                       );
                     })
-                  : "No Lunch have been added"}
+                  : "No Lunch entries have been added"}
               </div>
               <h1>Dinner</h1>
               <div>
@@ -70,7 +78,7 @@ class JournalEntry extends React.Component {
                         </div>
                       );
                     })
-                  : "No Dinner have been added"}
+                  : "No Dinner entries have been added"}
               </div>
 
               <h1>Snacks</h1>
