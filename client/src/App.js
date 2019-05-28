@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios'
+import axios from 'axios';
 import Login from './Components/Auth/Login';
 import './App.css';
 import Header from './Components/Reusables/Header';
