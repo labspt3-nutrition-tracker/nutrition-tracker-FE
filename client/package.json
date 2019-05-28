@@ -15,6 +15,7 @@
     "dotenv": "^8.0.0",
     "graphql": "^14.3.0",
     "graphql-request": "^1.8.2",
+    "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-apollo": "^2.5.6",
