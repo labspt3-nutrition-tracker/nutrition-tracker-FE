@@ -48,7 +48,6 @@ class Calories extends React.Component {
             const month = dateToday.getMonth();
             const day = dateToday.getDate();
             const year = dateToday.getFullYear();
-            console.log(data);
             let foodEntries = data.getFoodEntriesByUserId;
             foodEntries = foodEntries.filter(entry => {
               const dateEntry = new Date(entry.date);
@@ -67,7 +66,6 @@ class Calories extends React.Component {
             foodEntries.map(entry =>
               mealCal.push(entry.food_id.caloriesPerServ * entry.servingQty)
             );
-            console.log(mealCal);
             mealCal = mealCal.reduce((a, b) => {
               return a + b;
             });
