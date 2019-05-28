@@ -1,4 +1,5 @@
 import React from "react";
+import moment from 'moment';
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -15,7 +16,9 @@ class JournalEntry extends React.Component {
 
 
   render() {
-    // filter by date
+
+    const modifiedEntry = this.state.foodEntries.filter(this.props.modifiedDate);
+
     // set as new foodentries
     const Breakfast = this.state.foodEntries.filter(function(entry) {
       return entry.meal_category_id.mealCategoryName === "Breakfast";

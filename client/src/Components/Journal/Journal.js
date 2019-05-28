@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Calendar from './Calendar';
+import moment from 'moment';
 import JournalEntry from './JournalEntry';
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
@@ -25,30 +26,34 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: 1,
-      datePicked: []
+      datePicked: ""
     };
   };
 
+
   handleDateClick = date => {
+
     this.setState({ datePicked: date });
   };
 
   componentDidMount() {
-    var today = new Date();
-    var options = {weekday: 'long'};
-    var day = new Intl.DateTimeFormat('en-US', options).format()
-    console.log(new Intl.DateTimeFormat('en-US', options).format());
-    // Monday
-    var dayweek = String(today.getDay()).padStart(day);
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = today.getFullYear();
-
-    today = day + ", " + mm + "/" + dd + "/" + yyyy;
-    this.setState({ datePicked: today });
+    // var today = new Date();
+    var date = moment().format('ddd MMMM D YYYY')
+    // var options = {weekday: 'short'};
+    // var day = new Intl.DateTimeFormat('en-US', options).format();
+    // console.log(new Intl.DateTimeFormat('en-US', options).format());
+    // // should say current day of the week
+    // var dd = String(today.getDate()).padStart(2, "0");
+    // var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    // var yyyy = today.getFullYear();
+    
+    // today = day + " " + mm + " " + dd + " " + yyyy;
+    this.setState({ datePicked: date });
   }
 
   render(){
+ 
+
     const FOODENTRYQUERY = gql`
       query{
         getFoodEntriesByUserId(userId: ${this.state.currentUser}){
@@ -77,14 +82,17 @@ class Journal extends React.Component {
           const foodEntries = data.getFoodEntriesByUserId;
 
         return (
+          
           <JournalContainer>
            <JournalEntryDiv>
               <JournalEntry
+                modifiedDate={this.state.datePicked}
                 foodEntries={foodEntries}
                 datePicked={this.state.datePicked} />
             </JournalEntryDiv>
             <CalendarDiv>
               <Calendar
+              
                 datePicked={this.state.datePicked}
                 handleDateClick={this.handleDateClick}/>
             </CalendarDiv>
