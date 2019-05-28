@@ -9,7 +9,7 @@ import blue from "@material-ui/core/colors/blue";
 // import red from "@material-ui/core/colors/red";
 import { NavLink } from "react-router-dom";
 
-import SearchInputComponent from '../../SearchComponent/SearchInputComponent'
+import SearchInputComponent from './../SearchComponent/SearchInputComponent'
 
 const theme = createMuiTheme({
   palette: {
