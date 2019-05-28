@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import styled from 'styled-components';
 import Calendar from './Calendar';
 import JournalEntry from './JournalEntry';
@@ -34,13 +35,15 @@ class Journal extends React.Component {
   };
 
   componentDidMount() {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = today.getFullYear();
+    // var today = new Date();
+    // var dd = String(today.getDate()).padStart(2, "0");
+    // var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    // var yyyy = today.getFullYear();
 
-    today = mm + "/" + dd + "/" + yyyy;
-    this.setState({ datePicked: today });
+    // today = mm + "/" + dd + "/" + yyyy;
+    // this.setState({ datePicked: today });
+    var date = moment().format('ddd MMMM D YYYY')
+    this.setState({ datePicked: date });
   }
 
   render(){
