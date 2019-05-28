@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Calories from "./Calories";
 import EntryForm from "./EntryForm";
 import FoodEntry from "./FoodEntry";
+import Exercise from "./Exercise";
 import styled from "styled-components";
 
 class Dashboard extends Component {
@@ -11,14 +12,12 @@ class Dashboard extends Component {
       date: "",
       qty: 0,
       category: ""
-    },
-    
+    }
   };
 
   addEntry = e => {
     e.preventDefault();
-
-  }
+  };
 
   render() {
     return (
@@ -28,8 +27,11 @@ class Dashboard extends Component {
           <hr />
           <Calories />
           <InfoCon>
-            <FoodEntry latest={this.props.latest}/>
-            <EntryForm addEntry={this.addEntry}/>
+            <FoodEntry latest={this.props.latest} />
+            <EntryForm addEntry={this.addEntry} />
+          </InfoCon>
+          <InfoCon>
+            <Exercise />
           </InfoCon>
         </div>
       </div>
