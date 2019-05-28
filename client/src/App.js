@@ -22,6 +22,7 @@ class App extends React.Component {
     super(props)
     this.state = {
       searchInput:'',
+      searchResults: []
     }
   }
 
@@ -40,7 +41,9 @@ class App extends React.Component {
     axios
       .get(`https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`)
       .then(response =>{
-        console.log(response)
+        this.setState({searchResults: response.data.hints})
+        this.setState({searchInput: ''})
+        console.log(this.state.searchResults)
       })
       .catch(error =>{
         console.log(error)
@@ -53,7 +56,8 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header searchInput={this.state.searchInput} updateSearch={this.updateSearch}
-          getFoodData={this.getFoodData} />
+          getFoodData={this.getFoodData}
+          searchResults={this.state.searchResults} />
         <div>
           <Route exact path="/" component={Home} />
           <Route path="/dashboard" component={Dashboard} />
