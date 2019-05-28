@@ -27,7 +27,7 @@ class SearchResult extends React.Component{
 
   render(){
     console.log(this.state.isHidden)
-    const searchResults = this.props.searchResults.slice(0,7)
+    const searchResults = this.props.searchResults > 7? this.props.searchResults.slice(0,7): this.props.searchResults
     return(
       <div className="searchBox">
         {searchResults
