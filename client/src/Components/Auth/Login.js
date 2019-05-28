@@ -6,7 +6,7 @@ import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
 import { Mutation, Query } from 'react-apollo';
-require('dotenv').config()
+
 
 
 

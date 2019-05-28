@@ -48,7 +48,7 @@ class FoodEntry extends React.Component {
               const month = dateToday.getMonth();
               const day = dateToday.getDate();
               const year = dateToday.getFullYear();
-
+              console.log(data)
               let foodEntries = data.getFoodEntriesByUserId;
 
               foodEntries = foodEntries.filter(entry => {
@@ -60,8 +60,6 @@ class FoodEntry extends React.Component {
                   entryMonth === month && entryDay === day && entryYear === year
                 );
               });
-
-              console.log(foodEntries);
 
               const Breakfast = foodEntries.filter(function(entry) {
                 return entry.meal_category_id.mealCategoryName === "Breakfast";
