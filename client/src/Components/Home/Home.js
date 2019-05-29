@@ -1,5 +1,4 @@
 import React from "react";
-import AppBar from "../Reusables/AppBar";
 import styled from "styled-components";
 import logo from "../../Assets/logo-white.png";
 
@@ -33,9 +32,6 @@ const Home = () => (
         <Logo>
           <img src={logo} alt="Created my free logo at LogoMakr.com" />
         </Logo>
-        <div>
-          <AppBar />
-        </div>
       </header>
       <Main>
         <div className="home-text">
