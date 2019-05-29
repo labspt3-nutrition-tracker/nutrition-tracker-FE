@@ -22,7 +22,8 @@ class App extends React.Component {
     super(props)
     this.state = {
       searchInput:'',
-      searchResults: []
+      searchResults: [],
+      noResultError: ''
     }
   }
 
@@ -41,12 +42,17 @@ class App extends React.Component {
     axios
       .get(`https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`)
       .then(response =>{
-        this.setState({searchResults: response.data.hints})
-        this.setState({searchInput: ''})
-        console.log(this.state.searchResults)
+        this.setState({
+          searchResults: response.data.hints,
+          searchInput: '',
+          noResultError: ''})
       })
       .catch(error =>{
-        console.log(error)
+        this.setState({
+          searchInput: '',
+          noResultError: 'No result found',
+          searchResults: []})
+        console.log(this.state.noResultError)
       })
 
 
@@ -57,7 +63,8 @@ class App extends React.Component {
       <div className="App">
         <Header searchInput={this.state.searchInput} updateSearch={this.updateSearch}
           getFoodData={this.getFoodData}
-          searchResults={this.state.searchResults} />
+          searchResults={this.state.searchResults}
+          noResultError={this.state.noResultError} />
         <div>
           <Route exact path="/" component={Home} />
           <Route path="/dashboard" component={Dashboard} />

@@ -5,7 +5,7 @@ import { GoogleLogin } from "react-google-login";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
-import { Mutation, Query } from "react-apollo";
+// import { Mutation, Query } from 'react-apollo';
 
 const LoginOrRegisterContainer = styled.div`
   background: #fcfcfb;
