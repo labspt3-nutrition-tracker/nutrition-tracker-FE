@@ -34,21 +34,21 @@ class ExerForm extends Component {
   render() {
     return (
       <Form>
-        <label for="exerciseName">Name of Exercise</label>
+        <label htmlFor="exerciseName">Name of Exercise</label>
         <input
           className="form-field"
           type="text"
           name="exerciseName"
           onChange={this.onInputChange}
         />
-        <label for="date">Date</label>
+        <label htmlFor="date">Date</label>
         <input
           className="form-field"
           type="date"
           name="exerciseEntryDate"
           onChange={this.onInputChange}
         />
-        <label for="caloriesBurned">Calories Burned</label>
+        <label htmlFor="caloriesBurned">Calories Burned</label>
         <input
           className="form-field"
           type="numnber"
