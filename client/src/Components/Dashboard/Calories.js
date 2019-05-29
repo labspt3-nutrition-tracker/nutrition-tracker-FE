@@ -60,32 +60,52 @@ class Calories extends React.Component {
             });
 
             const calGoal = this.state.calGoal;
-            // console.log("calGoal:", calGoal);
             let mealCal = [];
-            // console.log(foodEntries)
-            foodEntries.map(entry =>
-              mealCal.push(entry.food_id.caloriesPerServ * entry.servingQty)
-            );
-            mealCal = mealCal.reduce((a, b) => {
-              return a + b;
-            });
-            const remainCal = calGoal - mealCal;
-            return (
-              <CalCon>
-                <div className="cal-current">
-                  <CalTitle>Current Calories Today</CalTitle>
-                  <CalAmt>{mealCal}</CalAmt>
-                </div>
-                <div className="cal-remain">
-                  <CalTitle>Remaining Calories Today</CalTitle>
-                  <CalAmt>{remainCal}</CalAmt>
-                </div>
-                <div className="cal-goal">
-                  <CalTitle>Daily Calorie Goal</CalTitle>
-                  <CalAmt>{calGoal}</CalAmt>
-                </div>
-              </CalCon>
-            );
+            console.log("foodEntries:", foodEntries);
+            if (foodEntries.length === 0) {
+              const mealCal = 0;
+              const remainCal = calGoal - mealCal;
+              return (
+                <CalCon>
+                  <div className="cal-current">
+                    <CalTitle>Current Calories Today</CalTitle>
+                    <CalAmt>{mealCal}</CalAmt>
+                  </div>
+                  <div className="cal-remain">
+                    <CalTitle>Remaining Calories Today</CalTitle>
+                    <CalAmt>{remainCal}</CalAmt>
+                  </div>
+                  <div className="cal-goal">
+                    <CalTitle>Daily Calorie Goal</CalTitle>
+                    <CalAmt>{calGoal}</CalAmt>
+                  </div>
+                </CalCon>
+              );
+            } else {
+              foodEntries.map(entry =>
+                mealCal.push(entry.food_id.caloriesPerServ * entry.servingQty)
+              );
+              mealCal = mealCal.reduce((a, b) => {
+                return a + b;
+              });
+              const remainCal = calGoal - mealCal;
+              return (
+                <CalCon>
+                  <div className="cal-current">
+                    <CalTitle>Current Calories Today</CalTitle>
+                    <CalAmt>{mealCal}</CalAmt>
+                  </div>
+                  <div className="cal-remain">
+                    <CalTitle>Remaining Calories Today</CalTitle>
+                    <CalAmt>{remainCal}</CalAmt>
+                  </div>
+                  <div className="cal-goal">
+                    <CalTitle>Daily Calorie Goal</CalTitle>
+                    <CalAmt>{calGoal}</CalAmt>
+                  </div>
+                </CalCon>
+              );
+            }
           }}
         </Query>
       </div>
