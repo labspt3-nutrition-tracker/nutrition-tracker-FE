@@ -86,15 +86,11 @@ const ButtonAppBar = (props) => {
             <Button color="inherit">Journal</Button>
           </NavLink>
         </Toolbar>
-        <SearchInputComponent updateSearch={props.updateSearch} searchInput={props.searchInput} getFoodData={props.getFoodData} searchResults={props.searchResults}/>
+        <SearchInputComponent updateSearch={props.updateSearch} searchInput={props.searchInput} getFoodData={props.getFoodData} searchResults={props.searchResults} noResultError={props.noResultError}/>
       </AppBar>
     </MuiThemeProvider>
   );
 }
-
-ButtonAppBar.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
 // export default withStyles(styles)(ButtonAppBar);
 export default ButtonAppBar;
