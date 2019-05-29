@@ -66,7 +66,7 @@ class App extends React.Component {
           searchResults={this.state.searchResults}
           noResultError={this.state.noResultError} />
         <div>
-          <Route  path="/" component={Home} />
+          <Route exact path="/" component={Home} />
           <Route path="/dashboard" component={Dashboard} />
           <Route exact path="/billing-plan" render={() => <BillingPlans />} />
           <Route exact path="/billing" render={() => <Billing />} />
@@ -76,7 +76,7 @@ class App extends React.Component {
           <Route
           exact path="/settings" render={() => <Settings/>} />
           <Route
-            path="/journal" render={() => <Journal/>} / >
+            path="/journal" render={() => <Journal/>} />
         </div>
         <Route path="/account" render={() => <AccountNav />} />
       </div>
