@@ -3,9 +3,10 @@ import { GraphQLClient } from "graphql-request";
 
 import StatsDashboard from "./StatsDashboard";
 import FoodLogStats from "./FoodLogStats";
-import { GET_FOOD_ENTRIES_BY_USER_QUERY } from "../../graphql/queries";
+import { GET_FOOD_ENTRIES_BY_USER_QUERY, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 
 const BASE_URL = "https://nutrition-tracker-be.herokuapp.com/";
+// const BASE_URL = "http://localhost:4000/";
 
 class StatsView extends React.Component {
   state = {

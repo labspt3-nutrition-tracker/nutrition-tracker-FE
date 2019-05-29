@@ -15,13 +15,25 @@ query($userId: ID!)
     food_id {
       foodName
       caloriesPerServ
-      food_category_id {
-        foodCategoryName
-      }
     }
     meal_category_id {
       mealCategoryName
     }
+  }
+}
+`;
+
+export const GET_CURRENT_USER_QUERY = `
+{
+  getCurrentUser {
+    id
+    username
+    firstName
+    lastName
+    email
+    userType
+    calorieGoal
+    weight
   }
 }
 `;
