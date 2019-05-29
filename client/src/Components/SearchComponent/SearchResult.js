@@ -34,15 +34,16 @@ class SearchResults extends React.Component{
     console.log(noResultError)
     return(
       <div className="searchBox">
-        {(searchResults === [])
-          ? <div> {this.props.noResultError}</div>
-          : Object.keys(searchResults).map((obj, i) => {
+        { searchResults
+
+         ? Object.keys(searchResults).map((obj, i) => {
               return (
                 <div key={i}>
                   <p> {searchResults[obj].food.label}</p>
                 </div>
               );
             })
+            : <div>{noResultError}</div>
          }
           <Button onClick={this.toggleHidden.bind(this)}> close </Button>
       </div>
