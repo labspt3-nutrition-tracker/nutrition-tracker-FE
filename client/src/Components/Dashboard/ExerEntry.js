@@ -37,7 +37,7 @@ class FoodEntry extends React.Component {
               const month = dateToday.getMonth();
               const day = dateToday.getDate();
               const year = dateToday.getFullYear();
-              console.log(data);
+              // console.log(data);
               let exerEntries = data.getExerciseEntriesByUserId;
 
               exerEntries = exerEntries.filter(entry => {
@@ -50,7 +50,7 @@ class FoodEntry extends React.Component {
                 );
               });
 
-              console.log(exerEntries);
+              // console.log(exerEntries);
 
               if (exerEntries.length === 0) {
                 return <div>No exercise entered today.</div>;
