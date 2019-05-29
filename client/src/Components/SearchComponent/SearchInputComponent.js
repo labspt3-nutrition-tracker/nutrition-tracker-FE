@@ -1,7 +1,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import SearchResult from './SearchResult';
+import SearchResults from './SearchResult';
 
 const SearchBoxContainer = styled.div`
 
@@ -35,7 +35,7 @@ const SearchInputComponent = props => {
           <button onClick={props.getFoodData}>Search</button>
           </SearchBoxContainer>
           <SearchResultDiv>
-            <SearchResult  searchResults={props.searchResults} />
+            <SearchResults  searchResults={props.searchResults} noResultError={props.noResultError} />
           </SearchResultDiv>
       </Search>
     )
