@@ -70,9 +70,6 @@ const ButtonAppBar = (props) => {
           <NavLink to="/">
             <Button color="inherit">Home</Button>
           </NavLink>
-          <NavLink to="/login">
-            <Button color="inherit">Login</Button>
-          </NavLink>
           <NavLink to="/account">
             <Button color="inherit">Account</Button>
           </NavLink>
