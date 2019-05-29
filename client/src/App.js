@@ -66,7 +66,7 @@ class App extends React.Component {
           searchResults={this.state.searchResults}
           noResultError={this.state.noResultError} />
         <div>
-          <Route exact path="/" component={Home} />
+          <Route  path="/" component={Home} />
           <Route path="/dashboard" component={Dashboard} />
           <Route exact path="/billing-plan" render={() => <BillingPlans />} />
           <Route exact path="/billing" render={() => <Billing />} />

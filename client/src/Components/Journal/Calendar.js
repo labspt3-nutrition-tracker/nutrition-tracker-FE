@@ -19,7 +19,7 @@ class Calendar extends React.Component {
 
   pickDate = arg => {
   const listedDate = arg.date
-    console.log(arg.date);
+    console.log(listedDate);
     this.setState({
       date: listedDate
     });

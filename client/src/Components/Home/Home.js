@@ -29,14 +29,14 @@ const Features = styled.div`
 const Home = () => (
   <div className="home">
     <div className="container">
-      <header className="header-home">
+      {/* <header className="header-home">
         <Logo>
           <img src={logo} alt="Created my free logo at LogoMakr.com" />
         </Logo>
         <div>
           <AppBar />
         </div>
-      </header>
+      </header> */}
       <Main>
         <div className="home-text">
           <Tagline>
