@@ -9,7 +9,12 @@ const Button = styled.button`
   display: block;
 
 `;
-class SearchResult extends React.Component{
+
+const NoResult = styled.div`
+  width: 200px;
+  height: 30px;
+`;
+class SearchResults extends React.Component{
   constructor(props){
     super(props)
     this.state = {
@@ -23,26 +28,27 @@ class SearchResult extends React.Component{
     })
   }
 
-
-
   render(){
-    console.log(this.state.isHidden)
-    const searchResults = this.props.searchResults.slice(0,7)
+    const searchResults = this.props.searchResults;
+    const noResultError = this.props.noResultError;
+    console.log(noResultError)
     return(
       <div className="searchBox">
-        {searchResults
-          ? Object.keys(searchResults).map(function(key) {
+        { searchResults
+
+         ? Object.keys(searchResults).map((obj, i) => {
               return (
-                <div key={searchResults[key]}>
-                  <p> {searchResults[key].food.label}</p>
+                <div key={i}>
+                  <p> {searchResults[obj].food.label}</p>
                 </div>
               );
             })
-          : "No Lunch have been added"}
+            : <div>{noResultError}</div>
+         }
           <Button onClick={this.toggleHidden.bind(this)}> close </Button>
       </div>
     )
   }
 }
 
-export default SearchResult;
+export default SearchResults;

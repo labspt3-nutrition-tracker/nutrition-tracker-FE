@@ -1,12 +1,11 @@
 import React from "react";
-import Header from "../Reusables/Header";
 import { Link } from 'react-router-dom';
 // import styled from "styled-components";
 // import Checkbox from "@material-ui/core/Checkbox";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
 import PropTypes from "prop-types";
-import classNames from 'classnames';
-import InputAdornment from '@material-ui/core/InputAdornment';
+// import classNames from 'classnames';
+// import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from "@material-ui/core/styles/index";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -130,7 +129,6 @@ class Billing extends React.Component {
             <TextField
               required
               id="filled-required"
-              label="Required"
               type="text"
               label="First Name"
               className={classes.textField}
