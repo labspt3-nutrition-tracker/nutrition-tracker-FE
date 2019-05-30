@@ -71,16 +71,17 @@ class App extends React.Component {
       .then(response =>{
         this.setState({
           searchResults: response.data.hints,
-          searchInput: '',
+          searchInput: '',         
           noResultError: '',
           showModal: true
         })
+       
         console.log('thi', this.state.searchResults)
       })
       .catch(error =>{
         this.setState({
           searchInput: '',
-          noResultError: 'No result found',
+          noResultError: 'No results found',
           showModal: true,
           searchResults: []})
           console.log('error', error);
