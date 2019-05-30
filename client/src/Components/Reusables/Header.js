@@ -48,7 +48,7 @@ const Header = (props) => (
       </LogInOutContainer>
     </LogoContainer>
 
-    <AppBar updateSearch={props.updateSearch}  searchInput={props.inputSearch} getFoodData={props.getFoodData} searchResults={props.searchResults} noResultError={props.noResultError}/>
+    <AppBar updateSearch={props.updateSearch}  searchInput={props.inputSearch} getFoodData={props.getFoodData} />
   </div>
      
 );

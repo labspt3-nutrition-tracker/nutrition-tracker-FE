@@ -9,9 +9,6 @@ import { gql } from "apollo-boost";
 // import { Mutation, Query } from 'react-apollo';
 
 
-
-
-
 const LoginOrRegisterContainer = styled.div`
   background: #fcfcfb;
   display: flex;
