@@ -6,6 +6,8 @@ import JournalEntry from './JournalEntry';
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
+import "@fullcalendar/core/main.css";
+
 const JournalContainer = styled.div`
   margin: 3%;
   display: flex;
