@@ -100,8 +100,7 @@ class LoginOrRegister extends React.Component {
       headers: {authorization: idToken}
     })
 
-    client
-      .query({
+    client.query({
         query: USER_EXIST,
         variables: {
           param: "email",
