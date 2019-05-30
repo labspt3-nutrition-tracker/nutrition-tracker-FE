@@ -11,25 +11,8 @@ import StatsView from './Components/Stats/StatsView';
 import Settings from './Components/Settings';
 import AccountNav from "./Components/AccountNav";
 import BillingPlans from "./Components/Billing/BillingPlans";
+import axios from 'axios';
 
-<<<<<<< HEAD
-const App = () => {
-  return (
-    <div className="App">
-      <Header />
-      <div>
-        <Route exact path="/" component={Home} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route exact path="/billing-plan" render={() => <BillingPlans />} />
-        <Route exact path="/billing" render={() => <Billing />} />
-        <Route exact path="/stats" render={() => <StatsView />} />
-        <Route
-        exact path="/login" render={() => <Login/>} />
-        <Route
-        exact path="/settings" render={() => <Settings/>} />
-        <Route
-          path="/journal" render={() => <Journal/>} / >
-=======
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
 const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
@@ -96,11 +79,9 @@ class App extends React.Component {
             path="/journal" render={() => <Journal/>} / >
         </div>
         <Route path="/account" render={() => <AccountNav />} />
->>>>>>> 862f0f76989e389e6ec9911c3b6d1c9b7cb12eb0
       </div>
-      <Route path="/account" render={() => <AccountNav />} />
-    </div>
-  );
-};
+    )
+  };
+}
 
 export default App;

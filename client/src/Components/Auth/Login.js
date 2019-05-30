@@ -6,11 +6,7 @@ import { GoogleLogin } from 'react-google-login';
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
-<<<<<<< HEAD
-
-=======
 // import { Mutation, Query } from 'react-apollo';
->>>>>>> 862f0f76989e389e6ec9911c3b6d1c9b7cb12eb0
 
 
 
@@ -135,7 +131,7 @@ class LoginOrRegister extends React.Component {
       variables: {
         input: userObj
       }
-    }).then(response => console.log(response.data))
+    }).then(response => this.setState({toDashboard: !this.state.toDashboard}))
   }
 
   getCurrentUser = idToken => {
