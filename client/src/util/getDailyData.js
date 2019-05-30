@@ -1,9 +1,11 @@
-import { getDayDataByMealCat } from "./getCal";
+import { getDayDataByMealCat } from "./getDayData";
 
-export const getDailyData = (foodEntries, dataType) => {
-  const breakfastCalories = getDayDataByMealCat(foodEntries, "Breakfast", dataType);
-  const lunchCalories = getDayDataByMealCat(foodEntries, "Lunch", dataType);
-  const snackCalories = getDayDataByMealCat(foodEntries, "Snack", dataType);
-  const dinnerCalories = getDayDataByMealCat(foodEntries, "Dinner", dataType);
-  return [breakfastCalories, lunchCalories, snackCalories, dinnerCalories];
+export const getDailyData = (foodEntries, dataType, day) => {
+  const result = [];
+  const breakfast = getDayDataByMealCat(foodEntries, "Breakfast", dataType, day);
+  result.push(breakfast);
+  result.push(getDayDataByMealCat(foodEntries, "Lunch", dataType, day));
+  result.push(getDayDataByMealCat(foodEntries, "Snack", dataType, day));
+  result.push(getDayDataByMealCat(foodEntries, "Dinner", dataType, day));
+  return result;
 };

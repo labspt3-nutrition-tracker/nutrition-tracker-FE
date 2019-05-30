@@ -1,5 +1,6 @@
 import React from "react";
 import { GraphQLClient } from "graphql-request";
+import * as moment from "moment";
 
 import StatsDashboard from "./StatsDashboard";
 import FoodLogStats from "./FoodLogStats";
@@ -11,7 +12,7 @@ const BASE_URL = "https://nutrition-tracker-be.herokuapp.com/";
 class StatsView extends React.Component {
   state = {
     foodEntries: [],
-    chart: 1,
+    days: [moment().format("YYYY-MM-DD")],
     data: "caloriesPerServ"
   };
 
@@ -22,7 +23,6 @@ class StatsView extends React.Component {
       headers: { authorization: idToken }
     });
     const user = await client.request(GET_CURRENT_USER_QUERY);
-    console.log({ user });
     const userId = user.getCurrentUser.id;
     const variables = { userId };
     try {
@@ -33,8 +33,8 @@ class StatsView extends React.Component {
     }
   };
 
-  handleChartChange = kind => {
-    this.setState({ chart: kind });
+  handleChartChange = days => {
+    this.setState({ days: days });
   };
 
   handleDataChange = data => {
@@ -46,7 +46,7 @@ class StatsView extends React.Component {
       <>
         <div>
           <StatsDashboard chartChange={this.handleChartChange} dataChange={this.handleDataChange} />
-          <FoodLogStats foodEntries={this.state.foodEntries} days={this.state.chart} data={this.state.data} />
+          <FoodLogStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
         </div>
       </>
     );

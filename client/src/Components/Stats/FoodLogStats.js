@@ -3,9 +3,11 @@ import { Line } from "react-chartjs-2";
 import { defaults } from "react-chartjs-2";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
+import * as moment from "moment";
 
-import { getDayDataByMealCat } from "../../util/getCal";
+import { getDayDataByMealCat } from "../../util/getDayData";
 import { getDailyData } from "../../util/getDailyData";
+import { makeRandomColor } from "../../util/makeRandomColor";
 
 class WeekFoodLogStats extends Component {
   state = {
@@ -29,11 +31,12 @@ class WeekFoodLogStats extends Component {
 
   updateEntries = () => {
     const { foodEntries } = this.props;
-    if (this.props.days === 1) {
+    if (this.props.days.length === 1) {
       const labels = ["Breakfast", "Lunch", "Snack", "Dinner"];
-      const data = getDailyData(foodEntries, this.props.data);
-      console.log({ data });
-      if (data.filter(ele => ele !== 0).length > 0) this.setState({ entries: data, labels: labels });
+      const data = getDailyData(foodEntries, this.props.data, this.props.days[0]);
+      this.setState({ entries: data, labels: labels });
+    } else {
+      this.setState({ entries: [] });
     }
     // const lines = [];
     // let day = Date.now();
@@ -62,16 +65,16 @@ class WeekFoodLogStats extends Component {
     // });
   };
 
-  makeRandomColor() {
-    var c = "";
-    while (c.length < 6) {
-      c += Math.random()
-        .toString(16)
-        .substr(-6)
-        .substr(-1);
-    }
-    return "#" + c;
-  }
+  // makeRandomColor() {
+  //   var c = "";
+  //   while (c.length < 6) {
+  //     c += Math.random()
+  //       .toString(16)
+  //       .substr(-6)
+  //       .substr(-1);
+  //   }
+  //   return "#" + c;
+  // }
 
   render() {
     defaults.global.defaultFontColor = "#2196F3";
@@ -101,9 +104,8 @@ class WeekFoodLogStats extends Component {
     //   labels: meals,
     //   datasets: datasets
     // };
-    console.log("entries: ", this.state.entries);
-    const label = new Date().toDateString();
-    const lineColor = this.makeRandomColor();
+    const label = moment(this.props.days[0]).format("MMM Do YYYY");
+    const lineColor = makeRandomColor();
     const data = {
       labels: this.state.labels,
       datasets: [
@@ -117,7 +119,10 @@ class WeekFoodLogStats extends Component {
         }
       ]
     };
-    const message = Number(this.props.days) !== 1 ? "the last " + this.props.days + " days" : "today";
+    const message =
+      Number(this.props.days.length) !== 1
+        ? "the last " + this.props.days + " days"
+        : moment(this.props.days[0]).format("MMM Do YYYY");
 
     return (
       <div className={classes.root}>
@@ -126,15 +131,13 @@ class WeekFoodLogStats extends Component {
         </h2>
         {this.state.entries.length !== 0 ? (
           <Grid container justify='center' alignItems='center'>
-            {/*   <Grid item xs={4} className={classes.caloriesInfo}>
-            {this.state.entries.map(entry => (
-              <div key={entry.meal}>
-                <span className={classes.title}>{entry.meal}</span>
-                <div className={classes.value}>
-                  {entry.cal.length === 0 ? (
-                    "No Calories Entry"
-                  ) : (
-                    <>
+            <Grid item xs={4} className={classes.caloriesInfo}>
+              {this.state.entries.map((entry, i) => (
+                <div key={this.state.labels[i]}>
+                  <span className={classes.title}>{this.state.labels[i]}</span>
+                  <div className={classes.value}>
+                    {entry === 0 ? "No Entry" : <div className={classes.value}>{entry}</div>}
+                    {/* <>
                       {entry.cal.map((cal, i) => (
                         <div key={cal + i}>
                           {cal !== 0 && (
@@ -144,12 +147,11 @@ class WeekFoodLogStats extends Component {
                           )}
                         </div>
                       ))}
-                    </>
-                  )}
+                    </> */}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </Grid> */}
+              ))}
+            </Grid>
             <Grid item xs={8} className={classes.graph}>
               <h2>{this.props.data} / Meal Category</h2>
               <Line ref='chart' data={data} />
@@ -167,7 +169,8 @@ const styles = theme => ({
   root: {
     width: "100%",
     margin: "50px auto",
-    maxWidth: "1200px"
+    maxWidth: "1200px",
+    padding: "20px"
   },
   caloriesInfo: {
     display: "flex",
