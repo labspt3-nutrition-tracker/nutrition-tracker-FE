@@ -22,6 +22,11 @@ const JournalDateTitle = styled.h1`
 
   @media (max-width: 800px) {
     font-size: 1.2em;
+
+    &:after{
+      width: 20%;
+      margin-left: 45%;
+    }
   }
 
   @media( max-width: 500px){
@@ -133,7 +138,7 @@ class JournalEntry extends React.Component {
                   ? Object.keys(Snack).map((key, i) => {
                       return (
                         <div key={i}>
-                          <EntryItems> {Snack[key].food_id.foodName}</EntryItems>>
+                          <EntryItems> {Snack[key].food_id.foodName}</EntryItems>
                         </div>
                       );
                     })

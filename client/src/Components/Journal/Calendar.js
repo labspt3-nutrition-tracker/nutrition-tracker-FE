@@ -15,8 +15,6 @@ class Calendar extends React.Component {
     };
   }
 
-
-
   pickDate = arg => {
   const listedDate = arg.date
     this.setState({
@@ -24,7 +22,6 @@ class Calendar extends React.Component {
     });
     this.props.handleDateClick(moment(listedDate).format('ddd MMMM D YYYY'));
   };
-
 
 
   render() {
@@ -35,6 +32,7 @@ class Calendar extends React.Component {
           plugins={[dayGridPlugin, interactionPlugin]}
           dateClick={this.pickDate}
           selectable="true"
+          handleWindowResize="true"
         />
       </div>
     );

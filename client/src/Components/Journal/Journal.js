@@ -6,19 +6,39 @@ import JournalEntry from './JournalEntry';
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
+import "@fullcalendar/core/main.css";
+
 const JournalContainer = styled.div`
   margin: 3%;
   display: flex;
+  justify-content: space-around;
+
+  @media (max-width: 800px){
+    flex-direction: column;
+  }
 `;
 
 const JournalEntryDiv = styled.div`
   width: 25%;
+  margin-left: 3%;
+
+  @media (max-width: 800px){
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 20px;
+  }
 `;
 
 const CalendarDiv = styled.div`
-  width: 70%;
-  height: 800px;
+  width: 60%;
   border: 3px solid black;
+  margin-right: 5%;
+
+  @media (max-width: 800px){
+    width: 90%;
+    margin: 0 auto;
+  }
 `;
 
 class Journal extends React.Component {
@@ -35,13 +55,6 @@ class Journal extends React.Component {
   };
 
   componentDidMount() {
-    // var today = new Date();
-    // var dd = String(today.getDate()).padStart(2, "0");
-    // var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    // var yyyy = today.getFullYear();
-
-    // today = mm + "/" + dd + "/" + yyyy;
-    // this.setState({ datePicked: today });
     var date = moment().format('ddd MMMM D YYYY')
     this.setState({ datePicked: date });
   }

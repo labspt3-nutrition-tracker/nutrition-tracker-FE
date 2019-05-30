@@ -117,3 +117,16 @@ body {
   margin-bottom: 10px;
   font-size: 1.6rem;
 }
+
+.fc-today{
+	background: #40A798 !important;
+}
+
+.fc-highlight{
+	background: #F4B4C3 !important;
+}
+
+.fc-toolbar h2{
+	margi-top: 10px !important;
+	margin-left: 10px !important;
+}

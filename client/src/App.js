@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import Login from './Components/Auth/Login';
 import './App.css';
 import Header from './Components/Reusables/Header';
@@ -12,6 +11,7 @@ import StatsView from './Components/Stats/StatsView';
 import Settings from './Components/Settings';
 import AccountNav from "./Components/AccountNav";
 import BillingPlans from "./Components/Billing/BillingPlans";
+import axios from 'axios';
 
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
@@ -80,8 +80,8 @@ class App extends React.Component {
         </div>
         <Route path="/account" render={() => <AccountNav />} />
       </div>
-    );
+    )
   };
-};
+}
 
 export default App;
