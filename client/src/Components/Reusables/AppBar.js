@@ -83,7 +83,7 @@ const ButtonAppBar = (props) => {
             <Button color="inherit">Journal</Button>
           </NavLink>
         </Toolbar>
-        <SearchInputComponent updateSearch={props.updateSearch} searchInput={props.searchInput} getFoodData={props.getFoodData} searchResults={props.searchResults} noResultError={props.noResultError}/>
+        <SearchInputComponent updateSearch={props.updateSearch} searchInput={props.searchInput} getFoodData={props.getFoodData} />
       </AppBar>
     </MuiThemeProvider>
   );

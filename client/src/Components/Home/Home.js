@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import logo from "../../Assets/logo-white.png";
+// import logo from "../../Assets/logo-white.png";
 
-const Logo = styled.div`
-  max-width: 100px;
-`;
+// const Logo = styled.div`
+//   max-width: 100px;
+// `;
 
 const Main = styled.div`
   padding-top: 100px;
@@ -28,11 +28,6 @@ const Features = styled.div`
 const Home = () => (
   <div className="home">
     <div className="container">
-      <header className="header-home">
-        <Logo>
-          <img src={logo} alt="Created my free logo at LogoMakr.com" />
-        </Logo>
-      </header>
       <Main>
         <div className="home-text">
           <Tagline>

@@ -11,13 +11,6 @@ const StyledButton = withStyles({
     }
 })(Fab);
 
-const StyledLogoutButton = withStyles({
-    root: {
-        background: '#40A798',
-        width: '100px',
-        height:'50px'
-    }
-})(Fab);
 
 const SettingsContainer = styled.div`
     display:flex;
@@ -28,27 +21,11 @@ const SettingsContainer = styled.div`
     align-content: center;
 `;
 
-const LogoutContainer = styled.div`
-    display:flex;
-    justify-content:center;
-    width:100%;
-    margin-bottom:50px;
-`;
-
 
 const Settings = props => {
     return(
         <>
             <SettingsContainer>
-            
-                <LogoutContainer>
-                    <StyledLogoutButton
-                    variant="extended"
-                    size="large"
-                    >
-                    Logout
-                    </StyledLogoutButton>
-                </LogoutContainer>
                 <form>
                     <h2 style={{marginBottom:20}}>Body Goals</h2>
                     <div style={{marginBottom:50}}>

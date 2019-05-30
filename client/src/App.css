@@ -44,7 +44,7 @@ q:before, q:after {
 }
 table {
 	border-collapse: collapse;
-	border-spacing: 0;
+  border-spacing: 0;
 }
 
 
@@ -127,6 +127,12 @@ body {
 }
 
 .fc-toolbar h2{
-	margi-top: 10px !important;
+	margin-top: 10px !important;
 	margin-left: 10px !important;
 }
+
+.fc, .fc-view-container {
+  z-index: -1 !important;
+}
+
+

@@ -2,7 +2,10 @@ import React from "react";
 import AppBar from "./AppBar";
 import styled from "styled-components";
 import logo from "../../Assets/logo-black.png";
-import { NavLink } from "react-router-dom";
+import {ApolloConsumer } from 'react-apollo';
+// import { GoogleLogout } from 'react-google-login';
+import { GoogleLogin } from 'react-google-login';
+import { NavLink, Redirect } from "react-router-dom";
 
 
 const LogoContainer = styled.div`
@@ -41,13 +44,15 @@ const Header = (props) => (
         <NavLink to="/login">
           <p>Login</p>
         </NavLink>
-        <p> Sign out</p>
+        <p> Logout </p>
       </LogInOutContainer>
     </LogoContainer>
 
-
-    <AppBar updateSearch={props.updateSearch}  searchInput={props.inputSearch} getFoodData={props.getFoodData} searchResults={props.searchResults} noResultError={props.noResultError}/>
+    <AppBar updateSearch={props.updateSearch}  searchInput={props.inputSearch} getFoodData={props.getFoodData} />
   </div>
+     
 );
+
+
 
 export default Header;
