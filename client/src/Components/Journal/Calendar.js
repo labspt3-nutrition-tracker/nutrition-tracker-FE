@@ -1,4 +1,5 @@
 import React from "react";
+import moment from 'moment';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -15,14 +16,13 @@ class Calendar extends React.Component {
   }
 
   pickDate = arg => {
-    console.log(arg.date);
+  const listedDate = arg.date
     this.setState({
-      date: arg.date
+      date: listedDate
     });
-    console.log(this.state.date);
-    this.props.handleDateClick(arg.dateStr);
-    console.log("date props:", this.props.datePicked);
+    this.props.handleDateClick(moment(listedDate).format('ddd MMMM D YYYY'));
   };
+
 
   render() {
     return (
@@ -32,6 +32,7 @@ class Calendar extends React.Component {
           plugins={[dayGridPlugin, interactionPlugin]}
           dateClick={this.pickDate}
           selectable="true"
+          handleWindowResize="true"
         />
       </div>
     );

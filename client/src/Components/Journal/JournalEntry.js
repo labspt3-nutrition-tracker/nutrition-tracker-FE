@@ -1,4 +1,53 @@
 import React from "react";
+import styled from 'styled-components';
+
+const JournalDateTitle = styled.h1`
+  font-family: 'Oxygen', sans-serif;
+  font-size: 2em;
+  color: #2C363F;
+  margin-bottom: 5px;
+
+  &:after{
+    border-bottom: 4px solid #40A798;
+    display: block;
+    margin-top: 3px;
+    margin-left: 15%;
+    content: " ";
+	  width: 45%;
+  }
+
+  @media (max-width: 1200px){
+    font-size: 1.7em;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 1.2em;
+
+    &:after{
+      width: 20%;
+      margin-left: 45%;
+    }
+  }
+
+  @media( max-width: 500px){
+    font-size: 1em;
+    font-weight: bold;
+  }
+`;
+
+const CategoryTitle = styled.h1`
+  padding-top: 15px;
+  font-size: 1.7em;
+  color: #2C363F;
+  font-family: 'Oxygen', sans-serif;
+  padding-bottom: 20px;
+`;
+
+const EntryItems = styled.p`
+  color: #40A798;
+  font-weight: 500;
+`;
+
 
 class JournalEntry extends React.Component {
   constructor(props) {
@@ -11,13 +60,12 @@ class JournalEntry extends React.Component {
     };
   }
 
-
   render() {
     const datePicked = this.props.datePicked;
     console.log('journal entry', this.state.foodEntries)
     const ModifiedEntry = this.state.foodEntries.filter(function(entry){
          return entry.date === datePicked;
-    
+
      });
      console.log('modified in journalEntry: ', ModifiedEntry)
 
@@ -40,74 +88,61 @@ class JournalEntry extends React.Component {
     console.log(this.props.foodEntries)
 
     console.log('calendar in journalEntry: ',this.props.datePicked)
-    
-   
+
+
 
     return (
-     
       <div>
-        <h1>{this.props.datePicked}</h1>
-        {/* {ModifiedEntry.length > 0 
-          ? 
-          Object.keys(ModifiedEntry).map(function(key) {
-            return (
-              <div key={ModifiedEntry[key].food_id.id}>
-                <p> {ModifiedEntry[key].food_id.foodName}</p>
-              </div>
-            );
-          })
-        : "No entries have been added for today"} */}
-       
-       
-        <h1> Breakfast</h1>
+          <JournalDateTitle>{this.props.datePicked}</JournalDateTitle>
+
+        <CategoryTitle> Breakfast</CategoryTitle>
         <div>
-  
-                {Breakfast.length > 0
-                  ? Object.keys(Breakfast).map((key, i) => {
-                      return (
+          {Breakfast.length > 0
+            ? Object.keys(Breakfast).map((key, i) => {
+              return (
                         <div key={i}>
-                          <p> {Breakfast[key].food_id.foodName}</p>
+                          <EntryItems> {Breakfast[key].food_id.foodName}</EntryItems>
                         </div>
                       );
                     })
-                  : "No Breakfast entries have been added"}
+                  : <EntryItems>No Breakfast entries have been added</EntryItems>}
               </div>
-              <h2> Lunch</h2>
+              <CategoryTitle> Lunch</CategoryTitle>
               <div>
                 {Lunch.length > 0
                   ? Object.keys(Lunch).map((key, i) => {
                       return (
                         <div key={i}>
-                          <p> {Lunch[key].food_id.foodName}</p>
+                          <EntryItems> {Lunch[key].food_id.foodName}</EntryItems>
                         </div>
                       );
                     })
-                  : "No Lunch entries have been added"}
+                  : <EntryItems> No Lunch entries have been added</EntryItems>}
               </div>
-              <h1>Dinner</h1>
+              <CategoryTitle>Dinner</CategoryTitle>
               <div>
                 {Dinner.length > 0
                   ? Object.keys(Dinner).map((key, i) => {
                       return (
                         <div key={i}>
-                          <p> {Dinner[key].food_id.foodName}</p>
+                          <EntryItems> {Dinner[key].food_id.foodName}</EntryItems>
                         </div>
                       );
                     })
-                  : "No Dinner entries have been added"}
+                  : <EntryItems>No Dinner entries have been added</EntryItems>}
               </div>
 
-              <h1>Snacks</h1>
+              <CategoryTitle>Snacks</CategoryTitle>
               <div>
                 {Snack.length > 0
                   ? Object.keys(Snack).map((key, i) => {
                       return (
                         <div key={i}>
-                          <p> {Snack[key].food_id.foodName}</p>
+                          <EntryItems> {Snack[key].food_id.foodName}</EntryItems>
                         </div>
                       );
                     })
-                  : "No Snacks have been added"}
+                  : <EntryItems>No Snacks have been added</EntryItems>}
               </div>
             </div>
     );
