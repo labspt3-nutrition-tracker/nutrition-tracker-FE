@@ -12,6 +12,7 @@ import Settings from './Components/Settings';
 import AccountNav from "./Components/AccountNav";
 import BillingPlans from "./Components/Billing/BillingPlans";
 
+<<<<<<< HEAD
 const App = () => {
   return (
     <div className="App">
@@ -28,6 +29,74 @@ const App = () => {
         exact path="/settings" render={() => <Settings/>} />
         <Route
           path="/journal" render={() => <Journal/>} / >
+=======
+
+const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
+const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
+
+class App extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      searchInput:'',
+      searchResults: [],
+      noResultError: ''
+    }
+  }
+
+  updateSearch = e => {
+    this.setState({
+      searchInput: e.target.value
+    })
+    console.log("updateSearch", this.state.searchInput)
+  }
+
+  getFoodData = food => {
+    food = this.state.searchInput;
+    let encodedFood = food.replace(' ', '%20')
+    console.log(encodedFood)
+    console.log(EDAMAM_API_ID)
+    axios
+      .get(`https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`)
+      .then(response =>{
+        this.setState({
+          searchResults: response.data.hints,
+          searchInput: '',
+          noResultError: ''})
+      })
+      .catch(error =>{
+        this.setState({
+          searchInput: '',
+          noResultError: 'No result found',
+          searchResults: []})
+        console.log(this.state.noResultError)
+      })
+
+
+  }
+
+  render(){
+    return (
+      <div className="App">
+        <Header searchInput={this.state.searchInput} updateSearch={this.updateSearch}
+          getFoodData={this.getFoodData}
+          searchResults={this.state.searchResults}
+          noResultError={this.state.noResultError} />
+        <div>
+          <Route exact path="/" component={Home} />
+          <Route path="/dashboard" component={Dashboard} />
+          <Route exact path="/billing-plan" render={() => <BillingPlans />} />
+          <Route exact path="/billing" render={() => <Billing />} />
+          <Route exact path="/stats" render={() => <StatsView />} />
+          <Route
+          exact path="/login" render={() => <Login/>} />
+          <Route
+          exact path="/settings" render={() => <Settings/>} />
+          <Route
+            path="/journal" render={() => <Journal/>} / >
+        </div>
+        <Route path="/account" render={() => <AccountNav />} />
+>>>>>>> 862f0f76989e389e6ec9911c3b6d1c9b7cb12eb0
       </div>
       <Route path="/account" render={() => <AccountNav />} />
     </div>
