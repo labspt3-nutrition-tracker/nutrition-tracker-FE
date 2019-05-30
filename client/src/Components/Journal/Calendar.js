@@ -15,19 +15,14 @@ class Calendar extends React.Component {
     };
   }
 
-  
+
 
   pickDate = arg => {
   const listedDate = arg.date
-    console.log(listedDate);
     this.setState({
       date: listedDate
     });
-    console.log(this.state.date);
-    console.log(arg.dateStr)
     this.props.handleDateClick(moment(listedDate).format('ddd MMMM D YYYY'));
- 
-    console.log("date props:", this.props.datePicked);
   };
 
 

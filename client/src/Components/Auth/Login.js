@@ -1,7 +1,7 @@
 import React from "react";
 import LoginForm from "./LoginForm";
 import { Redirect } from 'react-router-dom'
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
@@ -117,6 +117,20 @@ class LoginOrRegister extends React.Component {
      }
    }).then(response => console.log(response.data))
  }
+
+  // logout = () => {
+  //   localStorage.removeItem(this.idToken);
+  //   this.props.history.push('/login');
+  //   console.log("success?", this.id_token);
+  // }
+
+  // onLogoutSuccess = () => {
+  //   localStorage.removeItem('idToken');
+  //   this.props.history.push('/login');
+  //   console.log("success?", this.id_token);
+  // }
+
+
  render(){
    if (this.state.toDashboard === true){
      return <Redirect to="/dashboard"/>
@@ -133,13 +147,17 @@ class LoginOrRegister extends React.Component {
                      style={{height:10}}
                      clientId='1047286164516-jv47gpee2568sc3bindc9ra3vua101t3.apps.googleusercontent.com'
                      onSuccess={this.onSuccess}
-                     /> )
+                     /> 
+                     ) 
                }
+       
              </div>
            </LoginOrRegisterForm>
        </FormContainer>
      </LoginOrRegisterContainer>
+
    );
+
  }
 }
 
