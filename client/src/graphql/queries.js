@@ -15,6 +15,9 @@ query($userId: ID!)
     food_id {
       foodName
       caloriesPerServ
+      fats
+      proteins
+      carbs
     }
     meal_category_id {
       mealCategoryName

@@ -130,7 +130,7 @@ class LoginOrRegister extends React.Component {
               ) : (
                 <GoogleLogin
                   style={{ height: 10 }}
-                  clientId='1047286164516-jv47gpee2568sc3bindc9ra3vua101t3.apps.googleusercontent.com'
+                  clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
                   onSuccess={this.onSuccess}
                 />
               )}
