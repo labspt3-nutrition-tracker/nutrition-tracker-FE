@@ -21,14 +21,42 @@ const ADD_EXERENTRY = gql`
   }
 `;
 
+const GET_CURRENT = gql`
+  query getCurrentUser {
+    getCurrentUser {
+      id
+      email
+    }
+  }
+`;
+
 class ExerForm extends Component {
   state = {
     newExerEntry: {
       exerciseEntryDate: "",
       exerciseName: "",
-      caloriesBurned: null,
-      exercise_entry_user_id: 2
+      caloriesBurned: "",
+      exercise_entry_user_id: 0
     }
+  };
+
+  getCurrentUser = idToken => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    client
+      .query({
+        query: GET_CURRENT
+      })
+      .then(response => this.setState({
+        newExerEntry: { 
+          ...this.state.newExerEntry,
+          exercise_entry_user_id: response.data.getCurrentUser.id
+        }
+      }))
+      .catch(err => console.log(err));
   };
 
   addExerEntry = e => {
@@ -71,9 +99,10 @@ class ExerForm extends Component {
   };
 
   render() {
+    this.getCurrentUser(localStorage.getItem("token"));
     return (
       <Form>
-        <label for="exerciseName">Name of Exercise</label>
+        <label htmlFor="exerciseName">Name of Exercise</label>
         <input
           className="form-field"
           type="text"
@@ -81,7 +110,7 @@ class ExerForm extends Component {
           value={this.state.newExerEntry.exerciseName}
           onChange={this.onInputChange}
         />
-        <label for="date">Date</label>
+        <label htmlFor="date">Date</label>
         <input
           className="form-field"
           type="date"
@@ -89,7 +118,7 @@ class ExerForm extends Component {
           value={this.state.newExerEntry.exerciseEntryDate}
           onChange={this.onInputChange}
         />
-        <label for="caloriesBurned">Calories Burned</label>
+        <label htmlFor="caloriesBurned">Calories Burned</label>
         <input
           className="form-field"
           type="number"
