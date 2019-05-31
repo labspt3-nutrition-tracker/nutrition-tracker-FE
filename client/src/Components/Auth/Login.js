@@ -107,6 +107,10 @@ class LoginOrRegister extends React.Component {
       .catch(err => console.log(err));
   };
 
+  onFailure = async error => {
+    console.log(error)
+  }
+
   handleChange = (label, value) => {
     this.setState({
       [label]: value
@@ -159,6 +163,7 @@ class LoginOrRegister extends React.Component {
                   style={{ height: 10 }}
                   clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
                   onSuccess={this.onSuccess}
+                  onFailure={this.onFailure}
                 />
               )}
             </div>

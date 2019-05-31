@@ -44,6 +44,7 @@ class ExerEntry extends React.Component {
           exerciseEntryDate
           exerciseName
           caloriesBurned
+          id
         }
       }
     `;
@@ -80,7 +81,7 @@ class ExerEntry extends React.Component {
                 return (
                   <div>
                     {exerEntries.map(entry => (
-                      <ExerciseActivity>
+                      <ExerciseActivity key={entry.id}>
                         <div>Activity: {entry.exerciseName}</div>
                         <div>Calories burned: {entry.caloriesBurned}</div>
                       </ExerciseActivity>
