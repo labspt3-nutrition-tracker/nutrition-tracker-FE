@@ -89,7 +89,7 @@ class LoginOrRegister extends React.Component {
     this.getCurrentUser(test);
 
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com/",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
@@ -108,6 +108,10 @@ class LoginOrRegister extends React.Component {
       .catch(err => console.log(err));
   };
 
+  onFailure = async error => {
+    console.log(error);
+  };
+
   handleChange = (label, value) => {
     this.setState({
       [label]: value
@@ -116,7 +120,7 @@ class LoginOrRegister extends React.Component {
 
   createUser = userObj => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com/"
+      uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
     client
@@ -131,7 +135,7 @@ class LoginOrRegister extends React.Component {
 
   getCurrentUser = idToken => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com/",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
@@ -160,6 +164,7 @@ class LoginOrRegister extends React.Component {
                   style={{ height: 10 }}
                   clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
                   onSuccess={this.onSuccess}
+                  onFailure={this.onFailure}
                 />
               )}
             </div>

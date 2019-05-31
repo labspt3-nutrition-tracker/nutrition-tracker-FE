@@ -48,7 +48,7 @@ class FoodEntry extends React.Component {
               const month = dateToday.getMonth();
               const day = dateToday.getDate();
               const year = dateToday.getFullYear();
-              console.log(data)
+              // console.log(data)
               let foodEntries = data.getFoodEntriesByUserId;
 
               foodEntries = foodEntries.filter(entry => {
