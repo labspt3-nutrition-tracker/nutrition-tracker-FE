@@ -36,7 +36,8 @@ class WeekFoodLogStats extends Component {
       const data = getDailyData(foodEntries, this.props.data, this.props.days[0]);
       this.setState({ entries: data, labels: labels });
     } else {
-      this.setState({ entries: [] });
+      console.log(this.props.days);
+      // this.setState({ entries: [] });
     }
     // const lines = [];
     // let day = Date.now();
@@ -64,17 +65,6 @@ class WeekFoodLogStats extends Component {
     //   lines: lines
     // });
   };
-
-  // makeRandomColor() {
-  //   var c = "";
-  //   while (c.length < 6) {
-  //     c += Math.random()
-  //       .toString(16)
-  //       .substr(-6)
-  //       .substr(-1);
-  //   }
-  //   return "#" + c;
-  // }
 
   render() {
     defaults.global.defaultFontColor = "#2196F3";
@@ -121,7 +111,7 @@ class WeekFoodLogStats extends Component {
     };
     const message =
       Number(this.props.days.length) !== 1
-        ? "the last " + this.props.days + " days"
+        ? "the last " + this.props.days.length + " days"
         : moment(this.props.days[0]).format("MMM Do YYYY");
 
     return (
@@ -136,21 +126,16 @@ class WeekFoodLogStats extends Component {
                 <div key={this.state.labels[i]}>
                   <span className={classes.title}>{this.state.labels[i]}</span>
                   <div className={classes.value}>
-                    {entry === 0 ? "No Entry" : <div className={classes.value}>{entry}</div>}
-                    {/* <>
-                      {entry.cal.map((cal, i) => (
-                        <div key={cal + i}>
-                          {cal !== 0 && (
-                            <div className={classes.value}>
-                              - {new Date(lines[i]).toDateString()}: {cal} kcal
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </> */}
+                    {entry === 0 ? "No Entry" : <div className={classes.value}>{entry.toFixed(2)}</div>}
                   </div>
                 </div>
               ))}
+              <div>
+                <span className={classes.title}>
+                  Total {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data}
+                </span>
+                <div className={classes.value}>{this.state.entries.reduce((total, d) => total + d, 0).toFixed(2)}</div>
+              </div>
             </Grid>
             <Grid item xs={8} className={classes.graph}>
               <h2>{this.props.data} / Meal Category</h2>
