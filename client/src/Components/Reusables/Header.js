@@ -3,8 +3,6 @@ import AppBar from "./AppBar";
 import styled from "styled-components";
 import logo from "../../Assets/logo-black.png";
 import {ApolloConsumer } from 'react-apollo';
-// import { GoogleLogout } from 'react-google-login';
-import { GoogleLogin } from 'react-google-login';
 import { NavLink, Redirect } from "react-router-dom";
 
 
