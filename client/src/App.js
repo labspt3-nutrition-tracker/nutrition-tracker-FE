@@ -22,10 +22,7 @@ const customStyles = {
     bottom                : 'auto',
     marginRight           : '-50%',
     transform             : 'translate(-50%, -50%)',
-    
-  },
-    overlay: {
-    zIndex: 100000
+    position: 'absolute'
   }
 };
 
@@ -108,7 +105,7 @@ class App extends React.Component {
           onRequestClose={this.closeModal}
          
         >
-  { this.state.searchResults  && Object.keys(this.state.searchResults).map((obj, i) => {
+  { this.state.searchResults && Object.keys(this.state.searchResults).map((obj, i) => {
      return (
        <div key={i}>
          <p> {this.state.searchResults[obj].food.label}</p>
