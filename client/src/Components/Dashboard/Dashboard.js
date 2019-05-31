@@ -20,6 +20,7 @@ class Dashboard extends Component {
   };
 
   render() {
+    console.log('dash', this.props)
     return (
       <div className="dashboard">
         <div className="container">

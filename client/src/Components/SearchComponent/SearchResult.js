@@ -28,6 +28,7 @@ class SearchResults extends React.Component{
     })
   }
 
+
   render(){
     const searchResults = this.props.searchResults;
     const noResultError = this.props.noResultError;
