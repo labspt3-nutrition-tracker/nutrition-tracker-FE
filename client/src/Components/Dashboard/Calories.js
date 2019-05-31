@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+// import ApolloClient from "apollo-boost";
+// import { idToken } from "../Auth/Login";
 
 const CalCon = styled.div`
   padding: 20px;
@@ -37,75 +39,99 @@ class Calories extends React.Component {
       }
     }
     `;
+    const CURRENT_USERID = gql`
+      query {
+        getCurrentUser {
+          id
+        }
+      }
+    `;
 
     return (
       <div>
-        <Query query={CAL_QUERY}>
+        <Query query={CURRENT_USERID}>
           {({ loading, error, data }) => {
-            if (loading) return <div>Loading...</div>;
-            if (error) return <div>Error</div>;
-            const dateToday = new Date();
-            const month = dateToday.getMonth();
-            const day = dateToday.getDate();
-            const year = dateToday.getFullYear();
-            let foodEntries = data.getFoodEntriesByUserId;
-            foodEntries = foodEntries.filter(entry => {
-              const dateEntry = new Date(entry.date);
-              const entryMonth = dateEntry.getMonth();
-              const entryDay = dateEntry.getDate();
-              const entryYear = dateEntry.getFullYear();
-              return (
-                entryMonth === month && entryDay === day && entryYear === year
-              );
-            });
-
-            const calGoal = this.state.calGoal;
-            let mealCal = [];
-            console.log("foodEntries:", foodEntries);
-            if (foodEntries.length === 0) {
-              const mealCal = 0;
-              const remainCal = calGoal - mealCal;
-              return (
-                <CalCon>
-                  <div className="cal-current">
-                    <CalTitle>Current Calories Today</CalTitle>
-                    <CalAmt>{mealCal}</CalAmt>
-                  </div>
-                  <div className="cal-remain">
-                    <CalTitle>Remaining Calories Today</CalTitle>
-                    <CalAmt>{remainCal}</CalAmt>
-                  </div>
-                  <div className="cal-goal">
-                    <CalTitle>Daily Calorie Goal</CalTitle>
-                    <CalAmt>{calGoal}</CalAmt>
-                  </div>
-                </CalCon>
-              );
-            } else {
-              foodEntries.map(entry =>
-                mealCal.push(entry.food_id.caloriesPerServ * entry.servingQty)
-              );
-              mealCal = mealCal.reduce((a, b) => {
-                return a + b;
-              });
-              const remainCal = calGoal - mealCal;
-              return (
-                <CalCon>
-                  <div className="cal-current">
-                    <CalTitle>Current Calories Today</CalTitle>
-                    <CalAmt>{mealCal}</CalAmt>
-                  </div>
-                  <div className="cal-remain">
-                    <CalTitle>Remaining Calories Today</CalTitle>
-                    <CalAmt>{remainCal}</CalAmt>
-                  </div>
-                  <div className="cal-goal">
-                    <CalTitle>Daily Calorie Goal</CalTitle>
-                    <CalAmt>{calGoal}</CalAmt>
-                  </div>
-                </CalCon>
-              );
+            if (loading) {
+              console.log("loading...")
             }
+            if (error) {
+              console.log(error, "error...")
+            }
+            console.log("current user:", data);
+            return (
+              <Query query={CAL_QUERY}>
+                {({ loading, error, data }) => {
+                  if (loading) return <div>Loading...</div>;
+                  if (error) return <div>Error</div>;
+                  const dateToday = new Date();
+                  const month = dateToday.getMonth();
+                  const day = dateToday.getDate();
+                  const year = dateToday.getFullYear();
+                  let foodEntries = data.getFoodEntriesByUserId;
+                  foodEntries = foodEntries.filter(entry => {
+                    const dateEntry = new Date(entry.date);
+                    const entryMonth = dateEntry.getMonth();
+                    const entryDay = dateEntry.getDate();
+                    const entryYear = dateEntry.getFullYear();
+                    return (
+                      entryMonth === month &&
+                      entryDay === day &&
+                      entryYear === year
+                    );
+                  });
+
+                  const calGoal = this.state.calGoal;
+                  let mealCal = [];
+                  // console.log("foodEntries:", foodEntries);
+                  if (foodEntries.length === 0) {
+                    const mealCal = 0;
+                    const remainCal = calGoal - mealCal;
+                    return (
+                      <CalCon>
+                        <div className="cal-current">
+                          <CalTitle>Current Calories Today</CalTitle>
+                          <CalAmt>{mealCal}</CalAmt>
+                        </div>
+                        <div className="cal-remain">
+                          <CalTitle>Remaining Calories Today</CalTitle>
+                          <CalAmt>{remainCal}</CalAmt>
+                        </div>
+                        <div className="cal-goal">
+                          <CalTitle>Daily Calorie Goal</CalTitle>
+                          <CalAmt>{calGoal}</CalAmt>
+                        </div>
+                      </CalCon>
+                    );
+                  } else {
+                    foodEntries.map(entry =>
+                      mealCal.push(
+                        entry.food_id.caloriesPerServ * entry.servingQty
+                      )
+                    );
+                    mealCal = mealCal.reduce((a, b) => {
+                      return a + b;
+                    });
+                    const remainCal = calGoal - mealCal;
+                    return (
+                      <CalCon>
+                        <div className="cal-current">
+                          <CalTitle>Current Calories Today</CalTitle>
+                          <CalAmt>{mealCal}</CalAmt>
+                        </div>
+                        <div className="cal-remain">
+                          <CalTitle>Remaining Calories Today</CalTitle>
+                          <CalAmt>{remainCal}</CalAmt>
+                        </div>
+                        <div className="cal-goal">
+                          <CalTitle>Daily Calorie Goal</CalTitle>
+                          <CalAmt>{calGoal}</CalAmt>
+                        </div>
+                      </CalCon>
+                    );
+                  }
+                }}
+              </Query>
+            );
           }}
         </Query>
       </div>

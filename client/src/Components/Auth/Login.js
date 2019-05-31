@@ -89,7 +89,7 @@ class LoginOrRegister extends React.Component {
     this.getCurrentUser(test);
 
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
@@ -115,7 +115,7 @@ class LoginOrRegister extends React.Component {
 
   createUser = userObj => {
     const client = new ApolloClient({
-      uri: "http://localhost:4000"
+      uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
     client
@@ -130,7 +130,7 @@ class LoginOrRegister extends React.Component {
 
   getCurrentUser = idToken => {
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
