@@ -28,9 +28,9 @@ class WeekFoodLogStats extends Component {
   };
 
   updateEntries = () => {
-    const { foodEntries } = this.props;
-    const data = getDailyData(foodEntries, this.props.data, this.props.days[0]);
-    this.setState({ entries: data });
+    const { foodEntries, data, days } = this.props;
+    const entries = getDailyData(foodEntries, data, days[0]);
+    this.setState({ entries: entries });
   };
 
   render() {

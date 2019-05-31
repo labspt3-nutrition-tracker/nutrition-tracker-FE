@@ -89,11 +89,12 @@ class LoginOrRegister extends React.Component {
     this.getCurrentUser(test);
 
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
 
-    client.query({
+    client
+      .query({
         query: USER_EXIST,
         variables: {
           param: "email",
@@ -115,7 +116,7 @@ class LoginOrRegister extends React.Component {
 
   createUser = userObj => {
     const client = new ApolloClient({
-      uri: "http://localhost:4000"
+      uri: "https://nutrition-tracker-be.herokuapp.com/"
     });
 
     client
@@ -130,7 +131,7 @@ class LoginOrRegister extends React.Component {
 
   getCurrentUser = idToken => {
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
 
@@ -139,7 +140,7 @@ class LoginOrRegister extends React.Component {
         query: GET_CURRENT
       })
       .then(response => {
-        localStorage.setItem("currentUser", response.data.getCurrentUser.id)
+        localStorage.setItem("currentUser", response.data.getCurrentUser.id);
       })
       .catch(err => console.log(err));
   };

@@ -11,7 +11,7 @@ import { makeRandomColor } from "../../util/makeRandomColor";
 class ManyDaysStats extends Component {
   state = {
     entries: [],
-    labels: this.props.days
+    labels: []
   };
 
   componentDidMount = () => {
@@ -28,15 +28,19 @@ class ManyDaysStats extends Component {
   };
 
   updateEntries = () => {
-    const { foodEntries } = this.props;
-    const data = getTotalData(foodEntries, this.props.data, this.props.days);
-    this.setState({ entries: data });
+    const { foodEntries, data } = this.props;
+    let { days } = this.props;
+    if (days.length > 7 && days.length <= 30) {
+      days = days.filter((day, i) => i % 3 === 0);
+    }
+    const entries = getTotalData(foodEntries, data, days);
+    this.setState({ entries: entries, labels: days });
   };
 
   render() {
     defaults.global.defaultFontColor = "#2196F3";
     const { classes } = this.props;
-    const labels = this.props.days.map(day => moment(day).format("MMM Do YYYY"));
+    const labels = this.state.labels.map(day => moment(day).format("MMM Do YYYY"));
     const data = {
       labels: labels,
       datasets: [
@@ -55,7 +59,7 @@ class ManyDaysStats extends Component {
     return (
       <div className={classes.root}>
         <h2 className={classes.header}>
-          Total {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data} for the last
+          Total {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data} for the last{" "}
           {this.props.days.length} days
         </h2>
         {this.state.entries.length !== 0 ? (
@@ -71,7 +75,6 @@ class ManyDaysStats extends Component {
             <Grid item xs={8} className={classes.graph}>
               <Bar
                 data={data}
-                // width={100}
                 height={350}
                 options={{
                   maintainAspectRatio: false
@@ -118,8 +121,8 @@ const styles = theme => ({
   dataInfo: {
     display: "flex",
     justifyContent: "flex-start",
-    alignItems: "center",
-    height: "50px"
+    alignItems: "center"
+    // borderBottom: "1px solid #F4B4C3"
   }
 });
 
