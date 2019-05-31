@@ -138,7 +138,9 @@ class LoginOrRegister extends React.Component {
       .query({
         query: GET_CURRENT
       })
-      .then(response => console.log(response.data))
+      .then(response => {
+        localStorage.setItem("currentUser", response.data.getCurrentUser.id)
+      })
       .catch(err => console.log(err));
   };
   render() {
