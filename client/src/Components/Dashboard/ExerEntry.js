@@ -7,7 +7,7 @@ const ExerciseActivity = styled.div`
   padding: 10px;
 `;
 
-class FoodEntry extends React.Component {
+class ExerEntry extends React.Component {
   state = {
     currentUser: 2
   };
@@ -30,16 +30,13 @@ class FoodEntry extends React.Component {
           <Query query={EXER_QUERY}>
             {({ loading, error, data }) => {
               if (loading) return <div>Fetching Entries</div>;
-
               if (error) return <div>Error</div>;
-
               const dateToday = new Date();
               const month = dateToday.getMonth();
               const day = dateToday.getDate();
               const year = dateToday.getFullYear();
-              // console.log(data);
+              console.log(data);
               let exerEntries = data.getExerciseEntriesByUserId;
-
               exerEntries = exerEntries.filter(entry => {
                 const dateEntry = new Date(entry.exerciseEntryDate);
                 const entryMonth = dateEntry.getMonth();
@@ -49,9 +46,7 @@ class FoodEntry extends React.Component {
                   entryMonth === month && entryDay === day && entryYear === year
                 );
               });
-
-              // console.log(exerEntries);
-
+              console.log(exerEntries);
               if (exerEntries.length === 0) {
                 return <div>No exercise entered today.</div>;
               } else {
@@ -73,5 +68,4 @@ class FoodEntry extends React.Component {
     );
   }
 }
-
-export default FoodEntry;
+export default ExerEntry;
