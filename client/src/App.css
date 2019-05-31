@@ -126,13 +126,6 @@ body {
 	background: #F4B4C3 !important;
 }
 
-.fc-toolbar h2{
-	margin-top: 10px !important;
-	margin-left: 10px !important;
+.fc-view-container {
+  z-index: 0;
 }
-
-.fc, .fc-view-container {
-  z-index: -1 !important;
-}
-
-

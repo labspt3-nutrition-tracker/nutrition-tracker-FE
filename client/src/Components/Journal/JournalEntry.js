@@ -70,19 +70,19 @@ class JournalEntry extends React.Component {
      console.log('modified in journalEntry: ', ModifiedEntry)
 
     // set as new foodentries
-    const Breakfast = ModifiedEntry.filter(function(entry) {
+    const Breakfast = ModifiedEntry.filter((entry) => {
       return entry.meal_category_id.mealCategoryName === "Breakfast";
     });
 
-    const Lunch = ModifiedEntry.filter(function(entry) {
+    const Lunch = ModifiedEntry.filter((entry)  => {
       return entry.meal_category_id.mealCategoryName === "Lunch";
     });
 
-    const Dinner = ModifiedEntry.filter(function(entry) {
+    const Dinner = ModifiedEntry.filter((entry) => {
       return entry.meal_category_id.mealCategoryName === "Dinner";
     });
 
-    const Snack = ModifiedEntry.filter(function(entry) {
+    const Snack = ModifiedEntry.filter((entry) => {
       return entry.meal_category_id.mealCategoryName === "Snack";
     });
     console.log(this.props.foodEntries)
