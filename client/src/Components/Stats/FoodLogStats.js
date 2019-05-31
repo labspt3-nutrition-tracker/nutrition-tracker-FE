@@ -3,12 +3,16 @@ import { Line } from "react-chartjs-2";
 import { defaults } from "react-chartjs-2";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
+import * as moment from "moment";
 
-import { calFunctions } from "../../util/getCal";
+import { getDayDataByMealCat } from "../../util/getDayData";
+import { getDailyData } from "../../util/getDailyData";
+import { makeRandomColor } from "../../util/makeRandomColor";
 
 class WeekFoodLogStats extends Component {
   state = {
     entries: [],
+    labels: [],
     lines: []
   };
 
@@ -17,127 +21,130 @@ class WeekFoodLogStats extends Component {
   };
 
   componentDidUpdate = prevProps => {
-    if (prevProps.foodEntries !== this.props.foodEntries || prevProps.days !== this.props.days) this.updateEntries();
+    if (
+      prevProps.foodEntries !== this.props.foodEntries ||
+      prevProps.days !== this.props.days ||
+      prevProps.data !== this.props.data
+    )
+      this.updateEntries();
   };
 
   updateEntries = () => {
-    const lines = [];
-    let day = Date.now();
-    for (let i = 0; i < Number(this.props.days); i++) {
-      lines.push(day);
-      day = day - 86400000;
-    }
     const { foodEntries } = this.props;
-    const breakfastCalories = [];
-    const lunchCalories = [];
-    const dinnerCalories = [];
-    const snackCalories = [];
-    for (let i = 0; i < Number(this.props.days); i++) {
-      breakfastCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Breakfast", lines[i]));
-      lunchCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Lunch", lines[i]));
-      dinnerCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Dinner", lines[i]));
-      snackCalories.push(calFunctions.getDayCalByMealCat(foodEntries, "Snack", lines[i]));
+    if (this.props.days.length === 1) {
+      const labels = ["Breakfast", "Lunch", "Snack", "Dinner"];
+      const data = getDailyData(foodEntries, this.props.data, this.props.days[0]);
+      this.setState({ entries: data, labels: labels });
+    } else {
+      console.log(this.props.days);
+      // this.setState({ entries: [] });
     }
-    this.setState({
-      entries: [
-        { meal: "Breakfast", cal: breakfastCalories },
-        { meal: "Lunch", cal: lunchCalories },
-        { meal: "Dinner", cal: dinnerCalories },
-        { meal: "Snack", cal: snackCalories }
-      ],
-      lines: lines
-    });
+    // const lines = [];
+    // let day = Date.now();
+    // for (let i = 0; i < Number(this.props.days); i++) {
+    //   lines.push(day);
+    //   day = day - 86400000;
+    // }
+    // const breakfastCalories = [];
+    // const lunchCalories = [];
+    // const dinnerCalories = [];
+    // const snackCalories = [];
+    // for (let i = 0; i < Number(this.props.days); i++) {
+    //   breakfastCalories.push(getDayDataByMealCat(foodEntries, "Breakfast", "caloriesPerServ", lines[i]));
+    //   lunchCalories.push(getDayDataByMealCat(foodEntries, "Lunch", "caloriesPerServ", lines[i]));
+    //   dinnerCalories.push(getDayDataByMealCat(foodEntries, "Dinner", "caloriesPerServ", lines[i]));
+    //   snackCalories.push(getDayDataByMealCat(foodEntries, "Snack", "caloriesPerServ", lines[i]));
+    // }
+    // this.setState({
+    //   entries: [
+    //     { meal: "Breakfast", cal: breakfastCalories },
+    //     { meal: "Lunch", cal: lunchCalories },
+    //     { meal: "Dinner", cal: dinnerCalories },
+    //     { meal: "Snack", cal: snackCalories }
+    //   ],
+    //   lines: lines
+    // });
   };
-
-  makeRandomColor() {
-    var c = "";
-    while (c.length < 6) {
-      c += Math.random()
-        .toString(16)
-        .substr(-6)
-        .substr(-1);
-    }
-    return "#" + c;
-  }
 
   render() {
     defaults.global.defaultFontColor = "#2196F3";
     const { classes } = this.props;
 
-    const { lines } = this.state;
-    const meals = this.state.entries.map(entry => entry.meal);
-    const graphs = [];
-    for (let i = 0; i < Number(this.props.days); i++) {
-      const calories = this.state.entries.map(entry => entry.cal[i]);
-      if (calories.filter(cal => cal !== 0).length !== 0)
-        graphs.push({ label: new Date(lines[i]).toDateString(), data: calories });
-    }
-    const datasets = graphs.map((line, i) => {
-      const lineColor = this.makeRandomColor();
-      return {
-        label: line.label,
-        backgroundColor: lineColor,
-        borderColor: lineColor,
-        pointRadius: 6,
-        fill: "false",
-        data: line.data
-      };
-    });
+    // const { lines } = this.state;
+    // const meals = this.state.entries.map(entry => entry.meal);
+    // const graphs = [];
+    // for (let i = 0; i < Number(this.props.days); i++) {
+    //   const calories = this.state.entries.map(entry => entry.cal[i]);
+    //   if (calories.filter(cal => cal !== 0).length !== 0)
+    //     graphs.push({ label: new Date(lines[i]).toDateString(), data: calories });
+    // }
+    // const datasets = graphs.map((line, i) => {
+    //   const lineColor = this.makeRandomColor();
+    //   return {
+    //     label: line.label,
+    //     backgroundColor: lineColor,
+    //     borderColor: lineColor,
+    //     pointRadius: 6,
+    //     fill: "false",
+    //     data: line.data
+    //   };
+    // });
 
+    // const data = {
+    //   labels: meals,
+    //   datasets: datasets
+    // };
+    const label = moment(this.props.days[0]).format("MMM Do YYYY");
+    const lineColor = makeRandomColor();
     const data = {
-      labels: meals,
-      datasets: datasets
+      labels: this.state.labels,
+      datasets: [
+        {
+          label: label,
+          backgroundColor: lineColor,
+          borderColor: lineColor,
+          pointRadius: 6,
+          fill: "false",
+          data: this.state.entries
+        }
+      ]
     };
-    const message = Number(this.props.days) !== 1 ? "the last " + this.props.days + " days" : "today";
+    const message =
+      Number(this.props.days.length) !== 1
+        ? "the last " + this.props.days.length + " days"
+        : moment(this.props.days[0]).format("MMM Do YYYY");
 
     return (
       <div className={classes.root}>
-        <h2 className={classes.header}>Calories for {message}</h2>
-        <Grid container justify='center' alignItems='center'>
-          <Grid item xs={4} className={classes.caloriesInfo}>
-            {this.state.entries.map(entry => (
-              <div key={entry.meal}>
-                <span className={classes.title}>{entry.meal}</span>
-                <div className={classes.value}>
-                  {entry.cal.length === 0 ? (
-                    "No Calories Entry"
-                  ) : (
-                    <>
-                      {entry.cal.map((cal, i) => (
-                        <div key={cal + i}>
-                          {cal !== 0 && (
-                            <div className={classes.value}>
-                              - {new Date(lines[i]).toDateString()}: {cal} kcal
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </>
-                  )}
+        <h2 className={classes.header}>
+          {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data} for {message}
+        </h2>
+        {this.state.entries.length !== 0 ? (
+          <Grid container justify='center' alignItems='center'>
+            <Grid item xs={4} className={classes.caloriesInfo}>
+              {this.state.entries.map((entry, i) => (
+                <div key={this.state.labels[i]}>
+                  <span className={classes.title}>{this.state.labels[i]}</span>
+                  <div className={classes.value}>
+                    {entry === 0 ? "No Entry" : <div className={classes.value}>{entry.toFixed(2)}</div>}
+                  </div>
                 </div>
+              ))}
+              <div>
+                <span className={classes.title}>
+                  Total {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data}
+                </span>
+                <div className={classes.value}>{this.state.entries.reduce((total, d) => total + d, 0).toFixed(2)}</div>
               </div>
-            ))}
+            </Grid>
+            <Grid item xs={8} className={classes.graph}>
+              <h2>{this.props.data} / Meal Category</h2>
+              <Line ref='chart' data={data} />
+            </Grid>
           </Grid>
-          <Grid item xs={8} className={classes.graph}>
-            <h2>Calories / Meal Category</h2>
-            <Line
-              ref='chart'
-              data={data}
-              options={{
-                scales: {
-                  yAxes: [
-                    {
-                      ticks: {
-                        min: 0,
-                        stepSize: 100
-                      }
-                    }
-                  ]
-                }
-              }}
-            />
-          </Grid>
-        </Grid>
+        ) : (
+          <div> No data </div>
+        )}
       </div>
     );
   }
@@ -147,7 +154,8 @@ const styles = theme => ({
   root: {
     width: "100%",
     margin: "50px auto",
-    maxWidth: "1200px"
+    maxWidth: "1200px",
+    padding: "20px"
   },
   caloriesInfo: {
     display: "flex",

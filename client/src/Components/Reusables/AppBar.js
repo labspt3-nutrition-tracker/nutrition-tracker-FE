@@ -70,9 +70,6 @@ const ButtonAppBar = (props) => {
           <NavLink to="/">
             <Button color="inherit">Home</Button>
           </NavLink>
-          <NavLink to="/login">
-            <Button color="inherit">Login</Button>
-          </NavLink>
           <NavLink to="/account">
             <Button color="inherit">Account</Button>
           </NavLink>
@@ -86,7 +83,7 @@ const ButtonAppBar = (props) => {
             <Button color="inherit">Journal</Button>
           </NavLink>
         </Toolbar>
-        <SearchInputComponent updateSearch={props.updateSearch} searchInput={props.searchInput} getFoodData={props.getFoodData} searchResults={props.searchResults} noResultError={props.noResultError}/>
+        <SearchInputComponent updateSearch={props.updateSearch} searchInput={props.searchInput} getFoodData={props.getFoodData} />
       </AppBar>
     </MuiThemeProvider>
   );
