@@ -44,7 +44,7 @@ class EntryForm extends Component {
           name="food" 
         />
         <select className="form-field" name="category" onChange={this.onInputChange}>
-          <option value="" selected disabled>Select Meal Category</option>
+          <option value="" defaultValue disabled>Select Meal Category</option>
           <option value="2">breakfast</option>
           <option value="3">lunch</option>
           <option value="4">dinner</option>
