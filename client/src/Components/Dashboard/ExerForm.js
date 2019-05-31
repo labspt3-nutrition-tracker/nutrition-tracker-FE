@@ -12,13 +12,13 @@ const Form = styled.form`
 `;
 
 const ADD_EXERENTRY = gql`
-mutation  addExerciseEntry($input: ExerciseEntryInput!) {
-  addExerciseEntry(input: $input) {
-    id
-    exerciseName
-    caloriesBurned
+  mutation addExerciseEntry($input: ExerciseEntryInput!) {
+    addExerciseEntry(input: $input) {
+      id
+      exerciseName
+      caloriesBurned
+    }
   }
-}
 `;
 
 class ExerForm extends Component {
@@ -33,7 +33,7 @@ class ExerForm extends Component {
 
   addExerEntry = e => {
     e.preventDefault();
-    console.log(this.state.newExerEntry)
+    console.log(this.state.newExerEntry);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
@@ -45,7 +45,18 @@ class ExerForm extends Component {
           input: this.state.newExerEntry
         }
       })
-      .then(response => console.log(response))
+      // .then(response => console.log(response))
+      .then(() => {
+        console.log("yooooo");
+        this.setState({
+          newExerEntry: {
+            exerciseEntryDate: "",
+            exerciseName: "",
+            caloriesBurned: null,
+            exercise_entry_user_id: 2
+          }
+        });
+      })
       .catch(err => console.log(err));
   };
 
@@ -53,15 +64,11 @@ class ExerForm extends Component {
     this.setState({
       newExerEntry: {
         ...this.state.newExerEntry,
-        [e.target.name]: e.target.type === "number" ? parseInt(e.target.value) : e.target.value
+        [e.target.name]:
+          e.target.type === "number" ? parseInt(e.target.value) : e.target.value
       }
     });
   };
-
-  // onEntrySubmit = e => {
-  //   e.preventDefault();
-  //   this.props.addEntry(this.state.newExerEntry);
-  // };
 
   render() {
     return (
@@ -71,6 +78,7 @@ class ExerForm extends Component {
           className="form-field"
           type="text"
           name="exerciseName"
+          value={this.state.newExerEntry.exerciseName}
           onChange={this.onInputChange}
         />
         <label for="date">Date</label>
@@ -78,6 +86,7 @@ class ExerForm extends Component {
           className="form-field"
           type="date"
           name="exerciseEntryDate"
+          value={this.state.newExerEntry.exerciseEntryDate}
           onChange={this.onInputChange}
         />
         <label for="caloriesBurned">Calories Burned</label>
@@ -86,9 +95,14 @@ class ExerForm extends Component {
           type="number"
           step="1"
           name="caloriesBurned"
+          value={this.state.newExerEntry.caloriesBurned}
           onChange={this.onInputChange}
         />
-        <button className="form-field" type="submit" onClick={this.addExerEntry}>
+        <button
+          className="form-field"
+          type="submit"
+          onClick={this.addExerEntry}
+        >
           Add Entry
         </button>
       </Form>
