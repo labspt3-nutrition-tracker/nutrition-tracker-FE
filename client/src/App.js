@@ -2,7 +2,7 @@ import React from 'react';
 import Login from './Components/Auth/Login';
 import './App.css';
 import Header from './Components/Reusables/Header';
-import { Route } from 'react-router-dom';
+import { Route, withRouter, Link} from 'react-router-dom';
 import Dashboard from './Components/Dashboard/Dashboard';
 import Journal from './Components/Journal/Journal';
 import Home from './Components/Home/Home';
@@ -22,7 +22,7 @@ const customStyles = {
     bottom                : 'auto',
     marginRight           : '-50%',
     transform             : 'translate(-50%, -50%)',
-    position: 'absolute'
+    position:               'absolute'
   }
 };
 
@@ -72,8 +72,7 @@ class App extends React.Component {
           noResultError: '',
           showModal: true
         })
-       
-        console.log('thi', this.state.searchResults)
+        console.log('search results', this.state.searchResults)
       })
       .catch(error =>{
         this.setState({
@@ -84,12 +83,19 @@ class App extends React.Component {
           console.log('error', error);
         console.log(this.state.noResultError)
         
-      })
-
-
-
-
+      });
   }
+
+  // handleFoodSubmit = e => {
+  //   console.log('handle currentTarget',e.currentTarget)
+  //   //  [e.target.name]: e.target.value
+  //   this.props.history.push('/dashboard')
+  // }
+
+  // addToDashBoard = e => {
+  //    e.preventDefault();
+  //    this.props.push('/dashboard')
+  // }
 
   render(){
     return (
@@ -106,15 +112,29 @@ class App extends React.Component {
          
         >
   { this.state.searchResults && Object.keys(this.state.searchResults).map((obj, i) => {
+    
      return (
-       <div key={i}>
-         <p> {this.state.searchResults[obj].food.label}</p>
-         <p>calories: {this.state.searchResults[obj].food.nutrients.ENERC_KCAL}</p>
-         <p>carbs: {this.state.searchResults[obj].food.nutrients.CHOCDF ? this.state.searchResults[obj].food.nutrients.CHOCDF : 0 }</p>
-         <p>protein: {this.state.searchResults[obj].food.nutrients.PROCNT ? this.state.searchResults[obj].food.nutrients.PROCNT : 0 }</p>
-         <p>fat: {this.state.searchResults[obj].food.nutrients.FAT ? this.state.searchResults[obj].food.nutrients.FAT : 0 }</p>
-       </div>
+       <Link to={{pathname:'/dashboard', state:{
+         edamam_id:this.state.searchResults[obj].food.foodId,
+         calories:this.state.searchResults[obj].food.nutrients.ENERC_KCAL,
+         carbs:this.state.searchResults[obj].food.nutrients.CHOCDF ? this.state.searchResults[obj].food.nutrients.CHOCDF : 0,
+         protein:this.state.searchResults[obj].food.nutrients.PROCNT ? this.state.searchResults[obj].food.nutrients.PROCNT : 0,
+         fat:this.state.searchResults[obj].food.nutrients.FAT ? this.state.searchResults[obj].food.nutrients.FAT : 0 ,
+       }}} >
+          <div
+          key={this.state.searchResults[obj].food.foodId} 
+          onClick={this.handleFoodSubmit} 
+          onSubmit={this.addToDashBoard}       
+          >
+            <p> {this.state.searchResults[obj].food.label}</p>
+            <p>calories: {this.state.searchResults[obj].food.nutrients.ENERC_KCAL ? this.state.searchResults[obj].food.nutrients.ENERC_KCAL : 0}</p>
+            <p>carbs: {this.state.searchResults[obj].food.nutrients.CHOCDF ? this.state.searchResults[obj].food.nutrients.CHOCDF : 0 }</p>
+            <p>protein: {this.state.searchResults[obj].food.nutrients.PROCNT ? this.state.searchResults[obj].food.nutrients.PROCNT : 0 }</p>
+            <p>fat: {this.state.searchResults[obj].food.nutrients.FAT ? this.state.searchResults[obj].food.nutrients.FAT : 0 }</p>
+          </div>
+       </Link>
      );
+     console.log('handleFoodSubmit', this.handleFoodSubmit)
    })}
     {!this.state.searchResults}  <div> {this.state.noResultError} </div> 
 
@@ -123,7 +143,7 @@ class App extends React.Component {
         </div>
         <div>
           <Route exact path="/" component={Home} />
-          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/dashboard" render={(props) => <Dashboard {...props} searchResults={this.state.searchResults}/>} />
           <Route exact path="/billing-plan" render={() => <BillingPlans />} />
           <Route exact path="/billing" render={() => <Billing />} />
           <Route exact path="/stats" render={() => <StatsView />} />
@@ -143,4 +163,4 @@ class App extends React.Component {
 
 
 
-export default App;
+export default withRouter(App);
