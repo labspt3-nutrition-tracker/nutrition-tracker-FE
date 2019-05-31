@@ -8,6 +8,7 @@ const Form = styled.form`
   width: 100%;
   padding: 20px;
 `;
+
 class EntryForm extends Component {
   state = {
     newFoodEntry: {
@@ -16,6 +17,13 @@ class EntryForm extends Component {
       user_id: null,
       servingQty: null,
       meal_category_id: null 
+    },
+    newAddFood: {
+      foodName: "",
+      caloriesPerServ: null,
+      fats: null,
+      carbs: null,
+      proteins: null,
     }
   };
 
@@ -36,6 +44,7 @@ class EntryForm extends Component {
   render() {
     return (
       <Form>
+        <label htmlFor="food">Food</label>
         <input
           className="form-field"
           type="text"
@@ -43,6 +52,7 @@ class EntryForm extends Component {
           onChange={this.onInputChange}
           name="food" 
         />
+        <label htmlFor="category">Meal Category</label>
         <select className="form-field" name="category" onChange={this.onInputChange}>
           <option value="" defaultValue disabled>Select Meal Category</option>
           <option value="2">breakfast</option>
@@ -50,7 +60,15 @@ class EntryForm extends Component {
           <option value="4">dinner</option>
           <option value="5">snack</option>
         </select>
+        <label htmlFor="qty">Serving Quantity</label>
         <input className="form-field" type="number" name="qty" onChange={this.onInputChange}/>
+        <label htmlFor="proteins">Grams of Protein per Serving</label>
+        <input className="form-field" type="number" name="proteins" onChange={this.onInputChange}/>
+        <label htmlFor="carbs">Grams of Carbs per Serving</label>
+        <input className="form-field" type="number" name="carbs" onChange={this.onInputChange}/>
+        <label htmlFor="fats">Grams of Fat per Serving</label>
+        <input className="form-field" type="number" name="fats" onChange={this.onInputChange}/>
+        <label htmlFor="date">Date</label>
         <input className="form-field" type="date" name="date" onChange={this.onInputChange} />
         <button className="form-field" type="submit">
           Add Entry
