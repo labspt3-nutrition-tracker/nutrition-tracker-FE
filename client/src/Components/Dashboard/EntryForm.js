@@ -16,7 +16,7 @@ class EntryForm extends Component {
       food_id: null,
       user_id: null,
       servingQty: null,
-      meal_category_id: null 
+      meal_category_id: null
     },
     newAddFood: {
       foodName: "",
@@ -42,6 +42,7 @@ class EntryForm extends Component {
   }
 
   render() {
+    console.log('entryform', this.props.chosenItem)
     return (
       <Form>
         <label htmlFor="food">Food</label>
@@ -50,7 +51,7 @@ class EntryForm extends Component {
           type="text"
           placeholder="Add food here..."
           onChange={this.onInputChange}
-          name="food" 
+          name="food"
         />
         <label htmlFor="category">Meal Category</label>
         <select className="form-field" name="category" onChange={this.onInputChange}>

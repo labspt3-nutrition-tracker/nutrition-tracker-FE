@@ -11,35 +11,36 @@ import StatsView from './Components/Stats/StatsView';
 import Settings from './Components/Settings';
 import AccountNav from "./Components/AccountNav";
 import BillingPlans from "./Components/Billing/BillingPlans";
+import AppModal from "./Components/Reusables/AppModal";
 import styled from 'styled-components';
 import axios from 'axios';
-import Modal from 'react-modal';
+// import Modal from 'react-modal';
 
-const ResultDiv = styled.div`
-display: flex;
-padding: 20px;
-border: 1px solid black;
-flex-direction: column;
-font-size: 1.5rem;
-text-decoration: none;
-&:focus, &:hover, &:visited, &:link, &:active {
-  text-decoration: none;
-}
-`
-
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    position:               'absolute'
-  }
-};
-
-Modal.setAppElement('#root')
+// const ResultDiv = styled.div`
+// display: flex;
+// padding: 20px;
+// border: 1px solid black;
+// flex-direction: column;
+// font-size: 1.5rem;
+// text-decoration: none;
+// &:focus, &:hover, &:visited, &:link, &:active {
+//   text-decoration: none;
+// }
+// `
+//
+// const customStyles = {
+//   content : {
+//     top                   : '50%',
+//     left                  : '50%',
+//     right                 : 'auto',
+//     bottom                : 'auto',
+//     marginRight           : '-50%',
+//     transform             : 'translate(-50%, -50%)',
+//     position:               'absolute'
+//   }
+// };
+//
+// Modal.setAppElement('#root')
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
 const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
@@ -59,7 +60,6 @@ class App extends React.Component {
     this.setState({
       searchInput: e.target.value
     })
-    console.log("updateSearch", this.state.searchInput)
   }
 
   openModal = () => {
@@ -74,14 +74,12 @@ class App extends React.Component {
   getFoodData = food => {
     food = this.state.searchInput;
     let encodedFood = food.replace(' ', '%20')
-    console.log(encodedFood)
-    console.log(EDAMAM_API_ID)
     axios
       .get(`https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`)
       .then(response =>{
         this.setState({
           searchResults: response.data.hints,
-          searchInput: '',         
+          searchInput: '',
           noResultError: '',
           showModal: true
         })
@@ -94,25 +92,11 @@ class App extends React.Component {
           showModal: true,
           searchResults: []})
           console.log('error', error);
-        console.log(this.state.noResultError)
-        
       });
   }
 
   handleFoodSubmit = e => {
-    // console.log('handle currentTarget',e.currentTarget)
-    //  [e.target.name]: e.target.value
-    // const addedFood = this.props.location.state;
-    //  this.props.history.push(addedFood)
-    //  console.log('addToDashBoard', addedFood)
     this.closeModal()
-  }
-
-  addToDashBoard = e => {
-     e.preventDefault();
-    //  const addedFood = this.props.location.state;
-    //  this.props.history.push(addedFood)
-    //  console.log('addToDashBoard', addedFood)
   }
 
   render(){
@@ -120,46 +104,14 @@ class App extends React.Component {
       <div className="App">
         <Header searchInput={this.state.searchInput} updateSearch={this.updateSearch}
           getFoodData={this.getFoodData}
-          style={customStyles} 
           />
-        <div>
-        <Modal
-        
+        <AppModal
           isOpen={this.state.showModal}
-          onRequestClose={this.closeModal}
-         
-        >
-  { this.state.searchResults && Object.keys(this.state.searchResults).map((obj, item) => {
-    
-     return (
-       <Link to={{pathname:'/dashboard', state:{
-         edamam_id:this.state.searchResults[obj].food.foodId,
-         edamam_name:this.state.searchResults[obj].food.label,
-         calories:this.state.searchResults[obj].food.nutrients.ENERC_KCAL,
-         carbs:this.state.searchResults[obj].food.nutrients.CHOCDF ? this.state.searchResults[obj].food.nutrients.CHOCDF : 0,
-         protein:this.state.searchResults[obj].food.nutrients.PROCNT ? this.state.searchResults[obj].food.nutrients.PROCNT : 0,
-         fat:this.state.searchResults[obj].food.nutrients.FAT ? this.state.searchResults[obj].food.nutrients.FAT : 0 ,
-       }}} >
-          <ResultDiv
-          key={this.state.searchResults[obj].food.foodId} 
-          onClick={this.handleFoodSubmit} 
-          onSubmit={this.addToDashBoard}       
-          >
-            <p>{this.state.searchResults[obj].food.label}</p>
-            <p>calories: {this.state.searchResults[obj].food.nutrients.ENERC_KCAL ? this.state.searchResults[obj].food.nutrients.ENERC_KCAL : 0}</p>
-            <p>carbs: {this.state.searchResults[obj].food.nutrients.CHOCDF ? this.state.searchResults[obj].food.nutrients.CHOCDF : 0 }</p>
-            <p>protein: {this.state.searchResults[obj].food.nutrients.PROCNT ? this.state.searchResults[obj].food.nutrients.PROCNT : 0 }</p>
-            <p>fat: {this.state.searchResults[obj].food.nutrients.FAT ? this.state.searchResults[obj].food.nutrients.FAT : 0 }</p>
-          </ResultDiv>
-       </Link>
-     );
-     console.log('handleFoodSubmit', this.handleFoodSubmit)
-   })}
-    {!this.state.searchResults}  <div> {this.state.noResultError} </div> 
-
-          <button onClick={this.closeModal}>close</button>
-        </Modal>
-        </div>
+          openModal={this.openModal}
+          closeModal={this.closeModal}
+          noResultError={this.state.noResultError}
+          handleFoodSubmit={this.handleFoodSubmit}
+          searchResults={this.state.searchResults}/>
         <div>
           <Route exact path="/" component={Home} />
           <Route path="/dashboard" render={(props) => <Dashboard {...props} searchResults={this.state.searchResults}/>} />

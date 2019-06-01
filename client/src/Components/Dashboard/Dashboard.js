@@ -26,30 +26,24 @@ class Dashboard extends Component {
   };
 
   render() {
-    console.log('dash', this.props.location.state)
-    const chosenItem = this.props.location.state;
+    const chosenItem = this.props.location.state ? this.props.location.state : "No Search";
     return (
       <div className="dashboard">
         <div className="container">
           <DashTitle>Today's Food Entries</DashTitle>
           <hr />
           <Calories />
-     
+
          {Object.keys(chosenItem).map((obj, item) => (
           <div key={item}>
               item: {chosenItem[obj] }
-          </div> 
-        ))} 
-          {/* {Object.keys(!chosenItem).map((obj, item) => (
-          <div key={item}>
-              No items present
-          </div> 
-        ))} */}
-      
+          </div>
+        ))}
+
           <InfoCon>
-         
+
             <FoodEntry latest={this.props.latest} />
-            <EntryForm addEntry={this.addEntry} />
+            <EntryForm chosenItem={this.props.location.state} addEntry={this.addEntry} />
           </InfoCon>
           <InfoCon>
             <Exercise />
