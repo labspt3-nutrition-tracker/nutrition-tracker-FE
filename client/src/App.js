@@ -86,16 +86,21 @@ class App extends React.Component {
       });
   }
 
-  // handleFoodSubmit = e => {
-  //   console.log('handle currentTarget',e.currentTarget)
-  //   //  [e.target.name]: e.target.value
-  //   this.props.history.push('/dashboard')
-  // }
+  handleFoodSubmit = e => {
+    // console.log('handle currentTarget',e.currentTarget)
+    //  [e.target.name]: e.target.value
+    // const addedFood = this.props.location.state;
+    //  this.props.history.push(addedFood)
+    //  console.log('addToDashBoard', addedFood)
+    this.closeModal()
+  }
 
-  // addToDashBoard = e => {
-  //    e.preventDefault();
-  //    this.props.push('/dashboard')
-  // }
+  addToDashBoard = e => {
+     e.preventDefault();
+    //  const addedFood = this.props.location.state;
+    //  this.props.history.push(addedFood)
+    //  console.log('addToDashBoard', addedFood)
+  }
 
   render(){
     return (
@@ -111,11 +116,12 @@ class App extends React.Component {
           onRequestClose={this.closeModal}
          
         >
-  { this.state.searchResults && Object.keys(this.state.searchResults).map((obj, i) => {
+  { this.state.searchResults && Object.keys(this.state.searchResults).map((obj, item) => {
     
      return (
        <Link to={{pathname:'/dashboard', state:{
          edamam_id:this.state.searchResults[obj].food.foodId,
+         edamam_name:this.state.searchResults[obj].food.label,
          calories:this.state.searchResults[obj].food.nutrients.ENERC_KCAL,
          carbs:this.state.searchResults[obj].food.nutrients.CHOCDF ? this.state.searchResults[obj].food.nutrients.CHOCDF : 0,
          protein:this.state.searchResults[obj].food.nutrients.PROCNT ? this.state.searchResults[obj].food.nutrients.PROCNT : 0,
@@ -126,7 +132,7 @@ class App extends React.Component {
           onClick={this.handleFoodSubmit} 
           onSubmit={this.addToDashBoard}       
           >
-            <p> {this.state.searchResults[obj].food.label}</p>
+            <p>{this.state.searchResults[obj].food.label}</p>
             <p>calories: {this.state.searchResults[obj].food.nutrients.ENERC_KCAL ? this.state.searchResults[obj].food.nutrients.ENERC_KCAL : 0}</p>
             <p>carbs: {this.state.searchResults[obj].food.nutrients.CHOCDF ? this.state.searchResults[obj].food.nutrients.CHOCDF : 0 }</p>
             <p>protein: {this.state.searchResults[obj].food.nutrients.PROCNT ? this.state.searchResults[obj].food.nutrients.PROCNT : 0 }</p>

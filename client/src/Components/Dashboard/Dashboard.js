@@ -12,22 +12,42 @@ class Dashboard extends Component {
       date: "",
       qty: 0,
       category: ""
-    }
+    },
+    adddedFood: ''
   };
 
   addEntry = e => {
     e.preventDefault();
+    const addedFood = this.props.location.state;
+    this.setState({
+     addedFood: addedFood
+    })
+    console.log('addedFood', addedFood)
   };
 
   render() {
-    console.log('dash', this.props)
+    console.log('dash', this.props.location.state)
+    const chosenItem = this.props.location.state;
     return (
       <div className="dashboard">
         <div className="container">
           <DashTitle>Today's Food Entries</DashTitle>
           <hr />
           <Calories />
+     
+         {Object.keys(chosenItem).map((obj, item) => (
+          <div key={item}>
+              item: {chosenItem[obj] }
+          </div> 
+        ))} 
+          {Object.keys(!chosenItem).map((obj, item) => (
+          <div key={item}>
+              No items present
+          </div> 
+        ))}
+      
           <InfoCon>
+         
             <FoodEntry latest={this.props.latest} />
             <EntryForm addEntry={this.addEntry} />
           </InfoCon>
