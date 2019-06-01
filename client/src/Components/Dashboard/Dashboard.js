@@ -12,27 +12,28 @@ class Dashboard extends Component {
       caloriesPerServ: 0,
       fats: 0,
       carbs: 0,
-      proteins: 0,
+      proteins: 0
       // edamam_id: ""
     }
   };
 
   addEntry = e => {
-     e.preventDefault();
-     this.setState({
+    e.preventDefault();
+    this.setState({
       [e.target.name]: e.target.value
-     })
+    });
   };
 
   render() {
     // console.log('dashboard', this.props.searchResults)
-    console.log(this.props.selectedFood)
+    console.log(this.props.selectedFood);
     return (
       <div className="dashboard">
         <div className="container">
           <DashTitle>Today's Food Entries</DashTitle>
           <hr />
           <Calories />
+
           <InfoCon>
             <FoodEntry latest={this.props.latest} />
             <EntryForm addEntry={this.addEntry} />

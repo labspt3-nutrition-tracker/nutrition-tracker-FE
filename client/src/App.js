@@ -20,6 +20,23 @@ const Food = styled.div`
   padding: 5px;
   background: rgba(0, 0, 0, 0.1);
 `;
+
+const ResultDiv = styled.div`
+  display: flex;
+  padding: 20px;
+  border: 1px solid black;
+  flex-direction: column;
+  font-size: 1.5rem;
+  text-decoration: none;
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
+  }
+`;
+
 const customStyles = {
   content: {
     top: "50%",
@@ -101,10 +118,12 @@ class App extends React.Component {
     this.setState({ selectedFood: food });
   };
 
-  // addToDashBoard = e => {
-  //    e.preventDefault();
-  //    this.props.push('/dashboard')
-  // }
+  addToDashBoard = e => {
+    e.preventDefault();
+    //  const addedFood = this.props.location.state;
+    //  this.props.history.push(addedFood)
+    //  console.log('addToDashBoard', addedFood)
+  };
 
   render() {
     console.log(this.state.searchResults);
@@ -118,6 +137,7 @@ class App extends React.Component {
         />
         <div>
           <Modal isOpen={this.state.showModal} onRequestClose={this.closeModal}>
+            <ResultDiv>
             {this.state.searchResults &&
               this.state.searchResults.map(food => {
                 //console.log("food:", food)
@@ -142,6 +162,7 @@ class App extends React.Component {
               })}
             {!this.state.searchResults} <div> {this.state.noResultError} </div>
             <button onClick={this.closeModal}>close</button>
+            </ResultDiv>
           </Modal>
         </div>
         <div>
