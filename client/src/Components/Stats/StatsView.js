@@ -3,7 +3,8 @@ import { GraphQLClient } from "graphql-request";
 import * as moment from "moment";
 
 import StatsDashboard from "./StatsDashboard";
-import FoodLogStats from "./FoodLogStats";
+import OneDayStats from "./OneDayStats";
+import ManyDaysStats from "./ManyDaysStats";
 import { GET_FOOD_ENTRIES_BY_USER_QUERY, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 
 const BASE_URL = "https://nutrition-tracker-be.herokuapp.com/";
@@ -46,7 +47,11 @@ class StatsView extends React.Component {
       <>
         <div>
           <StatsDashboard chartChange={this.handleChartChange} dataChange={this.handleDataChange} />
-          <FoodLogStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
+          {this.state.days.length === 1 ? (
+            <OneDayStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
+          ) : (
+            <ManyDaysStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
+          )}
         </div>
       </>
     );
