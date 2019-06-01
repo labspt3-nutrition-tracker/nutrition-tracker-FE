@@ -40,11 +40,11 @@ class Dashboard extends Component {
               item: {chosenItem[obj] }
           </div> 
         ))} 
-          {Object.keys(!chosenItem).map((obj, item) => (
+          {/* {Object.keys(!chosenItem).map((obj, item) => (
           <div key={item}>
               No items present
           </div> 
-        ))}
+        ))} */}
       
           <InfoCon>
          

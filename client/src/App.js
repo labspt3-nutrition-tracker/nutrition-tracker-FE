@@ -11,8 +11,21 @@ import StatsView from './Components/Stats/StatsView';
 import Settings from './Components/Settings';
 import AccountNav from "./Components/AccountNav";
 import BillingPlans from "./Components/Billing/BillingPlans";
+import styled from 'styled-components';
 import axios from 'axios';
 import Modal from 'react-modal';
+
+const ResultDiv = styled.div`
+display: flex;
+padding: 20px;
+border: 1px solid black;
+flex-direction: column;
+font-size: 1.5rem;
+text-decoration: none;
+&:focus, &:hover, &:visited, &:link, &:active {
+  text-decoration: none;
+}
+`
 
 const customStyles = {
   content : {
@@ -127,7 +140,7 @@ class App extends React.Component {
          protein:this.state.searchResults[obj].food.nutrients.PROCNT ? this.state.searchResults[obj].food.nutrients.PROCNT : 0,
          fat:this.state.searchResults[obj].food.nutrients.FAT ? this.state.searchResults[obj].food.nutrients.FAT : 0 ,
        }}} >
-          <div
+          <ResultDiv
           key={this.state.searchResults[obj].food.foodId} 
           onClick={this.handleFoodSubmit} 
           onSubmit={this.addToDashBoard}       
@@ -137,7 +150,7 @@ class App extends React.Component {
             <p>carbs: {this.state.searchResults[obj].food.nutrients.CHOCDF ? this.state.searchResults[obj].food.nutrients.CHOCDF : 0 }</p>
             <p>protein: {this.state.searchResults[obj].food.nutrients.PROCNT ? this.state.searchResults[obj].food.nutrients.PROCNT : 0 }</p>
             <p>fat: {this.state.searchResults[obj].food.nutrients.FAT ? this.state.searchResults[obj].food.nutrients.FAT : 0 }</p>
-          </div>
+          </ResultDiv>
        </Link>
      );
      console.log('handleFoodSubmit', this.handleFoodSubmit)
