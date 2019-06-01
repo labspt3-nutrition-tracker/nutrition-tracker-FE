@@ -52,8 +52,6 @@ class Journal extends React.Component {
 
   handleDateClick = date => {
     this.setState({ datePicked: date });
-    console.log('datepiccked', this.state.datePicked)
-    console.log('date', date)
   };
 
   componentDidMount() {
@@ -94,7 +92,7 @@ class Journal extends React.Component {
            <JournalEntryDiv>
               <JournalEntry
                 foodEntries={foodEntries}
-                datePicked={this.state.datePicked} 
+                datePicked={this.state.datePicked}
                 />
             </JournalEntryDiv>
             <CalendarDiv>
