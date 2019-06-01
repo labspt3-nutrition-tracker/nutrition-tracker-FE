@@ -7,20 +7,27 @@ import styled from "styled-components";
 
 class Dashboard extends Component {
   state = {
-    newFoodEntry: {
-      food: "",
-      date: "",
-      qty: 0,
-      category: ""
+    selectedFood: {
+      foodName: "",
+      caloriesPerServ: 0,
+      fats: 0,
+      carbs: 0,
+      proteins: 0,
+      // edamam_id: ""
     }
   };
 
   addEntry = e => {
-    e.preventDefault();
+     e.preventDefault();
+     this.setState({
+      [e.target.name]: e.target.value
+     })
   };
 
+  // setSelectedFood = 
+
   render() {
-    console.log('dash', this.props)
+    console.log('dashboard', this.props.searchResults)
     return (
       <div className="dashboard">
         <div className="container">
