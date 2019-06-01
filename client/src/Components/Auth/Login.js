@@ -93,7 +93,8 @@ class LoginOrRegister extends React.Component {
       headers: { authorization: idToken }
     });
 
-    client.query({
+    client
+      .query({
         query: USER_EXIST,
         variables: {
           param: "email",
@@ -108,8 +109,8 @@ class LoginOrRegister extends React.Component {
   };
 
   onFailure = async error => {
-    console.log(error)
-  }
+    console.log(error);
+  };
 
   handleChange = (label, value) => {
     this.setState({
@@ -143,7 +144,7 @@ class LoginOrRegister extends React.Component {
         query: GET_CURRENT
       })
       .then(response => {
-        localStorage.setItem("currentUser", response.data.getCurrentUser.id)
+        localStorage.setItem("currentUser", response.data.getCurrentUser.id);
       })
       .catch(err => console.log(err));
   };
