@@ -14,13 +14,6 @@ const SearchInput = styled.input`
   font-size: 1.5em;
 `;
 
-const SearchResultDiv = styled.div`
-  margin: 15px;
-  background: white;
-  color: black;
-`;
-
-
 const SearchInputComponent = props => {
   return(
       <Search>

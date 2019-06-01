@@ -42,7 +42,6 @@ class EntryForm extends Component {
   }
 
   render() {
-    console.log('entryform', this.props.chosenItem)
     return (
       <Form>
         <label htmlFor="food">Food</label>
