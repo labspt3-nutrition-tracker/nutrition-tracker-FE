@@ -26,8 +26,7 @@ class Dashboard extends Component {
   };
 
   render() {
-    console.log('dash', this.props.location.state)
-    const chosenItem = this.props.location.state;
+    const chosenItem = this.props.location.state ? this.props.location.state : "No Search";
     return (
       <div className="dashboard">
         <div className="container">
