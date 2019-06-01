@@ -40,7 +40,7 @@ class ManyDaysStats extends Component {
   render() {
     defaults.global.defaultFontColor = "#2196F3";
     const { classes } = this.props;
-    const labels = this.state.labels.map(day => moment(day).format("MMM Do YYYY"));
+    const labels = this.state.labels.map(day => moment(day).format("MM/DD"));
     const data = {
       labels: labels,
       datasets: [
@@ -64,15 +64,15 @@ class ManyDaysStats extends Component {
         </h2>
         {this.state.entries.length !== 0 ? (
           <Grid container justify='center' alignItems='center'>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               {this.state.entries.map((entry, i) => (
                 <div key={labels[i]} className={classes.dataInfo}>
-                  <span className={classes.title}>{labels[i]}</span>
+                  <span className={classes.title}>{moment(new Date(labels[i])).format("MMM Do")}</span>
                   <div className={classes.value}>{entry === 0 ? "No Entry" : entry.toFixed(2)}</div>
                 </div>
               ))}
             </Grid>
-            <Grid item xs={8} className={classes.graph}>
+            <Grid item xs={9} className={classes.graph}>
               <Bar
                 data={data}
                 height={350}

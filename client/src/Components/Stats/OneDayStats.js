@@ -60,7 +60,7 @@ class WeekFoodLogStats extends Component {
         </h2>
         {this.state.entries.length !== 0 ? (
           <Grid container justify='center' alignItems='center'>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               {this.state.entries.map((entry, i) => (
                 <div key={this.state.labels[i]} className={classes.dataInfo}>
                   <span className={classes.title}>{this.state.labels[i]}</span>
@@ -74,7 +74,7 @@ class WeekFoodLogStats extends Component {
                 <div className={classes.value}>{this.state.entries.reduce((total, d) => total + d, 0).toFixed(2)}</div>
               </div>
             </Grid>
-            <Grid item xs={8} className={classes.graph}>
+            <Grid item xs={9} className={classes.graph}>
               <h2>{this.props.data === "caloriesPerServ" ? "Calories" : this.props.data} / Meal Category</h2>
               <Line ref='chart' data={data} />
             </Grid>
