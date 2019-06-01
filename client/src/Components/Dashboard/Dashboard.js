@@ -24,10 +24,9 @@ class Dashboard extends Component {
      })
   };
 
-  // setSelectedFood = 
-
   render() {
-    console.log('dashboard', this.props.searchResults)
+    // console.log('dashboard', this.props.searchResults)
+    console.log(this.props.selectedFood)
     return (
       <div className="dashboard">
         <div className="container">
