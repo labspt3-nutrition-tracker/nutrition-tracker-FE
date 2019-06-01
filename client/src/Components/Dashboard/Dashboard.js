@@ -34,22 +34,17 @@ class Dashboard extends Component {
           <DashTitle>Today's Food Entries</DashTitle>
           <hr />
           <Calories />
-     
+
          {Object.keys(chosenItem).map((obj, item) => (
           <div key={item}>
               item: {chosenItem[obj] }
-          </div> 
-        ))} 
-          {/* {Object.keys(!chosenItem).map((obj, item) => (
-          <div key={item}>
-              No items present
-          </div> 
-        ))} */}
-      
+          </div>
+        ))}
+
           <InfoCon>
-         
+
             <FoodEntry latest={this.props.latest} />
-            <EntryForm addEntry={this.addEntry} />
+            <EntryForm chosenItem={this.props.location.state} addEntry={this.addEntry} />
           </InfoCon>
           <InfoCon>
             <Exercise />
