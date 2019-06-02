@@ -20,26 +20,19 @@ class Dashboard extends Component {
     e.preventDefault();
     const addedFood = this.props.location.state;
     this.setState({
-     addedFood: addedFood
+     [e.target.name]: e.target.value
     })
     console.log('addedFood', addedFood)
   };
 
   render() {
-    const chosenItem = this.props.location.state ? this.props.location.state : "No Search";
+    console.log(this.props.selectedFood)
     return (
       <div className="dashboard">
         <div className="container">
           <DashTitle>Today's Food Entries</DashTitle>
           <hr />
           <Calories />
-
-         {Object.keys(chosenItem).map((obj, item) => (
-          <div key={item}>
-              item: {chosenItem[obj] }
-          </div>
-        ))}
-
           <InfoCon>
 
             <FoodEntry latest={this.props.latest} />

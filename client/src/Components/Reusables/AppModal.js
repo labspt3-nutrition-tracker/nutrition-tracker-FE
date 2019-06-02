@@ -52,19 +52,19 @@ const NoResultDiv = styled.div`
 
 const customStyles = {
   content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    height                : '50%',
-    width                 : '50%',
-    transform             : 'translate(-50%, -50%)',
-    position:               'absolute'
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    height: "50%",
+    width: "50%",
+    transform: "translate(-50%, -50%)",
+    position: "absolute"
   }
 };
 
-Modal.setAppElement('#root')
+Modal.setAppElement("#root")
 
 const AppModal = props => {
 
@@ -74,26 +74,17 @@ const AppModal = props => {
       isOpen={props.isOpen}>
         <ModalButton onClick={props.closeModal}>close</ModalButton>
 
-      { props.searchResults && Object.keys(props.searchResults).map((obj, item) => {
-        const edamam_name = props.searchResults[obj].food.label.charAt(0).toUpperCase() + props.searchResults[obj].food.label.slice(1).toLowerCase();
-        const edamam_id = props.searchResults[obj].food.foodId;
-        const calories = props.searchResults[obj].food.nutrients.ENERC_KCAL ? props.searchResults[obj].food.nutrients.ENERC_KCAL.toFixed(2) : 0;
-        const carbs = props.searchResults[obj].food.nutrients.CHOCDF ? props.searchResults[obj].food.nutrients.CHOCDF.toFixed(2) : 0;
-        const protein = props.searchResults[obj].food.nutrients.PROCNT ? props.searchResults[obj].food.nutrients.PROCNT.toFixed(2) : 0;
-        const fat = props.searchResults[obj].food.nutrients.FAT ? props.searchResults[obj].food.nutrients.FAT.toFixed(2) : 0;
+      { props.searchResults && props.searchResults.map((food, index) => {
+        const edamam_name = food.food.label.charAt(0).toUpperCase() + food.food.label.slice(1).toLowerCase();
+        const calories = food.food.nutrients.ENERC_KCAL ? food.food.nutrients.ENERC_KCAL.toFixed(2) : 0;
+        const carbs = food.food.nutrients.CHOCDF ? food.food.nutrients.CHOCDF.toFixed(2) : 0;
+        const protein = food.food.nutrients.PROCNT ? food.food.nutrients.PROCNT.toFixed(2) : 0;
+        const fat = food.food.nutrients.FAT ? food.food.nutrients.FAT.toFixed(2) : 0;
         return (
 
-      <Link style={{ textDecoration: 'none' }} to={{pathname:'/dashboard', state:{
-       edamam_id: edamam_id,
-       edamam_name: edamam_name,
-       calories: calories,
-       carbs: carbs,
-       protein: protein,
-       fat: fat
-      }}} >
+      <Link key={index} style={{ textDecoration: 'none' }} to={{ pathname:'/dashboard'}}>
         <ResultDiv
-        key={props.searchResults[obj].food.foodId}
-        onClick={props.handleFoodSubmit}>
+        onClick={() => props.handleFoodSubmit(food.food)}>
           <ResultTitle> { edamam_name }</ResultTitle>
           <ResultInfo>
             <ResultInfoP><ResultSpan>calories:</ResultSpan> { calories } </ResultInfoP>
@@ -108,7 +99,6 @@ const AppModal = props => {
     );
       })}
       {!props.searchResults}  <NoResultDiv> {props.noResultError} </NoResultDiv>
-
       </Modal>
   )
 }

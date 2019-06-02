@@ -62,13 +62,10 @@ class JournalEntry extends React.Component {
 
   render() {
     const datePicked = this.props.datePicked;
-    console.log('journal entry', this.state.foodEntries)
     const ModifiedEntry = this.state.foodEntries.filter(function(entry){
          return entry.date === datePicked;
 
      });
-     console.log('modified in journalEntry: ', ModifiedEntry)
-
     // set as new foodentries
     const Breakfast = ModifiedEntry.filter((entry) => {
       return entry.meal_category_id.mealCategoryName === "Breakfast";
@@ -85,11 +82,6 @@ class JournalEntry extends React.Component {
     const Snack = ModifiedEntry.filter((entry) => {
       return entry.meal_category_id.mealCategoryName === "Snack";
     });
-    console.log(this.props.foodEntries)
-
-    console.log('calendar in journalEntry: ',this.props.datePicked)
-
-
 
     return (
       <div>

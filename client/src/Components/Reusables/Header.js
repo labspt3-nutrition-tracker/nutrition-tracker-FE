@@ -2,8 +2,7 @@ import React from "react";
 import AppBar from "./AppBar";
 import styled from "styled-components";
 import logo from "../../Assets/logo-black.png";
-import {ApolloConsumer } from 'react-apollo';
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 
 const LogoContainer = styled.div`
@@ -48,7 +47,7 @@ const Header = (props) => (
 
     <AppBar updateSearch={props.updateSearch}  searchInput={props.inputSearch} getFoodData={props.getFoodData} />
   </div>
-     
+
 );
 
 

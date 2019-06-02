@@ -1,101 +1,73 @@
-import React from 'react';
-import Login from './Components/Auth/Login';
-import './App.css';
-import Header from './Components/Reusables/Header';
-import { Route, withRouter, Link} from 'react-router-dom';
-import Dashboard from './Components/Dashboard/Dashboard';
-import Journal from './Components/Journal/Journal';
-import Home from './Components/Home/Home';
-import Billing from './Components/Billing/Billing';
-import StatsView from './Components/Stats/StatsView';
-import Settings from './Components/Settings';
+import React from "react";
+import Login from "./Components/Auth/Login";
+import "./App.css";
+import Header from "./Components/Reusables/Header";
+import { Route, withRouter} from "react-router-dom";
+import Dashboard from "./Components/Dashboard/Dashboard";
+import Journal from "./Components/Journal/Journal";
+import Home from "./Components/Home/Home";
+import Billing from "./Components/Billing/Billing";
+import StatsView from "./Components/Stats/StatsView";
+import Settings from "./Components/Settings";
 import AccountNav from "./Components/AccountNav";
 import BillingPlans from "./Components/Billing/BillingPlans";
 import AppModal from "./Components/Reusables/AppModal";
-import styled from 'styled-components';
-import axios from 'axios';
-// import Modal from 'react-modal';
-
-// const ResultDiv = styled.div`
-// display: flex;
-// padding: 20px;
-// border: 1px solid black;
-// flex-direction: column;
-// font-size: 1.5rem;
-// text-decoration: none;
-// &:focus, &:hover, &:visited, &:link, &:active {
-//   text-decoration: none;
-// }
-// `
-//
-// const customStyles = {
-//   content : {
-//     top                   : '50%',
-//     left                  : '50%',
-//     right                 : 'auto',
-//     bottom                : 'auto',
-//     marginRight           : '-50%',
-//     transform             : 'translate(-50%, -50%)',
-//     position:               'absolute'
-//   }
-// };
-//
-// Modal.setAppElement('#root')
+import axios from "axios";
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
 const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
 
 class App extends React.Component {
   constructor(props){
-    super(props)
+    super(props);
     this.state = {
-      searchInput:'',
+      searchInput:"",
       searchResults: [],
-      noResultError: '',
+      noResultError: "",
       showModal: false
     };
-  }
+  };
 
   updateSearch = e => {
     this.setState({
       searchInput: e.target.value
-    })
-  }
+    });
+  };
 
   openModal = () => {
     this.setState({ showModal: true})
-  }
+  };
 
   closeModal = () => {
     this.setState({ showModal: false })
-  }
-
+  };
 
   getFoodData = food => {
     food = this.state.searchInput;
-    let encodedFood = food.replace(' ', '%20')
+    let encodedFood = food.replace(" ", "%20")
     axios
       .get(`https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`)
       .then(response =>{
         this.setState({
           searchResults: response.data.hints,
-          searchInput: '',
-          noResultError: '',
+          searchInput: "",
+          noResultError: "",
           showModal: true
         })
-        console.log('search results', this.state.searchResults)
+        console.log("search results", this.state.searchResults)
       })
       .catch(error =>{
         this.setState({
-          searchInput: '',
+          searchInput: "",
           noResultError: 'No results found',
           showModal: true,
           searchResults: []})
-          console.log('error', error);
+          console.log("error", error);
       });
   }
 
-  handleFoodSubmit = e => {
+  handleFoodSubmit = food => {
+    this.setState({selectedFood: food})
     this.closeModal()
   }
 
@@ -114,7 +86,7 @@ class App extends React.Component {
           searchResults={this.state.searchResults}/>
         <div>
           <Route exact path="/" component={Home} />
-          <Route path="/dashboard" render={(props) => <Dashboard {...props} searchResults={this.state.searchResults}/>} />
+          <Route path="/dashboard" render={(props) => <Dashboard {...props} selectedFood = {this.state.selectedFood}/>} />
           <Route exact path="/billing-plan" render={() => <BillingPlans />} />
           <Route exact path="/billing" render={() => <Billing />} />
           <Route exact path="/stats" render={() => <StatsView />} />

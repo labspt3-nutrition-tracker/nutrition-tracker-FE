@@ -1,7 +1,7 @@
 import React from "react";
 import LoginForm from "./LoginForm";
 import { Redirect } from "react-router-dom";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
