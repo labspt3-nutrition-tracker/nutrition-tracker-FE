@@ -20,6 +20,7 @@ class Dashboard extends Component {
   addEntry = e => {
     e.preventDefault();
     this.setState({
+<<<<<<< HEAD
       [e.target.name]: e.target.value
     });
   };
@@ -27,16 +28,30 @@ class Dashboard extends Component {
   render() {
     // console.log('dashboard', this.props.searchResults)
     console.log(this.props.selectedFood);
+=======
+     [e.target.name]: e.target.value
+    })
+    console.log('addedFood', addedFood)
+  };
+
+  render() {
+    console.log(this.props.selectedFood)
+>>>>>>> development
     return (
       <div className="dashboard">
         <div className="container">
           <DashTitle>Today's Food Entries</DashTitle>
           <hr />
           <Calories />
+<<<<<<< HEAD
 
           <InfoCon>
+=======
+          <InfoCon>
+
+>>>>>>> development
             <FoodEntry latest={this.props.latest} />
-            <EntryForm addEntry={this.addEntry} />
+            <EntryForm chosenItem={this.props.location.state} addEntry={this.addEntry} />
           </InfoCon>
           <InfoCon>
             <Exercise />
