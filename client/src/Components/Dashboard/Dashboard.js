@@ -34,7 +34,6 @@ class Dashboard extends Component {
           <hr />
           <Calories />
           <InfoCon>
-
             <FoodEntry latest={this.props.latest} />
             <EntryForm chosenItem={this.props.location.state} addEntry={this.addEntry} />
           </InfoCon>

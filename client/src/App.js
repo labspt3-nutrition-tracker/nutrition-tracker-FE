@@ -12,6 +12,7 @@ import Settings from "./Components/Settings";
 import AccountNav from "./Components/AccountNav";
 import BillingPlans from "./Components/Billing/BillingPlans";
 import AppModal from "./Components/Reusables/AppModal";
+import Footer from "./Components/Reusables/Footer";
 import axios from "axios";
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
@@ -98,6 +99,7 @@ class App extends React.Component {
             path="/journal" render={() => <Journal/>} />
         </div>
         <Route path="/account" render={() => <AccountNav />} />
+        <Footer />
       </div>
     )
   };
