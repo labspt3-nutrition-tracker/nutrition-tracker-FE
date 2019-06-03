@@ -17,7 +17,7 @@ class Dashboard extends Component {
   };
 
   addEntry = e => {
-    e.preventDefault();
+    // e.preventDefault();
     const addedFood = this.props.location.state;
     this.setState({
      [e.target.name]: e.target.value
