@@ -1,7 +1,7 @@
 import React from "react";
 import LoginForm from "./LoginForm";
 import { Redirect } from "react-router-dom";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
@@ -93,7 +93,8 @@ class LoginOrRegister extends React.Component {
       headers: { authorization: idToken }
     });
 
-    client.query({
+    client
+      .query({
         query: USER_EXIST,
         variables: {
           param: "email",
@@ -105,6 +106,10 @@ class LoginOrRegister extends React.Component {
         else this.setState({ checkExistence: !this.state.checkExistence });
       })
       .catch(err => console.log(err));
+  };
+
+  onFailure = async error => {
+    console.log(error);
   };
 
   handleChange = (label, value) => {
@@ -138,7 +143,9 @@ class LoginOrRegister extends React.Component {
       .query({
         query: GET_CURRENT
       })
-      .then(response => console.log(response.data))
+      .then(response => {
+        localStorage.setItem("currentUser", response.data.getCurrentUser.id);
+      })
       .catch(err => console.log(err));
   };
   render() {
@@ -157,6 +164,7 @@ class LoginOrRegister extends React.Component {
                   style={{ height: 10 }}
                   clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
                   onSuccess={this.onSuccess}
+                  onFailure={this.onFailure}
                 />
               )}
             </div>

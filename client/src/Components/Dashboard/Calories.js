@@ -54,10 +54,10 @@ class Calories extends React.Component {
             if (loading) {
               console.log("loading...")
             }
-            if (error) {
-              console.log(error, "error...")
-            }
-            console.log("current user:", data);
+            // if (error) {
+            //   console.log(error, "error...")
+            // }
+            // console.log("current user:", data);
             return (
               <Query query={CAL_QUERY}>
                 {({ loading, error, data }) => {

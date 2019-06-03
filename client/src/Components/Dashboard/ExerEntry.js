@@ -2,14 +2,39 @@ import React from "react";
 import styled from "styled-components";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import ApolloClient from "apollo-boost";
 
 const ExerciseActivity = styled.div`
   padding: 10px;
 `;
 
+const GET_CURRENT = gql`
+  query getCurrentUser {
+    getCurrentUser {
+      id
+      email
+    }
+  }
+`;
+
 class ExerEntry extends React.Component {
   state = {
-    currentUser: 2
+    currentUser: 0
+  };
+
+  getCurrentUser = idToken => {
+    // console.log("idToken:", idToken)
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    client
+      .query({
+        query: GET_CURRENT
+      })
+      .then(response => this.setState({currentUser: response.data.getCurrentUser.id}))
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -19,10 +44,13 @@ class ExerEntry extends React.Component {
           exerciseEntryDate
           exerciseName
           caloriesBurned
+          id
         }
       }
     `;
 
+    this.getCurrentUser(localStorage.getItem("token"));
+    
     return (
       <div>
         <div>
@@ -35,7 +63,7 @@ class ExerEntry extends React.Component {
               const month = dateToday.getMonth();
               const day = dateToday.getDate();
               const year = dateToday.getFullYear();
-              console.log(data);
+              // console.log(data);
               let exerEntries = data.getExerciseEntriesByUserId;
               exerEntries = exerEntries.filter(entry => {
                 const dateEntry = new Date(entry.exerciseEntryDate);
@@ -46,14 +74,14 @@ class ExerEntry extends React.Component {
                   entryMonth === month && entryDay === day && entryYear === year
                 );
               });
-              console.log(exerEntries);
+              // console.log(exerEntries);
               if (exerEntries.length === 0) {
                 return <div>No exercise entered today.</div>;
               } else {
                 return (
                   <div>
                     {exerEntries.map(entry => (
-                      <ExerciseActivity>
+                      <ExerciseActivity key={entry.id}>
                         <div>Activity: {entry.exerciseName}</div>
                         <div>Calories burned: {entry.caloriesBurned}</div>
                       </ExerciseActivity>

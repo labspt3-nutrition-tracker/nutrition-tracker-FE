@@ -20,14 +20,11 @@ class Calendar extends React.Component {
     this.setState({
       date: listedDate
     });
-
     this.props.handleDateClick(moment(listedDate).format('ddd MMMM D YYYY'));
-    console.log('date cal', listedDate)
   };
 
 
   render() {
-    console.log('this', this.props.datePicked)
     return (
       <div>
         <FullCalendar

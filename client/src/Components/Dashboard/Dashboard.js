@@ -12,14 +12,21 @@ class Dashboard extends Component {
       date: "",
       qty: 0,
       category: ""
-    }
+    },
+    adddedFood: ''
   };
 
   addEntry = e => {
     e.preventDefault();
+    const addedFood = this.props.location.state;
+    this.setState({
+     [e.target.name]: e.target.value
+    })
+    console.log('addedFood', addedFood)
   };
 
   render() {
+    console.log(this.props.selectedFood)
     return (
       <div className="dashboard">
         <div className="container">
@@ -27,8 +34,9 @@ class Dashboard extends Component {
           <hr />
           <Calories />
           <InfoCon>
+
             <FoodEntry latest={this.props.latest} />
-            <EntryForm addEntry={this.addEntry} />
+            <EntryForm chosenItem={this.props.location.state} addEntry={this.addEntry} />
           </InfoCon>
           <InfoCon>
             <Exercise />

@@ -1,8 +1,6 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -13,7 +11,7 @@ import * as moment from "moment";
 const styles = theme => ({
   root: {
     display: "flex",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     padding: "10px",
     flexGrow: 1
   },
@@ -37,7 +35,6 @@ const styles = theme => ({
   },
   textField: {
     fontSize: "2rem",
-    width: "80%",
     margin: 0
   },
   manyDaysGroup: {
@@ -58,7 +55,7 @@ class StatsDashboard extends React.Component {
   };
 
   handleDayChange = event => {
-    this.setState({ dayValue: event.target.value });
+    this.setState({ dayValue: event.target.value, manyDays: 1 });
     const days = [];
     days.push(event.target.value);
     this.props.chartChange(days);
@@ -122,16 +119,24 @@ class StatsDashboard extends React.Component {
               style: { fontSize: "2rem", color: "#2196F3" }
             }}
             inputProps={{
-              style: { fontSize: "2rem", padding: "5px", lineHeight: "1.5", marginTop: "12px" }
+              style: { fontSize: "2rem", lineHeight: "1.5", marginTop: "12px" }
             }}
             margin='normal'
           />
         </div>
         <div className={classes.manyDaysGroup}>
-          <Button disabled className={classes.manyDaysBtn} onClick={() => this.handleManyDaysChange(7)}>
+          <Button
+            disabled={this.state.manyDays === 7}
+            className={classes.manyDaysBtn}
+            onClick={() => this.handleManyDaysChange(7)}
+          >
             Last 7 Days
           </Button>
-          <Button disabled className={classes.manyDaysBtn} onClick={() => this.handleManyDaysChange(30)}>
+          <Button
+            disabled={this.state.manyDays === 30}
+            className={classes.manyDaysBtn}
+            onClick={() => this.handleManyDaysChange(30)}
+          >
             Last 30 Days
           </Button>
         </div>
