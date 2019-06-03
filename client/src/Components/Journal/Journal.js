@@ -55,7 +55,7 @@ class Journal extends React.Component {
   };
 
   componentDidMount() {
-    var date = moment().format('ddd MMMM D YYYY')
+    let date = moment().format('ddd MMMM D YYYY')
     this.setState({ datePicked: date });
   }
 

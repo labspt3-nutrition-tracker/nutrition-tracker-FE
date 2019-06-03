@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+// import { Query } from "react-apollo";
+import ApolloClient from "apollo-boost";
+import { ADD_FOOD, ADD_FOOD_ENTRY } from '../../graphql/mutations';
+import gql from "graphql-tag";
+
 
 const Form = styled.form`
   display: flex;
@@ -7,6 +12,15 @@ const Form = styled.form`
   max-width: 300px;
   width: 100%;
   padding: 20px;
+`;
+
+const GET_CURRENT = gql`
+  query getCurrentUser {
+    getCurrentUser {
+      id
+      email
+    }
+  }
 `;
 
 class EntryForm extends Component {
@@ -27,21 +41,122 @@ class EntryForm extends Component {
     }
   };
 
+  getCurrentUser = idToken => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    client
+      .query({
+        query: GET_CURRENT
+      })
+      .then(response => this.setState({
+        newFoodEntry: { 
+          ...this.state.newFoodEntry,
+          user_id: response.data.getCurrentUser.id
+        }
+      }))
+      .catch(err => console.log(err));
+  };
+
   onInputChange = e => {
     this.setState({
-      newFoodEntry: {
-        ...this.state.newFoodEntry,
-        [e.target.name]: e.target.value
+      // newFoodEntry: {
+      //   ...this.state.newFoodEntry,
+      //   [e.target.name]:e.target.type === "number" ? parseInt(e.target.value) : e.target.value
+      // },
+      newAddFood: {
+        ...this.state.newAddFood,
+        [e.target.name]: e.target.type === "number" ? parseInt(e.target.value) : e.target.value
       }
     });
+    // console.log('inputchange', this.state.newFoodEntry)
   };
 
   onEntrySubmit = e => {
     e.preventDefault();
-    this.props.addEntry(this.state.newFoodEntry)
-  }
+    console.log('adding food entry', this.state.onEntrySubmit)
+    console.log(this.state.addEntry)
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    });
+    
+    client
+    .mutate({
+      mutation: ADD_FOOD,
+      variables: {
+        input: this.state.newAddFood
+      }
+    })
+    .then(() => {
+      console.log('in the add food part')
+      this.setState({
+        newAddFood: {
+          foodName: "",
+          caloriesPerServ: null,
+          fats: null,
+          carbs: null,
+          proteins: null,
+        }
+      })
+    })
+    .catch(err => console.log('food entry error', err));
+    this.props.addEntry(this.state.newAddFood)
+  };
+
+  // onEntrySubmit = e => {
+  //   e.preventDefault();
+  //   console.log('adding food entry', this.state.onEntrySubmit)
+  //   console.log(this.state.addEntry)
+  //   const client = new ApolloClient({
+  //     uri: "https://nutrition-tracker-be.herokuapp.com"
+  //   });
+    
+  //   client
+  //   .mutate({
+  //     mutation: ADD_FOOD_ENTRY,
+  //     variables: {
+  //       input: this.state.newFoodEntry
+  //     }
+  //   })
+  //   .then(() => {
+  //     console.log('in the add food part')
+  //     client
+  //     .mutate({
+  //       mutation: ADD_FOOD,
+  //       variables: {
+  //         input: this.state.newAddFood
+  //       }
+  //     })
+  //     .then(() => {
+  //       console.log('adding food?')
+  //       this.setState({
+  //       newAddFood: {
+  //         foodName: "",
+  //         caloriesPerServ: null,
+  //         fats: null,
+  //         carbs: null,
+  //         proteins: null
+  //       }
+  //     }).catch(err => console.log('food entry error', err))
+  //     this.setState({
+  //       newFoodEntry: {
+  //         date: "",
+  //         food_id: null,
+  //         user_id: null,
+  //         servingQty: null,
+  //         meal_category_id: null
+  //       }
+  //     })
+  //   })
+  //   .catch(err => console.log('food entry error', err));
+  //   this.props.addEntry([this.state.newFoodEntry, this.state.newAddFood])
+  //   })
+  // };
 
   render() {
+    this.getCurrentUser(localStorage.getItem("token"));
     return (
       <Form>
         <label htmlFor="food">Food</label>
@@ -70,7 +185,7 @@ class EntryForm extends Component {
         <input className="form-field" type="number" name="fats" onChange={this.onInputChange}/>
         <label htmlFor="date">Date</label>
         <input className="form-field" type="date" name="date" onChange={this.onInputChange} />
-        <button className="form-field" type="submit">
+        <button className="form-field" type="submit" onClick={this.onEntrySubmit}>
           Add Entry
         </button>
       </Form>
