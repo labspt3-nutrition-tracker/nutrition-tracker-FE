@@ -40,7 +40,7 @@ class Calories extends React.Component {
     }
     `;
     const CURRENT_USERID = gql`
-      query {
+      query getCurrentUser{
         getCurrentUser {
           id
         }
