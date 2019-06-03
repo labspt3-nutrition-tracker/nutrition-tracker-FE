@@ -6,6 +6,15 @@ import styled from "styled-components";
 //   max-width: 100px;
 // `;
 
+const Container = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  padding: 50px;
+  display: flex;
+  align-self: flex-end;
+  align-items: flex-end;
+`;
+
 const Main = styled.div`
   padding-top: 100px;
 `;
@@ -18,6 +27,7 @@ const Tagline = styled.div`
 `;
 
 const Features = styled.div`
+  width: 50%;
   background: rgba(255, 255, 255, 0.5);
   display: flex;
   justify-content: space-evenly;
@@ -27,7 +37,7 @@ const Features = styled.div`
 `;
 const Home = () => (
   <div className="home">
-    <div className="container">
+    <Container>
       <Main>
         <div className="home-text">
           <Tagline>
@@ -60,7 +70,7 @@ const Home = () => (
           </div>
         </Features>
       </Main>
-    </div>
+    </Container> // container
   </div>
 );
 
