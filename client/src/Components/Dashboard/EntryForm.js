@@ -52,8 +52,8 @@ class EntryForm extends Component {
         query: GET_CURRENT
       })
       .then(response => this.setState({
-        newFoodEntry: { 
-          ...this.state.newFoodEntry,
+        newAddFood: { 
+          ...this.state.newAddFood,
           user_id: response.data.getCurrentUser.id
         }
       }))
@@ -76,17 +76,22 @@ class EntryForm extends Component {
 
   onEntrySubmit = e => {
     e.preventDefault();
-    console.log('adding food entry', this.state.onEntrySubmit)
-    console.log(this.state.addEntry)
+     const foodAddedToDB = {
+       foodName: this.state.newAddFood.foodName,
+       caloriesPerServ: this.state.newAddFood.caloriesPerServ,
+       fats: this.state.newAddFood.fats,
+       carbs: this.state.newAddFood.carbs,
+       proteins: this.state.newAddFood.proteins,
+     }
+     console.log('foodAddedToDB', foodAddedToDB)
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
-    
     client
     .mutate({
       mutation: ADD_FOOD,
       variables: {
-        input: this.state.newAddFood
+        input: foodAddedToDB
       }
     })
     .then(() => {
@@ -102,7 +107,7 @@ class EntryForm extends Component {
       })
     })
     .catch(err => console.log('food entry error', err));
-    this.props.addEntry(this.state.newAddFood)
+    // this.props.addEntry(this.state.newAddFood)
   };
 
   // onEntrySubmit = e => {
@@ -159,29 +164,35 @@ class EntryForm extends Component {
     this.getCurrentUser(localStorage.getItem("token"));
     return (
       <Form>
-        <label htmlFor="food">Food</label>
+        <label htmlFor="foodName">Food</label>
         <input
           className="form-field"
           type="text"
           placeholder="Add food here..."
           onChange={this.onInputChange}
-          name="food"
+          name="foodName"
         />
-        <label htmlFor="category">Meal Category</label>
-        <select className="form-field" name="category" onChange={this.onInputChange}>
+        <label htmlFor="meal_category_id">Meal Category</label>
+        <select className="form-field" name="meal_category_id" onChange={this.onInputChange}>
           <option value="" defaultValue disabled>Select Meal Category</option>
           <option value="2">breakfast</option>
           <option value="3">lunch</option>
           <option value="4">dinner</option>
           <option value="5">snack</option>
         </select>
-        <label htmlFor="qty">Serving Quantity</label>
-        <input className="form-field" type="number" name="qty" onChange={this.onInputChange}/>
+        <label htmlFor="servingQty">Serving Quantity</label>
+        <input className="form-field" type="number" name="servingQty" onChange={this.onInputChange}/>
+
+        <label htmlFor="caloriesPerServ">Calories per serving</label>
+        <input className="form-field" type="number" name="caloriesPerServ" onChange={this.onInputChange}/>
+
         <label htmlFor="proteins">Grams of Protein per Serving</label>
         <input className="form-field" type="number" name="proteins" onChange={this.onInputChange}/>
         <label htmlFor="carbs">Grams of Carbs per Serving</label>
+
         <input className="form-field" type="number" name="carbs" onChange={this.onInputChange}/>
         <label htmlFor="fats">Grams of Fat per Serving</label>
+        
         <input className="form-field" type="number" name="fats" onChange={this.onInputChange}/>
         <label htmlFor="date">Date</label>
         <input className="form-field" type="date" name="date" onChange={this.onInputChange} />
