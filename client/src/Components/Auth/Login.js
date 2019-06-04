@@ -149,8 +149,12 @@ class LoginOrRegister extends React.Component {
       .catch(err => console.log(err));
   };
   render() {
+    console.log("location: ", this.props.location);
+
+    const { from } = this.props.location.state || { from: { pathname: "/" } };
     if (this.state.toDashboard === true) {
-      return <Redirect to='/dashboard' />;
+      // return <Redirect to='/dashboard' />;
+      return <Redirect to={from} />;
     }
     return (
       <LoginOrRegisterContainer>
