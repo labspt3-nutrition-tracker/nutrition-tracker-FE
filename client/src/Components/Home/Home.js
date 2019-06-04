@@ -8,15 +8,19 @@ import styled from "styled-components";
 
 const Container = styled.div`
   width: 100%;
-  max-width: 1400px;
+  max-width: 1100px;
   padding: 50px;
-  display: flex;
-  align-self: flex-end;
-  align-items: flex-end;
 `;
 
 const Main = styled.div`
   padding-top: 100px;
+  margin-right: 10%;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  position: absolute;
+  right: 0;
+  align-items: flex-end;
 `;
 
 const Tagline = styled.div`
@@ -31,9 +35,8 @@ const Features = styled.div`
   background: rgba(255, 255, 255, 0.5);
   display: flex;
   justify-content: space-evenly;
-  align-items: center;
+  align-items: flex-end;
   padding: 50px 20px;
-  margin: 50px auto;
 `;
 const Home = () => (
   <div className="home">
@@ -70,7 +73,7 @@ const Home = () => (
           </div>
         </Features>
       </Main>
-    </Container> // container
+    </Container> 
   </div>
 );
 
