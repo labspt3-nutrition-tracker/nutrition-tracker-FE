@@ -38,6 +38,7 @@ class EntryForm extends Component {
       fats: null,
       carbs: null,
       proteins: null,
+      edamam_id: null
     }
   };
 
@@ -82,6 +83,7 @@ class EntryForm extends Component {
        fats: this.state.newAddFood.fats,
        carbs: this.state.newAddFood.carbs,
        proteins: this.state.newAddFood.proteins,
+       edamam_id: this.state.newAddFood.edamam_id
      }
      console.log('foodAddedToDB', foodAddedToDB)
     const client = new ApolloClient({
