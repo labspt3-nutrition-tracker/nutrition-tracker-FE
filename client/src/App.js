@@ -120,7 +120,7 @@ class App extends React.Component {
           />
           <PrivateRoute exact path='/billing-plan' component={BillingPlans} />
           <PrivateRoute exact path='/billing' component={Billing} />
-          <PrivateRoute exact path='/stats' component={StatsView} />
+          <PrivateRoute exact path='/reports' component={StatsView} />
           <Route exact path='/login' component={Login} />
           <PrivateRoute exact path='/settings' component={Settings} />
           <PrivateRoute path='/journal' component={Journal} />
