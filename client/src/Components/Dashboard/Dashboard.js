@@ -26,7 +26,7 @@ class Dashboard extends Component {
   // };
 
   render() {
-    console.log(this.props.selectedFood)
+    console.log(this.props.selectedFood ? this.props.selectedFood.label : this.props.selectedFood);
     return (
       <div className="dashboard">
         <div className="container">
@@ -35,10 +35,14 @@ class Dashboard extends Component {
           <Calories />
           <InfoCon>
             <FoodEntry latest={this.props.latest} />
-            <EntryForm chosenItem={this.props.location.state} 
-              addEntry={this.addEntry} 
+            <EntryForm
+              chosenItem={this.props.location.state}
               selectedFood={this.props.selectedFood}
             />
+            {/* <EntryForm chosenItem={this.props.location.state} 
+              addEntry={this.addEntry} 
+              selectedFood={this.props.selectedFood}
+            /> */}
           </InfoCon>
           <InfoCon>
             <Exercise />
