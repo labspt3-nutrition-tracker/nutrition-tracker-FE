@@ -26,7 +26,7 @@ class Dashboard extends Component {
   // };
 
   render() {
-    console.log(this.props.selectedFood);
+    console.log(this.props.selectedFood ? this.props.selectedFood.label : this.props.selectedFood);
     return (
       <div className="dashboard">
         <div className="container">

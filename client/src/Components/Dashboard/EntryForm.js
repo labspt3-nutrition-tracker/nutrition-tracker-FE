@@ -27,15 +27,35 @@ class EntryForm extends Component {
     super(props);
     this.state = {
       newAddFood: {
-        foodName: "",
-        caloriesPerServ: null,
-        fats: null,
-        carbs: null,
-        proteins: null,
-        edamam_id: null,
+        foodName: props.selectedFood ? props.selectedFood.label : "",
+        caloriesPerServ: this.props.selectedFood
+          ? this.props.selectedFood.nutrients.ENERC_KCAL
+          : null,
+        fats: this.props.selectedFood
+          ? this.props.selectedFood.nutrients.FAT
+          : null,
+        carbs: this.props.selectedFood
+          ? this.props.selectedFood.nutrients.CHOCDF
+          : null,
+        proteins: this.props.selectedFood
+          ? this.props.selectedFood.nutrients.PROCNT
+          : null,
+        edamam_id: this.props.selectedFood
+          ? this.props.selectedFood.foodId
+          : "",
         meal_category_id: null,
         date: "",
         servingQty: null
+
+        // foodName: "",
+        // caloriesPerServ: null,
+        // fats: null,
+        // carbs: null,
+        // proteins: null,
+        // edamam_id: "",
+        // meal_category_id: null,
+        // date: "",
+        // servingQty: null
       }
     };
   }
@@ -159,6 +179,7 @@ class EntryForm extends Component {
           placeholder="Add food here..."
           onChange={this.onInputChange}
           name="foodName"
+          value={this.state.newAddFood.foodName}
         />
         <label htmlFor="meal_category_id">Meal Category</label>
         <select
@@ -188,6 +209,7 @@ class EntryForm extends Component {
           type="number"
           name="caloriesPerServ"
           onChange={this.onInputChange}
+          value={this.state.newAddFood.caloriesPerServ}
         />
 
         <label htmlFor="proteins">Grams of Protein per Serving</label>
@@ -196,6 +218,7 @@ class EntryForm extends Component {
           type="number"
           name="proteins"
           onChange={this.onInputChange}
+          value={this.state.newAddFood.proteins}
         />
         <label htmlFor="carbs">Grams of Carbs per Serving</label>
 
@@ -204,6 +227,7 @@ class EntryForm extends Component {
           type="number"
           name="carbs"
           onChange={this.onInputChange}
+          value={this.state.newAddFood.carbs}
         />
         <label htmlFor="fats">Grams of Fat per Serving</label>
 
@@ -212,6 +236,7 @@ class EntryForm extends Component {
           type="number"
           name="fats"
           onChange={this.onInputChange}
+          value={this.state.newAddFood.fats}
         />
         <label htmlFor="date">Date</label>
         <input
