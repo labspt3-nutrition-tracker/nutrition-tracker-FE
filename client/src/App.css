@@ -61,30 +61,27 @@ body {
   font-size: 1.6rem;
 }
 
-.container {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 50px;
-}
 
 
 .home {
-  min-height: 500px;
-  /* background: url(./Assets/home-bg.jpg); */
-  background-size: 100%;
+  min-height: 700px;
+	height: 800px;
+  background: url(./Assets/healthy_food.jpg);
+	background-size: cover;
   color: #000;
 }
 
 .header-home {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
+	align-self: flex-end;
   padding: 20px 0;
 }
 
 .home-text {
   text-align: center;
+	width: 50%;
 }
 
 .tagline {

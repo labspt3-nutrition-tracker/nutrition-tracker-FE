@@ -9,7 +9,7 @@ import blue from "@material-ui/core/colors/blue";
 // import red from "@material-ui/core/colors/red";
 import { NavLink } from "react-router-dom";
 
-import SearchInputComponent from './../SearchComponent/SearchInputComponent'
+import SearchInputComponent from "./../SearchComponent/SearchInputComponent";
 
 const theme = createMuiTheme({
   palette: {
@@ -18,9 +18,9 @@ const theme = createMuiTheme({
   },
   typography: {
     fontSize: 25,
-    useNextVariants: true,
-  },
-})
+    useNextVariants: true
+  }
+});
 
 // const styles = {
 //   root: {
@@ -62,32 +62,36 @@ const theme = createMuiTheme({
 //   );
 // }
 
-const ButtonAppBar = (props) => {
+const ButtonAppBar = props => {
   return (
     <MuiThemeProvider theme={theme}>
-      <AppBar position="static">
+      <AppBar position='static'>
         <Toolbar>
-          <NavLink to="/">
-            <Button color="inherit">Home</Button>
+          <NavLink to='/'>
+            <Button color='inherit'>Home</Button>
           </NavLink>
-          <NavLink to="/account">
-            <Button color="inherit">Account</Button>
+          <NavLink to='/account'>
+            <Button color='inherit'>Account</Button>
           </NavLink>
-          <NavLink to="/stats">
-            <Button color="inherit">Reports</Button>
+          <NavLink to='/reports'>
+            <Button color='inherit'>Reports</Button>
           </NavLink>
-          <NavLink to="/dashboard">
-            <Button color="inherit">Dashboard</Button>
+          <NavLink to='/dashboard'>
+            <Button color='inherit'>Dashboard</Button>
           </NavLink>
-          <NavLink to="/journal">
-            <Button color="inherit">Journal</Button>
+          <NavLink to='/journal'>
+            <Button color='inherit'>Journal</Button>
           </NavLink>
         </Toolbar>
-        <SearchInputComponent updateSearch={props.updateSearch} searchInput={props.searchInput} getFoodData={props.getFoodData} />
+        <SearchInputComponent
+          updateSearch={props.updateSearch}
+          searchInput={props.searchInput}
+          getFoodData={props.getFoodData}
+        />
       </AppBar>
     </MuiThemeProvider>
   );
-}
+};
 
 // export default withStyles(styles)(ButtonAppBar);
 export default ButtonAppBar;

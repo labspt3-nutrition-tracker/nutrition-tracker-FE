@@ -7,23 +7,23 @@ import styled from "styled-components";
 
 class Dashboard extends Component {
   state = {
-    selectedFood: {
-      foodName: "",
-      caloriesPerServ: 0,
-      fats: 0,
-      carbs: 0,
-      proteins: 0
-      // edamam_id: ""
-    }
+    // newFoodEntry: {
+    //   food: "",
+    //   date: "",
+    //   qty: 0,
+    //   category: ""
+    // },
+    adddedFood: ""
   };
 
-  addEntry = e => {
-    e.preventDefault();
-    this.setState({
-     [e.target.name]: e.target.value
-    })
-    console.log('addedFood', addedFood)
-  };
+  // addEntry = e => {
+  //   e.preventDefault();
+  //   const addedFood = this.props.location.state;
+  //   this.setState({
+  //    [e.target.name]: e.target.value
+  //   })
+  //   console.log('addedFood', addedFood)
+  // };
 
   render() {
     console.log(this.props.selectedFood)
@@ -34,9 +34,11 @@ class Dashboard extends Component {
           <hr />
           <Calories />
           <InfoCon>
-
             <FoodEntry latest={this.props.latest} />
-            <EntryForm chosenItem={this.props.location.state} addEntry={this.addEntry} />
+            <EntryForm chosenItem={this.props.location.state} 
+              addEntry={this.addEntry} 
+              selectedFood={this.props.selectedFood}
+            />
           </InfoCon>
           <InfoCon>
             <Exercise />
