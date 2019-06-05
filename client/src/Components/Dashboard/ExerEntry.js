@@ -17,10 +17,25 @@ const GET_CURRENT = gql`
   }
 `;
 
+const EXER_QUERY = gql`
+  query getExerciseEntriesByUserId($userId: ID!){
+    getExerciseEntriesByUserId(userId: $userId) {
+      exerciseEntryDate
+      exerciseName
+      caloriesBurned
+      id
+    }
+  }
+`;
+
 class ExerEntry extends React.Component {
   state = {
     currentUser: 0
   };
+
+  componentDidMount(){
+    this.getCurrentUser(localStorage.getItem("token"));
+  }
 
   getCurrentUser = idToken => {
     // console.log("idToken:", idToken)
@@ -37,25 +52,14 @@ class ExerEntry extends React.Component {
       .catch(err => console.log(err));
   };
 
+  userId = this.state.currentUser
   render() {
-    const EXER_QUERY = gql`
-      query {
-        getExerciseEntriesByUserId(userId: ${this.state.currentUser}) {
-          exerciseEntryDate
-          exerciseName
-          caloriesBurned
-          id
-        }
-      }
-    `;
 
-    this.getCurrentUser(localStorage.getItem("token"));
-    
     return (
       <div>
         <div>
           <div>Today's Exercise:</div>
-          <Query query={EXER_QUERY}>
+          <Query query={EXER_QUERY} variables={{userId: this.userId}}>
             {({ loading, error, data }) => {
               if (loading) return <div>Fetching Entries</div>;
               if (error) return <div>Error</div>;

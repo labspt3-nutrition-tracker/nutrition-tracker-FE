@@ -31,25 +31,54 @@ const LogInOutContainer = styled.div`
 
 
 
-const Header = (props) => (
-  <div>
-    <LogoContainer>
-      <Logo>
-        <img src={logo} alt="Created my free logo at LogoMakr.com" />
-      </Logo>
-      <LogInOutContainer>
-        <NavLink to="/login">
-          <p>Login</p>
-        </NavLink>
-        <p> Logout </p>
-      </LogInOutContainer>
-    </LogoContainer>
+class Header extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      loggedOut: false
+    }
+  }
 
-    <AppBar updateSearch={props.updateSearch}  searchInput={props.inputSearch} getFoodData={props.getFoodData} />
-  </div>
+  logIn = () => {
+    this.setState({
+      loggedOut: !this.state.loggedOut
+    })
+  }
+  logOut = () => {
+    console.log(localStorage.getItem("token"))
+    if (this.state.loggedOut){
+      localStorage.removeItem("token")
+      this.setState({
+        loggedOut: !this.state.loggedOut
+      })
+    }
+  }
 
-);
+  render(){
+    const loggedOut = this.state.loggedOut
+    return(
+      <div>
+        <LogoContainer>
+          <Logo>
+            <img src={logo} alt="Created my free logo at LogoMakr.com" />
+          </Logo>
+          <LogInOutContainer>
+            {loggedOut ? (
+                <NavLink to="/" onClick={() => this.logOut()}>
+                  <p>Logout</p>
+                </NavLink>
+              ) : (
+                <NavLink to="/login" onClick={() => this.logIn()}>
+                  <p>Login</p>
+                </NavLink>
+              )}
+          </LogInOutContainer>
+        </LogoContainer>
 
-
+        <AppBar updateSearch={this.props.updateSearch}  searchInput={this.props.inputSearch} getFoodData={this.props.getFoodData} />
+      </div>
+    )
+  }
+}
 
 export default Header;

@@ -40,6 +40,10 @@ class ExerForm extends Component {
     }
   };
 
+  componentDidMount(){
+    this.getCurrentUser(localStorage.getItem("token"));
+  }
+
   getCurrentUser = idToken => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
@@ -51,7 +55,7 @@ class ExerForm extends Component {
         query: GET_CURRENT
       })
       .then(response => this.setState({
-        newExerEntry: { 
+        newExerEntry: {
           ...this.state.newExerEntry,
           exercise_entry_user_id: response.data.getCurrentUser.id
         }
@@ -99,7 +103,6 @@ class ExerForm extends Component {
   };
 
   render() {
-    this.getCurrentUser(localStorage.getItem("token"));
     return (
       <Form>
         <label htmlFor="exerciseName">Name of Exercise</label>

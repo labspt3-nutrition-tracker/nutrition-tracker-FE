@@ -25,7 +25,7 @@ const Billing = props => {
           name="NutritionTrkr"
           stripeKey="pk_test_Pq1dd4riM4hc3cc35SbfPQxk00HJAoDPfA"
           token={async token => {
-            const response = await mutation({ 
+            const response = await mutation({
               variables: {source: token.id, email: token.email}
             });
             console.log(response)
