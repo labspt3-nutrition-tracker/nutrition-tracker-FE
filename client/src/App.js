@@ -22,6 +22,11 @@ const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
 
 const PrivateRoute = ({ component: Component, render, ...rest }) => {
   const token = localStorage.getItem("token");
+  getCurrentUser(token)
+    .then()
+    .catch(err => {
+      localStorage.removeItem("token"); //If token expired, remove it
+    });
   return (
     <Route
       {...rest}

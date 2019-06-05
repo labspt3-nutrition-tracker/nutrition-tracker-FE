@@ -37,7 +37,10 @@ class StatsView extends React.Component {
       this.setState({ foodEntries: foodEntries.getFoodEntriesByUserId });
     } catch (err) {
       console.log(err);
-      if (err.response.errors[0].message === "You must be logged in!") this.props.history.push("/login");
+      if (err.response.errors[0].message === "You must be logged in!") {
+        localStorage.removeItem("token");
+        this.props.history.push("/login");
+      }
     }
   };
 
