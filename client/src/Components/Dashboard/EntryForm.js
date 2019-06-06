@@ -3,6 +3,7 @@ import styled from "styled-components";
 // import { Query } from "react-apollo";
 import ApolloClient from "apollo-boost";
 import { ADD_FOOD, ADD_FOOD_ENTRY } from "../../graphql/mutations";
+import { GET_ALL_FOOD } from "../../graphql/queries";
 import gql from "graphql-tag";
 
 const Form = styled.form`
@@ -33,26 +34,8 @@ class EntryForm extends Component {
     super(props);
     this.state = {
       errors: [],
+      edamamExist: false,
       newAddFood: {
-        // foodName: props.selectedFood ? props.selectedFood.label : "",
-        // caloriesPerServ: this.props.selectedFood
-        //   ? this.props.selectedFood.nutrients.ENERC_KCAL
-        //   : null,
-        // fats: this.props.selectedFood
-        //   ? this.props.selectedFood.nutrients.FAT
-        //   : null,
-        // carbs: this.props.selectedFood
-        //   ? this.props.selectedFood.nutrients.CHOCDF
-        //   : null,
-        // proteins: this.props.selectedFood
-        //   ? this.props.selectedFood.nutrients.PROCNT
-        //   : null,
-        // edamam_id: this.props.selectedFood
-        //   ? this.props.selectedFood.foodId
-        //   : "",
-        // meal_category_id: null,
-        // date: "",
-        // servingQty: null
         foodName: "",
         caloriesPerServ: null,
         fats: null,
@@ -99,8 +82,8 @@ class EntryForm extends Component {
 
   onEntrySubmit = e => {
     e.preventDefault();
-    const mealCat = parseInt(this.state.newAddFood.meal_category_id);
 
+    const mealCat = parseInt(this.state.newAddFood.meal_category_id);
     if (mealCat > 1) {
       const foodAddedToDB = {
         foodName: this.state.newAddFood.foodName,
@@ -183,6 +166,19 @@ class EntryForm extends Component {
   };
 
   componentDidMount(){
+    // const client = new ApolloClient({
+    //   uri: "https://nutrition-tracker-be.herokuapp.com"
+    // })
+    // client
+    //   .query({
+    //     query: GET_ALL_FOOD
+    //   })
+    //   .then(response => {
+    //     console.log('GET_ALL_FOOD response', response)
+
+    //   })
+    //   .catch(err => console.error(err))
+
     let foodName;
     let caloriesPerServ;
     let fats;
@@ -218,6 +214,19 @@ class EntryForm extends Component {
   }
 
   componentDidUpdate(prevProps){
+    // const client = new ApolloClient({
+    //   uri: "https://nutrition-tracker-be.herokuapp.com"
+    // })
+    // client
+    //   .query({
+    //     query: GET_ALL_FOOD
+    //   })
+    //   .then(response => {
+    //     console.log('GET_ALL_FOOD response', response)
+
+    //   })
+    //   .catch(err => console.error(err))
+
     let foodName;
     let caloriesPerServ;
     let fats;
