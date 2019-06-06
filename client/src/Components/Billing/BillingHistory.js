@@ -2,11 +2,13 @@ import React from "react";
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import ApolloClient from "apollo-boost";
+import BillingHistoryCard from './BillingHistoryCard';
 
 const GET_BILLING_HISTORY = gql`
 query getBillingHistory($id: ID!){
     getBillingHistory(id: $id){
         id
+        date
         amount_paid
     }
   }
@@ -61,6 +63,13 @@ class BillingHistory extends React.Component{
                         console.log(error)
                         if (error) return <div>Error</div>;
                         console.log(data)
+                        return (
+                            <div>
+                                {data.getBillingHistory.map(bills => (
+                                    <BillingHistoryCard key={bills.id} date={bills.date} amountPaid={bills.amount_paid}/>
+                                ))}
+                            </div>
+                        )
                     }}
                 </Query>
             </>

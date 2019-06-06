@@ -52,14 +52,13 @@ class ExerEntry extends React.Component {
       .catch(err => console.log(err));
   };
 
-  userId = this.state.currentUser
   render() {
-
+    const userId = this.state.currentUser
     return (
       <div>
         <div>
           <div>Today's Exercise:</div>
-          <Query query={EXER_QUERY} variables={{userId: this.userId}}>
+          <Query query={EXER_QUERY} variables={{userId: userId}}>
             {({ loading, error, data }) => {
               if (loading) return <div>Fetching Entries</div>;
               if (error) return <div>Error</div>;
