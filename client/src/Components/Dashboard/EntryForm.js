@@ -13,6 +13,12 @@ const Form = styled.form`
   padding: 20px;
 `;
 
+const Error = styled.div`
+  color: red;
+  font-weight: bold;
+  font-size: 2rem;
+`
+
 const GET_CURRENT = gql`
   query getCurrentUser {
     getCurrentUser {
@@ -26,6 +32,7 @@ class EntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      errors: [],
       newAddFood: {
         foodName: props.selectedFood ? props.selectedFood.label : "",
         caloriesPerServ: this.props.selectedFood
@@ -93,85 +100,98 @@ class EntryForm extends Component {
 
   onEntrySubmit = e => {
     e.preventDefault();
-    const foodAddedToDB = {
-      foodName: this.state.newAddFood.foodName,
-      caloriesPerServ: this.state.newAddFood.caloriesPerServ,
-      fats: this.state.newAddFood.fats,
-      carbs: this.state.newAddFood.carbs,
-      proteins: this.state.newAddFood.proteins,
-      edamam_id: this.state.newAddFood.edamam_id
-    };
-    console.log("foodAddedToDB", foodAddedToDB);
-    console.log(this.state.newAddFood.meal_category_id);
-    console.log("servingqty", this.state.newAddFood.servingQty);
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
-    });
-    client
-      .mutate({
-        mutation: ADD_FOOD,
-        variables: {
-          input: foodAddedToDB
-        }
-      })
-      .then(response => {
-        const entryAddedToDB = {
-          date: this.state.newAddFood.date,
-          food_id: parseInt(response.data.addFood.id),
-          user_id: parseInt(this.state.newAddFood.user_id),
-          servingQty: this.state.newAddFood.servingQty,
-          meal_category_id: parseInt(this.state.newAddFood.meal_category_id)
-        };
-        client
-          .mutate({
-            mutation: ADD_FOOD_ENTRY,
-            variables: {
-              input: entryAddedToDB
-            }
-          })
-          .then(response => {
-            console.log(response);
-          });
+    const mealCat = parseInt(this.state.newAddFood.meal_category_id);
 
-        console.log("response:", response);
-        console.log("currentUser:", this.state.newAddFood.user_id);
-        console.log("mealCategory:", this.state.newAddFood.meal_category_id);
-        this.setState({
-          newAddFood: {
-            foodName: "",
-            caloriesPerServ: null,
-            fats: null,
-            carbs: null,
-            proteins: null,
-            edamam_id: null,
-            meal_category_id: null,
-            date: "",
-            servingQty: null
-          }
-        });
-      })
-      .catch(err => {
-        console.log("food entry error", err);
-        this.setState({
-          newFoodEntry: {
-            foodName: "",
-            caloriesPerServ: null,
-            fats: null,
-            carbs: null,
-            proteins: null,
-            edamam_id: null,
-            meal_category_id: null,
-            date: "",
-            servingQty: null
-          }
-        });
+    if (mealCat > 1) {
+      const foodAddedToDB = {
+        foodName: this.state.newAddFood.foodName,
+        caloriesPerServ: this.state.newAddFood.caloriesPerServ,
+        fats: this.state.newAddFood.fats,
+        carbs: this.state.newAddFood.carbs,
+        proteins: this.state.newAddFood.proteins,
+        edamam_id: this.state.newAddFood.edamam_id
+      };
+      console.log("foodAddedToDB", foodAddedToDB);
+      console.log(this.state.newAddFood.meal_category_id);
+      console.log("servingqty", this.state.newAddFood.servingQty);
+      const client = new ApolloClient({
+        uri: "https://nutrition-tracker-be.herokuapp.com"
       });
+      client
+        .mutate({
+          mutation: ADD_FOOD,
+          variables: {
+            input: foodAddedToDB
+          }
+        })
+        .then(response => {
+          const entryAddedToDB = {
+            date: this.state.newAddFood.date,
+            food_id: parseInt(response.data.addFood.id),
+            user_id: parseInt(this.state.newAddFood.user_id),
+            servingQty: this.state.newAddFood.servingQty,
+            meal_category_id: parseInt(this.state.newAddFood.meal_category_id)
+          };
+          client
+            .mutate({
+              mutation: ADD_FOOD_ENTRY,
+              variables: {
+                input: entryAddedToDB
+              }
+            })
+            .then(response => {
+              console.log(response);
+            });
+
+          console.log("response:", response);
+          console.log("currentUser:", this.state.newAddFood.user_id);
+          console.log("mealCategory:", this.state.newAddFood.meal_category_id);
+          this.setState({
+            errors: [],
+            newAddFood: {
+              foodName: "",
+              caloriesPerServ: null,
+              fats: null,
+              carbs: null,
+              proteins: null,
+              edamam_id: null,
+              meal_category_id: null,
+              date: "",
+              servingQty: null
+            }
+          });
+        })
+        .catch(err => {
+          console.log("food entry error", err);
+          this.setState({
+            errors: [],
+            newFoodEntry: {
+              foodName: "",
+              caloriesPerServ: null,
+              fats: null,
+              carbs: null,
+              proteins: null,
+              edamam_id: null,
+              meal_category_id: null,
+              date: "",
+              servingQty: null
+            }
+          });
+        });
+    } else {
+      this.setState({errors: ["meal category is required"]})
+    }
   };
 
   render() {
     this.getCurrentUser(localStorage.getItem("token"));
     return (
       <Form>
+        {this.state.errors
+          ? this.state.errors.map(error => {
+              return <Error key={error}>{error}</Error>
+            })
+          : null}
         <label htmlFor="foodName">Food</label>
         <input
           className="form-field"
@@ -180,6 +200,7 @@ class EntryForm extends Component {
           onChange={this.onInputChange}
           name="foodName"
           value={this.state.newAddFood.foodName}
+          required
         />
         <label htmlFor="meal_category_id">Meal Category</label>
         <select
@@ -188,6 +209,7 @@ class EntryForm extends Component {
           name="meal_category_id"
           type="number"
           onChange={this.onInputChange}
+          required
         >
           <option>Select Meal Category</option>
           <option value="2">breakfast</option>
