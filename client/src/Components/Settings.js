@@ -12,6 +12,7 @@ import EditIcon from "@material-ui/icons/Edit";
 
 import { getCurrentUser } from "../util/getCurrentUser";
 import { getCurrentWeight } from "../util/getCurrentweight";
+import UserEditModal from "../Components/UserEditModal";
 
 const styles = theme => ({
   card: {
@@ -42,7 +43,8 @@ class Settings extends React.Component {
   state = {
     currentUser: {},
     currentWeight: 0,
-    modalOpen: false
+    modalOpen: false,
+    editType: ""
   };
   componentDidMount = () => {
     getCurrentUser(localStorage.getItem("token"))
@@ -53,64 +55,84 @@ class Settings extends React.Component {
       })
       .catch(err => console.log(err));
   };
+
+  openModal = editType => {
+    this.setState({ modalOpen: true, editType: editType });
+  };
+
+  handleClose = () => {
+    this.setState(prevState => {
+      return { modalOpen: !prevState.modalOpen };
+    });
+  };
+
   render() {
     const { classes } = this.props;
-    const { currentUser } = this.state;
+    const { currentUser, editType } = this.state;
     return (
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography gutterBottom variant='h3' component='h2' className={classes.user}>
-            {currentUser.firstName} {currentUser.lastName}
-          </Typography>
-          <Typography gutterBottom variant='h5' component='h2'>
-            {currentUser.email}
-          </Typography>
-          <List dense={false}>
-            <ListItem>
-              <ListItemIcon>
-                <FolderIcon className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText
-                primary='User Type'
-                secondary={currentUser.userType}
-                classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
-              />
-            </ListItem>{" "}
-            <ListItem>
-              <ListItemIcon>
-                <FolderIcon className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText
-                primary='Initial Weight'
-                secondary={currentUser.weight ? currentUser.weight : "No initial weight entered"}
-                classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <FolderIcon className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText
-                primary='Current Weight'
-                secondary={this.state.currentWeight ? this.state.currentWeight : "No current weight entered"}
-                classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
-              />
-              <EditIcon className={classes.icon} />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <FolderIcon className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText
-                primary='Calories Daily Goal'
-                secondary={currentUser.calorieGoal}
-                classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
-              />
-              <EditIcon className={classes.icon} />
-            </ListItem>
-          </List>
-        </CardContent>
-      </Card>
+      <>
+        <UserEditModal
+          open={this.state.modalOpen}
+          handleClose={this.handleClose}
+          currentUser={currentUser}
+          editType={editType}
+          currentWeight={this.state.currentWeight}
+        />
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography gutterBottom variant='h3' component='h2' className={classes.user}>
+              {currentUser.firstName} {currentUser.lastName}
+            </Typography>
+            <Typography gutterBottom variant='h5' component='h2'>
+              {currentUser.email}
+            </Typography>
+            <List dense={false}>
+              <ListItem>
+                <ListItemIcon>
+                  <FolderIcon className={classes.icon} />
+                </ListItemIcon>
+                <ListItemText
+                  primary='User Type'
+                  secondary={currentUser.userType}
+                  classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
+                />
+              </ListItem>{" "}
+              <ListItem>
+                <ListItemIcon>
+                  <FolderIcon className={classes.icon} />
+                </ListItemIcon>
+                <ListItemText
+                  primary='Initial Weight'
+                  secondary={currentUser.weight ? currentUser.weight : "No initial weight entered"}
+                  classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <FolderIcon className={classes.icon} />
+                </ListItemIcon>
+                <ListItemText
+                  primary='Current Weight'
+                  secondary={this.state.currentWeight ? this.state.currentWeight : "No current weight entered"}
+                  classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
+                />
+                <EditIcon className={classes.icon} onClick={() => this.openModal("weight")} />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <FolderIcon className={classes.icon} />
+                </ListItemIcon>
+                <ListItemText
+                  primary='Calories Daily Goal'
+                  secondary={currentUser.calorieGoal}
+                  classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
+                />
+                <EditIcon className={classes.icon} onClick={() => this.openModal("caloriesGoal")} />
+              </ListItem>
+            </List>
+          </CardContent>
+        </Card>
+      </>
     );
   }
 }
