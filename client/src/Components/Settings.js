@@ -47,6 +47,15 @@ class Settings extends React.Component {
     editType: ""
   };
   componentDidMount = () => {
+    this.getData();
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.currentUser !== this.state.currentUser || prevState.currentWeight !== this.state.currentWeight)
+      this.getData();
+  };
+
+  getData = () => {
     getCurrentUser(localStorage.getItem("token"))
       .then(currentUser => {
         getCurrentWeight(currentUser.id).then(weight => {

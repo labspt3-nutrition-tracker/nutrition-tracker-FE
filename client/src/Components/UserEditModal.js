@@ -9,6 +9,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { addWeightEntry } from "../util/addWeightEntry";
+import { updateUserData } from "../util/updateUserData";
 
 class UserEditModal extends Component {
   state = {
@@ -22,18 +23,40 @@ class UserEditModal extends Component {
   handleEdit = editType => {
     console.log({ editType });
     console.log("new value: ", this.state.editInput);
-    if (editType === "userType") this.props.history.push("/billing-plan");
-    else if (editType === "weight") {
+    if (editType === "userType") {
+      this.props.handleClose();
+      this.props.history.push("/billing-plan");
+    } else if (editType === "weight") {
       const input = {
         date: Date.now(),
         weight: Number(this.state.editInput),
         user_id: Number(this.props.currentUser.id)
       };
       addWeightEntry(input)
-        .then(entry => console.log({ entry }))
+        .then(entry => {
+          this.setState({ editInput: "" });
+          this.props.history.push("/settings");
+        })
+        .catch(err => console.log(err));
+    } else if (editType === "caloriesGoal") {
+      const newGoal = this.state.editInput.trim() ? Number(this.state.editInput) : this.props.currentUser.calorieGoal;
+      const { firstName, lastName, username, email, userType, weight } = this.props.currentUser;
+      const newUser = {
+        firstName,
+        lastName,
+        username,
+        email,
+        userType,
+        weight,
+        calorieGoal: newGoal
+      };
+      updateUserData(Number(this.props.currentUser.id), newUser)
+        .then(id => {
+          this.setState({ editInput: "" });
+          this.props.history.push("/settings");
+        })
         .catch(err => console.log(err));
     }
-    this.setState({ editInput: "" });
   };
 
   render() {

@@ -88,3 +88,11 @@ export const ADD_WEIGHT_ENTRY_MUTATION = `
     }
   }
 `;
+
+export const UPDATE_USER_MUTATION = `
+  mutation($id: ID!, $input: UserInput!) {
+    updateUser(id: $id, input: $input) {
+      id
+    }
+  }
+`;
