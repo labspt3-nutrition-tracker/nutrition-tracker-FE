@@ -6,7 +6,7 @@ import styled from 'styled-components';
 // import red from "@material-ui/core/colors/red";
 import { NavLink } from "react-router-dom";
 
-import SearchInputComponent from './../SearchComponent/SearchInputComponent'
+import SearchInputComponent from "./../SearchComponent/SearchInputComponent";
 
 const AppBar = styled.div`
   display: flex;
@@ -37,7 +37,7 @@ const Toolbar = styled.div`
   }
 `;
 
-const ButtonAppBar = (props) => {
+const ButtonAppBar = props => {
   return (
       <AppBar className="appbar" position="static">
         <Toolbar>
@@ -57,10 +57,14 @@ const ButtonAppBar = (props) => {
             Journal
           </NavLink>
         </Toolbar>
-        <SearchInputComponent updateSearch={props.updateSearch} searchInput={props.searchInput} getFoodData={props.getFoodData} />
+        <SearchInputComponent
+          updateSearch={props.updateSearch}
+          searchInput={props.searchInput}
+          getFoodData={props.getFoodData}
+        />
       </AppBar>
   );
-}
+};
 
 // export default withStyles(styles)(ButtonAppBar);
 export default ButtonAppBar;

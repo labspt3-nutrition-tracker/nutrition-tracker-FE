@@ -9,6 +9,7 @@ export const ADD_FOOD = gql`
       carbs
       proteins
       edamam_id
+      id
     }
   }
 `;

@@ -29,14 +29,18 @@ class StatsView extends React.Component {
       mode: "cors",
       headers: { authorization: idToken }
     });
-    const user = await client.request(GET_CURRENT_USER_QUERY);
-    const userId = user.getCurrentUser.id;
-    const variables = { userId };
     try {
+      const user = await client.request(GET_CURRENT_USER_QUERY);
+      const userId = user.getCurrentUser.id;
+      const variables = { userId };
       const foodEntries = await client.request(GET_FOOD_ENTRIES_BY_USER_QUERY, variables);
       this.setState({ foodEntries: foodEntries.getFoodEntriesByUserId });
     } catch (err) {
       console.log(err);
+      if (err.response.errors[0].message === "You must be logged in!") {
+        localStorage.removeItem("token");
+        this.props.history.push("/login");
+      }
     }
   };
 

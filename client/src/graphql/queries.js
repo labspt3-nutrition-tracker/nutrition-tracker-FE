@@ -40,3 +40,14 @@ export const GET_CURRENT_USER_QUERY = `
   }
 }
 `;
+
+export const GET_WEIGHT_ENTRIES_QUERY = `
+query($userId: ID!)
+{
+  getWeightEntriesByUserId(userId: $userId) {
+    id
+    date
+    weight
+  }
+}
+`;
