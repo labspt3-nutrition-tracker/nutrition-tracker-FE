@@ -10,7 +10,7 @@ import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000"
+  uri: "https://nutrition-tracker-be.herokuapp.com"
 });
 
 const client = new ApolloClient({
