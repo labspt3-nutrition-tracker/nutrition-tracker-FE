@@ -87,7 +87,6 @@ class App extends React.Component {
         <div>
           <Route exact path="/" component={Home} />
           <Route path="/dashboard" render={(props) => <Dashboard {...props} selectedFood = {this.state.selectedFood}/>} />
-          <Route exact path="/billing-plan" render={() => <BillingPlans />} />
           <Route exact path="/billing" render={() => <Billing />} />
           <Route exact path="/stats" render={() => <StatsView />} />
           <Route

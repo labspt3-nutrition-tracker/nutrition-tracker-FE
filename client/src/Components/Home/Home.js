@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import BillingPlans from '../../Components/Billing/BillingPlans';
 // import logo from "../../Assets/logo-white.png";
 
 // const Logo = styled.div`
@@ -59,6 +60,7 @@ const Home = () => (
             <div className="feature-text">Lorem Ipsum</div>
           </div>
         </Features>
+        <BillingPlans/>
       </Main>
     </div>
   </div>
