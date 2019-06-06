@@ -16,7 +16,8 @@ class UserEditModal extends Component {
     this.setState({ editInput: event.target.value });
   };
 
-  handleEdit = () => {
+  handleEdit = editType => {
+    console.log({ editType });
     console.log("new value: ", this.state.editInput);
     this.setState({ editInput: "" });
   };
@@ -31,22 +32,26 @@ class UserEditModal extends Component {
     } else if (editType === "caloriesGoal") {
       message = "Current daily calories goal is " + currentUser.calorieGoal + ". What is your new daily calories goal?";
       label = "Calories Goal";
+    } else if (editType === "userType") {
+      message = "Please update to Premium";
     }
     return (
       <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
         <DialogTitle id='form-dialog-title'>Update Your Data</DialogTitle>
         <DialogContent>
           {message && <DialogContentText>{message}</DialogContentText>}
-          <TextField
-            autoFocus
-            margin='dense'
-            id='name'
-            label={label}
-            type='email'
-            fullWidth
-            onChange={this.handleInput}
-            value={this.state.editInput}
-          />
+          {label && (
+            <TextField
+              autoFocus
+              margin='dense'
+              id='name'
+              label={label}
+              type='email'
+              fullWidth
+              onChange={this.handleInput}
+              value={this.state.editInput}
+            />
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='primary'>
@@ -54,7 +59,7 @@ class UserEditModal extends Component {
           </Button>
           <Button
             onClick={() => {
-              this.handleEdit();
+              this.handleEdit(editType);
               handleClose();
             }}
             color='secondary'

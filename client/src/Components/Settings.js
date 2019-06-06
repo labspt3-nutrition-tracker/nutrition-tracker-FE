@@ -96,17 +96,8 @@ class Settings extends React.Component {
                   secondary={currentUser.userType}
                   classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
                 />
+                <EditIcon className={classes.icon} onClick={() => this.openModal("userType")} />
               </ListItem>{" "}
-              <ListItem>
-                <ListItemIcon>
-                  <FolderIcon className={classes.icon} />
-                </ListItemIcon>
-                <ListItemText
-                  primary='Initial Weight'
-                  secondary={currentUser.weight ? currentUser.weight : "No initial weight entered"}
-                  classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
-                />
-              </ListItem>
               <ListItem>
                 <ListItemIcon>
                   <FolderIcon className={classes.icon} />
