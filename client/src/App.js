@@ -15,11 +15,18 @@ import AppModal from "./Components/Reusables/AppModal";
 import Footer from "./Components/Reusables/Footer";
 import axios from "axios";
 
+import { getCurrentUser } from "./util/getCurrentUser";
+
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
 const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
 
 const PrivateRoute = ({ component: Component, render, ...rest }) => {
   const token = localStorage.getItem("token");
+  getCurrentUser(token)
+    .then()
+    .catch(err => {
+      localStorage.removeItem("token"); //If token expired, remove it
+    });
   return (
     <Route
       {...rest}
