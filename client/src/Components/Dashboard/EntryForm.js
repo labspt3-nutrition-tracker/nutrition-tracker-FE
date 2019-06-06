@@ -105,6 +105,7 @@ class EntryForm extends Component {
           fats: null,
           carbs: null,
           proteins: null,
+          edamam_id: null
         }
       })
     })
