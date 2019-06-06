@@ -7,9 +7,31 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { withStyles } from "@material-ui/core/styles";
 
 import { addWeightEntry } from "../util/addWeightEntry";
 import { updateUserData } from "../util/updateUserData";
+
+const styles = theme => ({
+  title: {
+    fontSize: "2rem",
+    color: "#2196F3"
+  },
+  message: {
+    fontSize: "1.7rem",
+    color: "black"
+  },
+  formTextLabel: {
+    fontSize: "1.5rem"
+  },
+  formTextInput: {
+    fontSize: "1.5rem"
+  },
+  btn: {
+    fontSize: "1.6rem",
+    color: "#2196F3"
+  }
+});
 
 class UserEditModal extends Component {
   state = {
@@ -60,7 +82,7 @@ class UserEditModal extends Component {
   };
 
   render() {
-    const { open, handleClose, editType, currentUser, currentWeight } = this.props;
+    const { classes, open, handleClose, editType, currentUser, currentWeight } = this.props;
     let label;
     let message;
     if (editType === "weight") {
@@ -70,13 +92,29 @@ class UserEditModal extends Component {
       message = "Current daily calories goal is " + currentUser.calorieGoal + ". What is your new daily calories goal?";
       label = "Calories Goal";
     } else if (editType === "userType") {
-      message = "Please update to Premium";
+      message = "Please upgrade to Premium";
     }
     return (
-      <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
-        <DialogTitle id='form-dialog-title'>Update Your Data</DialogTitle>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby='form-dialog-title'
+        PaperProps={{
+          style: {
+            minHeight: "25vh",
+            minWidth: "30vw"
+          }
+        }}
+      >
+        <DialogTitle id='form-dialog-title'>
+          <span className={classes.title}> {editType === "userType" ? "Upgrade you account" : "Update Your Data"}</span>
+        </DialogTitle>
         <DialogContent>
-          {message && <DialogContentText>{message}</DialogContentText>}
+          {message && (
+            <DialogContentText>
+              <span className={classes.message}>{message}</span>
+            </DialogContentText>
+          )}
           {label && (
             <TextField
               autoFocus
@@ -87,11 +125,21 @@ class UserEditModal extends Component {
               fullWidth
               onChange={this.handleInput}
               value={this.state.editInput}
+              InputLabelProps={{
+                classes: {
+                  root: classes.formTextLabel
+                }
+              }}
+              InputProps={{
+                classes: {
+                  input: classes.formTextInput
+                }
+              }}
             />
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color='primary'>
+          <Button onClick={handleClose} color='primary' className={classes.btn}>
             Cancel
           </Button>
           <Button
@@ -100,8 +148,9 @@ class UserEditModal extends Component {
               handleClose();
             }}
             color='secondary'
+            className={classes.btn}
           >
-            Update
+            {editType === "userType" ? "Upgrade" : "Update"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -109,4 +158,4 @@ class UserEditModal extends Component {
   }
 }
 
-export default withRouter(UserEditModal);
+export default withStyles(styles)(withRouter(UserEditModal));
