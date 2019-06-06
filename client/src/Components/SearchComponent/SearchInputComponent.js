@@ -1,12 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SearchBoxContainer = styled.div`
-
-`;
-
 const Search = styled.div`
-  margin-left: 20px;
+  margin-bottom: 5px;
+  margin-right: 3%;
 `;
 
 const SearchInput = styled.input`
@@ -14,17 +11,23 @@ const SearchInput = styled.input`
   font-size: 1.5em;
 `;
 
+const SearchButton = styled.button`
+  color: #FCFCFB;
+  background: #F4B4C3;
+  margin-bottom: 5px;
+  padding: 5px 15px;
+  font-size: .9em;
+`;
+
 const SearchInputComponent = props => {
   return(
       <Search>
-        <SearchBoxContainer>
           <SearchInput
           type="text"
           onChange={props.updateSearch}
           name="searchInput"
           value={props.searchInput}/>
-          <button onClick={props.getFoodData}>Search</button>
-          </SearchBoxContainer>
+        <SearchButton onClick={props.getFoodData}>Search</SearchButton>
       </Search>
     )
 }
