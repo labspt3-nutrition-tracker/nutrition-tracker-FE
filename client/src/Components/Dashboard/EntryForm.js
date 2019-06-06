@@ -34,35 +34,34 @@ class EntryForm extends Component {
     this.state = {
       errors: [],
       newAddFood: {
-        foodName: props.selectedFood ? props.selectedFood.label : "",
-        caloriesPerServ: this.props.selectedFood
-          ? this.props.selectedFood.nutrients.ENERC_KCAL
-          : null,
-        fats: this.props.selectedFood
-          ? this.props.selectedFood.nutrients.FAT
-          : null,
-        carbs: this.props.selectedFood
-          ? this.props.selectedFood.nutrients.CHOCDF
-          : null,
-        proteins: this.props.selectedFood
-          ? this.props.selectedFood.nutrients.PROCNT
-          : null,
-        edamam_id: this.props.selectedFood
-          ? this.props.selectedFood.foodId
-          : "",
-        meal_category_id: null,
-        date: "",
-        servingQty: null
-
-        // foodName: "",
-        // caloriesPerServ: null,
-        // fats: null,
-        // carbs: null,
-        // proteins: null,
-        // edamam_id: "",
+        // foodName: props.selectedFood ? props.selectedFood.label : "",
+        // caloriesPerServ: this.props.selectedFood
+        //   ? this.props.selectedFood.nutrients.ENERC_KCAL
+        //   : null,
+        // fats: this.props.selectedFood
+        //   ? this.props.selectedFood.nutrients.FAT
+        //   : null,
+        // carbs: this.props.selectedFood
+        //   ? this.props.selectedFood.nutrients.CHOCDF
+        //   : null,
+        // proteins: this.props.selectedFood
+        //   ? this.props.selectedFood.nutrients.PROCNT
+        //   : null,
+        // edamam_id: this.props.selectedFood
+        //   ? this.props.selectedFood.foodId
+        //   : "",
         // meal_category_id: null,
         // date: "",
         // servingQty: null
+        foodName: "",
+        caloriesPerServ: null,
+        fats: null,
+        carbs: null,
+        proteins: null,
+        edamam_id: "",
+        meal_category_id: null,
+        date: "",
+        servingQty: null
       }
     };
   }
@@ -105,7 +104,7 @@ class EntryForm extends Component {
     if (mealCat > 1) {
       const foodAddedToDB = {
         foodName: this.state.newAddFood.foodName,
-        caloriesPerServ: this.state.newAddFood.caloriesPerServ,
+        caloriesPerServ: parseInt(this.state.newAddFood.caloriesPerServ),
         fats: this.state.newAddFood.fats,
         carbs: this.state.newAddFood.carbs,
         proteins: this.state.newAddFood.proteins,
@@ -183,8 +182,78 @@ class EntryForm extends Component {
     }
   };
 
+  componentDidMount(){
+    let foodName;
+    let caloriesPerServ;
+    let fats;
+    let carbs;
+    let  proteins;
+    let edamam_id;
+
+    if(this.props.selectedFood){
+      foodName = this.props.selectedFood.label;
+      caloriesPerServ =  this.props.selectedFood.nutrients.ENERC_KCAL;
+      fats = this.props.selectedFood.nutrients.FAT;
+      carbs = this.props.selectedFood.nutrients.CHOCDF;
+      proteins = this.props.selectedFood.nutrients.PROCNT;
+      edamam_id = this.props.selectedFood.foodId;
+      this.setState({
+        newAddFood: {
+          foodName: foodName,
+          caloriesPerServ: caloriesPerServ,
+          fats: fats,
+          carbs: carbs,
+          proteins: proteins,
+          edamam_id: edamam_id
+          // foodName: this.props.selectedFood.label,
+          // caloriesPerServ: this.props.selectedFood.nutrients.ENERC_KCAL,
+          // fats: this.props.selectedFood.nutrients.FAT,
+          // carbs:this.props.selectedFood.nutrients.CHOCDF,
+          // proteins: this.props.selectedFood.nutrients.PROCNT,
+          // edamam_id: this.props.selectedFood.foodId
+        }
+        
+      })
+    }
+  }
+
+  componentDidUpdate(prevProps){
+    let foodName;
+    let caloriesPerServ;
+    let fats;
+    let carbs;
+    let  proteins;
+    let edamam_id;
+
+    if(prevProps.selectedFood !== this.props.selectedFood){
+      foodName = this.props.selectedFood.label;
+      caloriesPerServ =  this.props.selectedFood.nutrients.ENERC_KCAL;
+      fats = this.props.selectedFood.nutrients.FAT;
+      carbs = this.props.selectedFood.nutrients.CHOCDF;
+      proteins = this.props.selectedFood.nutrients.PROCNT;
+      edamam_id = this.props.selectedFood.foodId;
+      this.setState({
+        newAddFood: {
+          // foodName: this.props.selectedFood.label,
+          // calroriesPerServ: this.props.selectedFood.nutrients.ENERC_KCAL,
+          // fats: this.props.selectedFood.nutrients.FAT,
+          // carbs:this.props.selectedFood.nutrients.CHOCDF,
+          // proteins: this.props.selectedFood.nutrients.PROCNT,
+          // edamam_id: this.props.selectedFood.foodId
+          foodName: foodName,
+          caloriesPerServ: caloriesPerServ,
+          fats: fats,
+          carbs: carbs,
+          proteins: proteins,
+          edamam_id: edamam_id
+        }
+      })
+    }
+  }
+
   render() {
     this.getCurrentUser(localStorage.getItem("token"));
+    // console.log(this.state.newAddFood.foodName)
     return (
       <Form>
         {this.state.errors
@@ -231,7 +300,7 @@ class EntryForm extends Component {
           type="number"
           name="caloriesPerServ"
           onChange={this.onInputChange}
-          value={this.state.newAddFood.caloriesPerServ}
+          value={this.state.newAddFood.caloriesPerServ ? this.state.newAddFood.caloriesPerServ : ''}
         />
 
         <label htmlFor="proteins">Grams of Protein per Serving</label>
@@ -240,7 +309,7 @@ class EntryForm extends Component {
           type="number"
           name="proteins"
           onChange={this.onInputChange}
-          value={this.state.newAddFood.proteins}
+          value={this.state.newAddFood.proteins ? this.state.newAddFood.proteins: ''}
         />
         <label htmlFor="carbs">Grams of Carbs per Serving</label>
 
@@ -249,7 +318,7 @@ class EntryForm extends Component {
           type="number"
           name="carbs"
           onChange={this.onInputChange}
-          value={this.state.newAddFood.carbs}
+          value={this.state.newAddFood.carbs ? this.state.newAddFood.carbs : ''}
         />
         <label htmlFor="fats">Grams of Fat per Serving</label>
 
@@ -258,7 +327,7 @@ class EntryForm extends Component {
           type="number"
           name="fats"
           onChange={this.onInputChange}
-          value={this.state.newAddFood.fats}
+          value={this.state.newAddFood.fats ? this.state.newAddFood.fats : ''}
         />
         <label htmlFor="date">Date</label>
         <input
