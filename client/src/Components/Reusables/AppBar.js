@@ -1,9 +1,5 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import blue from "@material-ui/core/colors/blue";
 import styled from 'styled-components';
-// import red from "@material-ui/core/colors/red";
 import { NavLink } from "react-router-dom";
 
 import SearchInputComponent from "./../SearchComponent/SearchInputComponent";
