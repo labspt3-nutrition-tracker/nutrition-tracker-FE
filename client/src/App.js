@@ -50,7 +50,7 @@ class App extends React.Component {
       searchInput: "",
       searchResults: [],
       noResultError: "",
-      showModal: false
+      showModal: false,
     };
   }
 

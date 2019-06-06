@@ -19,7 +19,7 @@ class FoodEntry extends React.Component {
 
   render() {
     const ENTRIES_QUERY = gql`
-      query {
+      query getFoodEntriesByUserId{
         getFoodEntriesByUserId(userId: ${this.state.currentUser}) {
           date
           food_id {
