@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
 export const ADD_FOOD = gql`
-  mutation  addFood($input: FoodInput!){
-    addFood(input: $input){
+  mutation addFood($input: FoodInput!) {
+    addFood(input: $input) {
       foodName
       caloriesPerServ
       fats
@@ -34,18 +34,25 @@ export const ADD_FOOD = gql`
 // `;
 
 export const ADD_FOOD_ENTRY = gql`
-  mutation addFoodEntry($input: FoodEntryInput!){
-    addFoodEntry(input: $input){
+  mutation addFoodEntry($input: FoodEntryInput!) {
+    addFoodEntry(input: $input) {
       date
-      food_id{id, foodName}
-      user_id{id, username}
+      food_id {
+        id
+        foodName
+      }
+      user_id {
+        id
+        username
+      }
       servingQty
-      meal_category_id{id, mealCategoryName}
+      meal_category_id {
+        id
+        mealCategoryName
+      }
     }
   }
 `;
-
-
 
 // export const EDIT_FOOD_ENTRY = gql`
 //   mutation{
@@ -71,3 +78,21 @@ export const ADD_FOOD_ENTRY = gql`
 //     deleteFoodentry($id: ID!)
 //   }
 // `;
+
+export const ADD_WEIGHT_ENTRY_MUTATION = `
+  mutation($input: WeightEntryInput!) {
+    addWeightEntry(input: $input) {
+      id
+      weight
+      date
+    }
+  }
+`;
+
+export const UPDATE_USER_MUTATION = `
+  mutation($id: ID!, $input: UserInput!) {
+    updateUser(id: $id, input: $input) {
+      id
+    }
+  }
+`;

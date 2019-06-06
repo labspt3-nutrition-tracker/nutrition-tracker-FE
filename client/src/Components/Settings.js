@@ -47,6 +47,15 @@ class Settings extends React.Component {
     editType: ""
   };
   componentDidMount = () => {
+    this.getData();
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.currentUser !== this.state.currentUser || prevState.currentWeight !== this.state.currentWeight)
+      this.getData();
+  };
+
+  getData = () => {
     getCurrentUser(localStorage.getItem("token"))
       .then(currentUser => {
         getCurrentWeight(currentUser.id).then(weight => {
@@ -127,41 +136,5 @@ class Settings extends React.Component {
     );
   }
 }
-
-// <>
-//     <SettingsContainer>
-//         <form>
-//             <h2 style={{marginBottom:20}}>Body Goals</h2>
-//             <div style={{marginBottom:50}}>
-//                 <h3>Initial Weight</h3>
-//                 <TextField
-//                     margin="dense"
-//                 />
-//                 <h3>Current Weight</h3>
-//                 <TextField/>
-//             </div>
-//             <h2 style={{marginBottom:20}}>Calories</h2>
-//             <div style={{marginBottom:50}}>
-//                 <h3>Daily Calorie Goal</h3>
-//                 <TextField
-//                     placeholder="900 Calories"
-//                     margin="dense"
-//                 />
-//             </div>
-//             <h2 style={{marginBottom:20}}>Download Report</h2>
-//             <div>
-//                 <StyledButton
-//                 variant="extended"
-//                 size="large"
-//                 download="test"
-//                 href="test"
-//                 >
-//                 Download
-//                 </StyledButton>
-//             </div>
-
-//         </form>
-//     </SettingsContainer>
-// </>
 
 export default withStyles(styles)(Settings);
