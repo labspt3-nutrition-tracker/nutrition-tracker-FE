@@ -4,6 +4,10 @@ import styled from "styled-components";
 
 const FooterDiv = styled.div`
 background: #F4B4C3;
+left: 0;
+right: 0;
+bottom:0;
+top: 0;
 `
 
   {/* Footer */}
