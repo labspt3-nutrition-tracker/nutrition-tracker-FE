@@ -96,3 +96,14 @@ export const UPDATE_USER_MUTATION = `
     }
   }
 `;
+
+
+export const ADD_EXERENTRY = gql`
+  mutation addExerciseEntry($input: ExerciseEntryInput!) {
+    addExerciseEntry(input: $input) {
+      id
+      exerciseName
+      caloriesBurned
+    }
+  }
+`;

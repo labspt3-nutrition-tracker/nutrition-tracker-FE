@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
-import { gql } from "apollo-boost";
+import { GET_CURRENT_USERID } from "../../graphql/queries";
 
 const Form = styled.form`
   display: flex;
@@ -9,25 +9,6 @@ const Form = styled.form`
   max-width: 300px;
   width: 100%;
   padding: 20px;
-`;
-
-const ADD_EXERENTRY = gql`
-  mutation addExerciseEntry($input: ExerciseEntryInput!) {
-    addExerciseEntry(input: $input) {
-      id
-      exerciseName
-      caloriesBurned
-    }
-  }
-`;
-
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-    }
-  }
 `;
 
 class ExerForm extends Component {
@@ -40,8 +21,9 @@ class ExerForm extends Component {
     }
   };
 
-  componentDidMount(){
-    this.getCurrentUser(localStorage.getItem("token"));
+  componentDidMount() {
+    const idToken = localStorage.getItem("token");
+    this.getCurrentUser(idToken);
   }
 
   getCurrentUser = idToken => {
@@ -52,43 +34,15 @@ class ExerForm extends Component {
 
     client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USERID
       })
-      .then(response => this.setState({
-        newExerEntry: {
-          ...this.state.newExerEntry,
-          exercise_entry_user_id: response.data.getCurrentUser.id
-        }
-      }))
-      .catch(err => console.log(err));
-  };
-
-  addExerEntry = e => {
-    e.preventDefault();
-    console.log(this.state.newExerEntry);
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
-    });
-
-    client
-      .mutate({
-        mutation: ADD_EXERENTRY,
-        variables: {
-          input: this.state.newExerEntry
-        }
-      })
-      // .then(response => console.log(response))
-      .then(() => {
-        console.log("yooooo");
+      .then(response =>
         this.setState({
           newExerEntry: {
-            exerciseEntryDate: "",
-            exerciseName: "",
-            caloriesBurned: null,
-            exercise_entry_user_id: 2
+            exercise_entry_user_id: response.data.getCurrentUser.id
           }
-        });
-      })
+        })
+      )
       .catch(err => console.log(err));
   };
 
@@ -98,6 +52,19 @@ class ExerForm extends Component {
         ...this.state.newExerEntry,
         [e.target.name]:
           e.target.type === "number" ? parseInt(e.target.value) : e.target.value
+      }
+    });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+    this.props.addExerEntry(this.state.newExerEntry);
+    this.setState({
+      newExerEntry: {
+        exerciseEntryDate: "",
+        exerciseName: "",
+        caloriesBurned: "",
+        exercise_entry_user_id: 0
       }
     });
   };
@@ -130,11 +97,7 @@ class ExerForm extends Component {
           value={this.state.newExerEntry.caloriesBurned}
           onChange={this.onInputChange}
         />
-        <button
-          className="form-field"
-          type="submit"
-          onClick={this.addExerEntry}
-        >
+        <button className="form-field" type="submit" onClick={this.onSubmit}>
           Add Entry
         </button>
       </Form>
