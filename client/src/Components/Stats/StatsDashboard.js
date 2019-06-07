@@ -8,6 +8,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import * as moment from "moment";
 
+import { getLastXDays } from "../../util/getLastXDays";
+
 const styles = theme => ({
   root: {
     display: "flex",
@@ -64,12 +66,7 @@ class StatsDashboard extends React.Component {
 
   handleManyDaysChange = numOfDays => {
     this.setState({ manyDays: numOfDays, dayValue: "" });
-    const days = [];
-    let day = Date.now();
-    for (let i = 0; i < numOfDays; i++) {
-      days.unshift(day);
-      day = day - 86400000;
-    }
+    const days = getLastXDays(numOfDays);
     this.props.chartChange(days);
   };
 

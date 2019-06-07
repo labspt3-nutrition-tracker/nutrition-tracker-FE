@@ -27,7 +27,8 @@ class StatsView extends React.Component {
     data: "caloriesPerServ",
     option: 0,
     weightEntries: [],
-    initialWeight: 0
+    initialWeight: 0,
+    currentUser: null
   };
 
   componentDidMount = async () => {
@@ -46,7 +47,8 @@ class StatsView extends React.Component {
       this.setState({
         foodEntries: foodEntries.getFoodEntriesByUserId,
         weightEntries: weightEntries.getWeightEntriesByUserId,
-        initialWeight: initialWeight
+        initialWeight: initialWeight,
+        currentUser: user.getCurrentUser
       });
     } catch (err) {
       console.log(err);
@@ -111,7 +113,7 @@ class StatsView extends React.Component {
               )}
             </>
           ) : (
-            <Accomplishments />
+            <Accomplishments currentUser={this.state.currentUser} foodEntries={this.state.foodEntries} />
           )}
         </div>
       </>
