@@ -123,7 +123,7 @@ class App extends React.Component {
           <Route exact path="/" component={Home} />
           <Route path="/dashboard" render={(props) => <Dashboard {...props} selectedFood = {this.state.selectedFood}/>} />
           <Route exact path="/billing" render={() => <Billing />} />
-          <Route exact path="/stats" render={() => <StatsView />} />
+          <Route exact path="/reports" render={() => <StatsView />} />
           <Route
           exact path="/login" render={() => <Login/>} />
           <Route
