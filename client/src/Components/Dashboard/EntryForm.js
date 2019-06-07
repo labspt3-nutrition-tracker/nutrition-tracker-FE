@@ -82,34 +82,106 @@ class EntryForm extends Component {
 
   onEntrySubmit = e => {
     e.preventDefault();
-
-    const mealCat = parseInt(this.state.newAddFood.meal_category_id);
-    if (mealCat > 1) {
-      const foodAddedToDB = {
-        foodName: this.state.newAddFood.foodName,
-        caloriesPerServ: parseInt(this.state.newAddFood.caloriesPerServ),
-        fats: this.state.newAddFood.fats,
-        carbs: this.state.newAddFood.carbs,
-        proteins: this.state.newAddFood.proteins,
-        edamam_id: this.state.newAddFood.edamam_id
-      };
-      console.log("foodAddedToDB", foodAddedToDB);
-      console.log(this.state.newAddFood.meal_category_id);
-      console.log("servingqty", this.state.newAddFood.servingQty);
+    if (this.state.edamamExist === false) {
+      const mealCat = parseInt(this.state.newAddFood.meal_category_id);
+      if (mealCat > 1) {
+        const foodAddedToDB = {
+          foodName: this.state.newAddFood.foodName,
+          caloriesPerServ: parseInt(this.state.newAddFood.caloriesPerServ),
+          fats: this.state.newAddFood.fats,
+          carbs: this.state.newAddFood.carbs,
+          proteins: this.state.newAddFood.proteins,
+          edamam_id: this.state.newAddFood.edamam_id
+        };
+        console.log("foodAddedToDB", foodAddedToDB);
+        console.log(this.state.newAddFood.meal_category_id);
+        console.log("servingqty", this.state.newAddFood.servingQty);
+        const client = new ApolloClient({
+          uri: "https://nutrition-tracker-be.herokuapp.com"
+        });
+        client
+          .mutate({
+            mutation: ADD_FOOD,
+            variables: {
+              input: foodAddedToDB
+            }
+          })
+          .then(response => {
+            const entryAddedToDB = {
+              date: this.state.newAddFood.date,
+              food_id: parseInt(response.data.addFood.id),
+              user_id: parseInt(this.state.newAddFood.user_id),
+              servingQty: this.state.newAddFood.servingQty,
+              meal_category_id: parseInt(this.state.newAddFood.meal_category_id)
+            };
+            client
+              .mutate({
+                mutation: ADD_FOOD_ENTRY,
+                variables: {
+                  input: entryAddedToDB
+                }
+              })
+              .then(response => {
+                console.log(response);
+              });
+            this.setState({
+              errors: [],
+              edamamExist: false,
+              newAddFood: {
+                foodName: "",
+                caloriesPerServ: null,
+                fats: null,
+                carbs: null,
+                proteins: null,
+                edamam_id: null,
+                meal_category_id: null,
+                date: "",
+                servingQty: null
+              }
+            });
+          })
+          .catch(err => {
+            console.log("food entry error", err);
+            this.setState({
+              errors: [],
+              edamamExist: false,
+              newFoodEntry: {
+                foodName: "",
+                caloriesPerServ: null,
+                fats: null,
+                carbs: null,
+                proteins: null,
+                edamam_id: null,
+                meal_category_id: null,
+                date: "",
+                servingQty: null
+              }
+            });
+          });
+      } else {
+        this.setState({errors: ["meal category is required"]})
+      }
+    }
+    else {
       const client = new ApolloClient({
         uri: "https://nutrition-tracker-be.herokuapp.com"
-      });
+      })
       client
-        .mutate({
-          mutation: ADD_FOOD,
-          variables: {
-            input: foodAddedToDB
-          }
+        .query({
+          query: GET_ALL_FOOD
         })
         .then(response => {
+        const filteredEdamam  = response.data.getFoods.filter( food => {
+              return food.edamam_id === this.props.selectedFood.foodId;
+          })
+          return filteredEdamam;
+        })
+        .then( response => {
+          const foodId = response[0].id;
+          console.log('foodId', foodId)
           const entryAddedToDB = {
             date: this.state.newAddFood.date,
-            food_id: parseInt(response.data.addFood.id),
+            food_id:  parseInt(foodId),
             user_id: parseInt(this.state.newAddFood.user_id),
             servingQty: this.state.newAddFood.servingQty,
             meal_category_id: parseInt(this.state.newAddFood.meal_category_id)
@@ -123,47 +195,96 @@ class EntryForm extends Component {
             })
             .then(response => {
               console.log(response);
+              this.setState({
+                errors: [],
+                edamamExist: false,
+                newAddFood: {
+                  foodName: "",
+                  caloriesPerServ: null,
+                  fats: null,
+                  carbs: null,
+                  proteins: null,
+                  edamam_id: null,
+                  meal_category_id: null,
+                  date: "",
+                  servingQty: null
+                }
+              });
             });
 
-          console.log("response:", response);
-          console.log("currentUser:", this.state.newAddFood.user_id);
-          console.log("mealCategory:", this.state.newAddFood.meal_category_id);
-          this.setState({
-            errors: [],
-            newAddFood: {
-              foodName: "",
-              caloriesPerServ: null,
-              fats: null,
-              carbs: null,
-              proteins: null,
-              edamam_id: null,
-              meal_category_id: null,
-              date: "",
-              servingQty: null
+          // console.log("response:", response);
+          // console.log("currentUser:", this.state.newAddFood.user_id);
+          // console.log("mealCategory:", this.state.newAddFood.meal_category_id);
+          })
+          .catch(err =>{ 
+            this.setState({
+                errors: [],
+                edamamExist: false,
+                newAddFood: {
+                  foodName: "",
+                  caloriesPerServ: null,
+                  fats: null,
+                  carbs: null,
+                  proteins: null,
+                  edamam_id: null,
+                  meal_category_id: null,
+                  date: "",
+                  servingQty: null
+                }
+            });
+              console.error(err)
             }
-          });
-        })
-        .catch(err => {
-          console.log("food entry error", err);
-          this.setState({
-            errors: [],
-            newFoodEntry: {
-              foodName: "",
-              caloriesPerServ: null,
-              fats: null,
-              carbs: null,
-              proteins: null,
-              edamam_id: null,
-              meal_category_id: null,
-              date: "",
-              servingQty: null
-            }
-          });
-        });
-    } else {
-      this.setState({errors: ["meal category is required"]})
+          )
+        
     }
+    
   };
+
+  edamamExistCheck = edamam_id => {
+  
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    })
+    client
+      .query({
+        query: GET_ALL_FOOD
+      })
+      .then(response => {
+       const filteredEdamam = response.data.getFoods.some( food => {
+            return food.edamam_id === edamam_id;
+        })
+        if(filteredEdamam) {
+          this.setState({
+            edamamExist: true
+          })
+          // console.log(this.state.edamamExist)
+        } else {
+          this.setState({
+            edamamExist: false
+          })
+        }
+      })
+      .catch(err => console.error(err))
+  }
+
+  getEdamamData = edamam_id => {
+      
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    })
+    client
+      .query({
+        query: GET_ALL_FOOD
+      })
+      .then(response => {
+      const filteredEdamam  = response.data.getFoods.filter( food => {
+            return food.edamam_id === edamam_id;
+        })
+
+        return filteredEdamam;
+      })
+      .catch(err => console.error(err))
+  }
 
   componentDidMount(){
     // const client = new ApolloClient({
@@ -210,6 +331,7 @@ class EntryForm extends Component {
         }
         
       })
+      this.edamamExistCheck(this.props.selectedFood.foodId)
     }
   }
 
@@ -223,7 +345,7 @@ class EntryForm extends Component {
     //   })
     //   .then(response => {
     //     console.log('GET_ALL_FOOD response', response)
-
+        
     //   })
     //   .catch(err => console.error(err))
 
@@ -243,12 +365,6 @@ class EntryForm extends Component {
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
-          // foodName: this.props.selectedFood.label,
-          // calroriesPerServ: this.props.selectedFood.nutrients.ENERC_KCAL,
-          // fats: this.props.selectedFood.nutrients.FAT,
-          // carbs:this.props.selectedFood.nutrients.CHOCDF,
-          // proteins: this.props.selectedFood.nutrients.PROCNT,
-          // edamam_id: this.props.selectedFood.foodId
           foodName: foodName,
           caloriesPerServ: caloriesPerServ,
           fats: fats,
@@ -257,6 +373,9 @@ class EntryForm extends Component {
           edamam_id: edamam_id
         }
       })
+      this.edamamExistCheck(this.props.selectedFood.foodId)
+      // this.getEdamamData(this.props.selectedFood.foodId)
+      // console.log('edadata',  this.getEdamamData(this.props.selectedFood.foodId))
     }
   }
 
