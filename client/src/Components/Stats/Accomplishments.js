@@ -16,26 +16,33 @@ import { getGoalReached } from "../../util/getGoalReached";
 class Accomplishments extends Component {
   state = {
     days: [],
-    goals: []
+    goals: [],
+    weights: []
   };
   componentDidMount = async () => {
-    const { currentUser, foodEntries } = this.props;
+    const { currentUser, foodEntries, weightEntries } = this.props;
     const days = await getLastXDays(7);
     const totalCalories = await getTotalData(foodEntries, "caloriesPerServ", days);
     const goals = getGoalReached(currentUser, totalCalories);
-    this.setState({ days: days, goals: goals });
+    let weights = days.map(day =>
+      weightEntries.find(entry => moment(new Date(entry.date)).format("MM/DD/YY") === moment(day).format("MM/DD/YY"))
+    );
+    weights = weights.filter(weight => weight !== undefined).map(entry => entry.weight);
+    this.setState({ days: days, goals: goals, weights: weights });
   };
   render() {
     const { classes, currentUser } = this.props;
-    let { days, goals } = this.state;
-    days = days.map(day => moment(day).format("MM/DD"));
+    const { days, goals, weights } = this.state;
+    // days = days.map(day => moment(day).format("MM/DD"));
     const success = goals.map((goal, i) => (goal === 1 ? days[i] : goal)).filter(day => day !== 0 && day !== -1);
     const warnings = goals.map((goal, i) => (goal === -1 ? days[i] : goal)).filter(day => day !== 0 && day !== 1);
     const noEntries = goals.map((goal, i) => (goal === 0 ? days[i] : goal)).filter(day => day !== -1 && day !== 1);
+    const weightDiff = weights.length > 0 ? weights[0] - weights[weights.length - 1] : 0;
+    const initialWeightDiff = currentUser.weight ? currentUser.weight - weights[weights.length - 1] : null;
     return (
       <div className={classes.root}>
         <h2 className={classes.week}>
-          Last 7 days: {days[0]} - {days[6]}
+          Last 7 days: {moment(days[0]).format("MM/DD")} - {moment(days[6]).format("MM/DD")}
         </h2>
         <Grid container justify='center' alignItems='center'>
           <Grid item xs={6}>
@@ -44,7 +51,6 @@ class Accomplishments extends Component {
                 <Typography className={classes.title} variant='h5' component='h2'>
                   GOALS REACHED
                 </Typography>
-
                 {success.length > 0 && (
                   <>
                     <Typography color='textSecondary' className={classes.category}>
@@ -76,17 +82,27 @@ class Accomplishments extends Component {
                 <Typography className={classes.title} variant='h5' component='h2'>
                   ACCOMPLISHMENTS
                 </Typography>
+                {weightDiff >= 0 && (
+                  <>
+                    <Typography color='textSecondary' className={classes.category}>
+                      WEIGHT
+                    </Typography>
+                    <Typography className={classes.pos} variant='body2' component='p'>
+                      You have lost {weightDiff} pounds in the last 7 days. (from {weights[0]} to{" "}
+                      {weights[weights.length - 1]}).
+                    </Typography>
+                    {initialWeightDiff > 0 && (
+                      <Typography className={classes.pos} variant='body2' component='p'>
+                        You have lost {initialWeightDiff} pounds from your initial weight of {currentUser.weight}.
+                      </Typography>
+                    )}
+                  </>
+                )}
                 <Typography color='textSecondary' className={classes.category}>
                   EXERCISE
                 </Typography>
                 <Typography className={classes.pos} variant='body2' component='p'>
                   You exercised every day. You burned 2500 kcal.
-                </Typography>
-                <Typography color='textSecondary' className={classes.category}>
-                  WEIGHT
-                </Typography>
-                <Typography className={classes.pos} variant='body2' component='p'>
-                  You have lost 3 pounds.
                 </Typography>
               </CardContent>
               <CardActions>
@@ -169,7 +185,7 @@ const styles = theme => ({
     padding: "20px"
   },
   card: {
-    minHeight: "250px",
+    minHeight: "350px",
     margin: "10px",
     display: "flex",
     flexDirection: "column",

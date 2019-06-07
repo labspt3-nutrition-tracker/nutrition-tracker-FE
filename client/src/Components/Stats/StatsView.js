@@ -54,7 +54,7 @@ class StatsView extends React.Component {
       console.log(err);
       if (err.response.errors[0].message === "You must be logged in!") {
         localStorage.removeItem("token");
-        this.props.history.push("/login");
+        // this.props.history.push("/login");
       }
     }
   };
@@ -113,7 +113,11 @@ class StatsView extends React.Component {
               )}
             </>
           ) : (
-            <Accomplishments currentUser={this.state.currentUser} foodEntries={this.state.foodEntries} />
+            <Accomplishments
+              currentUser={this.state.currentUser}
+              foodEntries={this.state.foodEntries}
+              weightEntries={this.state.weightEntries}
+            />
           )}
         </div>
       </>
