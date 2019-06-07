@@ -1,8 +1,8 @@
 import * as moment from "moment";
 
-export const getWeights = (weightEntries, days) => {
+export const getWeights = (weightEntries, days, initialWeight) => {
   const result = [];
-  let current = 0;
+  let current = initialWeight;
   days.forEach(day => {
     let weight = weightEntries
       .filter(entry => moment(new Date(entry.date)).format("MMM Do YYYY") === moment(day).format("MMM Do YYYY"))

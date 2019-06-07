@@ -24,18 +24,19 @@ class WeightStats extends Component {
   };
 
   updateEntries = () => {
-    const { weightEntries } = this.props;
+    const { weightEntries, initialWeight } = this.props;
     let { days } = this.props;
     if (days.length > 7 && days.length <= 30) {
       days = days.filter((day, i) => i % 3 === 0);
     }
-    const entries = getWeights(weightEntries, days);
+    const entries = getWeights(weightEntries, days, initialWeight);
     this.setState({ entries: entries, labels: days });
   };
   render() {
     defaults.global.defaultFontColor = "#2196F3";
-    const { classes } = this.props;
+    const { classes, initialWeight } = this.props;
     const labels = this.state.labels.map(day => moment(day).format("MM/DD"));
+    labels.unshift("Day 1");
     const lineColor = makeRandomColor();
     const data = {
       labels: labels,
@@ -46,7 +47,7 @@ class WeightStats extends Component {
           borderColor: lineColor,
           pointRadius: 6,
           fill: "false",
-          data: this.state.entries
+          data: [initialWeight, ...this.state.entries]
         }
       ]
     };

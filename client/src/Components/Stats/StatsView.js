@@ -26,7 +26,8 @@ class StatsView extends React.Component {
     days: [moment().format("YYYY-MM-DD")],
     data: "caloriesPerServ",
     option: 0,
-    weightEntries: []
+    weightEntries: [],
+    initialWeight: 0
   };
 
   componentDidMount = async () => {
@@ -38,12 +39,14 @@ class StatsView extends React.Component {
     try {
       const user = await client.request(GET_CURRENT_USER_QUERY);
       const userId = user.getCurrentUser.id;
+      const initialWeight = user.getCurrentUser.weight;
       const variables = { userId };
       const foodEntries = await client.request(GET_FOOD_ENTRIES_BY_USER_QUERY, variables);
       const weightEntries = await client.request(GET_WEIGHT_ENTRIES_QUERY, variables);
       this.setState({
         foodEntries: foodEntries.getFoodEntriesByUserId,
-        weightEntries: weightEntries.getWeightEntriesByUserId
+        weightEntries: weightEntries.getWeightEntriesByUserId,
+        initialWeight: initialWeight
       });
     } catch (err) {
       console.log(err);
@@ -93,7 +96,11 @@ class StatsView extends React.Component {
               ) : (
                 <>
                   {this.state.data === "weight" ? (
-                    <WeightStats weightEntries={this.state.weightEntries} days={this.state.days} />
+                    <WeightStats
+                      weightEntries={this.state.weightEntries}
+                      days={this.state.days}
+                      initialWeight={this.state.initialWeight}
+                    />
                   ) : (
                     <ManyDaysStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
                   )}

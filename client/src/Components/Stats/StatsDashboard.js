@@ -67,7 +67,7 @@ class StatsDashboard extends React.Component {
     const days = [];
     let day = Date.now();
     for (let i = 0; i < numOfDays; i++) {
-      days.push(day);
+      days.unshift(day);
       day = day - 86400000;
     }
     this.props.chartChange(days);
