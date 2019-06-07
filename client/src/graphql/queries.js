@@ -62,3 +62,22 @@ query {
   }
 }
 `
+
+export const GET_CURRENT_USERID = gql`
+query {
+  getCurrentUser {
+    id
+  }
+}
+`;
+
+export const EXER_QUERY = gql`
+  query getExerciseEntriesByUserId($userId: ID!){
+    getExerciseEntriesByUserId(userId: $userId) {
+      exerciseEntryDate
+      exerciseName
+      caloriesBurned
+      id
+    }
+  }
+`;

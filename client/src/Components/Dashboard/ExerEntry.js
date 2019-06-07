@@ -1,64 +1,54 @@
 import React from "react";
 import styled from "styled-components";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
 import ApolloClient from "apollo-boost";
+import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
 
 const ExerciseActivity = styled.div`
   padding: 10px;
 `;
 
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-    }
-  }
-`;
-
-const EXER_QUERY = gql`
-  query getExerciseEntriesByUserId($userId: ID!){
-    getExerciseEntriesByUserId(userId: $userId) {
-      exerciseEntryDate
-      exerciseName
-      caloriesBurned
-      id
-    }
-  }
-`;
+let currentUser;
 
 class ExerEntry extends React.Component {
   state = {
     currentUser: 0
-  };
-
-  componentDidMount(){
-    this.getCurrentUser(localStorage.getItem("token"));
+  }
+  componentDidMount() {
+    const idToken = localStorage.getItem("token");
+    this.getCurrentUser(idToken);
   }
 
   getCurrentUser = idToken => {
-    // console.log("idToken:", idToken)
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
+    // client
+    //   .query({
+    //     query: GET_CURRENT_USERID
+    //   })
+    //   .then(response => {
+    //     currentUser = response.data.getCurrentUser.id;
+    //   })
+    //   .catch(err => console.log(err));
     client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USERID
       })
-      .then(response => this.setState({currentUser: response.data.getCurrentUser.id}))
+      .then(response => {
+        this.setState({currentUser: response.data.getCurrentUser.id});
+      })
       .catch(err => console.log(err));
   };
 
   render() {
-    const userId = this.state.currentUser
     return (
       <div>
         <div>
           <div>Today's Exercise:</div>
-          <Query query={EXER_QUERY} variables={{userId: userId}}>
+          <Query query={EXER_QUERY} variables={{ userId: this.state.currentUser }}>
             {({ loading, error, data }) => {
               if (loading) return <div>Fetching Entries</div>;
               if (error) return <div>Error</div>;
@@ -66,7 +56,6 @@ class ExerEntry extends React.Component {
               const month = dateToday.getMonth();
               const day = dateToday.getDate();
               const year = dateToday.getFullYear();
-              // console.log(data);
               let exerEntries = data.getExerciseEntriesByUserId;
               exerEntries = exerEntries.filter(entry => {
                 const dateEntry = new Date(entry.exerciseEntryDate);
@@ -77,7 +66,6 @@ class ExerEntry extends React.Component {
                   entryMonth === month && entryDay === day && entryYear === year
                 );
               });
-              // console.log(exerEntries);
               if (exerEntries.length === 0) {
                 return <div>No exercise entered today.</div>;
               } else {
