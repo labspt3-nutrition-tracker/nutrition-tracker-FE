@@ -9,8 +9,13 @@ import Paper from "@material-ui/core/Paper";
 import StatsDashboard from "./StatsDashboard";
 import OneDayStats from "./OneDayStats";
 import ManyDaysStats from "./ManyDaysStats";
+import WeightStats from "./WeightStats";
 import Accomplishments from "./Accomplishments";
-import { GET_FOOD_ENTRIES_BY_USER_QUERY, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
+import {
+  GET_FOOD_ENTRIES_BY_USER_QUERY,
+  GET_CURRENT_USER_QUERY,
+  GET_WEIGHT_ENTRIES_QUERY
+} from "../../graphql/queries";
 
 const BASE_URL = "https://nutrition-tracker-be.herokuapp.com/";
 // const BASE_URL = "http://localhost:4000/";
@@ -20,7 +25,8 @@ class StatsView extends React.Component {
     foodEntries: [],
     days: [moment().format("YYYY-MM-DD")],
     data: "caloriesPerServ",
-    option: 0
+    option: 0,
+    weightEntries: []
   };
 
   componentDidMount = async () => {
@@ -34,7 +40,11 @@ class StatsView extends React.Component {
       const userId = user.getCurrentUser.id;
       const variables = { userId };
       const foodEntries = await client.request(GET_FOOD_ENTRIES_BY_USER_QUERY, variables);
-      this.setState({ foodEntries: foodEntries.getFoodEntriesByUserId });
+      const weightEntries = await client.request(GET_WEIGHT_ENTRIES_QUERY, variables);
+      this.setState({
+        foodEntries: foodEntries.getFoodEntriesByUserId,
+        weightEntries: weightEntries.getWeightEntriesByUserId
+      });
     } catch (err) {
       console.log(err);
       if (err.response.errors[0].message === "You must be logged in!") {
@@ -45,6 +55,7 @@ class StatsView extends React.Component {
   };
 
   handleChartChange = days => {
+    if (days.length === 1 && this.state.data === "weight") this.setState({ data: "caloriesPerServ" });
     this.setState({ days: days });
   };
 
@@ -80,7 +91,13 @@ class StatsView extends React.Component {
               {this.state.days.length === 1 ? (
                 <OneDayStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
               ) : (
-                <ManyDaysStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
+                <>
+                  {this.state.data === "weight" ? (
+                    <WeightStats weightEntries={this.state.weightEntries} days={this.state.days} />
+                  ) : (
+                    <ManyDaysStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
+                  )}
+                </>
               )}
             </>
           ) : (
@@ -96,8 +113,8 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     fontSize: "2rem",
-    marginBottom: "5px",
-    padding: "5px"
+    padding: "5px",
+    boxShadow: "none"
   },
   tab: {
     fontSize: "2rem",

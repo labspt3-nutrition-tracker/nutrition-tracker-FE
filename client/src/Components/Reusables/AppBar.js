@@ -1,5 +1,5 @@
 import React from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 import SearchInputComponent from "./../SearchComponent/SearchInputComponent";
@@ -9,13 +9,13 @@ const AppBar = styled.div`
   height: 75px;
   flex-direction: row;
   justify-content: space-between;
-  background: #3685B5;
+  background: #3685b5;
   align-items: center;
   padding: 5px;
   padding-left: 15px;
   font-size: 1.3em;
 
-  @media (max-width: 800px){
+  @media (max-width: 800px) {
     flex-direction: column-reverse;
     height: 300px;
     aligh-items: center;
@@ -25,7 +25,7 @@ const AppBar = styled.div`
 const Toolbar = styled.div`
   width: 50%;
 
-  @media (max-width: 800px){
+  @media (max-width: 800px) {
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -35,30 +35,30 @@ const Toolbar = styled.div`
 
 const ButtonAppBar = props => {
   return (
-      <AppBar className="appbar" position="static">
-        <Toolbar>
-          <NavLink className="navLink" exact to="/">
-            Home
-          </NavLink>
-          <NavLink className="navLink" to="/account">
-            Account
-          </NavLink>
-          <NavLink className="navLink" to="/stats">
-            Reports
-          </NavLink>
-          <NavLink className="navLink" to="/dashboard">
-            Dashboard
-          </NavLink>
-          <NavLink className="navLink" to="/journal">
-            Journal
-          </NavLink>
-        </Toolbar>
-        <SearchInputComponent
-          updateSearch={props.updateSearch}
-          searchInput={props.searchInput}
-          getFoodData={props.getFoodData}
-        />
-      </AppBar>
+    <AppBar className='appbar' position='static'>
+      <Toolbar>
+        <NavLink className='navLink' exact to='/'>
+          Home
+        </NavLink>
+        <NavLink className='navLink' to='/account'>
+          Account
+        </NavLink>
+        <NavLink className='navLink' to='/reports'>
+          Reports
+        </NavLink>
+        <NavLink className='navLink' to='/dashboard'>
+          Dashboard
+        </NavLink>
+        <NavLink className='navLink' to='/journal'>
+          Journal
+        </NavLink>
+      </Toolbar>
+      <SearchInputComponent
+        updateSearch={props.updateSearch}
+        searchInput={props.searchInput}
+        getFoodData={props.getFoodData}
+      />
+    </AppBar>
   );
 };
 

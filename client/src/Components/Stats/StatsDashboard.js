@@ -12,7 +12,8 @@ const styles = theme => ({
   root: {
     display: "flex",
     justifyContent: "space-evenly",
-    padding: "10px",
+    marginTop: 20,
+    boxShadow: "none",
     flexGrow: 1
   },
   tab: {
@@ -79,7 +80,7 @@ class StatsDashboard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { selectValue, dayValue } = this.state;
+    const { selectValue, dayValue, manyDays } = this.state;
     return (
       <Paper className={classes.root}>
         <div className={classes.dataGroup}>
@@ -88,7 +89,7 @@ class StatsDashboard extends React.Component {
           </InputLabel>
           <Select
             className={classes.data}
-            value={selectValue}
+            value={manyDays === 1 && selectValue === "weight" ? "caloriesPerServ" : selectValue}
             onChange={this.handleDataChange}
             inputProps={{ id: "data" }}
           >
@@ -104,6 +105,11 @@ class StatsDashboard extends React.Component {
             <MenuItem className={classes.data} value={"proteins"}>
               Proteins
             </MenuItem>
+            {this.state.manyDays > 1 && (
+              <MenuItem className={classes.data} value={"weight"}>
+                weight
+              </MenuItem>
+            )}
           </Select>
         </div>
         <div className={classes.dataGroup}>
