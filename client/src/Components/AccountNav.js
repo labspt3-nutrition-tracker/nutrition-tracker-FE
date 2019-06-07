@@ -12,7 +12,7 @@ const AccountNav = () => {
                 {/* <CssBaseline /> */}
                 <ButtonDiv>
                     <AccountButton>
-                    <Link to={'/billing-plan'}>Billing</Link>
+                    <Link to={'/billing'}>Billing</Link>
                     </AccountButton>
                     <AccountButton>
                     <Link to={'/settings'}>Settings</Link>
