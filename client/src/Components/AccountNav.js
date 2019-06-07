@@ -17,7 +17,7 @@ const AccountNav = () => {
                     <AccountButton>
                     <Link to={'/settings'}>Settings</Link>
                     </AccountButton>
-                            
+
                 </ButtonDiv>
             </DivContainer>
         </>
