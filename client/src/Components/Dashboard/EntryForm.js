@@ -165,6 +165,33 @@ class EntryForm extends Component {
     }
   };
 
+  edamamExistCheck = edamam_id => {
+  
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    })
+    client
+      .query({
+        query: GET_ALL_FOOD
+      })
+      .then(response => {
+       const filteredEdamam = response.data.getFoods.some( food => {
+            return food.edamam_id === edamam_id;
+        })
+        if(filteredEdamam) {
+          this.setState({
+            edamamExist: true
+          })
+          // console.log(this.state.edamamExist)
+        } else {
+          this.setState({
+            edamamExist: false
+          })
+        }
+      })
+      .catch(err => console.error(err))
+  }
+
   componentDidMount(){
     // const client = new ApolloClient({
     //   uri: "https://nutrition-tracker-be.herokuapp.com"
@@ -210,6 +237,7 @@ class EntryForm extends Component {
         }
         
       })
+      this.edamamExistCheck(this.props.selectedFood.foodId)
     }
   }
 
@@ -223,7 +251,7 @@ class EntryForm extends Component {
     //   })
     //   .then(response => {
     //     console.log('GET_ALL_FOOD response', response)
-
+        
     //   })
     //   .catch(err => console.error(err))
 
@@ -243,12 +271,6 @@ class EntryForm extends Component {
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
-          // foodName: this.props.selectedFood.label,
-          // calroriesPerServ: this.props.selectedFood.nutrients.ENERC_KCAL,
-          // fats: this.props.selectedFood.nutrients.FAT,
-          // carbs:this.props.selectedFood.nutrients.CHOCDF,
-          // proteins: this.props.selectedFood.nutrients.PROCNT,
-          // edamam_id: this.props.selectedFood.foodId
           foodName: foodName,
           caloriesPerServ: caloriesPerServ,
           fats: fats,
@@ -257,6 +279,7 @@ class EntryForm extends Component {
           edamam_id: edamam_id
         }
       })
+      this.edamamExistCheck(this.props.selectedFood.foodId)
     }
   }
 
