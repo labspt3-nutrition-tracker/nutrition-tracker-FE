@@ -83,6 +83,9 @@ class StatsView extends React.Component {
               indicatorColor='primary'
               textColor='primary'
               centered
+              classes={{
+                indicator: classes.indicator
+              }}
             >
               <Tab label='Charts' className={classes.tab} />
               <Tab label='Accomplishments' className={classes.tab} />
@@ -126,6 +129,9 @@ const styles = theme => ({
   tab: {
     fontSize: "2rem",
     color: "#2196F3"
+  },
+  indicator: {
+    backgroundColor: "#F4B4C3"
   }
 });
 
