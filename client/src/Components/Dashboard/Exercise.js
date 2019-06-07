@@ -22,7 +22,7 @@ class Exercise extends Component {
           <hr />
           <InfoCon>
             <ExerEntry />
-            <ExerForm />
+            <ExerForm addExerEntry={this.props.addExerEntry}/>
           </InfoCon>
         </div>
       </div>

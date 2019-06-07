@@ -5,7 +5,7 @@ const BillingHistoryCard = props => (
     <div>
         <div className="amount">
 
-            <p>${props.amountPaid == 700 ? 7 : 7}</p>
+            <p>${props.amountPaid === 700 ? 7 : 7}</p>
         </div>
         <div className="date">
             <p>{props.date}</p>

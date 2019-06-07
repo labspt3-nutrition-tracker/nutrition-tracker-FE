@@ -13,6 +13,7 @@
     "apollo-link-context": "^1.0.17",
     "axios": "^0.18.0",
     "chart.js": "^2.8.0",
+    "cors": "^2.8.5",
     "graphql": "^14.3.0",
     "graphql-request": "^1.8.2",
     "moment": "^2.24.0",

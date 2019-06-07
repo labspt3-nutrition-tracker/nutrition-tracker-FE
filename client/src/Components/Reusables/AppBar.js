@@ -1,93 +1,66 @@
 import React from "react";
-// import PropTypes from "prop-types";
-// import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import blue from "@material-ui/core/colors/blue";
-// import red from "@material-ui/core/colors/red";
+import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
-import SearchInputComponent from './../SearchComponent/SearchInputComponent'
+import SearchInputComponent from "./../SearchComponent/SearchInputComponent";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: blue,
-    secondary: blue
-  },
-  typography: {
-    fontSize: 25,
-    useNextVariants: true,
-  },
-})
+const AppBar = styled.div`
+  display: flex;
+  height: 75px;
+  flex-direction: row;
+  justify-content: space-between;
+  background: #3685b5;
+  align-items: center;
+  padding: 5px;
+  padding-left: 15px;
+  font-size: 1.3em;
 
-// const styles = {
-//   root: {
-//     flexGrow: 1
-//   },
-//   grow: {
-//     flexGrow: 1
-//   },
-//   menuButton: {
-//     marginLeft: -12,
-//     marginRight: 20
-//   }
-// };
+  @media (max-width: 800px) {
+    flex-direction: column-reverse;
+    height: 300px;
+    aligh-items: center;
+  }
+`;
 
-// function ButtonAppBar(props) {
-//   const { classes } = props;
-//   return (
-//     <div className={classes.root}>
-//       <AppBar position="static">
-//         <Toolbar>
-//           <NavLink to="/">
-//             <Button color="inherit">Home</Button>
-//           </NavLink>
-//           <NavLink to="/login">
-//             <Button color="inherit">Login</Button>
-//           </NavLink>
-//           <NavLink to="/settings">
-//             <Button color="inherit">Account</Button>
-//           </NavLink>
-//           <NavLink to="/reports">
-//             <Button color="inherit">Reports</Button>
-//           </NavLink>
-//           <NavLink to="/dashboard">
-//             <Button color="inherit">Dashboard</Button>
-//           </NavLink>
-//         </Toolbar>
-//       </AppBar>
-//     </div>
-//   );
-// }
+const Toolbar = styled.div`
+  width: 50%;
 
-const ButtonAppBar = (props) => {
+  @media (max-width: 800px) {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 100%;
+  }
+`;
+
+const ButtonAppBar = props => {
   return (
-    <MuiThemeProvider theme={theme}>
-      <AppBar position="static">
-        <Toolbar>
-          <NavLink to="/">
-            <Button color="inherit">Home</Button>
-          </NavLink>
-          <NavLink to="/account">
-            <Button color="inherit">Account</Button>
-          </NavLink>
-          <NavLink to="/stats">
-            <Button color="inherit">Reports</Button>
-          </NavLink>
-          <NavLink to="/dashboard">
-            <Button color="inherit">Dashboard</Button>
-          </NavLink>
-          <NavLink to="/journal">
-            <Button color="inherit">Journal</Button>
-          </NavLink>
-        </Toolbar>
-        <SearchInputComponent updateSearch={props.updateSearch} searchInput={props.searchInput} getFoodData={props.getFoodData} />
-      </AppBar>
-    </MuiThemeProvider>
+    <AppBar className='appbar' position='static'>
+      <Toolbar>
+        <NavLink className='navLink' exact to='/'>
+          Home
+        </NavLink>
+        <NavLink className='navLink' to='/account'>
+          Account
+        </NavLink>
+        <NavLink className='navLink' to='/reports'>
+          Reports
+        </NavLink>
+        <NavLink className='navLink' to='/dashboard'>
+          Dashboard
+        </NavLink>
+        <NavLink className='navLink' to='/journal'>
+          Journal
+        </NavLink>
+      </Toolbar>
+      <SearchInputComponent
+        updateSearch={props.updateSearch}
+        searchInput={props.searchInput}
+        getFoodData={props.getFoodData}
+      />
+    </AppBar>
   );
-}
+};
 
 // export default withStyles(styles)(ButtonAppBar);
 export default ButtonAppBar;
