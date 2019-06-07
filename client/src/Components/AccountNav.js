@@ -12,7 +12,7 @@ const AccountNav = () => {
                 {/* <CssBaseline /> */}
                 <ButtonDiv>
                     <AccountButton>
-                    <Link to={'/billing-plan'}>Billing</Link>
+                    <Link to={'/billing'}>Billing</Link>
                     </AccountButton>
                     <AccountButton>
                     <Link to={'/settings'}>Settings</Link>
@@ -59,6 +59,6 @@ font-weight: bold;
 &:focus, &:hover, &:visited, &:link, &:active {
     text-decoration: none;
     background-color:  #f4b4c3;
-    opacity: .75;
+    opacity: .4;
 }
 `;
