@@ -140,6 +140,22 @@ class Accomplishments extends Component {
                     </ul>
                   </>
                 )}
+                {weightDiff < 0 && (
+                  <>
+                    <Typography color='textSecondary' className={classes.category}>
+                      WEIGHT
+                    </Typography>
+                    <Typography className={classes.pos} variant='body2' component='p'>
+                      You have gained {weightDiff} pounds in the last 7 days. (from {weights[0]} to{" "}
+                      {weights[weights.length - 1]}).
+                    </Typography>
+                    {initialWeightDiff < 0 && (
+                      <Typography className={classes.pos} variant='body2' component='p'>
+                        You have gained {initialWeightDiff} pounds from your initial weight of {currentUser.weight}.
+                      </Typography>
+                    )}
+                  </>
+                )}
                 {noEntries.length > 0 && (
                   <>
                     <Typography color='textSecondary' className={classes.category}>
