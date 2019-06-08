@@ -47,7 +47,7 @@ class UserEditModal extends Component {
     console.log("new value: ", this.state.editInput);
     if (editType === "userType") {
       this.props.handleClose();
-      this.props.history.push("/billing-plan");
+      this.props.history.push("/billing");
     } else if (editType === "weight") {
       const input = {
         date: Date.now(),
