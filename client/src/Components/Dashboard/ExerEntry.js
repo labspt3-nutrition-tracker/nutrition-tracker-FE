@@ -8,7 +8,9 @@ const ExerciseActivity = styled.div`
   padding: 10px;
 `;
 
-let currentUser;
+const ExerciseEntry = styled.div`
+
+`;
 
 class ExerEntry extends React.Component {
   state = {
@@ -25,14 +27,6 @@ class ExerEntry extends React.Component {
       headers: { authorization: idToken }
     });
 
-    // client
-    //   .query({
-    //     query: GET_CURRENT_USERID
-    //   })
-    //   .then(response => {
-    //     currentUser = response.data.getCurrentUser.id;
-    //   })
-    //   .catch(err => console.log(err));
     client
       .query({
         query: GET_CURRENT_USERID
@@ -45,7 +39,7 @@ class ExerEntry extends React.Component {
 
   render() {
     return (
-      <div>
+      <ExerciseEntry>
         <div>
           <div>Today's Exercise:</div>
           <Query query={EXER_QUERY} variables={{ userId: this.state.currentUser }}>
@@ -83,7 +77,7 @@ class ExerEntry extends React.Component {
             }}
           </Query>
         </div>
-      </div>
+      </ExerciseEntry>
     );
   }
 }

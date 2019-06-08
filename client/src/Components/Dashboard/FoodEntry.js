@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { Query } from "react-apollo";
+import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
+import { GET_CURRENT_USERID } from "../../graphql/queries";
 
+const FoodEntryContainer = styled.div`
+  width: 50%;
+`;
 const MealCategory = styled.h3`
   font-size: 2rem;
   font-weight: bold;
@@ -14,10 +19,33 @@ const Meal = styled.div`
 
 class FoodEntry extends React.Component {
   state = {
-    currentUser: 2
+    currentUser: null
+  };
+
+  componentDidMount(){
+    const idToken = localStorage.getItem("token");
+    this.getCurrentUser(idToken);
+  }
+
+  getCurrentUser = idToken => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    client
+      .query({
+        query: GET_CURRENT_USERID
+      })
+      .then(response => {
+        this.setState({currentUser: response.data.getCurrentUser.id});
+        console.log(this.state.currentUser)
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
+    console.log(this.props.latest)
     const ENTRIES_QUERY = gql`
       query getFoodEntriesByUserId{
         getFoodEntriesByUserId(userId: ${this.state.currentUser}) {
@@ -35,7 +63,7 @@ class FoodEntry extends React.Component {
     `;
 
     return (
-      <div>
+      <FoodEntryContainer>
         <div>
           <div>Today's Meals:</div>
           <Query query={ENTRIES_QUERY}>
@@ -48,7 +76,6 @@ class FoodEntry extends React.Component {
               const month = dateToday.getMonth();
               const day = dateToday.getDate();
               const year = dateToday.getFullYear();
-              // console.log(data)
               let foodEntries = data.getFoodEntriesByUserId;
 
               foodEntries = foodEntries.filter(entry => {
@@ -108,7 +135,7 @@ class FoodEntry extends React.Component {
             }}
           </Query>
         </div>
-      </div>
+      </FoodEntryContainer>
     );
   }
 }
