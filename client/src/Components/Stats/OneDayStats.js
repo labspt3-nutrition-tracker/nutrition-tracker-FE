@@ -36,7 +36,8 @@ class WeekFoodLogStats extends Component {
   };
 
   render() {
-    defaults.global.defaultFontColor = "#2196F3";
+    defaults.global.defaultFontColor = "#3685B5";
+    defaults.global.defaultFontFamily = "Oxygen";
     const { classes } = this.props;
     const label = moment(this.props.days[0]).format("MMM Do YYYY");
     const lineColor = makeRandomColor();
@@ -58,11 +59,11 @@ class WeekFoodLogStats extends Component {
       <div className={classes.root}>
         <h2 className={classes.header}>
           {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data} for{" "}
-          {moment(this.props.days[0]).format("MMM Do YYYY")}
+          {moment(this.props.days[0]).format("MMMM Do YYYY")}
         </h2>
         {this.state.entries.length !== 0 ? (
           <Grid container justify='center' alignItems='center'>
-            <Grid item xs={3}>
+            <Grid item md={3} xs={12}>
               {this.state.entries.map((entry, i) => (
                 <div key={this.state.labels[i]} className={classes.dataInfo}>
                   <span className={classes.title}>{this.state.labels[i]}</span>
@@ -76,7 +77,7 @@ class WeekFoodLogStats extends Component {
                 <div className={classes.value}>{this.state.entries.reduce((total, d) => total + d, 0).toFixed(2)}</div>
               </div>
             </Grid>
-            <Grid item xs={9} className={classes.graph}>
+            <Grid item md={9} xs={12} className={classes.graph}>
               <h2>{this.props.data === "caloriesPerServ" ? "Calories" : this.props.data} / Meal Category</h2>
               <Line ref='chart' data={data} />
             </Grid>
@@ -99,24 +100,27 @@ const styles = theme => ({
 
   header: {
     textAlign: "center",
-    fontSize: "3.5rem",
+    fontSize: "2.8rem",
     marginBottom: "20px",
-    color: "#2196F3",
-    textTransform: "uppercase"
+    color: "#3685B5",
+    textTransform: "uppercase",
+    fontFamily: "Oxygen"
   },
   graph: {
     border: "3px solid #F4B4C3",
     padding: "20px"
   },
   title: {
-    color: "#2196F3",
+    color: "#3685B5",
     fontSize: "2rem",
-    width: "40%"
+    width: "40%",
+    fontFamily: "Oxygen"
   },
   value: {
     margin: "10px 0",
     fontSize: "1.8rem",
-    paddingLeft: "10px"
+    paddingLeft: "10px",
+    fontFamily: "Oxygen"
   },
   dataInfo: {
     display: "flex",
