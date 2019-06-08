@@ -64,7 +64,7 @@ const tiers = [
     price: '0',
     description: [
         'Calorie entry',
-         'One week food diary options', 
+         'One week food diary options',
          'Help center access',
           'Email support'
         ],
@@ -112,7 +112,7 @@ function Pricing(props) {
             Pricing
           </Typography>
           <Typography variant="h6" align="center" color="textSecondary" component="p">
-            Welcome to the pricing page of Nutrition Tracker! Take advantage of our 
+            Welcome to the pricing page of Nutrition Tracker! Take advantage of our
              popular super user account to get the full benefits of what we have to offer!
           </Typography>
         </div>
@@ -146,7 +146,7 @@ function Pricing(props) {
                   ))}
                 </CardContent>
                 <CardActions className={classes.cardActions}
-              > 
+              >
               action={tier.title === 'Super User' ? <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/login" >   {tier.buttonText}
                 </Button>  : <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/login" >   {tier.buttonText}
                 </Button> }

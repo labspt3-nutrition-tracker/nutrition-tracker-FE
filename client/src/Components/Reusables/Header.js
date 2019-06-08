@@ -2,6 +2,8 @@ import React from "react";
 import AppBar from "./AppBar";
 import styled from "styled-components";
 import logo from "../../Assets/logo-black.png";
+import ApolloClient from "apollo-boost";
+import { gql } from "apollo-boost";
 import { NavLink } from "react-router-dom";
 
 
@@ -29,6 +31,15 @@ const LogInOutContainer = styled.div`
   }
 `;
 
+const GET_CURRENT = gql`
+  query getCurrentUser {
+    getCurrentUser {
+      id
+      email
+    }
+  }
+`;
+
 
 
 class Header extends React.Component{
@@ -38,6 +49,30 @@ class Header extends React.Component{
       loggedOut: false
     }
   }
+
+  componentDidMount(){
+    this.getCurrentUser(localStorage.getItem("token"))
+  }
+
+  getCurrentUser = idToken => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    client
+      .query({
+        query: GET_CURRENT
+      })
+      .then(response => {
+        if(response.data.getCurrentUser){
+          this.setState({
+            loggedOut: true
+          })
+        }
+      })
+      .catch(err => console.log(err));
+  };
 
   logIn = () => {
     this.setState({

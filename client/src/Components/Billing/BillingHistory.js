@@ -60,9 +60,7 @@ class BillingHistory extends React.Component{
                 <Query query={GET_BILLING_HISTORY} variables={{id: this.state.userId}}>
                     {({ loading, error, data }) => {
                         if (loading) return <div>Fetching Entries</div>;
-                        console.log(error)
                         if (error) return <div>Error</div>;
-                        console.log(data)
                         return (
                             <div>
                                 {data.getBillingHistory.map(bills => (
