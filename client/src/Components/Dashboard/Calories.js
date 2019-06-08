@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-// import ApolloClient from "apollo-boost";
-// import { idToken } from "../Auth/Login";
+import ApolloClient from "apollo-boost";
+import { GET_CURRENT_USERID } from "../../graphql/queries";;
 
 const CalCon = styled.div`
-  padding: 20px;
+  padding: 20px 0;
   display: flex;
   justify-content: space-evenly;
   text-align: center;
@@ -23,8 +23,30 @@ const CalAmt = styled.div`
 
 class Calories extends React.Component {
   state = {
-    currentUser: 2,
+    currentUser: null,
     calGoal: 2000
+  };
+
+  componentDidMount(){
+    const idToken = localStorage.getItem("token");
+    this.getCurrentUser(idToken);
+  }
+
+  getCurrentUser = idToken => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    client
+      .query({
+        query: GET_CURRENT_USERID
+      })
+      .then(response => {
+        this.setState({currentUser: response.data.getCurrentUser.id});
+        console.log(this.state.currentUser)
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -54,10 +76,6 @@ class Calories extends React.Component {
             if (loading) {
               console.log("loading...")
             }
-            // if (error) {
-            //   console.log(error, "error...")
-            // }
-            // console.log("current user:", data);
             return (
               <Query query={CAL_QUERY}>
                 {({ loading, error, data }) => {

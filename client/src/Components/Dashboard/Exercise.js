@@ -11,24 +11,28 @@ class Exercise extends Component {
       qty: 0,
       category: ""
     },
-    
+
   };
 
   render() {
     return (
-      <div className="Exercise">
+      <ExerciseContainer>
         <div className="container">
           <ExerTitle>Today's Exercise:</ExerTitle>
-          <hr />
           <InfoCon>
-            <ExerEntry />
-            <ExerForm addExerEntry={this.props.addExerEntry}/>
+            <ExerForm closeExerEntry={this.props.closeExerEntry} addExerEntry={this.props.addExerEntry}/>
           </InfoCon>
         </div>
-      </div>
+      </ExerciseContainer>
     );
   }
 }
+
+const ExerciseContainer = styled.div`
+  width: 30%;
+  padding: 20px;
+`;
+
 
 const ExerTitle = styled.div`
   font-size: 3rem;

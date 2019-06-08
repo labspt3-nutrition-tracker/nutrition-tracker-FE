@@ -6,7 +6,6 @@ import { GET_CURRENT_USERID } from "../../graphql/queries";
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  max-width: 300px;
   width: 100%;
   padding: 20px;
 `;
@@ -100,6 +99,9 @@ class ExerForm extends Component {
         <button className="form-field" type="submit" onClick={this.onSubmit}>
           Add Entry
         </button>
+        <button
+        onClick={this.props.closeExerEntry}
+        >Close </button>
       </Form>
     );
   }

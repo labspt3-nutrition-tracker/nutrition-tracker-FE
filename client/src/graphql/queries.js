@@ -64,7 +64,7 @@ query {
 `
 
 export const GET_CURRENT_USERID = gql`
-query {
+query{
   getCurrentUser {
     id
   }

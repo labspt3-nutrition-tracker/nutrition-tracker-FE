@@ -23,6 +23,7 @@ const SearchInputComponent = props => {
   return(
       <Search>
           <SearchInput
+          onSubmit={props.getFoodData}
           type="text"
           onChange={props.updateSearch}
           name="searchInput"
