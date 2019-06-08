@@ -25,14 +25,6 @@ class ExerEntry extends React.Component {
       headers: { authorization: idToken }
     });
 
-    // client
-    //   .query({
-    //     query: GET_CURRENT_USERID
-    //   })
-    //   .then(response => {
-    //     currentUser = response.data.getCurrentUser.id;
-    //   })
-    //   .catch(err => console.log(err));
     client
       .query({
         query: GET_CURRENT_USERID

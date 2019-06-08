@@ -13,7 +13,6 @@ class Dashboard extends Component {
     adddedFood: ""
   };
 
-
   addExerEntry = (newExerEntry) => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
@@ -26,20 +25,12 @@ class Dashboard extends Component {
           input: newExerEntry
         }
       })
-      // .then(response => console.log(response))
       .then((response) => {
         console.log(response);
-        // this.setState({
-        //   newExerEntry: {
-        //     exerciseEntryDate: "",
-        //     exerciseName: "",
-        //     caloriesBurned: null,
-        //     exercise_entry_user_id: 2
-        //   }
-        // });
       })
       .catch(err => console.log(err));
   };
+
 
   render() {
     console.log(this.props.selectedFood ? this.props.selectedFood.label : this.props.selectedFood);
@@ -55,10 +46,6 @@ class Dashboard extends Component {
               chosenItem={this.props.location.state}
               selectedFood={this.props.selectedFood}
             />
-            {/* <EntryForm chosenItem={this.props.location.state} 
-              addEntry={this.addEntry} 
-              selectedFood={this.props.selectedFood}
-            /> */}
           </InfoCon>
           <InfoCon>
             <Exercise addExerEntry={this.addExerEntry} />
