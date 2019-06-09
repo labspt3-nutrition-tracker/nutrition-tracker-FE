@@ -8,6 +8,10 @@ const ExerciseActivity = styled.div`
   padding: 10px;
 `;
 
+const ExerciseEntry = styled.div`
+
+`;
+
 class ExerEntry extends React.Component {
   constructor(props) {
     super(props);
@@ -67,14 +71,14 @@ class ExerEntry extends React.Component {
       return <div>No exercise entered today.</div>;
     } else {
       return (
-        <div>
+        <ExerciseEntry>
           {exerEntries.map(entry => (
             <ExerciseActivity key={entry.id}>
               <div>Activity: {entry.exerciseName}</div>
               <div>Calories burned: {entry.caloriesBurned}</div>
             </ExerciseActivity>
           ))}
-        </div>
+        </ExerciseEntry>
       );
     }
   }

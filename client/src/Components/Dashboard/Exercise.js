@@ -40,7 +40,6 @@ class Exercise extends Component {
             this.setState({
               exerEntries: response.data.getExerciseEntriesByUserId
             });
-
           });
       })
       .catch(err => console.log(err));
@@ -77,19 +76,26 @@ class Exercise extends Component {
 
   render() {
     return (
-      <div className="Exercise">
+      <ExerciseContainer>
         <div className="container">
           <ExerTitle>Today's Exercise:</ExerTitle>
-          <hr />
           <InfoCon>
             <ExerEntry exerEntries={this.state.exerEntries} />
-            <ExerForm addExerEntry={this.addExerEntry} />
+            <ExerForm
+              closeExerEntry={this.props.closeExerEntry}
+              addExerEntry={this.props.addExerEntry}
+            />
           </InfoCon>
         </div>
-      </div>
+      </ExerciseContainer>
     );
   }
 }
+
+const ExerciseContainer = styled.div`
+  width: 30%;
+  padding: 20px;
+`;
 
 const ExerTitle = styled.div`
   font-size: 3rem;
