@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Query } from "react-apollo";
+// import { Query } from "react-apollo";
 import ApolloClient from "apollo-boost";
 import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
 
@@ -8,83 +8,75 @@ const ExerciseActivity = styled.div`
   padding: 10px;
 `;
 
-let currentUser;
-
 class ExerEntry extends React.Component {
-  state = {
-    currentUser: 0
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: 0,
+      exerEntries: []
+    };
   }
-  componentDidMount() {
+  componentDidMount = () => {
     const idToken = localStorage.getItem("token");
-    this.getCurrentUser(idToken);
-  }
-
-  getCurrentUser = idToken => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
-
-    // client
-    //   .query({
-    //     query: GET_CURRENT_USERID
-    //   })
-    //   .then(response => {
-    //     currentUser = response.data.getCurrentUser.id;
-    //   })
-    //   .catch(err => console.log(err));
     client
       .query({
         query: GET_CURRENT_USERID
       })
       .then(response => {
-        this.setState({currentUser: response.data.getCurrentUser.id});
+        this.setState({ currentUser: response.data.getCurrentUser.id });
+        client
+          .query({
+            query: EXER_QUERY,
+            variables: {
+              userId: this.state.currentUser
+            }
+          })
+          .then(response => {
+            this.setState({
+              exerEntries: response.data.getExerciseEntriesByUserId
+            });
+          });
       })
       .catch(err => console.log(err));
   };
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.exerEntries !== this.props.exerEntries) {
+      this.setState({ exerEntries: this.props.exerEntries });
+    }
+  }
+
   render() {
-    return (
-      <div>
+    const dateToday = new Date();
+    const month = dateToday.getMonth();
+    const day = dateToday.getDate();
+    const year = dateToday.getFullYear();
+    let exerEntries = this.state.exerEntries;
+    exerEntries = exerEntries.filter(entry => {
+      const dateEntry = new Date(entry.exerciseEntryDate);
+      const entryMonth = dateEntry.getMonth();
+      const entryDay = dateEntry.getDate();
+      const entryYear = dateEntry.getFullYear();
+      return entryMonth === month && entryDay === day && entryYear === year;
+    });
+    if (exerEntries.length === 0) {
+      return <div>No exercise entered today.</div>;
+    } else {
+      return (
         <div>
-          <div>Today's Exercise:</div>
-          <Query query={EXER_QUERY} variables={{ userId: this.state.currentUser }}>
-            {({ loading, error, data }) => {
-              if (loading) return <div>Fetching Entries</div>;
-              if (error) return <div>Error</div>;
-              const dateToday = new Date();
-              const month = dateToday.getMonth();
-              const day = dateToday.getDate();
-              const year = dateToday.getFullYear();
-              let exerEntries = data.getExerciseEntriesByUserId;
-              exerEntries = exerEntries.filter(entry => {
-                const dateEntry = new Date(entry.exerciseEntryDate);
-                const entryMonth = dateEntry.getMonth();
-                const entryDay = dateEntry.getDate();
-                const entryYear = dateEntry.getFullYear();
-                return (
-                  entryMonth === month && entryDay === day && entryYear === year
-                );
-              });
-              if (exerEntries.length === 0) {
-                return <div>No exercise entered today.</div>;
-              } else {
-                return (
-                  <div>
-                    {exerEntries.map(entry => (
-                      <ExerciseActivity key={entry.id}>
-                        <div>Activity: {entry.exerciseName}</div>
-                        <div>Calories burned: {entry.caloriesBurned}</div>
-                      </ExerciseActivity>
-                    ))}
-                  </div>
-                );
-              }
-            }}
-          </Query>
+          {exerEntries.map(entry => (
+            <ExerciseActivity key={entry.id}>
+              <div>Activity: {entry.exerciseName}</div>
+              <div>Calories burned: {entry.caloriesBurned}</div>
+            </ExerciseActivity>
+          ))}
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 export default ExerEntry;
