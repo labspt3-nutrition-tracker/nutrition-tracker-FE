@@ -6,6 +6,7 @@ import Exercise from "./Exercise";
 import ExerciseEntry from "./ExerEntry";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
+import moment from "moment";
 import { ADD_EXERENTRY } from "../../graphql/mutations";
 import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
 
