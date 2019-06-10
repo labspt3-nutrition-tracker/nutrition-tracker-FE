@@ -82,8 +82,6 @@ class StatsView extends React.Component {
             <Tabs
               value={option}
               onChange={this.handleOptionChange}
-              indicatorColor='primary'
-              textColor='primary'
               centered
               classes={{
                 indicator: classes.indicator
@@ -130,11 +128,13 @@ const styles = theme => ({
     flexGrow: 1,
     fontSize: "2rem",
     padding: "5px",
-    boxShadow: "none"
+    boxShadow: "none",
+    fontFamily: "Oxygen"
   },
   tab: {
     fontSize: "2rem",
-    color: "#2196F3"
+    color: "#3685B5",
+    fontFamily: "Oxygen"
   },
   indicator: {
     backgroundColor: "#F4B4C3"
