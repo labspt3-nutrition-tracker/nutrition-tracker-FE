@@ -27,7 +27,8 @@ class StatsView extends React.Component {
     data: "caloriesPerServ",
     option: 0,
     weightEntries: [],
-    initialWeight: 0
+    initialWeight: 0,
+    currentUser: null
   };
 
   componentDidMount = async () => {
@@ -46,13 +47,14 @@ class StatsView extends React.Component {
       this.setState({
         foodEntries: foodEntries.getFoodEntriesByUserId,
         weightEntries: weightEntries.getWeightEntriesByUserId,
-        initialWeight: initialWeight
+        initialWeight: initialWeight,
+        currentUser: user.getCurrentUser
       });
     } catch (err) {
       console.log(err);
       if (err.response.errors[0].message === "You must be logged in!") {
         localStorage.removeItem("token");
-        this.props.history.push("/login");
+        // this.props.history.push("/login");
       }
     }
   };
@@ -80,9 +82,10 @@ class StatsView extends React.Component {
             <Tabs
               value={option}
               onChange={this.handleOptionChange}
-              indicatorColor='primary'
-              textColor='primary'
               centered
+              classes={{
+                indicator: classes.indicator
+              }}
             >
               <Tab label='Charts' className={classes.tab} />
               <Tab label='Accomplishments' className={classes.tab} />
@@ -108,7 +111,11 @@ class StatsView extends React.Component {
               )}
             </>
           ) : (
-            <Accomplishments />
+            <Accomplishments
+              currentUser={this.state.currentUser}
+              foodEntries={this.state.foodEntries}
+              weightEntries={this.state.weightEntries}
+            />
           )}
         </div>
       </>
@@ -121,11 +128,16 @@ const styles = theme => ({
     flexGrow: 1,
     fontSize: "2rem",
     padding: "5px",
-    boxShadow: "none"
+    boxShadow: "none",
+    fontFamily: "Oxygen"
   },
   tab: {
     fontSize: "2rem",
-    color: "#2196F3"
+    color: "#3685B5",
+    fontFamily: "Oxygen"
+  },
+  indicator: {
+    backgroundColor: "#F4B4C3"
   }
 });
 

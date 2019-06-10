@@ -9,9 +9,16 @@ import gql from "graphql-tag";
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  max-width: 300px;
-  width: 100%;
+  width: 30%;
   padding: 20px;
+
+  h1{
+    font-size: 1.5em;
+    font-weight: bold;
+    padding-bottom: 30px;
+    text-align: center;
+    color: blue;
+  }
 `;
 
 const Error = styled.div`
@@ -216,7 +223,7 @@ class EntryForm extends Component {
           // console.log("currentUser:", this.state.newAddFood.user_id);
           // console.log("mealCategory:", this.state.newAddFood.meal_category_id);
           })
-          .catch(err =>{ 
+          .catch(err =>{
             this.setState({
                 errors: [],
                 edamamExist: false,
@@ -235,13 +242,13 @@ class EntryForm extends Component {
               console.error(err)
             }
           )
-        
+
     }
-    
+
   };
 
   edamamExistCheck = edamam_id => {
-  
+
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     })
@@ -268,7 +275,7 @@ class EntryForm extends Component {
   }
 
   getEdamamData = edamam_id => {
-      
+
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     })
@@ -287,19 +294,6 @@ class EntryForm extends Component {
   }
 
   componentDidMount(){
-    // const client = new ApolloClient({
-    //   uri: "https://nutrition-tracker-be.herokuapp.com"
-    // })
-    // client
-    //   .query({
-    //     query: GET_ALL_FOOD
-    //   })
-    //   .then(response => {
-    //     console.log('GET_ALL_FOOD response', response)
-
-    //   })
-    //   .catch(err => console.error(err))
-
     let foodName;
     let caloriesPerServ;
     let fats;
@@ -322,33 +316,13 @@ class EntryForm extends Component {
           carbs: carbs,
           proteins: proteins,
           edamam_id: edamam_id
-          // foodName: this.props.selectedFood.label,
-          // caloriesPerServ: this.props.selectedFood.nutrients.ENERC_KCAL,
-          // fats: this.props.selectedFood.nutrients.FAT,
-          // carbs:this.props.selectedFood.nutrients.CHOCDF,
-          // proteins: this.props.selectedFood.nutrients.PROCNT,
-          // edamam_id: this.props.selectedFood.foodId
         }
-        
       })
       this.edamamExistCheck(this.props.selectedFood.foodId)
     }
   }
 
   componentDidUpdate(prevProps){
-    // const client = new ApolloClient({
-    //   uri: "https://nutrition-tracker-be.herokuapp.com"
-    // })
-    // client
-    //   .query({
-    //     query: GET_ALL_FOOD
-    //   })
-    //   .then(response => {
-    //     console.log('GET_ALL_FOOD response', response)
-        
-    //   })
-    //   .catch(err => console.error(err))
-
     let foodName;
     let caloriesPerServ;
     let fats;
@@ -374,16 +348,14 @@ class EntryForm extends Component {
         }
       })
       this.edamamExistCheck(this.props.selectedFood.foodId)
-      // this.getEdamamData(this.props.selectedFood.foodId)
-      // console.log('edadata',  this.getEdamamData(this.props.selectedFood.foodId))
     }
   }
 
   render() {
     this.getCurrentUser(localStorage.getItem("token"));
-    // console.log(this.state.newAddFood.foodName)
     return (
       <Form>
+        <h1> Add food entry</h1>
         {this.state.errors
           ? this.state.errors.map(error => {
               return <Error key={error}>{error}</Error>
@@ -470,6 +442,10 @@ class EntryForm extends Component {
           onClick={this.onEntrySubmit}
         >
           Add Entry
+        </button>
+        <button
+          onClick={this.props.closeFoodForm}
+        > Close
         </button>
       </Form>
     );

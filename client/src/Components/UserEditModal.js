@@ -14,70 +14,95 @@ import { updateUserData } from "../util/updateUserData";
 
 const styles = theme => ({
   title: {
+    fontFamily: "Oxygen",
     fontSize: "2rem",
-    color: "#2196F3"
+    color: "#3685B5"
   },
   message: {
+    fontFamily: "Oxygen",
     fontSize: "1.7rem",
     color: "black"
   },
   formTextLabel: {
-    fontSize: "1.5rem"
+    fontFamily: "Oxygen",
+    fontSize: "1.5rem",
+    color: "#3685B5"
   },
   formTextInput: {
-    fontSize: "1.5rem"
+    fontFamily: "Oxygen",
+    fontSize: "1.5rem",
   },
   btn: {
+    fontFamily: "Oxygen",
     fontSize: "1.6rem",
-    color: "#2196F3"
+    color: "#3685B5"
+  },
+  errors: {
+    fontSize: "1.5rem"
   }
 });
 
 class UserEditModal extends Component {
   state = {
-    editInput: ""
+    editInput: "",
+    errorText: "",
+    error: false
   };
 
   handleInput = event => {
     this.setState({ editInput: event.target.value });
   };
 
+  hadleCancel = () => {
+    this.setState({editInput: "", errorText: "", error: false});
+  }
+
   handleEdit = editType => {
     console.log({ editType });
     console.log("new value: ", this.state.editInput);
     if (editType === "userType") {
-      this.props.handleClose();
-      this.props.history.push("/billing-plan");
-    } else if (editType === "weight") {
-      const input = {
-        date: Date.now(),
-        weight: Number(this.state.editInput),
-        user_id: Number(this.props.currentUser.id)
-      };
-      addWeightEntry(input)
-        .then(entry => {
-          this.setState({ editInput: "" });
-          this.props.history.push("/settings");
-        })
-        .catch(err => console.log(err));
-    } else if (editType === "caloriesGoal") {
-      const newGoal = this.state.editInput.trim() ? Number(this.state.editInput) : this.props.currentUser.calorieGoal;
-      const { firstName, lastName, username, email, userType, weight } = this.props.currentUser;
-      const newUser = {
-        firstName,
-        lastName,
-        username,
-        email,
-        userType,
-        weight,
-        calorieGoal: newGoal
-      };
-      updateUserData(Number(this.props.currentUser.id), newUser)
-        .then(id => {
-          this.setState({ editInput: "" });
-          this.props.history.push("/settings");
-        })
-        .catch(err => console.log(err));
+        this.props.handleClose();
+        this.props.history.push("/billing");
+    } else {
+      if(!this.state.editInput.trim()) {
+        this.setState({errorText: "Please provide a value", error: true})
+      } else if( !Number(this.state.editInput)) {
+        this.setState({errorText: "Please provide a number value", error: true})
+      } else {
+        if (editType === "weight") {
+          const input = {
+            date: Date.now(),
+            weight: Number(this.state.editInput),
+            user_id: Number(this.props.currentUser.id)
+          };
+          addWeightEntry(input)
+            .then(entry => {
+              this.setState({ editInput: "" });
+              this.props.history.push("/settings");
+            })
+            .catch(err => console.log(err));
+        } else if (editType === "caloriesGoal") {
+          const newGoal = this.state.editInput.trim() ? Number(this.state.editInput) : this.props.currentUser.calorieGoal;
+          const { firstName, lastName, username, email, userType, weight } = this.props.currentUser;
+          const newUser = {
+            firstName,
+            lastName,
+            username,
+            email,
+            userType,
+            weight,
+            calorieGoal: newGoal
+          };
+          updateUserData(Number(this.props.currentUser.id), newUser)
+            .then(id => {
+              this.setState({ editInput: "" });
+              this.props.history.push("/settings");
+            })
+            .catch(err => console.log(err));
+        }
+          this.setState({errorText: "", error: false, editInput: ""});
+          this.props.handleClose();
+      }
     }
   };
 
@@ -117,6 +142,9 @@ class UserEditModal extends Component {
           )}
           {label && (
             <TextField
+              required
+              error={this.state.error}
+              helperText={this.state.errorText}
               autoFocus
               margin='dense'
               id='name'
@@ -135,17 +163,22 @@ class UserEditModal extends Component {
                   input: classes.formTextInput
                 }
               }}
+               FormHelperTextProps={{
+                classes:{
+                  error: classes.errors
+                }
+              }}
             />
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color='primary' className={classes.btn}>
+          <Button onClick={() => { this.hadleCancel(); handleClose();}} color='primary' className={classes.btn}>
             Cancel
           </Button>
           <Button
             onClick={() => {
               this.handleEdit(editType);
-              handleClose();
+              // handleClose();
             }}
             color='secondary'
             className={classes.btn}

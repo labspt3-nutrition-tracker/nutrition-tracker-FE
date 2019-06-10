@@ -3,18 +3,52 @@ import Calories from "./Calories";
 import EntryForm from "./EntryForm";
 import FoodEntry from "./FoodEntry";
 import Exercise from "./Exercise";
+import ExerciseEntry from "./ExerEntry";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
-import { ADD_EXERENTRY } from '../../graphql/mutations'
+import moment from "moment";
+import { ADD_EXERENTRY } from "../../graphql/mutations";
+import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
 
+import moment from "moment";
 
 class Dashboard extends Component {
   state = {
-    adddedFood: ""
+    showFoodForm: true,
+    showExerForm: true,
+    currentUser: 0,
+    exerEntries: []
   };
 
+  componentDidMount = () => {
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    client
+      .query({
+        query: GET_CURRENT_USERID
+      })
+      .then(response => {
+        this.setState({ currentUser: response.data.getCurrentUser.id });
+        client
+          .query({
+            query: EXER_QUERY,
+            variables: {
+              userId: this.state.currentUser
+            }
+          })
+          .then(response => {
+            this.setState({
+              exerEntries: response.data.getExerciseEntriesByUserId
+            });
+          });
+      })
+      .catch(err => console.log(err));
+  };
 
-  addExerEntry = (newExerEntry) => {
+  addExerEntry = newExerEntry => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
@@ -26,48 +60,112 @@ class Dashboard extends Component {
           input: newExerEntry
         }
       })
-      // .then(response => console.log(response))
-      .then((response) => {
-        console.log(response);
-        // this.setState({
-        //   newExerEntry: {
-        //     exerciseEntryDate: "",
-        //     exerciseName: "",
-        //     caloriesBurned: null,
-        //     exercise_entry_user_id: 2
-        //   }
-        // });
+      .then(response => {
+        client
+          .query({
+            query: EXER_QUERY,
+            variables: {
+              userId: this.state.currentUser
+            }
+          })
+          .then(response => {
+            this.setState({
+              exerEntries: response.data.getExerciseEntriesByUserId
+            });
+          });
       })
       .catch(err => console.log(err));
   };
 
+  // addExerEntry = (newExerEntry) => {
+  //   const client = new ApolloClient({
+  //     uri: "https://nutrition-tracker-be.herokuapp.com"
+  //   });
+
+  //   client
+  //     .mutate({
+  //       mutation: ADD_EXERENTRY,
+  //       variables: {
+  //         input: newExerEntry
+  //       }
+  //     })
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  //     .catch(err => console.log(err));
+  // };
+  // maybe add ?
+  // {this.props.selectedFood && !this.state.showFoodForm &&
+  // <EntryForm
+  //   selectedFood={this.props.selectedFood}
+  // />
+  // }
+  // {!this.props.selectedFood && this.state.showFoodForm &&
+  // <EntryForm closeFoodForm={this.closeFoodForm} />}
+  // {this.state.showExerForm && <Exercise
+  //   addExerEntry={this.addExerEntry}
+  //   closeExerEntry={this.closeExerEntry} />}
+
+  handleShowFood = () => {
+    this.setState({
+      showFoodForm: true
+    });
+  };
+
+  closeFoodForm = () => {
+    this.setState({
+      showFoodForm: false
+    });
+  };
+
+  openExerEntry = () => {
+    this.setState({
+      showExerForm: true
+    });
+  };
+
+  closeExerEntry = () => {
+    this.setState({
+      showExerForm: false
+    });
+  };
   render() {
-    console.log(this.props.selectedFood ? this.props.selectedFood.label : this.props.selectedFood);
+    const currentDate = moment(new Date()).format("MMMM Do YYYY");
+    console.log(
+      this.props.selectedFood
+        ? this.props.selectedFood.label
+        : this.props.selectedFood
+    );
     return (
-      <div className="dashboard">
-        <div className="container">
-          <DashTitle>Today's Food Entries</DashTitle>
-          <hr />
-          <Calories />
+      <DashContainer>
+        <DashTitle>{currentDate}</DashTitle>
+        <Calories />
+        {!this.state.showFoodForm && (
+          <button onClick={this.handleShowFood}> Add Food</button>
+        )}
+        {!this.state.showExerForm && (
+          <button onClick={this.openExerEntry}> Add Exercise</button>
+        )}
+        <DashDisplay className="container">
           <InfoCon>
-            <FoodEntry latest={this.props.latest} />
-            <EntryForm
-              chosenItem={this.props.location.state}
-              selectedFood={this.props.selectedFood}
-            />
-            {/* <EntryForm chosenItem={this.props.location.state} 
-              addEntry={this.addEntry} 
-              selectedFood={this.props.selectedFood}
-            /> */}
+            <FoodEntry />
+            <ExerciseEntry exerEntries={this.state.exerEntries}/>
           </InfoCon>
-          <InfoCon>
-            <Exercise addExerEntry={this.addExerEntry} />
-          </InfoCon>
-        </div>
-      </div>
+          {this.state.showFoodForm && (
+            <EntryForm selectedFood={this.props.selectedFood} />
+          )}
+          {this.state.showExerForm && (
+            <Exercise closeExerEntry={this.closeExerEntry} addExerEntry={this.addExerEntry}/>
+          )}
+        </DashDisplay>
+      </DashContainer>
     );
   }
 }
+
+const DashContainer = styled.div`
+  width: 100%;
+`;
 
 const DashTitle = styled.div`
   font-size: 3rem;
@@ -76,7 +174,13 @@ const DashTitle = styled.div`
 
 const InfoCon = styled.div`
   display: flex;
-  justify-content: center;
+  width: 40%;
+`;
+
+const DashDisplay = styled.div`
+  width: 100%;
+  display: flex;
+  justifty-content: space-around;
 `;
 
 export default Dashboard;
