@@ -45,34 +45,34 @@ class Exercise extends Component {
       .catch(err => console.log(err));
   };
 
-  addExerEntry = newExerEntry => {
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
-    });
+  // addExerEntry = newExerEntry => {
+  //   const client = new ApolloClient({
+  //     uri: "https://nutrition-tracker-be.herokuapp.com"
+  //   });
 
-    client
-      .mutate({
-        mutation: ADD_EXERENTRY,
-        variables: {
-          input: newExerEntry
-        }
-      })
-      .then(response => {
-        client
-          .query({
-            query: EXER_QUERY,
-            variables: {
-              userId: this.state.currentUser
-            }
-          })
-          .then(response => {
-            this.setState({
-              exerEntries: response.data.getExerciseEntriesByUserId
-            });
-          });
-      })
-      .catch(err => console.log(err));
-  };
+  //   client
+  //     .mutate({
+  //       mutation: ADD_EXERENTRY,
+  //       variables: {
+  //         input: newExerEntry
+  //       }
+  //     })
+  //     .then(response => {
+  //       client
+  //         .query({
+  //           query: EXER_QUERY,
+  //           variables: {
+  //             userId: this.state.currentUser
+  //           }
+  //         })
+  //         .then(response => {
+  //           this.setState({
+  //             exerEntries: response.data.getExerciseEntriesByUserId
+  //           });
+  //         });
+  //     })
+  //     .catch(err => console.log(err));
+  // };
 
   render() {
     return (
@@ -80,7 +80,7 @@ class Exercise extends Component {
         <div className="container">
           <ExerTitle>Today's Exercise:</ExerTitle>
           <InfoCon>
-            <ExerEntry exerEntries={this.state.exerEntries} />
+            {/* <ExerEntry exerEntries={this.state.exerEntries} /> */}
             <ExerForm
               closeExerEntry={this.props.closeExerEntry}
               addExerEntry={this.props.addExerEntry}
