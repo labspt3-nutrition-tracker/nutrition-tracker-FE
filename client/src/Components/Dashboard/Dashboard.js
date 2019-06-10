@@ -10,8 +10,6 @@ import moment from "moment";
 import { ADD_EXERENTRY } from "../../graphql/mutations";
 import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
 
-import moment from "moment";
-
 class Dashboard extends Component {
   state = {
     showFoodForm: true,
