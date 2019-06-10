@@ -78,7 +78,7 @@ class Exercise extends Component {
     return (
       <ExerciseContainer>
         <div className="container">
-          <ExerTitle>Today's Exercise:</ExerTitle>
+          <ExerTitle>Add Exercise Entry</ExerTitle>
           <InfoCon>
             {/* <ExerEntry exerEntries={this.state.exerEntries} /> */}
             <ExerForm
@@ -97,9 +97,12 @@ const ExerciseContainer = styled.div`
   padding: 20px;
 `;
 
-const ExerTitle = styled.div`
-  font-size: 3rem;
+const ExerTitle = styled.h1`
+  font-size: 1.5em;
+  font-weight: bold;
+  padding-bottom: 30px;
   text-align: center;
+  color: blue;
 `;
 
 const InfoCon = styled.div`
