@@ -14,7 +14,8 @@ import Accomplishments from "./Accomplishments";
 import {
   GET_FOOD_ENTRIES_BY_USER_QUERY,
   GET_CURRENT_USER_QUERY,
-  GET_WEIGHT_ENTRIES_QUERY
+  GET_WEIGHT_ENTRIES_QUERY,
+  GET_EXERCISE_ENTRIES_QUERY
 } from "../../graphql/queries";
 
 const BASE_URL = "https://nutrition-tracker-be.herokuapp.com/";
@@ -23,10 +24,11 @@ const BASE_URL = "https://nutrition-tracker-be.herokuapp.com/";
 class StatsView extends React.Component {
   state = {
     foodEntries: [],
+    weightEntries: [],
+    exerciseEntries: [],
     days: [moment().format("YYYY-MM-DD")],
     data: "caloriesPerServ",
     option: 0,
-    weightEntries: [],
     initialWeight: 0,
     currentUser: null
   };
@@ -44,9 +46,11 @@ class StatsView extends React.Component {
       const variables = { userId };
       const foodEntries = await client.request(GET_FOOD_ENTRIES_BY_USER_QUERY, variables);
       const weightEntries = await client.request(GET_WEIGHT_ENTRIES_QUERY, variables);
+      const exerciseEntries = await client.request(GET_EXERCISE_ENTRIES_QUERY, variables);
       this.setState({
         foodEntries: foodEntries.getFoodEntriesByUserId,
         weightEntries: weightEntries.getWeightEntriesByUserId,
+        exerciseEntries: exerciseEntries.getExerciseEntriesByUserId,
         initialWeight: initialWeight,
         currentUser: user.getCurrentUser
       });
@@ -115,6 +119,7 @@ class StatsView extends React.Component {
               currentUser={this.state.currentUser}
               foodEntries={this.state.foodEntries}
               weightEntries={this.state.weightEntries}
+              exerciseEntries={this.state.exerciseEntries}
             />
           )}
         </div>
