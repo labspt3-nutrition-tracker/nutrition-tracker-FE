@@ -7,8 +7,38 @@ import ExerciseEntry from "./ExerEntry";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import moment from "moment";
+import gql from "graphql-tag";
 import { ADD_EXERENTRY } from "../../graphql/mutations";
 import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
+
+
+const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
+query($userId: ID!)
+{
+  getFoodEntriesByUserId(userId: $userId) {
+    id
+    date
+    servingQty
+    user_id {
+      username
+      firstName
+      lastName
+      email
+      id
+    }
+    food_id {
+      foodName
+      caloriesPerServ
+      fats
+      proteins
+      carbs
+    }
+    meal_category_id {
+      mealCategoryName
+    }
+  }
+}
+`;
 
 
 class Dashboard extends Component {
@@ -16,7 +46,8 @@ class Dashboard extends Component {
     showFoodForm: true,
     showExerForm: true,
     currentUser: 0,
-    exerEntries: []
+    exerEntries: [],
+    foodEntries: []
   };
 
   componentDidMount = () => {
@@ -42,10 +73,44 @@ class Dashboard extends Component {
             this.setState({
               exerEntries: response.data.getExerciseEntriesByUserId
             });
-          });
+          client
+            .query({
+              query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+              variables: {
+                userId: this.state.currentUser
+              }
+            })
+            .then(response => {
+              console.log(this.state.currentUser)
+              console.log('food response', response)
+              this.setState({
+                foodEntries: response.data.getFoodEntriesByUserId
+              })
+            
+            })
+          })
       })
+      // .then(
+          // client
+          //   .query({
+          //     query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+          //     variables: {
+          //       userId: this.state.currentUser
+          //     }
+          //   })
+          //   .then(response => {
+          //     console.log(this.state.currentUser)
+          //     console.log('food response', response)
+          //     this.setState({
+          //       foodEntries: response.data.getFoodEntriesByUserId
+          //     })
+            
+          //   })
+        // )
       .catch(err => console.log(err));
   };
+
+  
 
   addExerEntry = newExerEntry => {
     const client = new ApolloClient({
@@ -129,6 +194,7 @@ class Dashboard extends Component {
     });
   };
   render() {
+    console.log(this.state.foodEntries)
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     console.log(
       this.props.selectedFood
@@ -147,7 +213,7 @@ class Dashboard extends Component {
         )}
         <DashDisplay className="container">
           <InfoCon>
-            <FoodEntry />
+            <FoodEntry foodEntries={this.state.foodEntries} />
             <ExerciseEntry exerEntries={this.state.exerEntries}/>
           </InfoCon>
           {this.state.showFoodForm && (
