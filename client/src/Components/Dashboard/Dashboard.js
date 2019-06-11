@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Calories from "./Calories";
 import EntryForm from "./EntryForm";
+import ModifiedEntryForm from "./ModifiedEntryForm";
 import FoodEntry from "./FoodEntry";
 import Exercise from "./Exercise";
 import ExerciseEntry from "./ExerEntry";
@@ -8,7 +9,7 @@ import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import moment from "moment";
 import gql from "graphql-tag";
-import { ADD_EXERENTRY } from "../../graphql/mutations";
+import { ADD_EXERENTRY, ADD_FOOD_ENTRY } from "../../graphql/mutations";
 import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
 
 
@@ -86,7 +87,7 @@ class Dashboard extends Component {
               this.setState({
                 foodEntries: response.data.getFoodEntriesByUserId
               })
-            
+
             })
           })
       })
@@ -104,13 +105,39 @@ class Dashboard extends Component {
           //     this.setState({
           //       foodEntries: response.data.getFoodEntriesByUserId
           //     })
-            
+
           //   })
         // )
       .catch(err => console.log(err));
   };
 
-  
+  addFoodEntry = newFoodEntry =>{
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    });
+
+    client
+      .mutate({
+        mutation: ADD_FOOD_ENTRY,
+        variables: {
+          input: newFoodEntry
+        }
+      })
+      .then(response => {
+        client
+          .query({
+            query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+            variables: {
+              userId: this.state.currentUser
+            }
+          })
+          .then(response => {
+            this.setState({foodEntries: response.data.getFoodEntriesByUserId})
+          });
+      })
+      .catch(err => console.log(err));
+
+  }
 
   addExerEntry = newExerEntry => {
     const client = new ApolloClient({
@@ -194,7 +221,6 @@ class Dashboard extends Component {
     });
   };
   render() {
-    console.log(this.state.foodEntries)
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     console.log(
       this.props.selectedFood
@@ -217,7 +243,7 @@ class Dashboard extends Component {
             <ExerciseEntry exerEntries={this.state.exerEntries}/>
           </InfoCon>
           {this.state.showFoodForm && (
-            <EntryForm selectedFood={this.props.selectedFood} />
+            <EntryForm addFoodEntry={this.addFoodEntry} selectedFood={this.props.selectedFood} />
           )}
           {this.state.showExerForm && (
             <Exercise closeExerEntry={this.closeExerEntry} addExerEntry={this.addExerEntry}/>

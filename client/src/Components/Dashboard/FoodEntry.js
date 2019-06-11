@@ -18,10 +18,14 @@ const Meal = styled.div`
 `;
 
 class FoodEntry extends React.Component {
-  state = {
-    currentUser: null,
-    foodEntries: []
-  };
+  constructor(props){
+    super(props)
+    this.state = {
+      currentUser: null,
+      foodEntries: []
+    };
+  }
+
 
   componentDidUpdate(prevProps) {
     if (prevProps.foodEntries !== this.props.foodEntries) {
@@ -51,22 +55,22 @@ class FoodEntry extends React.Component {
   //   console.log("componentdidMount prevState", prevState)
   // }
 
-  getCurrentUser = idToken => {
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
-      headers: { authorization: idToken }
-    });
-
-    client
-      .query({
-        query: GET_CURRENT_USERID
-      })
-      .then(response => {
-        this.setState({ currentUser: response.data.getCurrentUser.id });
-        console.log(this.state.currentUser);
-      })
-      .catch(err => console.log(err));
-  };
+  // getCurrentUser = idToken => {
+  //   const client = new ApolloClient({
+  //     uri: "https://nutrition-tracker-be.herokuapp.com",
+  //     headers: { authorization: idToken }
+  //   });
+  //
+  //   client
+  //     .query({
+  //       query: GET_CURRENT_USERID
+  //     })
+  //     .then(response => {
+  //       this.setState({ currentUser: response.data.getCurrentUser.id });
+  //       console.log(this.state.currentUser);
+  //     })
+  //     .catch(err => console.log(err));
+  // };
 
   render() {
     console.log(this.props.foodEntries);
