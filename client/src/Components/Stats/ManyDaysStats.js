@@ -39,6 +39,7 @@ class ManyDaysStats extends Component {
 
   render() {
     defaults.global.defaultFontColor = "#2196F3";
+    defaults.global.defaultFontFamily = "Oxygen";
     const { classes } = this.props;
     const labels = this.state.labels.map(day => moment(day).format("MM/DD"));
     const data = {
@@ -64,7 +65,7 @@ class ManyDaysStats extends Component {
         </h2>
         {this.state.entries.length !== 0 ? (
           <Grid container justify='center' alignItems='center'>
-            <Grid item xs={3}>
+            <Grid item md={3} xs={12}>
               {this.state.entries.map((entry, i) => (
                 <div key={labels[i]} className={classes.dataInfo}>
                   <span className={classes.title}>{moment(new Date(labels[i])).format("MMM Do")}</span>
@@ -72,7 +73,7 @@ class ManyDaysStats extends Component {
                 </div>
               ))}
             </Grid>
-            <Grid item xs={9} className={classes.graph}>
+            <Grid item md={9} xs={12} className={classes.graph}>
               <Bar
                 data={data}
                 height={350}
@@ -103,26 +104,28 @@ const styles = theme => ({
   },
   header: {
     textAlign: "center",
-    fontSize: "3.5rem",
+    fontSize: "2.8rem",
     marginBottom: "20px",
     color: "#2196F3",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    fontFamily: "Oxygen"
   },
   title: {
     color: "#2196F3",
     fontSize: "2rem",
-    width: "40%"
+    width: "40%",
+    fontFamily: "Oxygen"
   },
   value: {
     margin: "10px 0",
     fontSize: "1.8rem",
-    paddingLeft: "10px"
+    paddingLeft: "10px",
+    fontFamily: "Oxygen"
   },
   dataInfo: {
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center"
-    // borderBottom: "1px solid #F4B4C3"
   }
 });
 

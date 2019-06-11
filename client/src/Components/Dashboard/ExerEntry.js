@@ -72,6 +72,7 @@ class ExerEntry extends React.Component {
     } else {
       return (
         <ExerciseEntry>
+          <div>Today's exercises: </div>
           {exerEntries.map(entry => (
             <ExerciseActivity key={entry.id}>
               <div>Activity: {entry.exerciseName}</div>

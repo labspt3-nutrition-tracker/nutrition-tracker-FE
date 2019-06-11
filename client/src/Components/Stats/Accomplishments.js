@@ -45,7 +45,7 @@ class Accomplishments extends Component {
           Last 7 days: {moment(days[0]).format("MM/DD")} - {moment(days[6]).format("MM/DD")}
         </h2>
         <Grid container justify='center' alignItems='center'>
-          <Grid item xs={6}>
+          <Grid item md={6} xs={12}>
             <Card className={classes.card}>
               <CardContent>
                 <Typography className={classes.title} variant='h5' component='h2'>
@@ -76,7 +76,7 @@ class Accomplishments extends Component {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item md={6} xs={12}>
             <Card className={classes.card}>
               <CardContent>
                 <Typography className={classes.title} variant='h5' component='h2'>
@@ -207,16 +207,12 @@ const styles = theme => ({
     flexDirection: "column",
     justifyContent: "space-between"
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)"
-  },
   week: {
     fontSize: "2rem",
     marginBottom: 20,
     color: "#3685B5",
-    textAlign: "center"
+    textAlign: "center",
+    fontFamily: "Oxygen"
   },
   title: {
     fontSize: "2rem",
@@ -224,16 +220,19 @@ const styles = theme => ({
     color: "#3685B5",
     textAlign: "center",
     paddingBottom: 5,
-    borderBottom: "2px solid #3685B5"
+    borderBottom: "2px solid #3685B5",
+    fontFamily: "Oxygen"
   },
   category: {
     fontSize: "1.7rem",
     color: "#3685B5",
-    marginTop: 10
+    marginTop: 10,
+    fontFamily: "Oxygen"
   },
   pos: {
-    fontSize: "1.5rem",
-    marginBottom: 12
+    fontSize: "1.7rem",
+    marginBottom: 12,
+    fontFamily: "Oxygen"
   },
   list: {
     display: "flex",
@@ -241,11 +240,13 @@ const styles = theme => ({
     justifyContent: "space-between"
   },
   listItem: {
-    margin: 10
+    margin: 10,
+    fontFamily: "Oxygen",
   },
   link: {
     textDecoration: "none",
-    color: "#3685B5"
+    color: "#3685B5",
+    fontFamily: "Oxygen"
   }
 });
 
