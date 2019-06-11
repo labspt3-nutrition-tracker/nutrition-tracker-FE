@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 // import { Query } from "react-apollo";
 import ApolloClient from "apollo-boost";
-import { ADD_FOOD, ADD_FOOD_ENTRY } from "../../graphql/mutations";
+import { ADD_FOOD } from "../../graphql/mutations";
 import { GET_ALL_FOOD } from "../../graphql/queries";
 import gql from "graphql-tag";
 
@@ -91,7 +91,7 @@ class EntryForm extends Component {
     e.preventDefault();
     if (this.state.edamamExist === false) {
       const mealCat = parseInt(this.state.newAddFood.meal_category_id);
-      if (mealCat > 1) {
+      if (mealCat > 0) {
         const foodAddedToDB = {
           foodName: this.state.newAddFood.foodName,
           caloriesPerServ: parseInt(this.state.newAddFood.caloriesPerServ),
@@ -121,16 +121,17 @@ class EntryForm extends Component {
               servingQty: this.state.newAddFood.servingQty,
               meal_category_id: parseInt(this.state.newAddFood.meal_category_id)
             };
-            client
-              .mutate({
-                mutation: ADD_FOOD_ENTRY,
-                variables: {
-                  input: entryAddedToDB
-                }
-              })
-              .then(response => {
-                console.log(response);
-              });
+            // client
+            //   .mutate({
+            //     mutation: ADD_FOOD_ENTRY,
+            //     variables: {
+            //       input: entryAddedToDB
+            //     }
+            //   })
+            //   .then(response => {
+            //     console.log(response);
+            //   });
+            this.props.addFoodEntry(entryAddedToDB)
             this.setState({
               errors: [],
               edamamExist: false,
@@ -185,7 +186,6 @@ class EntryForm extends Component {
         })
         .then( response => {
           const foodId = response[0].id;
-          console.log('foodId', foodId)
           const entryAddedToDB = {
             date: this.state.newAddFood.date,
             food_id:  parseInt(foodId),
@@ -193,31 +193,47 @@ class EntryForm extends Component {
             servingQty: this.state.newAddFood.servingQty,
             meal_category_id: parseInt(this.state.newAddFood.meal_category_id)
           };
-          client
-            .mutate({
-              mutation: ADD_FOOD_ENTRY,
-              variables: {
-                input: entryAddedToDB
-              }
-            })
-            .then(response => {
-              console.log(response);
-              this.setState({
-                errors: [],
-                edamamExist: false,
-                newAddFood: {
-                  foodName: "",
-                  caloriesPerServ: null,
-                  fats: null,
-                  carbs: null,
-                  proteins: null,
-                  edamam_id: null,
-                  meal_category_id: null,
-                  date: "",
-                  servingQty: null
-                }
-              });
-            });
+          // client
+          //   .mutate({
+          //     mutation: ADD_FOOD_ENTRY,
+          //     variables: {
+          //       input: entryAddedToDB
+          //     }
+          //   })
+          this.props.addFoodEntry(entryAddedToDB)
+          this.setState({
+            errors: [],
+            edamamExist: false,
+            newAddFood: {
+              foodName: "",
+              caloriesPerServ: null,
+              fats: null,
+              carbs: null,
+              proteins: null,
+              edamam_id: null,
+              meal_category_id: null,
+              date: "",
+              servingQty: null
+            }
+          });
+            // .then(response => {
+            //   console.log(response);
+            //   this.setState({
+            //     errors: [],
+            //     edamamExist: false,
+            //     newAddFood: {
+            //       foodName: "",
+            //       caloriesPerServ: null,
+            //       fats: null,
+            //       carbs: null,
+            //       proteins: null,
+            //       edamam_id: null,
+            //       meal_category_id: null,
+            //       date: "",
+            //       servingQty: null
+            //     }
+            //   });
+            // });
 
           // console.log("response:", response);
           // console.log("currentUser:", this.state.newAddFood.user_id);
@@ -381,10 +397,10 @@ class EntryForm extends Component {
           required
         >
           <option>Select Meal Category</option>
-          <option value="2">breakfast</option>
-          <option value="3">lunch</option>
+          <option value="1">breakfast</option>
+          <option value="2">lunch</option>
           <option value="4">dinner</option>
-          <option value="5">snack</option>
+          <option value="3">snack</option>
         </select>
         <label htmlFor="servingQty">Serving Quantity</label>
         <input
