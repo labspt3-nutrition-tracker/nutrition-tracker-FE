@@ -10,8 +10,6 @@ import moment from "moment";
 import { ADD_EXERENTRY } from "../../graphql/mutations";
 import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
 
-// import moment from "moment";
-
 class Dashboard extends Component {
   state = {
     showFoodForm: true,
@@ -131,31 +129,21 @@ class Dashboard extends Component {
   };
   render() {
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
-    console.log(
-      this.props.selectedFood
-        ? this.props.selectedFood.label
-        : this.props.selectedFood
-    );
+    console.log(this.props.selectedFood ? this.props.selectedFood.label : this.props.selectedFood);
     return (
       <DashContainer>
         <DashTitle>{currentDate}</DashTitle>
         <Calories />
-        {!this.state.showFoodForm && (
-          <button onClick={this.handleShowFood}> Add Food</button>
-        )}
-        {!this.state.showExerForm && (
-          <button onClick={this.openExerEntry}> Add Exercise</button>
-        )}
-        <DashDisplay className="container">
+        {!this.state.showFoodForm && <button onClick={this.handleShowFood}> Add Food</button>}
+        {!this.state.showExerForm && <button onClick={this.openExerEntry}> Add Exercise</button>}
+        <DashDisplay className='container'>
           <InfoCon>
             <FoodEntry />
-            <ExerciseEntry exerEntries={this.state.exerEntries}/>
+            <ExerciseEntry exerEntries={this.state.exerEntries} />
           </InfoCon>
-          {this.state.showFoodForm && (
-            <EntryForm selectedFood={this.props.selectedFood} />
-          )}
+          {this.state.showFoodForm && <EntryForm selectedFood={this.props.selectedFood} />}
           {this.state.showExerForm && (
-            <Exercise closeExerEntry={this.closeExerEntry} addExerEntry={this.addExerEntry}/>
+            <Exercise closeExerEntry={this.closeExerEntry} addExerEntry={this.addExerEntry} />
           )}
         </DashDisplay>
       </DashContainer>

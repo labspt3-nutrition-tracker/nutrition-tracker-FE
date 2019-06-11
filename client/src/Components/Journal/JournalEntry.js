@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import moment from "moment";
+import { GET_FOOD_ENTRIES_BY_USER_QUERY } from "../../graphql/queries";
+import gql from "graphql-tag";
 
 const JournalDateTitle = styled.h1`
   font-family: "Oxygen", sans-serif;
@@ -55,8 +57,21 @@ class JournalEntry extends React.Component {
 
     const { foodEntries } = props;
     this.state = {
-      foodEntries: foodEntries
+      foodEntries: foodEntries,
+      journalEntry: {
+        date: "",
+        foodName: "",
+        user_id: null,
+        food_id: null,
+        meal_category_id: null
+      }
     };
+  }
+
+  componentDidMount(){
+  }
+
+  componentDidUpdate(prevProps){
   }
 
   render() {
@@ -140,7 +155,7 @@ class JournalEntry extends React.Component {
               );
             })
           ) : (
-            <EntryItems>No Snacks have been added</EntryItems>
+            <EntryItems>No Snack entries have been added</EntryItems>
           )}
         </div>
       </div>
