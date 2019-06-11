@@ -12,6 +12,7 @@ import StatsDashboard from "./StatsDashboard";
 import OneDayStats from "./OneDayStats";
 import ManyDaysStats from "./ManyDaysStats";
 import WeightStats from "./WeightStats";
+import ExerciseStats from "./ExerciseStats";
 import Accomplishments from "./Accomplishments";
 import {
   GET_FOOD_ENTRIES_BY_USER_QUERY,
@@ -65,7 +66,8 @@ class StatsView extends React.Component {
   };
 
   handleChartChange = days => {
-    if (days.length === 1 && this.state.data === "weight") this.setState({ data: "caloriesPerServ" });
+    if (days.length === 1 && (this.state.data === "weight" || this.state.data === "exercise"))
+      this.setState({ data: "caloriesPerServ" });
     this.setState({ days: days });
   };
 
@@ -127,7 +129,13 @@ class StatsView extends React.Component {
                   {data === "weight" ? (
                     <WeightStats weightEntries={weightEntries} days={days} initialWeight={initialWeight} />
                   ) : (
-                    <ManyDaysStats foodEntries={foodEntries} days={days} dataType={data} />
+                    <>
+                      {data === "exercise" ? (
+                        <ExerciseStats exerciseEntries={exerciseEntries} days={days} />
+                      ) : (
+                        <ManyDaysStats foodEntries={foodEntries} days={days} dataType={data} />
+                      )}
+                    </>
                   )}
                 </>
               )}

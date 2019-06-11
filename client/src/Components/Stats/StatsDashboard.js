@@ -109,7 +109,11 @@ class StatsDashboard extends React.Component {
             </InputLabel>
             <Select
               className={classes.data}
-              value={manyDays === 1 && selectValue === "weight" ? "caloriesPerServ" : selectValue}
+              value={
+                manyDays === 1 && (selectValue === "weight" || selectValue === "exercise")
+                  ? "caloriesPerServ"
+                  : selectValue
+              }
               onChange={this.handleDataChange}
               inputProps={{ id: "data" }}
             >
@@ -128,6 +132,11 @@ class StatsDashboard extends React.Component {
               {this.state.manyDays > 1 && (
                 <MenuItem className={classes.data} value={"weight"}>
                   weight
+                </MenuItem>
+              )}
+              {this.state.manyDays > 1 && (
+                <MenuItem className={classes.data} value={"exercise"}>
+                  Exercise
                 </MenuItem>
               )}
             </Select>
