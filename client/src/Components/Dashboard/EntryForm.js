@@ -91,7 +91,7 @@ class EntryForm extends Component {
     e.preventDefault();
     if (this.state.edamamExist === false) {
       const mealCat = parseInt(this.state.newAddFood.meal_category_id);
-      if (mealCat > 1) {
+      if (mealCat > 0) {
         const foodAddedToDB = {
           foodName: this.state.newAddFood.foodName,
           caloriesPerServ: parseInt(this.state.newAddFood.caloriesPerServ),
@@ -381,10 +381,10 @@ class EntryForm extends Component {
           required
         >
           <option>Select Meal Category</option>
-          <option value="2">breakfast</option>
-          <option value="3">lunch</option>
+          <option value="1">breakfast</option>
+          <option value="2">lunch</option>
           <option value="4">dinner</option>
-          <option value="5">snack</option>
+          <option value="3">snack</option>
         </select>
         <label htmlFor="servingQty">Serving Quantity</label>
         <input
