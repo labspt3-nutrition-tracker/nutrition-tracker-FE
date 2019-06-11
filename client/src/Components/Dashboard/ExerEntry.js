@@ -1,8 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-// import { Query } from "react-apollo";
-import ApolloClient from "apollo-boost";
-import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
 
 const ExerciseActivity = styled.div`
   padding: 10px;
