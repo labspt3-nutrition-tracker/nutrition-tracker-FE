@@ -51,7 +51,7 @@ class ExerEntry extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.exerEntries !== this.props.exerEntries) {
       this.setState({ exerEntries: this.props.exerEntries });
-      
+
     }
   }
 
