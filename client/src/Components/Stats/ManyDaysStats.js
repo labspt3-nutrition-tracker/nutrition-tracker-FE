@@ -22,31 +22,33 @@ class ManyDaysStats extends Component {
     if (
       prevProps.foodEntries !== this.props.foodEntries ||
       prevProps.days !== this.props.days ||
-      prevProps.data !== this.props.data
+      prevProps.dataType !== this.props.dataType
     )
       this.updateEntries();
   };
 
   updateEntries = () => {
-    const { foodEntries, data } = this.props;
+    const { foodEntries, dataType } = this.props;
     let { days } = this.props;
     if (days.length > 7 && days.length <= 30) {
       days = days.filter((day, i) => i % 3 === 0);
+    } else if (days.length >= 90) {
+      days = days.filter((day, i) => i % 30 === 0);
     }
-    const entries = getTotalData(foodEntries, data, days);
+    const entries = getTotalData(foodEntries, dataType, days);
     this.setState({ entries: entries, labels: days });
   };
 
   render() {
     defaults.global.defaultFontColor = "#2196F3";
     defaults.global.defaultFontFamily = "Oxygen";
-    const { classes } = this.props;
+    const { classes, days, dataType } = this.props;
     const labels = this.state.labels.map(day => moment(day).format("MM/DD"));
     const data = {
       labels: labels,
       datasets: [
         {
-          label: this.props.data === "caloriesPerServ" ? "Calories" : this.props.data,
+          label: dataType === "caloriesPerServ" ? "Calories" : dataType,
           backgroundColor: "#2196F3",
           borderColor: "#F4B4C3",
           borderWidth: 1,
@@ -60,8 +62,8 @@ class ManyDaysStats extends Component {
     return (
       <div className={classes.root}>
         <h2 className={classes.header}>
-          Total {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data} for the last{" "}
-          {this.props.days.length} days
+          Total {dataType === "caloriesPerServ" ? "Calories" : dataType} for the last{" "}
+          {days.length === 365 ? "Year" : days.length + " days"}
         </h2>
         {this.state.entries.length !== 0 ? (
           <Grid container justify='center' alignItems='center'>

@@ -175,6 +175,21 @@ class StatsDashboard extends React.Component {
                 </Tooltip>
               )}
             </CloneProps>
+            <CloneProps>
+              {tabProps => (
+                <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
+                  <div>
+                    <Button
+                      disabled={userType === "basic" || this.state.manyDays === 365}
+                      className={classes.manyDaysBtn}
+                      onClick={() => this.handleManyDaysChange(365)}
+                    >
+                      Last Year
+                    </Button>
+                  </div>
+                </Tooltip>
+              )}
+            </CloneProps>
           </div>
         </Grid>
       </Grid>

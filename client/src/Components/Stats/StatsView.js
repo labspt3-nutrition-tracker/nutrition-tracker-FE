@@ -127,7 +127,7 @@ class StatsView extends React.Component {
                   {data === "weight" ? (
                     <WeightStats weightEntries={weightEntries} days={days} initialWeight={initialWeight} />
                   ) : (
-                    <ManyDaysStats foodEntries={foodEntries} days={days} data={data} />
+                    <ManyDaysStats foodEntries={foodEntries} days={days} dataType={data} />
                   )}
                 </>
               )}
