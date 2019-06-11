@@ -7,6 +7,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import Tooltip from "@material-ui/core/Tooltip";
+import Zoom from "@material-ui/core/Zoom";
 import * as moment from "moment";
 
 import { getLastXDays } from "../../util/getLastXDays";
@@ -20,7 +22,7 @@ const styles = theme => ({
   dataGroup: {
     fontSize: "2rem",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   label: {
     fontSize: "1.5rem",
@@ -52,11 +54,16 @@ const styles = theme => ({
     border: "2px solid #F4B4C3",
     backgroundColor: "#F4B4C3",
     padding: "5px 8px",
-    '&:hover': {
+    "&:hover": {
       backgroundColor: "#2196F3",
       borderColor: "#2196F3"
     },
     fontFamily: "Oxygen"
+  },
+  tooltip: {
+    fontSize: "1.8rem",
+    // color: "white",
+    backgroundColor: "#F4B4C3"
   }
 });
 
@@ -86,8 +93,13 @@ class StatsDashboard extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, currentUser } = this.props;
     const { selectValue, dayValue, manyDays } = this.state;
+    const userType = currentUser ? currentUser.userType : "basic";
+    let tooltipTitle = "";
+    if (currentUser) {
+      if (currentUser.userType === "basic") tooltipTitle = "Please upgrade to access report";
+    }
     return (
       <Grid container justify='center' alignItems='center' className={classes.root}>
         <Grid item md={4} xs={6}>
@@ -122,22 +134,22 @@ class StatsDashboard extends React.Component {
           </div>
         </Grid>
         <Grid item md={4} xs={6}>
-            <TextField
-              onChange={this.handleDayChange}
-              id='date'
-              label='Pick a day'
-              type='date'
-              value={dayValue}
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-                style: { fontSize: "2rem", color: "#3685B5", fontFamily: "Oxygen" }
-              }}
-              inputProps={{
-                style: { fontSize: "2rem", lineHeight: "1.5", marginTop: "12px" }
-              }}
-              margin='normal'
-            />
+          <TextField
+            onChange={this.handleDayChange}
+            id='date'
+            label='Pick a day'
+            type='date'
+            value={dayValue}
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+              style: { fontSize: "2rem", color: "#3685B5", fontFamily: "Oxygen" }
+            }}
+            inputProps={{
+              style: { fontSize: "2rem", lineHeight: "1.5", marginTop: "12px" }
+            }}
+            margin='normal'
+          />
         </Grid>
         <Grid item md={4} xs={12}>
           <div className={classes.manyDaysGroup}>
@@ -148,18 +160,31 @@ class StatsDashboard extends React.Component {
             >
               Last 7 Days
             </Button>
-            <Button
-              disabled={this.state.manyDays === 30}
-              className={classes.manyDaysBtn}
-              onClick={() => this.handleManyDaysChange(30)}
-            >
-              Last 30 Days
-            </Button>
+            <CloneProps>
+              {tabProps => (
+                <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
+                  <div>
+                    <Button
+                      disabled={userType === "basic" || this.state.manyDays === 30}
+                      className={classes.manyDaysBtn}
+                      onClick={() => this.handleManyDaysChange(30)}
+                    >
+                      Last 30 Days
+                    </Button>
+                  </div>
+                </Tooltip>
+              )}
+            </CloneProps>
           </div>
         </Grid>
       </Grid>
     );
   }
+}
+
+function CloneProps(props) {
+  const { children, ...other } = props;
+  return children(other);
 }
 
 export default withStyles(styles)(StatsDashboard);

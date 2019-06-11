@@ -80,7 +80,6 @@ class StatsView extends React.Component {
   render() {
     const { classes } = this.props;
     const { option, foodEntries, days, data, exerciseEntries, weightEntries, currentUser, initialWeight } = this.state;
-    console.log({ currentUser });
     let tooltipTitle = "";
     if (currentUser) {
       if (currentUser.userType === "basic") tooltipTitle = "Please upgrade to access report";
@@ -116,7 +115,11 @@ class StatsView extends React.Component {
           </Paper>
           {option === 0 ? (
             <>
-              <StatsDashboard chartChange={this.handleChartChange} dataChange={this.handleDataChange} />
+              <StatsDashboard
+                chartChange={this.handleChartChange}
+                dataChange={this.handleDataChange}
+                currentUser={currentUser}
+              />
               {days.length === 1 ? (
                 <OneDayStats foodEntries={foodEntries} days={days} data={data} />
               ) : (
