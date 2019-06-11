@@ -12,15 +12,19 @@ import * as moment from "moment";
 import { getLastXDays } from "../../util/getLastXDays";
 import { getTotalData } from "../../util/getTotalData";
 import { getGoalReached } from "../../util/getGoalReached";
+import { getTotalExerCalories } from "../../util/getTotalExerCalories";
+import { getNoExerciseEntryDays } from "../../util/getNoExerciseEntryDays";
 
 class Accomplishments extends Component {
   state = {
     days: [],
     goals: [],
-    weights: []
+    weights: [],
+    noExerDays: [],
+    exerciseCalories: 0
   };
   componentDidMount = async () => {
-    const { currentUser, foodEntries, weightEntries } = this.props;
+    const { currentUser, foodEntries, weightEntries, exerciseEntries } = this.props;
     const days = await getLastXDays(7);
     const totalCalories = await getTotalData(foodEntries, "caloriesPerServ", days);
     const goals = getGoalReached(currentUser, totalCalories);
@@ -28,11 +32,19 @@ class Accomplishments extends Component {
       weightEntries.find(entry => moment(new Date(entry.date)).format("MM/DD/YY") === moment(day).format("MM/DD/YY"))
     );
     weights = weights.filter(weight => weight !== undefined).map(entry => entry.weight);
-    this.setState({ days: days, goals: goals, weights: weights });
+    const totalExerciseCalories = await getTotalExerCalories(exerciseEntries, days);
+    const noExercEntryDays = await getNoExerciseEntryDays(exerciseEntries, days);
+    this.setState({
+      days: days,
+      goals: goals,
+      weights: weights,
+      exerciseCalories: totalExerciseCalories,
+      noExerDays: noExercEntryDays
+    });
   };
   render() {
     const { classes, currentUser } = this.props;
-    const { days, goals, weights } = this.state;
+    const { days, goals, weights, exerciseCalories, noExerDays } = this.state;
     // days = days.map(day => moment(day).format("MM/DD"));
     const success = goals.map((goal, i) => (goal === 1 ? days[i] : goal)).filter(day => day !== 0 && day !== -1);
     const warnings = goals.map((goal, i) => (goal === -1 ? days[i] : goal)).filter(day => day !== 0 && day !== 1);
@@ -98,12 +110,16 @@ class Accomplishments extends Component {
                     )}
                   </>
                 )}
-                <Typography color='textSecondary' className={classes.category}>
-                  EXERCISE
-                </Typography>
-                <Typography className={classes.pos} variant='body2' component='p'>
-                  You exercised every day. You burned 2500 kcal.
-                </Typography>
+                {exerciseCalories !== 0 && (
+                  <>
+                    <Typography color='textSecondary' className={classes.category}>
+                      EXERCISE
+                    </Typography>
+                    <Typography className={classes.pos} variant='body2' component='p'>
+                      You burned {exerciseCalories} kcal in the last 7 days.
+                    </Typography>
+                  </>
+                )}
               </CardContent>
               <CardActions>
                 <Link className={classes.link} to={"/settings"}>
@@ -173,12 +189,23 @@ class Accomplishments extends Component {
                     </ul>
                   </>
                 )}
-                <Typography color='textSecondary' className={classes.category}>
-                  No Exercise Entry
-                </Typography>
-                <Typography className={classes.pos} variant='body2' component='p'>
-                  You didn't record any exercise entry on these days:
-                </Typography>
+                {noExerDays.length > 0 && (
+                  <>
+                    <Typography color='textSecondary' className={classes.category}>
+                      No Exercise Entry
+                    </Typography>
+                    <Typography className={classes.pos} variant='body2' component='p'>
+                      You didn't record any exercise entry on these days:
+                    </Typography>
+                    <ul className={classes.list}>
+                      {noExerDays.map((day, i) => (
+                        <li className={classes.listItem} key={i}>
+                          {moment(day).format("dddd MMM DD")}
+                        </li>
+                      ))}
+                    </ul>{" "}
+                  </>
+                )}
               </CardContent>
               <CardActions>
                 <Link className={classes.link} to={"/settings"}>
@@ -241,7 +268,7 @@ const styles = theme => ({
   },
   listItem: {
     margin: 10,
-    fontFamily: "Oxygen",
+    fontFamily: "Oxygen"
   },
   link: {
     textDecoration: "none",
