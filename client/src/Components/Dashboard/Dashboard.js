@@ -12,8 +12,6 @@ import gql from "graphql-tag";
 import { ADD_EXERENTRY, ADD_FOOD_ENTRY } from "../../graphql/mutations";
 import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
 
-<<<<<<< HEAD
-=======
 
 const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
 query($userId: ID!)
@@ -44,7 +42,6 @@ query($userId: ID!)
 `;
 
 
->>>>>>> 680f641d1f2d3853305fa1451f28ad0de4ee4811
 class Dashboard extends Component {
   state = {
     showFoodForm: true,
