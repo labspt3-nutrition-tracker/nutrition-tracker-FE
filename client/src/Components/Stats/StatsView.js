@@ -5,6 +5,8 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import Tooltip from "@material-ui/core/Tooltip";
+import Zoom from "@material-ui/core/Zoom";
 
 import StatsDashboard from "./StatsDashboard";
 import OneDayStats from "./OneDayStats";
@@ -19,7 +21,6 @@ import {
 } from "../../graphql/queries";
 
 const BASE_URL = "https://nutrition-tracker-be.herokuapp.com/";
-// const BASE_URL = "http://localhost:4000/";
 
 class StatsView extends React.Component {
   state = {
@@ -78,7 +79,12 @@ class StatsView extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { option } = this.state;
+    const { option, foodEntries, days, data, exerciseEntries, weightEntries, currentUser, initialWeight } = this.state;
+    console.log({ currentUser });
+    let tooltipTitle = "";
+    if (currentUser) {
+      if (currentUser.userType === "basic") tooltipTitle = "Please upgrade to access report";
+    }
     return (
       <>
         <div>
@@ -92,40 +98,58 @@ class StatsView extends React.Component {
               }}
             >
               <Tab label='Charts' className={classes.tab} />
-              <Tab label='Accomplishments' className={classes.tab} />
+              <CloneProps>
+                {tabProps => (
+                  <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
+                    <div>
+                      <Tab
+                        {...tabProps}
+                        className={classes.tab}
+                        disabled={currentUser ? currentUser.userType === "basic" : true}
+                        label={<span>Accomplishments</span>}
+                      />
+                    </div>
+                  </Tooltip>
+                )}
+              </CloneProps>
             </Tabs>
           </Paper>
           {option === 0 ? (
             <>
               <StatsDashboard chartChange={this.handleChartChange} dataChange={this.handleDataChange} />
-              {this.state.days.length === 1 ? (
-                <OneDayStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
+              {days.length === 1 ? (
+                <OneDayStats foodEntries={foodEntries} days={days} data={data} />
               ) : (
                 <>
-                  {this.state.data === "weight" ? (
-                    <WeightStats
-                      weightEntries={this.state.weightEntries}
-                      days={this.state.days}
-                      initialWeight={this.state.initialWeight}
-                    />
+                  {data === "weight" ? (
+                    <WeightStats weightEntries={weightEntries} days={days} initialWeight={initialWeight} />
                   ) : (
-                    <ManyDaysStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
+                    <ManyDaysStats foodEntries={foodEntries} days={days} data={data} />
                   )}
                 </>
               )}
             </>
           ) : (
-            <Accomplishments
-              currentUser={this.state.currentUser}
-              foodEntries={this.state.foodEntries}
-              weightEntries={this.state.weightEntries}
-              exerciseEntries={this.state.exerciseEntries}
-            />
+            <>
+              {currentUser.userType !== "basic" && (
+                <Accomplishments
+                  currentUser={currentUser}
+                  foodEntries={foodEntries}
+                  weightEntries={weightEntries}
+                  exerciseEntries={exerciseEntries}
+                />
+              )}
+            </>
           )}
         </div>
       </>
     );
   }
+}
+
+function CloneProps(props) {
+  const { children, ...other } = props;
+  return children(other);
 }
 
 const styles = theme => ({
@@ -142,6 +166,11 @@ const styles = theme => ({
     fontFamily: "Oxygen"
   },
   indicator: {
+    backgroundColor: "#F4B4C3"
+  },
+  tooltip: {
+    fontSize: "1.8rem",
+    // color: "white",
     backgroundColor: "#F4B4C3"
   }
 });

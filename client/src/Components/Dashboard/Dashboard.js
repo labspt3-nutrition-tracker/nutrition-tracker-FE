@@ -12,35 +12,32 @@ import gql from "graphql-tag";
 import { ADD_EXERENTRY, ADD_FOOD_ENTRY } from "../../graphql/mutations";
 import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
 
-
 const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
-query($userId: ID!)
-{
-  getFoodEntriesByUserId(userId: $userId) {
-    id
-    date
-    servingQty
-    user_id {
-      username
-      firstName
-      lastName
-      email
+  query($userId: ID!) {
+    getFoodEntriesByUserId(userId: $userId) {
       id
-    }
-    food_id {
-      foodName
-      caloriesPerServ
-      fats
-      proteins
-      carbs
-    }
-    meal_category_id {
-      mealCategoryName
+      date
+      servingQty
+      user_id {
+        username
+        firstName
+        lastName
+        email
+        id
+      }
+      food_id {
+        foodName
+        caloriesPerServ
+        fats
+        proteins
+        carbs
+      }
+      meal_category_id {
+        mealCategoryName
+      }
     }
   }
-}
 `;
-
 
 class Dashboard extends Component {
   state = {
@@ -74,44 +71,43 @@ class Dashboard extends Component {
             this.setState({
               exerEntries: response.data.getExerciseEntriesByUserId
             });
-          client
-            .query({
-              query: GET_FOOD_ENTRIES_BY_USER_QUERY,
-              variables: {
-                userId: this.state.currentUser
-              }
-            })
-            .then(response => {
-              console.log(this.state.currentUser)
-              console.log('food response', response)
-              this.setState({
-                foodEntries: response.data.getFoodEntriesByUserId
+            client
+              .query({
+                query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+                variables: {
+                  userId: this.state.currentUser
+                }
               })
-
-            })
-          })
+              .then(response => {
+                console.log(this.state.currentUser);
+                console.log("food response", response);
+                this.setState({
+                  foodEntries: response.data.getFoodEntriesByUserId
+                });
+              });
+          });
       })
       // .then(
-          // client
-          //   .query({
-          //     query: GET_FOOD_ENTRIES_BY_USER_QUERY,
-          //     variables: {
-          //       userId: this.state.currentUser
-          //     }
-          //   })
-          //   .then(response => {
-          //     console.log(this.state.currentUser)
-          //     console.log('food response', response)
-          //     this.setState({
-          //       foodEntries: response.data.getFoodEntriesByUserId
-          //     })
+      // client
+      //   .query({
+      //     query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+      //     variables: {
+      //       userId: this.state.currentUser
+      //     }
+      //   })
+      //   .then(response => {
+      //     console.log(this.state.currentUser)
+      //     console.log('food response', response)
+      //     this.setState({
+      //       foodEntries: response.data.getFoodEntriesByUserId
+      //     })
 
-          //   })
-        // )
+      //   })
+      // )
       .catch(err => console.log(err));
   };
 
-  addFoodEntry = newFoodEntry =>{
+  addFoodEntry = newFoodEntry => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
@@ -132,12 +128,11 @@ class Dashboard extends Component {
             }
           })
           .then(response => {
-            this.setState({foodEntries: response.data.getFoodEntriesByUserId})
+            this.setState({ foodEntries: response.data.getFoodEntriesByUserId });
           });
       })
       .catch(err => console.log(err));
-
-  }
+  };
 
   addExerEntry = newExerEntry => {
     const client = new ApolloClient({
@@ -231,19 +226,12 @@ class Dashboard extends Component {
         {!this.state.showExerForm && <button onClick={this.openExerEntry}> Add Exercise</button>}
         <DashDisplay className='container'>
           <InfoCon>
-<<<<<<< HEAD
-            <FoodEntry />
-            <ExerciseEntry exerEntries={this.state.exerEntries} />
-          </InfoCon>
-          {this.state.showFoodForm && <EntryForm selectedFood={this.props.selectedFood} />}
-=======
             <FoodEntry foodEntries={this.state.foodEntries} />
-            <ExerciseEntry exerEntries={this.state.exerEntries}/>
+            <ExerciseEntry exerEntries={this.state.exerEntries} />
           </InfoCon>
           {this.state.showFoodForm && (
             <EntryForm addFoodEntry={this.addFoodEntry} selectedFood={this.props.selectedFood} />
           )}
->>>>>>> 680f641d1f2d3853305fa1451f28ad0de4ee4811
           {this.state.showExerForm && (
             <Exercise closeExerEntry={this.closeExerEntry} addExerEntry={this.addExerEntry} />
           )}
