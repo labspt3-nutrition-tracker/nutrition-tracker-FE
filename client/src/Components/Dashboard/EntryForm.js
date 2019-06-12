@@ -10,7 +10,6 @@ const Form = styled.form`
   flex-direction: column;
   width: 30%;
   padding: 20px;
-
   h1{
     font-size: 1.5em;
     font-weight: bold;

@@ -3,7 +3,7 @@ import Calories from "./Calories";
 import EntryForm from "./EntryForm";
 import ModifiedEntryForm from "./ModifiedEntryForm";
 import FoodEntry from "./FoodEntry";
-import Exercise from "./Exercise";
+import Exercise from "./Exercise"
 import ExerciseEntry from "./ExerEntry";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
