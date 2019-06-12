@@ -97,6 +97,12 @@ export const UPDATE_USER_MUTATION = `
   }
 `;
 
+export const DELETE_EXERENTRY = gql`
+  mutation deleteExerciseEntry($id: ID!) {
+    deleteExerciseEntry(id: $id) 
+  }
+`;
+
 
 export const ADD_EXERENTRY = gql`
   mutation addExerciseEntry($input: ExerciseEntryInput!) {
