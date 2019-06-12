@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-// import { Query } from "react-apollo";
 import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
 import { GET_ALL_FOOD } from "../../graphql/queries";
@@ -458,10 +457,6 @@ class EntryForm extends Component {
           onClick={this.onEntrySubmit}
         >
           Add Entry
-        </button>
-        <button
-          onClick={this.props.closeFoodForm}
-        > Close
         </button>
       </Form>
     );

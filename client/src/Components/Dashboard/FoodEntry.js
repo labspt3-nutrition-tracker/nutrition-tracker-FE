@@ -1,9 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Query } from "react-apollo";
-import ApolloClient from "apollo-boost";
-import gql from "graphql-tag";
-import { GET_CURRENT_USERID } from "../../graphql/queries";
 
 const FoodEntryContainer = styled.div`
   width: 50%;
@@ -191,12 +187,6 @@ class FoodEntry extends React.Component {
         </div>
       </FoodEntryContainer>
     );
-    // }
-    {
-      /* } */
-    }
-
-    //  );
   }
 }
 
