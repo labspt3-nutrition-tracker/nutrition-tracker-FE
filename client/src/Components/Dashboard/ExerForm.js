@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
-import { GET_CURRENT_USERID } from "../../../graphql/queries";
+import { GET_CURRENT_USERID } from "../../graphql/queries";
 
 const Form = styled.form`
   display: flex;

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 // import { Query } from "react-apollo";
 import ApolloClient from "apollo-boost";
-import { ADD_FOOD, ADD_FOOD_ENTRY } from "../../../graphql/mutations";
-import { GET_ALL_FOOD } from "../../../graphql/queries";
+import { ADD_FOOD, ADD_FOOD_ENTRY } from "../../graphql/mutations";
+import { GET_ALL_FOOD } from "../../graphql/queries";
 import gql from "graphql-tag";
 
 const Form = styled.form`

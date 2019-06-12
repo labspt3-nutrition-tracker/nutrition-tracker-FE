@@ -28,13 +28,15 @@ class WeightStats extends Component {
     let { days } = this.props;
     if (days.length > 7 && days.length <= 30) {
       days = days.filter((day, i) => i % 3 === 0);
+    } else if (days.length >= 90) {
+      days = days.filter((day, i) => i % 30 === 0);
     }
     const entries = getWeights(weightEntries, days, initialWeight);
     this.setState({ entries: entries, labels: days });
   };
   render() {
     defaults.global.defaultFontColor = "#2196F3";
-    const { classes, initialWeight } = this.props;
+    const { classes, initialWeight, days } = this.props;
     const labels = this.state.labels.map(day => moment(day).format("MM/DD"));
     labels.unshift("Day 1");
     const lineColor = makeRandomColor();
@@ -54,7 +56,7 @@ class WeightStats extends Component {
 
     return (
       <div className={classes.root}>
-        <h2 className={classes.header}>Weight for the last {this.props.days.length} days</h2>
+        <h2 className={classes.header}>Weight for the last {days.length === 365 ? "Year" : days.length + " days"}</h2>
         {this.state.entries.length !== 0 ? (
           <Grid container justify='center' alignItems='center'>
             <Grid item xs={3}>
@@ -96,20 +98,23 @@ const styles = theme => ({
   },
   header: {
     textAlign: "center",
-    fontSize: "3.5rem",
+    fontSize: "2.8rem",
     marginBottom: "20px",
-    color: "#2196F3",
-    textTransform: "uppercase"
+    color: "#3685B5",
+    textTransform: "uppercase",
+    fontFamily: "Oxygen"
   },
   title: {
     color: "#2196F3",
     fontSize: "2rem",
-    width: "40%"
+    width: "40%",
+    fontFamily: "Oxygen"
   },
   value: {
     margin: "10px 0",
     fontSize: "1.8rem",
-    paddingLeft: "10px"
+    paddingLeft: "10px",
+    fontFamily: "Oxygen"
   },
   dataInfo: {
     display: "flex",
