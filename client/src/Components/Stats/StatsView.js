@@ -5,29 +5,34 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import Tooltip from "@material-ui/core/Tooltip";
+import Zoom from "@material-ui/core/Zoom";
 
 import StatsDashboard from "./StatsDashboard";
 import OneDayStats from "./OneDayStats";
 import ManyDaysStats from "./ManyDaysStats";
 import WeightStats from "./WeightStats";
+import ExerciseStats from "./ExerciseStats";
 import Accomplishments from "./Accomplishments";
 import {
   GET_FOOD_ENTRIES_BY_USER_QUERY,
   GET_CURRENT_USER_QUERY,
-  GET_WEIGHT_ENTRIES_QUERY
+  GET_WEIGHT_ENTRIES_QUERY,
+  GET_EXERCISE_ENTRIES_QUERY
 } from "../../graphql/queries";
 
 const BASE_URL = "https://nutrition-tracker-be.herokuapp.com/";
-// const BASE_URL = "http://localhost:4000/";
 
 class StatsView extends React.Component {
   state = {
     foodEntries: [],
+    weightEntries: [],
+    exerciseEntries: [],
     days: [moment().format("YYYY-MM-DD")],
     data: "caloriesPerServ",
     option: 0,
-    weightEntries: [],
-    initialWeight: 0
+    initialWeight: 0,
+    currentUser: null
   };
 
   componentDidMount = async () => {
@@ -43,22 +48,26 @@ class StatsView extends React.Component {
       const variables = { userId };
       const foodEntries = await client.request(GET_FOOD_ENTRIES_BY_USER_QUERY, variables);
       const weightEntries = await client.request(GET_WEIGHT_ENTRIES_QUERY, variables);
+      const exerciseEntries = await client.request(GET_EXERCISE_ENTRIES_QUERY, variables);
       this.setState({
         foodEntries: foodEntries.getFoodEntriesByUserId,
         weightEntries: weightEntries.getWeightEntriesByUserId,
-        initialWeight: initialWeight
+        exerciseEntries: exerciseEntries.getExerciseEntriesByUserId,
+        initialWeight: initialWeight,
+        currentUser: user.getCurrentUser
       });
     } catch (err) {
       console.log(err);
       if (err.response.errors[0].message === "You must be logged in!") {
         localStorage.removeItem("token");
-        this.props.history.push("/login");
+        // this.props.history.push("/login");
       }
     }
   };
 
   handleChartChange = days => {
-    if (days.length === 1 && this.state.data === "weight") this.setState({ data: "caloriesPerServ" });
+    if (days.length === 1 && (this.state.data === "weight" || this.state.data === "exercise"))
+      this.setState({ data: "caloriesPerServ" });
     this.setState({ days: days });
   };
 
@@ -72,7 +81,11 @@ class StatsView extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { option } = this.state;
+    const { option, foodEntries, days, data, exerciseEntries, weightEntries, currentUser, initialWeight } = this.state;
+    let tooltipTitle = "";
+    if (currentUser) {
+      if (currentUser.userType === "basic") tooltipTitle = "Please upgrade to access report";
+    }
     return (
       <>
         <div>
@@ -80,35 +93,64 @@ class StatsView extends React.Component {
             <Tabs
               value={option}
               onChange={this.handleOptionChange}
-              indicatorColor='primary'
-              textColor='primary'
               centered
+              classes={{
+                indicator: classes.indicator
+              }}
             >
               <Tab label='Charts' className={classes.tab} />
-              <Tab label='Accomplishments' className={classes.tab} />
+              <CloneProps>
+                {tabProps => (
+                  <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
+                    <div>
+                      <Tab
+                        {...tabProps}
+                        className={classes.tab}
+                        disabled={currentUser ? currentUser.userType === "basic" : true}
+                        label={<span>Accomplishments</span>}
+                      />
+                    </div>
+                  </Tooltip>
+                )}
+              </CloneProps>
             </Tabs>
           </Paper>
           {option === 0 ? (
             <>
-              <StatsDashboard chartChange={this.handleChartChange} dataChange={this.handleDataChange} />
-              {this.state.days.length === 1 ? (
-                <OneDayStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
+              <StatsDashboard
+                chartChange={this.handleChartChange}
+                dataChange={this.handleDataChange}
+                currentUser={currentUser}
+              />
+              {days.length === 1 ? (
+                <OneDayStats foodEntries={foodEntries} days={days} data={data} />
               ) : (
                 <>
-                  {this.state.data === "weight" ? (
-                    <WeightStats
-                      weightEntries={this.state.weightEntries}
-                      days={this.state.days}
-                      initialWeight={this.state.initialWeight}
-                    />
+                  {data === "weight" ? (
+                    <WeightStats weightEntries={weightEntries} days={days} initialWeight={initialWeight} />
                   ) : (
-                    <ManyDaysStats foodEntries={this.state.foodEntries} days={this.state.days} data={this.state.data} />
+                    <>
+                      {data === "exercise" ? (
+                        <ExerciseStats exerciseEntries={exerciseEntries} days={days} />
+                      ) : (
+                        <ManyDaysStats foodEntries={foodEntries} days={days} dataType={data} />
+                      )}
+                    </>
                   )}
                 </>
               )}
             </>
           ) : (
-            <Accomplishments />
+            <>
+              {currentUser.userType !== "basic" && (
+                <Accomplishments
+                  currentUser={currentUser}
+                  foodEntries={foodEntries}
+                  weightEntries={weightEntries}
+                  exerciseEntries={exerciseEntries}
+                />
+              )}
+            </>
           )}
         </div>
       </>
@@ -116,16 +158,31 @@ class StatsView extends React.Component {
   }
 }
 
+function CloneProps(props) {
+  const { children, ...other } = props;
+  return children(other);
+}
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
     fontSize: "2rem",
     padding: "5px",
-    boxShadow: "none"
+    boxShadow: "none",
+    fontFamily: "Oxygen"
   },
   tab: {
     fontSize: "2rem",
-    color: "#2196F3"
+    color: "#3685B5",
+    fontFamily: "Oxygen"
+  },
+  indicator: {
+    backgroundColor: "#F4B4C3"
+  },
+  tooltip: {
+    fontSize: "1.8rem",
+    // color: "white",
+    backgroundColor: "#F4B4C3"
   }
 });
 

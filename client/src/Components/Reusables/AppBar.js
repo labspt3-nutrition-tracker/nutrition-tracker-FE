@@ -34,32 +34,32 @@ const Toolbar = styled.div`
 `;
 
 const ButtonAppBar = props => {
-  return (
-    <AppBar className='appbar' position='static'>
-      <Toolbar>
-        <NavLink className='navLink' exact to='/'>
-          Home
-        </NavLink>
-        <NavLink className='navLink' to='/account'>
-          Account
-        </NavLink>
-        <NavLink className='navLink' to='/reports'>
-          Reports
-        </NavLink>
-        <NavLink className='navLink' to='/dashboard'>
-          Dashboard
-        </NavLink>
-        <NavLink className='navLink' to='/journal'>
-          Journal
-        </NavLink>
-      </Toolbar>
-      <SearchInputComponent
-        updateSearch={props.updateSearch}
-        searchInput={props.searchInput}
-        getFoodData={props.getFoodData}
-      />
-    </AppBar>
-  );
+    return (
+      <AppBar className='appbar' position='static'>
+        <Toolbar>
+          <NavLink className='navLink' exact to='/'>
+            Home
+          </NavLink>
+          <NavLink className='navLink' to='/account'>
+            Account
+          </NavLink>
+          <NavLink className='navLink' to='/reports'>
+            Reports
+          </NavLink>
+          <NavLink className='navLink' to='/dashboard'>
+            Dashboard
+          </NavLink>
+          <NavLink className='navLink' to='/journal'>
+            Journal
+          </NavLink>
+        </Toolbar>
+        <SearchInputComponent
+          updateSearch={props.updateSearch}
+          searchInput={props.searchInput}
+          getFoodData={props.getFoodData}
+        />
+      </AppBar>
+    );
 };
 
 // export default withStyles(styles)(ButtonAppBar);

@@ -1,8 +1,10 @@
 import React from "react";
+import Modal from "react-modal";
 import styled from "styled-components";
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
 
+const FoodEntryContainer = styled.div`
+  width: 50%;
+`;
 const MealCategory = styled.h3`
   font-size: 2rem;
   font-weight: bold;
@@ -12,44 +14,168 @@ const Meal = styled.div`
   padding: 10px;
 `;
 
+const FoodModal = styled(Modal)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10% 20%;
+  padding: 10%;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+`;
+
+// const customStyles = {
+//   content : {
+//     top: "50%",
+//     left: "50%",
+//     right: "auto",
+//     bottom: "auto",
+//     marginRight: "-50%",
+//     height: "50%",
+//     width: "50%",
+//     transform: "translate(-50%, -50%)",
+//     position: "absolute"
+//   }
+// };
+
+Modal.setAppElement("#root");
+
 class FoodEntry extends React.Component {
   state = {
-    currentUser: 2
+    currentUser: null,
+    foodEntries: [],
+    showModal: false
+  };
+
+  openModal = item => {
+    console.log("modal open");
+    this.setState({
+      showModal: true,
+      foodEntries: item.id
+    });
+  };
+
+  closeModal = () => {
+    console.log("modal closed");
+    this.setState({ showModal: false });
+  };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.foodEntries !== this.props.foodEntries) {
+      this.setState({ foodEntries: this.props.foodEntries });
+    }
+  }
+
+  // componentDidUpdate(prevProps, prevState){
+  //   const idToken = localStorage.getItem("token");
+  //   this.getCurrentUser(idToken);
+  //   const ENTRIES_QUERY = gql`
+  //   query getFoodEntriesByUserId{
+  //     getFoodEntriesByUserId(userId: ${this.state.currentUser}) {
+  //       date
+  //       food_id {
+  //         id
+  //         foodName
+  //       }
+  //       meal_category_id {
+  //         id
+  //         mealCategoryName
+  //       }
+  //     }
+  //   }
+  // `;
+  //   console.log("componentdidMount prevProps", prevProps)
+  //   console.log("componentdidMount prevState", prevState)
+  // }
+
+  getCurrentUser = idToken => {
+    // const client = new ApolloClient({
+    //   uri: "https://nutrition-tracker-be.herokuapp.com",
+    //   headers: { authorization: idToken }
+    // });
+    // client
+    //   .query({
+    //     query: GET_CURRENT_USERID
+    //   })
+    //   .then(response => {
+    //     this.setState({ currentUser: response.data.getCurrentUser.id });
+    //     console.log(this.state.currentUser);
+    //   })
+    //   .catch(err => console.log(err));
   };
 
   render() {
-    const ENTRIES_QUERY = gql`
-      query getFoodEntriesByUserId{
-        getFoodEntriesByUserId(userId: ${this.state.currentUser}) {
-          date
-          food_id {
-            id
-            foodName
-          }
-          meal_category_id {
-            id
-            mealCategoryName
-          }
-        }
-      }
-    `;
+    console.log(this.props.foodEntries);
 
+    // let viewItem = this.props.item.map( item => {
+    //   return ()
+    // })
+    // let foodId = this.props.foodEntries.match.params.food_id;
+    // console.log('foodId', foodId)
+    // let theFoodId = this.props.match.params.id;
+    // console.log('theFoodId', theFoodId)
+    // this.getCurrentUser(localStorage.getItem("token"))
+    // const ENTRIES_QUERY = gql`
+    //   query getFoodEntriesByUserId{
+    //     getFoodEntriesByUserId(userId: ${this.state.currentUser}) {
+    //       date
+    //       food_id {
+    //         id
+    //         foodName
+    //       }
+    //       meal_category_id {
+    //         id
+    //         mealCategoryName
+    //       }
+    //     }
+    //   }
+    // `;
+    const dateToday = new Date();
+    const month = dateToday.getMonth();
+    const day = dateToday.getDate();
+    const year = dateToday.getFullYear();
+    let foodEntries = this.props.foodEntries;
+
+    foodEntries = foodEntries.filter(entry => {
+      const dateEntry = new Date(entry.date);
+      const entryMonth = dateEntry.getMonth();
+      const entryDay = dateEntry.getDate();
+      const entryYear = dateEntry.getFullYear();
+      return entryMonth === month && entryDay === day && entryYear === year;
+    });
+
+    const Breakfast = foodEntries.filter(entry => {
+      return entry.meal_category_id.mealCategoryName === "Breakfast";
+    });
+
+    const Lunch = foodEntries.filter(entry => {
+      return entry.meal_category_id.mealCategoryName === "Lunch";
+    });
+
+    const Dinner = foodEntries.filter(entry => {
+      return entry.meal_category_id.mealCategoryName === "Dinner";
+    });
+
+    const Snack = foodEntries.filter(entry => {
+      return entry.meal_category_id.mealCategoryName === "Snack";
+    });
     return (
-      <div>
+      <FoodEntryContainer>
         <div>
           <div>Today's Meals:</div>
-          <Query query={ENTRIES_QUERY}>
-            {({ loading, error, data }) => {
+
+          {/* {({ loading, error, data }) => {
               if (loading) return <div>Fetching Entries</div>;
 
-              if (error) return <div>Error</div>;
+              if (error) return <div>Error</div>; */}
 
-              const dateToday = new Date();
+          {/* const dateToday = new Date();
               const month = dateToday.getMonth();
               const day = dateToday.getDate();
               const year = dateToday.getFullYear();
-              // console.log(data)
-              let foodEntries = data.getFoodEntriesByUserId;
+              let foodEntries = this.props.foodEntries;
 
               foodEntries = foodEntries.filter(entry => {
                 const dateEntry = new Date(entry.date);
@@ -75,40 +201,59 @@ class FoodEntry extends React.Component {
 
               const Snack = foodEntries.filter(function(entry) {
                 return entry.meal_category_id.mealCategoryName === "Snack";
-              });
+              }); */}
 
-              return (
-                <div>
-                  <Meal>
-                    <MealCategory>Breakfast</MealCategory>
-                    {Breakfast.map(entry => (
-                      <div key={entry.id}>{entry.food_id.foodName}</div>
-                    ))}
-                  </Meal>
-                  <Meal>
-                    <MealCategory>Lunch</MealCategory>
-                    {Lunch.map(entry => (
-                      <div key={entry.id}>{entry.food_id.foodName}</div>
-                    ))}
-                  </Meal>
-                  <Meal>
-                    <MealCategory>Dinner</MealCategory>
-                    {Dinner.map(entry => (
-                      <div key={entry.id}>{entry.food_id.foodName}</div>
-                    ))}
-                  </Meal>
-                  <Meal>
-                    <MealCategory>Snack</MealCategory>
-                    {Snack.map(entry => (
-                      <div key={entry.id}>{entry.food_id.foodName}</div>
-                    ))}
-                  </Meal>
+          {/* return ( */}
+          <div>
+            <Meal>
+              <MealCategory>Breakfast</MealCategory>
+              {Breakfast.map(entry => (
+                <div onClick={this.openModal}>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  </div>
                 </div>
-              );
-            }}
-          </Query>
+              ))}
+            </Meal>
+
+            <Meal>
+              <MealCategory>Lunch</MealCategory>
+              {Lunch.map(entry => (
+                <div onClick={this.openModal}>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  </div>
+                </div>
+              ))}
+            </Meal>
+            <Meal>
+              <MealCategory>Dinner</MealCategory>
+              {Dinner.map(entry => (
+                <div onClick={this.openModal}>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  </div>
+                </div>
+              ))}
+            </Meal>
+            <Meal>
+              <MealCategory>Snack</MealCategory>
+              {Snack.map(entry => (
+                <div onClick={this.openModal}>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                    {/* <div type="submit" onClick={this.openModal}>edit</div> */}
+                  </div>
+                </div>
+              ))}
+            </Meal>
+            <FoodModal isOpen={this.state.showModal} itemOpen={this.state.foodEntries}>
+              In the modal
+              <div onClick={this.closeModal}>No?</div>
+            </FoodModal>
+          </div>
         </div>
-      </div>
+      </FoodEntryContainer>
     );
   }
 }

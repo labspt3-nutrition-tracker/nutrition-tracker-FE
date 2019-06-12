@@ -15,6 +15,9 @@ import { getCurrentWeight } from "../util/getCurrentweight";
 import UserEditModal from "../Components/UserEditModal";
 
 const styles = theme => ({
+  root: {
+    margin: "0 10px",
+  },
   card: {
     maxWidth: 600,
     margin: "80px auto",
@@ -24,18 +27,25 @@ const styles = theme => ({
     padding: 20
   },
   listItemText: {
+    fontFamily: "Oxygen",
     fontSize: "1.8rem"
   },
   listItemText2: {
+    fontFamily: "Oxygen",
     fontSize: "1.6rem",
-    color: "#2196F3"
+    color: "#3685B5"
   },
   icon: {
-    color: "#2196F3"
+    color: "#3685B5"
+  },
+  editIcon: {
+    color: "#F4B4C3",
+    fontSize: "3.3rem"
   },
   user: {
+    fontFamily: "Oxygen",
     textTransform: "uppercase",
-    color: "#2196F3"
+    color: "#3685B5"
   }
 });
 
@@ -79,7 +89,7 @@ class Settings extends React.Component {
     const { classes } = this.props;
     const { currentUser, editType } = this.state;
     return (
-      <>
+      <div className={classes.root}>
         <UserEditModal
           open={this.state.modalOpen}
           handleClose={this.handleClose}
@@ -92,7 +102,7 @@ class Settings extends React.Component {
             <Typography gutterBottom variant='h3' component='h2' className={classes.user}>
               {currentUser.firstName} {currentUser.lastName}
             </Typography>
-            <Typography gutterBottom variant='h5' component='h2'>
+            <Typography gutterBottom variant='h5' component='h2' className={classes.listItemText}>
               {currentUser.email}
             </Typography>
             <List dense={false}>
@@ -105,7 +115,7 @@ class Settings extends React.Component {
                   secondary={currentUser.userType}
                   classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
                 />
-                <EditIcon className={classes.icon} onClick={() => this.openModal("userType")} />
+                <EditIcon className={classes.editIcon} onClick={() => this.openModal("userType")} />
               </ListItem>{" "}
               <ListItem>
                 <ListItemIcon>
@@ -116,7 +126,7 @@ class Settings extends React.Component {
                   secondary={this.state.currentWeight ? this.state.currentWeight : "No current weight entered"}
                   classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
                 />
-                <EditIcon className={classes.icon} onClick={() => this.openModal("weight")} />
+                <EditIcon className={classes.editIcon} onClick={() => this.openModal("weight")} />
               </ListItem>
               <ListItem>
                 <ListItemIcon>
@@ -127,12 +137,12 @@ class Settings extends React.Component {
                   secondary={currentUser.calorieGoal}
                   classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
                 />
-                <EditIcon className={classes.icon} onClick={() => this.openModal("caloriesGoal")} />
+                <EditIcon className={classes.editIcon} onClick={() => this.openModal("caloriesGoal")} />
               </ListItem>
             </List>
           </CardContent>
         </Card>
-      </>
+      </div>
     );
   }
 }

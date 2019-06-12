@@ -56,7 +56,7 @@ class App extends React.Component {
       searchInput: "",
       searchResults: [],
       noResultError: "",
-      showModal: false,
+      showModal: false
     };
   }
 
@@ -84,7 +84,7 @@ class App extends React.Component {
       .then(response => {
         this.setState({
           searchResults: response.data.hints,
-          searchInput: "",
+          searchInput: '',
           noResultError: "",
           showModal: true
         });
@@ -119,16 +119,16 @@ class App extends React.Component {
           searchResults={this.state.searchResults}
         />
         <div>
-          <Route exact path="/" component={Home} />
-          <Route path="/dashboard" render={(props) => <Dashboard {...props} selectedFood = {this.state.selectedFood}/>} />
-          <Route exact path="/billing" render={() => <Billing />} />
-          <Route exact path="/reports" render={() => <StatsView />} />
-          <Route
-          exact path="/login" render={() => <Login/>} />
-          <Route
-          exact path="/settings" render={() => <Settings/>} />
-          <Route
-            path="/journal" render={() => <Journal/>} />
+          <Route exact path='/' component={Home} />
+          <PrivateRoute
+            path='/dashboard'
+            render={props => <Dashboard {...props} selectedFood={this.state.selectedFood} />}
+          />
+          <PrivateRoute exact path='/billing' render={() => <Billing />} />
+          <PrivateRoute exact path='/reports' render={() => <StatsView />} />
+          <Route exact path='/login' render={() => <Login />} />
+          <PrivateRoute exact path='/settings' render={() => <Settings />} />
+          <PrivateRoute path='/journal' render={() => <Journal />} />
         </div>
         <PrivateRoute path='/account' component={AccountNav} />
         <Footer />

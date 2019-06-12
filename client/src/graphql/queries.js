@@ -43,7 +43,7 @@ export const GET_CURRENT_USER_QUERY = `
 }
 `;
 
-export const GET_WEIGHT_ENTRIES_QUERY =`
+export const GET_WEIGHT_ENTRIES_QUERY = `
 query($userId: ID!)
 {
   getWeightEntriesByUserId(userId: $userId) {
@@ -54,25 +54,44 @@ query($userId: ID!)
 }
 `;
 
-export const GET_ALL_FOOD = gql`
-query {
-  getFoods {
-    id
-    edamam_id
+export const GET_EXERCISE_ENTRIES_QUERY = `
+  query getExerciseEntriesByUserId($userId: ID!){
+    getExerciseEntriesByUserId(userId: $userId) {
+      exerciseEntryDate
+      exerciseName
+      caloriesBurned
+      id
+    }
   }
-}
-`
+`;
+
+export const GET_ALL_FOOD = gql`
+  query {
+    getFoods {
+      id
+      edamam_id
+    }
+  }
+`;
 
 export const GET_CURRENT_USERID = gql`
-query {
-  getCurrentUser {
-    id
+  query {
+    getCurrentUser {
+      id
+    }
   }
-}
+`;
+
+export const USER_EXIST_QUERY = gql`
+  query getUserBy($param: String!, $value: String!) {
+    getUserBy(param: $param, value: $value) {
+      email
+    }
+  }
 `;
 
 export const EXER_QUERY = gql`
-  query getExerciseEntriesByUserId($userId: ID!){
+  query getExerciseEntriesByUserId($userId: ID!) {
     getExerciseEntriesByUserId(userId: $userId) {
       exerciseEntryDate
       exerciseName

@@ -1,35 +1,38 @@
 import React from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
+import moment from "moment";
+import { GET_FOOD_ENTRIES_BY_USER_QUERY } from "../../graphql/queries";
+import gql from "graphql-tag";
 
 const JournalDateTitle = styled.h1`
-  font-family: 'Oxygen', sans-serif;
+  font-family: "Oxygen", sans-serif;
   font-size: 2em;
-  color: #2C363F;
+  color: #2c363f;
   margin-bottom: 5px;
 
-  &:after{
-    border-bottom: 4px solid #40A798;
+  &:after {
+    border-bottom: 4px solid #40a798;
     display: block;
     margin-top: 3px;
     margin-left: 15%;
     content: " ";
-	  width: 45%;
+    width: 45%;
   }
 
-  @media (max-width: 1200px){
+  @media (max-width: 1200px) {
     font-size: 1.7em;
   }
 
   @media (max-width: 800px) {
     font-size: 1.2em;
 
-    &:after{
+    &:after {
       width: 20%;
       margin-left: 45%;
     }
   }
 
-  @media( max-width: 500px){
+  @media (max-width: 500px) {
     font-size: 1em;
     font-weight: bold;
   }
@@ -38,107 +41,125 @@ const JournalDateTitle = styled.h1`
 const CategoryTitle = styled.h1`
   padding-top: 15px;
   font-size: 1.7em;
-  color: #2C363F;
-  font-family: 'Oxygen', sans-serif;
+  color: #2c363f;
+  font-family: "Oxygen", sans-serif;
   padding-bottom: 20px;
 `;
 
 const EntryItems = styled.p`
-  color: #40A798;
+  color: #40a798;
   font-weight: 500;
 `;
-
 
 class JournalEntry extends React.Component {
   constructor(props) {
     super(props);
 
-    const { foodEntries} = props;
+    const { foodEntries } = props;
     this.state = {
-      currentUser: 1,
       foodEntries: foodEntries,
+      journalEntry: {
+        date: "",
+        foodName: "",
+        user_id: null,
+        food_id: null,
+        meal_category_id: null
+      }
     };
+  }
+
+  componentDidMount(){
+  }
+
+  componentDidUpdate(prevProps){
   }
 
   render() {
     const datePicked = this.props.datePicked;
-    const ModifiedEntry = this.state.foodEntries.filter(function(entry){
-         return entry.date === datePicked;
-
-     });
+    const ModifiedEntry = this.state.foodEntries.filter(function(entry) {
+      //  return entry.date === datePicked;
+      return moment(new Date(entry.date)).format("MM/DD") === moment(new Date(datePicked)).format("MM/DD");
+    });
     // set as new foodentries
-    const Breakfast = ModifiedEntry.filter((entry) => {
+    const Breakfast = ModifiedEntry.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Breakfast";
     });
 
-    const Lunch = ModifiedEntry.filter((entry)  => {
+    const Lunch = ModifiedEntry.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Lunch";
     });
 
-    const Dinner = ModifiedEntry.filter((entry) => {
+    const Dinner = ModifiedEntry.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Dinner";
     });
 
-    const Snack = ModifiedEntry.filter((entry) => {
+    const Snack = ModifiedEntry.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Snack";
     });
 
     return (
       <div>
-          <JournalDateTitle>{this.props.datePicked}</JournalDateTitle>
+        <JournalDateTitle>{this.props.datePicked}</JournalDateTitle>
 
         <CategoryTitle> Breakfast</CategoryTitle>
         <div>
-          {Breakfast.length > 0
-            ? Object.keys(Breakfast).map((key, i) => {
+          {Breakfast.length > 0 ? (
+            Object.keys(Breakfast).map((key, i) => {
               return (
-                        <div key={i}>
-                          <EntryItems> {Breakfast[key].food_id.foodName}</EntryItems>
-                        </div>
-                      );
-                    })
-                  : <EntryItems>No Breakfast entries have been added</EntryItems>}
-              </div>
-              <CategoryTitle> Lunch</CategoryTitle>
-              <div>
-                {Lunch.length > 0
-                  ? Object.keys(Lunch).map((key, i) => {
-                      return (
-                        <div key={i}>
-                          <EntryItems> {Lunch[key].food_id.foodName}</EntryItems>
-                        </div>
-                      );
-                    })
-                  : <EntryItems> No Lunch entries have been added</EntryItems>}
-              </div>
-              <CategoryTitle>Dinner</CategoryTitle>
-              <div>
-                {Dinner.length > 0
-                  ? Object.keys(Dinner).map((key, i) => {
-                      return (
-                        <div key={i}>
-                          <EntryItems> {Dinner[key].food_id.foodName}</EntryItems>
-                        </div>
-                      );
-                    })
-                  : <EntryItems>No Dinner entries have been added</EntryItems>}
-              </div>
+                <div key={i}>
+                  <EntryItems> {Breakfast[key].food_id.foodName}</EntryItems>
+                </div>
+              );
+            })
+          ) : (
+            <EntryItems>No Breakfast entries have been added</EntryItems>
+          )}
+        </div>
+        <CategoryTitle> Lunch</CategoryTitle>
+        <div>
+          {Lunch.length > 0 ? (
+            Object.keys(Lunch).map((key, i) => {
+              return (
+                <div key={i}>
+                  <EntryItems> {Lunch[key].food_id.foodName}</EntryItems>
+                </div>
+              );
+            })
+          ) : (
+            <EntryItems> No Lunch entries have been added</EntryItems>
+          )}
+        </div>
+        <CategoryTitle>Dinner</CategoryTitle>
+        <div>
+          {Dinner.length > 0 ? (
+            Object.keys(Dinner).map((key, i) => {
+              return (
+                <div key={i}>
+                  <EntryItems> {Dinner[key].food_id.foodName}</EntryItems>
+                </div>
+              );
+            })
+          ) : (
+            <EntryItems>No Dinner entries have been added</EntryItems>
+          )}
+        </div>
 
-              <CategoryTitle>Snacks</CategoryTitle>
-              <div>
-                {Snack.length > 0
-                  ? Object.keys(Snack).map((key, i) => {
-                      return (
-                        <div key={i}>
-                          <EntryItems> {Snack[key].food_id.foodName}</EntryItems>
-                        </div>
-                      );
-                    })
-                  : <EntryItems>No Snacks have been added</EntryItems>}
-              </div>
-            </div>
+        <CategoryTitle>Snacks</CategoryTitle>
+        <div>
+          {Snack.length > 0 ? (
+            Object.keys(Snack).map((key, i) => {
+              return (
+                <div key={i}>
+                  <EntryItems> {Snack[key].food_id.foodName}</EntryItems>
+                </div>
+              );
+            })
+          ) : (
+            <EntryItems>No Snack entries have been added</EntryItems>
+          )}
+        </div>
+      </div>
     );
-
   }
 }
 
