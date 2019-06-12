@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import ExerEntry from "./ExerEntry";
 import ExerForm from "./ExerForm";
 import ApolloClient from "apollo-boost";
 import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
-import { ADD_EXERENTRY } from "../../graphql/mutations";
 
 class Exercise extends Component {
   state = {
@@ -78,7 +76,7 @@ class Exercise extends Component {
     return (
       <ExerciseContainer>
         <div className="container">
-          <ExerTitle>Today's Exercise:</ExerTitle>
+          <ExerTitle>Add Exercise Entry</ExerTitle>
           <InfoCon>
             {/* <ExerEntry exerEntries={this.state.exerEntries} /> */}
             <ExerForm
@@ -97,9 +95,12 @@ const ExerciseContainer = styled.div`
   padding: 20px;
 `;
 
-const ExerTitle = styled.div`
-  font-size: 3rem;
+const ExerTitle = styled.h1`
+  font-size: 1.5em;
+  font-weight: bold;
+  padding-bottom: 30px;
   text-align: center;
+  color: blue;
 `;
 
 const InfoCon = styled.div`

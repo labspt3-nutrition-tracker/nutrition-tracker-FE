@@ -44,7 +44,7 @@ const BodyContainer = styled.div`
 display: flex;
 flex-direction: column;
 // border: 1px solid black;
-margin-left: 15%;
+// margin-left: 15%;
 width: 55%;
 `
 const Home = () => (
