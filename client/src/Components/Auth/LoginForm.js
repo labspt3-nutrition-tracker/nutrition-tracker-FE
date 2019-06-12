@@ -11,7 +11,7 @@ class LoginForm extends React.Component {
             lastName: "",
             username: "",
             email: "",
-            userType: "",
+            userType: "basic",
             calorieGoal:0,
             weight:0
         }
@@ -74,14 +74,6 @@ class LoginForm extends React.Component {
                                 name="email"
                                 label="email"
                                 value={this.state.email}
-                                margin="dense"
-                                onChange={this.handleChange}
-                            />
-                            <TextField
-                                id="userType"
-                                name="userType"
-                                label="userType"
-                                value={this.state.userType}
                                 margin="dense"
                                 onChange={this.handleChange}
                             />
