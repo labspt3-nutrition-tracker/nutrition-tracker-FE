@@ -1,5 +1,8 @@
 import React from "react";
+import Modal from "react-modal";
 import styled from "styled-components";
+import ApolloClient from "apollo-boost";
+import { GET_CURRENT_USERID } from "../../graphql/queries";
 
 const FoodEntryContainer = styled.div`
   width: 50%;
@@ -13,15 +16,53 @@ const Meal = styled.div`
   padding: 10px;
 `;
 
-class FoodEntry extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      currentUser: null,
-      foodEntries: []
-    };
-  }
+const FoodModal = styled(Modal)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10% 20%;
+  padding: 10%;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+`;
 
+// const customStyles = {
+//   content : {
+//     top: "50%",
+//     left: "50%",
+//     right: "auto",
+//     bottom: "auto",
+//     marginRight: "-50%",
+//     height: "50%",
+//     width: "50%",
+//     transform: "translate(-50%, -50%)",
+//     position: "absolute"
+//   }
+// };
+
+Modal.setAppElement("#root");
+
+class FoodEntry extends React.Component {
+  state = {
+    currentUser: null,
+    foodEntries: [],
+    showModal: false
+  };
+
+  openModal = item => {
+    console.log("modal open");
+    this.setState({
+      showModal: true,
+      foodEntries: item.id
+    });
+  };
+
+  closeModal = () => {
+    console.log("modal closed");
+    this.setState({ showModal: false });
+  };
 
   componentDidUpdate(prevProps) {
     if (prevProps.foodEntries !== this.props.foodEntries) {
@@ -51,25 +92,32 @@ class FoodEntry extends React.Component {
   //   console.log("componentdidMount prevState", prevState)
   // }
 
-  // getCurrentUser = idToken => {
-  //   const client = new ApolloClient({
-  //     uri: "https://nutrition-tracker-be.herokuapp.com",
-  //     headers: { authorization: idToken }
-  //   });
-  //
-  //   client
-  //     .query({
-  //       query: GET_CURRENT_USERID
-  //     })
-  //     .then(response => {
-  //       this.setState({ currentUser: response.data.getCurrentUser.id });
-  //       console.log(this.state.currentUser);
-  //     })
-  //     .catch(err => console.log(err));
-  // };
+  getCurrentUser = idToken => {
+    // const client = new ApolloClient({
+    //   uri: "https://nutrition-tracker-be.herokuapp.com",
+    //   headers: { authorization: idToken }
+    // });
+    // client
+    //   .query({
+    //     query: GET_CURRENT_USERID
+    //   })
+    //   .then(response => {
+    //     this.setState({ currentUser: response.data.getCurrentUser.id });
+    //     console.log(this.state.currentUser);
+    //   })
+    //   .catch(err => console.log(err));
+  };
 
   render() {
     console.log(this.props.foodEntries);
+
+    // let viewItem = this.props.item.map( item => {
+    //   return ()
+    // })
+    // let foodId = this.props.foodEntries.match.params.food_id;
+    // console.log('foodId', foodId)
+    // let theFoodId = this.props.match.params.id;
+    // console.log('theFoodId', theFoodId)
     // this.getCurrentUser(localStorage.getItem("token"))
     // const ENTRIES_QUERY = gql`
     //   query getFoodEntriesByUserId{
@@ -100,19 +148,19 @@ class FoodEntry extends React.Component {
       return entryMonth === month && entryDay === day && entryYear === year;
     });
 
-    const Breakfast = foodEntries.filter(function(entry) {
+    const Breakfast = foodEntries.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Breakfast";
     });
 
-    const Lunch = foodEntries.filter(function(entry) {
+    const Lunch = foodEntries.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Lunch";
     });
 
-    const Dinner = foodEntries.filter(function(entry) {
+    const Dinner = foodEntries.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Dinner";
     });
 
-    const Snack = foodEntries.filter(function(entry) {
+    const Snack = foodEntries.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Snack";
     });
     return (
@@ -162,27 +210,49 @@ class FoodEntry extends React.Component {
             <Meal>
               <MealCategory>Breakfast</MealCategory>
               {Breakfast.map(entry => (
-                <div key={entry.id}>{entry.food_id.foodName}</div>
+                <div onClick={this.openModal}>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  </div>
+                </div>
               ))}
             </Meal>
+
             <Meal>
               <MealCategory>Lunch</MealCategory>
               {Lunch.map(entry => (
-                <div key={entry.id}>{entry.food_id.foodName}</div>
+                <div onClick={this.openModal}>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  </div>
+                </div>
               ))}
             </Meal>
             <Meal>
               <MealCategory>Dinner</MealCategory>
               {Dinner.map(entry => (
-                <div key={entry.id}>{entry.food_id.foodName}</div>
+                <div onClick={this.openModal}>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  </div>
+                </div>
               ))}
             </Meal>
             <Meal>
               <MealCategory>Snack</MealCategory>
               {Snack.map(entry => (
-                <div key={entry.id}>{entry.food_id.foodName}</div>
+                <div onClick={this.openModal}>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                    {/* <div type="submit" onClick={this.openModal}>edit</div> */}
+                  </div>
+                </div>
               ))}
             </Meal>
+            <FoodModal isOpen={this.state.showModal} itemOpen={this.state.foodEntries}>
+              In the modal
+              <div onClick={this.closeModal}>No?</div>
+            </FoodModal>
           </div>
         </div>
       </FoodEntryContainer>

@@ -3,7 +3,7 @@ import Calories from "./Calories";
 import EntryForm from "./EntryForm";
 import ModifiedEntryForm from "./ModifiedEntryForm";
 import FoodEntry from "./FoodEntry";
-import Exercise from "./Exercise";
+import Exercise from "./Exercise"
 import ExerciseEntry from "./ExerEntry";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
@@ -281,7 +281,7 @@ const InfoCon = styled.div`
 const DashDisplay = styled.div`
   width: 100%;
   display: flex;
-  justifty-content: space-around;
+  justify-content: space-around;
 `;
 
 export default Dashboard;

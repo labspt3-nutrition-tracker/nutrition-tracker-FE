@@ -82,6 +82,14 @@ export const GET_CURRENT_USERID = gql`
   }
 `;
 
+export const USER_EXIST_QUERY = gql`
+  query getUserBy($param: String!, $value: String!) {
+    getUserBy(param: $param, value: $value) {
+      email
+    }
+  }
+`;
+
 export const EXER_QUERY = gql`
   query getExerciseEntriesByUserId($userId: ID!) {
     getExerciseEntriesByUserId(userId: $userId) {
