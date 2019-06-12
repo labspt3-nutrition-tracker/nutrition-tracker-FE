@@ -1,5 +1,5 @@
 import React from "react";
-import Modal from 'react-modal';
+import Modal from "react-modal";
 import styled from "styled-components";
 
 const FoodEntryContainer = styled.div`
@@ -15,15 +15,15 @@ const Meal = styled.div`
 `;
 
 const FoodModal = styled(Modal)`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-margin: 10% 20%;
-padding: 10%;
-border: 1px solid black;
-border-radius: 5px;
-background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10% 20%;
+  padding: 10%;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
 `;
 
 // const customStyles = {
@@ -40,7 +40,7 @@ background-color: white;
 //   }
 // };
 
-Modal.setAppElement("#root")
+Modal.setAppElement("#root");
 
 class FoodEntry extends React.Component {
   state = {
@@ -49,20 +49,18 @@ class FoodEntry extends React.Component {
     showModal: false
   };
 
-  openModal = (item) => {
-    console.log('modal open')
-    this.setState({ 
+  openModal = item => {
+    console.log("modal open");
+    this.setState({
       showModal: true,
-      foodEntries: item.id,
-    })
-  }
+      foodEntries: item.id
+    });
+  };
 
   closeModal = () => {
-    console.log('modal closed')
-    this.setState({ showModal: false})
-  }
-
-
+    console.log("modal closed");
+    this.setState({ showModal: false });
+  };
 
   componentDidUpdate(prevProps) {
     if (prevProps.foodEntries !== this.props.foodEntries) {
@@ -93,20 +91,19 @@ class FoodEntry extends React.Component {
   // }
 
   getCurrentUser = idToken => {
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
-      headers: { authorization: idToken }
-    });
-
-    client
-      .query({
-        query: GET_CURRENT_USERID
-      })
-      .then(response => {
-        this.setState({ currentUser: response.data.getCurrentUser.id });
-        console.log(this.state.currentUser);
-      })
-      .catch(err => console.log(err));
+    // const client = new ApolloClient({
+    //   uri: "https://nutrition-tracker-be.herokuapp.com",
+    //   headers: { authorization: idToken }
+    // });
+    // client
+    //   .query({
+    //     query: GET_CURRENT_USERID
+    //   })
+    //   .then(response => {
+    //     this.setState({ currentUser: response.data.getCurrentUser.id });
+    //     console.log(this.state.currentUser);
+    //   })
+    //   .catch(err => console.log(err));
   };
 
   render() {
@@ -149,19 +146,19 @@ class FoodEntry extends React.Component {
       return entryMonth === month && entryDay === day && entryYear === year;
     });
 
-    const Breakfast = foodEntries.filter((entry) => {
+    const Breakfast = foodEntries.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Breakfast";
     });
 
-    const Lunch = foodEntries.filter((entry) => {
+    const Lunch = foodEntries.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Lunch";
     });
 
-    const Dinner = foodEntries.filter((entry) => {
+    const Dinner = foodEntries.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Dinner";
     });
 
-    const Snack = foodEntries.filter((entry) => {
+    const Snack = foodEntries.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Snack";
     });
     return (
@@ -207,68 +204,56 @@ class FoodEntry extends React.Component {
               }); */}
 
           {/* return ( */}
-        <div>
+          <div>
             <Meal>
               <MealCategory>Breakfast</MealCategory>
               {Breakfast.map(entry => (
-               <div onClick={this.openModal}>
-               <div type="submit" onClick={this.openModal}>
-                 <div key={entry.id}>{entry.food_id.foodName}
-                 </div>
-                 </div>
-             </div>
-              )
-              )}
+                <div onClick={this.openModal}>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  </div>
+                </div>
+              ))}
             </Meal>
-           
+
             <Meal>
               <MealCategory>Lunch</MealCategory>
               {Lunch.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type="submit" onClick={this.openModal}>
-                    <div key={entry.id}>{entry.food_id.foodName}
-                    </div>
-                    </div>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  </div>
                 </div>
               ))}
             </Meal>
             <Meal>
               <MealCategory>Dinner</MealCategory>
               {Dinner.map(entry => (
-              <div onClick={this.openModal}>
-                 <div type="submit" onClick={this.openModal}>
-                <div key={entry.id}>{entry.food_id.foodName}
+                <div onClick={this.openModal}>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  </div>
                 </div>
-                </div>
-                
-              </div>
-
               ))}
             </Meal>
             <Meal>
               <MealCategory>Snack</MealCategory>
               {Snack.map(entry => (
-               <div onClick={this.openModal}>
-                  <div type="submit" onClick={this.openModal}>
-                <div key={entry.id}>{entry.food_id.foodName}
+                <div onClick={this.openModal}>
+                  <div type='submit' onClick={this.openModal}>
+                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                    {/* <div type="submit" onClick={this.openModal}>edit</div> */}
+                  </div>
                 </div>
-                  {/* <div type="submit" onClick={this.openModal}>edit</div> */}
-                 </div>
-              </div>
               ))}
             </Meal>
-            <FoodModal
-                   isOpen={this.state.showModal}
-                   itemOpen={this.state.foodEntries}
-                   >
-                     In the modal
-                     
+            <FoodModal isOpen={this.state.showModal} itemOpen={this.state.foodEntries}>
+              In the modal
               <div onClick={this.closeModal}>No?</div>
             </FoodModal>
-        </div>
+          </div>
         </div>
       </FoodEntryContainer>
-   
     );
   }
 }

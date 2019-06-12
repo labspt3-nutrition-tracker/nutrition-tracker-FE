@@ -4,8 +4,9 @@ import { Redirect } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
-import { gql } from "apollo-boost";
-// import { Mutation, Query } from 'react-apollo';
+
+import { ADD_USER_MUTATION } from "../../graphql/mutations";
+import { USER_EXIST_QUERY } from "../../graphql/queries";
 
 const LoginOrRegisterContainer = styled.div`
   background: #fcfcfb;
@@ -38,31 +39,6 @@ const FormContainer = styled.div`
   width: 50%;
 `;
 
-const ADD_USER = gql`
-  mutation addUser($input: UserInput!) {
-    addUser(input: $input) {
-      id
-    }
-  }
-`;
-
-const USER_EXIST = gql`
-  query getUserBy($param: String!, $value: String!) {
-    getUserBy(param: $param, value: $value) {
-      email
-    }
-  }
-`;
-
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-    }
-  }
-`;
-
 class LoginOrRegister extends React.Component {
   constructor(props) {
     super(props);
@@ -71,22 +47,15 @@ class LoginOrRegister extends React.Component {
       checkExistence: false,
       firstName: "",
       lastName: "",
-      username: "",
-      email: "",
-      userType: "",
-      calorieGoal: 0,
-      weight: 0
+      email: ""
     };
   }
   onSuccess = async googleUser => {
-    console.log(googleUser.profileObj.email);
     const email = googleUser.profileObj.email;
+    const lastName = googleUser.profileObj.familyName;
+    const firstName = googleUser.profileObj.givenName;
     const idToken = googleUser.getAuthResponse().id_token;
     localStorage.setItem("token", idToken);
-
-    const test = localStorage.getItem("token");
-
-    this.getCurrentUser(test);
 
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
@@ -95,7 +64,7 @@ class LoginOrRegister extends React.Component {
 
     client
       .query({
-        query: USER_EXIST,
+        query: USER_EXIST_QUERY,
         variables: {
           param: "email",
           value: email
@@ -103,7 +72,13 @@ class LoginOrRegister extends React.Component {
       })
       .then(response => {
         if (response.data.getUserBy) this.setState({ toDashboard: !this.state.toDashboard });
-        else this.setState({ checkExistence: !this.state.checkExistence });
+        else
+          this.setState({
+            checkExistence: !this.state.checkExistence,
+            email: email,
+            lastName: lastName,
+            firstName: firstName
+          });
       })
       .catch(err => console.log(err));
   };
@@ -119,35 +94,28 @@ class LoginOrRegister extends React.Component {
   };
 
   createUser = userObj => {
+    const newUser = {
+      ...userObj,
+      userType: "basic",
+      email: this.state.email,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName
+    };
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
     client
       .mutate({
-        mutation: ADD_USER,
+        mutation: ADD_USER_MUTATION,
         variables: {
-          input: userObj
+          input: newUser
         }
       })
-      .then(response => this.setState({ toDashboard: !this.state.toDashboard }));
+      .then(response => this.setState({ toDashboard: !this.state.toDashboard }))
+      .catch(err => console.log("There was a problem creating the user account. ", err));
   };
 
-  getCurrentUser = idToken => {
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
-      headers: { authorization: idToken }
-    });
-
-    client
-      .query({
-        query: GET_CURRENT
-      })
-      .then(response => {
-        localStorage.setItem("currentUser", response.data.getCurrentUser.id);
-      })
-      .catch(err => console.log(err));
-  };
   render() {
     const { from } = this.props.location || { from: { pathname: "/" } };
     if (this.state.toDashboard === true) {
