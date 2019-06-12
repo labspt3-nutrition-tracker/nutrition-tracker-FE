@@ -3,8 +3,8 @@ import styled from "styled-components";
 import ExerEntry from "./ExerEntry";
 import ExerForm from "./ExerForm";
 import ApolloClient from "apollo-boost";
-import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
-import { ADD_EXERENTRY } from "../../graphql/mutations";
+import { EXER_QUERY, GET_CURRENT_USERID } from "../../../graphql/queries";
+import { ADD_EXERENTRY } from "../../../graphql/mutations";
 
 class Exercise extends Component {
   state = {

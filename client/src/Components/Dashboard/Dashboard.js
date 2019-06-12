@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Calories from "./Calories";
-import EntryForm from "./EntryForm";
-import FoodEntry from "./FoodEntry";
-import Exercise from "./Exercise";
-import ExerciseEntry from "./ExerEntry";
+import EntryForm from "./Food/EntryForm";
+import FoodEntry from "./Food/FoodEntry";
+import Exercise from "./Exercise/Exercise"
+import ExerciseEntry from "./Exercise/ExerEntry";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import moment from "moment";
