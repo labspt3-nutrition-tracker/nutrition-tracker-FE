@@ -281,7 +281,7 @@ const InfoCon = styled.div`
 const DashDisplay = styled.div`
   width: 100%;
   display: flex;
-  justifty-content: space-around;
+  justify-content: space-around;
 `;
 
 export default Dashboard;
