@@ -19,18 +19,29 @@ const SearchButton = styled.button`
   font-size: .9em;
 `;
 
-const SearchInputComponent = props => {
-  return(
-      <Search>
-          <SearchInput
-          onSubmit={props.getFoodData}
-          type="text"
-          onChange={props.updateSearch}
-          name="searchInput"
-          value={props.searchInput}/>
-        <SearchButton onClick={props.getFoodData}>Search</SearchButton>
-      </Search>
-    )
+class SearchInputComponent extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+
+    }
+  }
+
+
+  render(){
+    return(
+        <Search>
+            <SearchInput
+            type="text"
+            onChange={this.props.updateSearch}
+            name="searchInput"
+            value={this.props.searchInput}/>
+          <SearchButton onClick={this.props.getFoodData}>Search</SearchButton>
+        </Search>
+      )
+  }
+
 }
 
 export default SearchInputComponent;

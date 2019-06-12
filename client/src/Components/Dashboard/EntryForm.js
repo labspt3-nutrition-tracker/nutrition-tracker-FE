@@ -18,7 +18,6 @@ const Form = styled.form`
   flex-direction: column;
   width: 30%;
   padding: 20px;
-
   h1 {
     font-size: 1.5em;
     font-weight: bold;
@@ -106,31 +105,38 @@ class EntryForm extends Component {
   validate = () => {
     if (!this.state.foodName) {
       this.setState({ errorFood: "Please provide name of food." });
-    } else if (!this.state.caloriesPerServ) {
+    }
+    if (!this.state.caloriesPerServ) {
       this.setState({
         errorCal: "Please provide calories per serving."
       });
-    } else if (!this.state.fats) {
+    }
+    if (!this.state.fats) {
       this.setState({
         errorFats: "Please provide grams of fat per serving."
       });
-    } else if (!this.state.carbs) {
+    }
+    if (!this.state.carbs) {
       this.setState({
         errorCarbs: "Please provide grams of carbs per serving."
       });
-    } else if (!this.state.proteins) {
+    }
+    if (!this.state.proteins) {
       this.setState({
         errorProteins: "Please provide grams of protein per serving."
       });
-    } else if (!this.state.meal_category_id) {
+    }
+    if (!this.state.meal_category_id) {
       this.setState({
         errorCategory: "Please provide meal category."
       });
-    } else if (!this.state.date) {
+    }
+    if (!this.state.date) {
       this.setState({
         errorDate: "Please provide date of food entry."
       });
-    } else if (!this.state.servingQty) {
+    }
+    if (!this.state.servingQty) {
       this.setState({
         errorQty: "Please provide number of servings."
       });

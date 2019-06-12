@@ -85,7 +85,7 @@ class App extends React.Component {
       .then(response => {
         this.setState({
           searchResults: response.data.hints,
-          searchInput: "",
+          searchInput: '',
           noResultError: "",
           showModal: true
         });
