@@ -74,6 +74,8 @@ const AppModal = props => {
       isOpen={props.isOpen}>
         <ModalButton onClick={props.closeModal}>close</ModalButton>
 
+      {props.searchResults.length === 0 && <NoResultDiv> No Results Found </NoResultDiv> }
+
       { props.searchResults && props.searchResults.map((food, index) => {
         const edamam_name = food.food.label.charAt(0).toUpperCase() + food.food.label.slice(1).toLowerCase();
         const calories = food.food.nutrients.ENERC_KCAL ? food.food.nutrients.ENERC_KCAL.toFixed(2) : 0;
@@ -98,7 +100,6 @@ const AppModal = props => {
       </Link>
     );
       })}
-      {!props.searchResults}  <NoResultDiv> {props.noResultError} </NoResultDiv>
       </Modal>
   )
 }
