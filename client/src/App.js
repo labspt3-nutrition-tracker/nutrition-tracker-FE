@@ -10,7 +10,6 @@ import Billing from "./Components/Billing/Billing";
 import StatsView from "./Components/Stats/StatsView";
 import Settings from "./Components/Settings";
 import AccountNav from "./Components/AccountNav";
-import BillingPlans from "./Components/Billing/BillingPlans";
 import AppModal from "./Components/Reusables/AppModal";
 import Footer from "./Components/Reusables/Footer";
 import axios from "axios";
