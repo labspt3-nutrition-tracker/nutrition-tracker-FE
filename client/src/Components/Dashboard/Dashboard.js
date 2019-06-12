@@ -107,6 +107,13 @@ class Dashboard extends Component {
       .catch(err => console.log(err));
   };
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.selectedFood !== this.props.selectedFood) {
+      this.setState({ showFoodForm: false });
+    }
+  }
+
+
   addFoodEntry = newFoodEntry => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
@@ -192,17 +199,29 @@ class Dashboard extends Component {
   //   addExerEntry={this.addExerEntry}
   //   closeExerEntry={this.closeExerEntry} />}
 
+  // {this.state.showFoodForm && (
+  //   <EntryForm addFoodEntry={this.addFoodEntry} selectedFood={this.props.selectedFood} />
+  // )}
   handleShowFood = () => {
     this.setState({
-      showFoodForm: true
+      showFoodForm: true,
+      selectedFood: {}
     });
+    console.log(this.state)
   };
 
   closeFoodForm = () => {
     this.setState({
-      showFoodForm: false
+      showFoodForm: false,
+      selectedFood: null
     });
   };
+
+  revertToNormalForm = () => {
+    this.setState({
+      showFoodForm: true
+    })
+  }
 
   openExerEntry = () => {
     this.setState({
@@ -222,16 +241,20 @@ class Dashboard extends Component {
       <DashContainer>
         <DashTitle>{currentDate}</DashTitle>
         <Calories />
-        {!this.state.showFoodForm && <button onClick={this.handleShowFood}> Add Food</button>}
-        {!this.state.showExerForm && <button onClick={this.openExerEntry}> Add Exercise</button>}
         <DashDisplay className='container'>
           <InfoCon>
             <FoodEntry foodEntries={this.state.foodEntries} />
             <ExerciseEntry exerEntries={this.state.exerEntries} />
           </InfoCon>
-          {this.state.showFoodForm && (
-            <EntryForm addFoodEntry={this.addFoodEntry} selectedFood={this.props.selectedFood} />
-          )}
+
+          {this.state.showFoodForm &&
+          <EntryForm addFoodEntry={this.addFoodEntry} closeFoodForm={this.closeFoodForm} />}
+
+          {!this.state.showFoodForm && (
+            <ModifiedEntryForm addFoodEntry={this.addFoodEntry} selectedFood={this.props.selectedFood} handleShowFood={this.handleShowFood}
+            revertToNormalForm={this.revertToNormalForm} />
+            )}
+
           {this.state.showExerForm && (
             <Exercise closeExerEntry={this.closeExerEntry} addExerEntry={this.addExerEntry} />
           )}
