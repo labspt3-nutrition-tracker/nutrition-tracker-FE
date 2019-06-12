@@ -89,6 +89,14 @@ export const ADD_WEIGHT_ENTRY_MUTATION = `
   }
 `;
 
+export const ADD_USER_MUTATION = gql`
+  mutation addUser($input: UserInput!) {
+    addUser(input: $input) {
+      id
+    }
+  }
+`;
+
 export const UPDATE_USER_MUTATION = `
   mutation($id: ID!, $input: UserInput!) {
     updateUser(id: $id, input: $input) {
@@ -99,10 +107,9 @@ export const UPDATE_USER_MUTATION = `
 
 export const DELETE_EXERENTRY = gql`
   mutation deleteExerciseEntry($id: ID!) {
-    deleteExerciseEntry(id: $id) 
+    deleteExerciseEntry(id: $id)
   }
 `;
-
 
 export const ADD_EXERENTRY = gql`
   mutation addExerciseEntry($input: ExerciseEntryInput!) {
