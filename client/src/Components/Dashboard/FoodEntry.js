@@ -1,6 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
+import ApolloClient from "apollo-boost";
+import { GET_CURRENT_USERID } from "../../graphql/queries";
 
 const FoodEntryContainer = styled.div`
   width: 50%;
