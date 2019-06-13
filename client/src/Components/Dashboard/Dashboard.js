@@ -10,7 +10,7 @@ import ApolloClient from "apollo-boost";
 import moment from "moment";
 import gql from "graphql-tag";
 import { ADD_EXERENTRY, ADD_FOOD_ENTRY, DELETE_EXERENTRY } from "../../graphql/mutations";
-import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
+import { EXER_QUERY, GET_CURRENT_USERID, GET_EXERCISE_ENTRIES_QUERY } from "../../graphql/queries";
 
 const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
   query($userId: ID!) {
@@ -209,19 +209,21 @@ class Dashboard extends Component {
         variables: {id}
       })
       .then(response => {
-        this.setState( {
-          exerEntry: ""
-         });
+        client
+        .query({
+          query: GET_EXERCISE_ENTRIES_QUERY,
+          variables:{
+            userId: this.state.currentUserd
+          }
+        })
+        .then(response => {
+          console.log(response);
+          this.setState({
+            exerEntry: ""
+           });
+        })
       })
-      // .then(response => {
-      //   client
-      //     .query({
-      //       query: EXER_QUERY,
-      //       variables: {
-      //         userId: this.state.currentUser
-      //       },
-      //     });
-      // })
+
       .catch(err => console.log(err));
   }
 
@@ -268,7 +270,9 @@ class Dashboard extends Component {
           <DashDisplay className="container">
             <InfoCon>
               <FoodEntry foodEntries={this.state.foodEntries} />
-              <ExerciseEntry exerEntries={this.state.exerEntries} />
+              <ExerciseEntry
+                exerEntries={this.state.exerEntries}
+                deleteExerEntry={this.deleteExerEntry}/>
             </InfoCon>
 
             {this.state.showFoodForm && (

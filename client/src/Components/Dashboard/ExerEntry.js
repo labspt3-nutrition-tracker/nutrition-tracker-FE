@@ -69,29 +69,35 @@ class ExerEntry extends React.Component {
          console.log(this.state)
         console.log(this.state.exerEntry);
       })
+  };
+
+  deleteExercise = (id) => {
+    console.log(id)
+    this.props.deleteExerEntry(id)
+    this.closeModal();
   }
 
-  deleteExerEntry = ( id, idToken) => {
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
-      headers: { authorization: idToken }
-    });
-    client
-      .mutate({
-        mutation: DELETE_EXERENTRY,
-        variables: {id},
-        updateQuery:{query: EXER_QUERY}
-      })
-
-      .then(response => {
-        console.log('response', response)
-        this.setState( {
-          exerEntry: response.data.deleteExerciseEntry
-         });
-         this.closeModal()
-         console.log(this.state)
-        console.log(this.state.exerEntry);
-      })
+  // deleteExerEntry = ( id, idToken) => {
+  //   const client = new ApolloClient({
+  //     uri: "https://nutrition-tracker-be.herokuapp.com",
+  //     headers: { authorization: idToken }
+  //   });
+  //   client
+  //     .mutate({
+  //       mutation: DELETE_EXERENTRY,
+  //       variables: {id},
+  //       updateQuery:{query: EXER_QUERY}
+  //     })
+  //
+  //     .then(response => {
+  //       console.log('response', response)
+  //       this.setState( {
+  //         exerEntry: response.data.deleteExerciseEntry
+  //        });
+  //        this.closeModal()
+  //        console.log(this.state)
+  //       console.log(this.state.exerEntry);
+  //     })
       // .then(response => {
       //   client
       //     .query({
@@ -113,8 +119,8 @@ class ExerEntry extends React.Component {
       //   console.log(this.state.exerEntry);
       //   console.log(response.data.deleteExerciseEntry)
       // })
-      .catch(err => console.log(err));
-  }
+  //     .catch(err => console.log(err));
+  // }
 
   getCurrentUser = idToken => {
     const client = new ApolloClient({
@@ -240,7 +246,7 @@ class ExerEntry extends React.Component {
 
 
          <div onClick={this.closeModal}>No?</div>
-          <div onClick={() => this.deleteExerEntry(this.state.exerEntry.id)}>Delete?</div>
+          <div onClick={() => this.deleteExercise(this.state.exerEntry.id)}>Delete?</div>
     </ExerciseModal>
         </ExerciseEntry>
       );
