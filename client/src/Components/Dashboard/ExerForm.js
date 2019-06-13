@@ -2,6 +2,12 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import { GET_CURRENT_USERID } from "../../graphql/queries";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const Form = styled.form`
   display: flex;
@@ -17,6 +23,12 @@ class ExerForm extends Component {
       exerciseName: "",
       caloriesBurned: "",
       exercise_entry_user_id: 0
+    },
+    errorMsg: {
+      error: false,
+      errorName: "",
+      errorCal: "",
+      errorDate: ""
     }
   };
 
@@ -55,53 +67,108 @@ class ExerForm extends Component {
     });
   };
 
+  validate = () => {
+    // debugger;
+    const errorMsg = {
+      error: false,
+      errorName: "",
+      errorCal: "",
+      errorDate: ""
+    };
+
+    if (!this.state.newExerEntry.exerciseName) {
+      errorMsg.errorName = "Please provide name of exercise.";
+      errorMsg.error = true;
+    }
+    if (!this.state.newExerEntry.exerciseEntryDate) {
+      errorMsg.errorDate = "Please provide date of exercise.";
+      errorMsg.error = true;
+    }
+    if (!this.state.newExerEntry.caloriesBurned) {
+      errorMsg.errorCal = "Please provide calories burned.";
+      errorMsg.error = true;
+    }
+
+    this.setState({ errorMsg });
+  };
+
   onSubmit = e => {
     e.preventDefault();
-    this.props.addExerEntry(this.state.newExerEntry);
-    this.setState({
-      newExerEntry: {
-        exerciseEntryDate: "",
-        exerciseName: "",
-        caloriesBurned: "",
-        exercise_entry_user_id: 0
-      }
-    });
+    this.validate();
+    console.log(this.state.newExerEntry)
+    if (!this.state.errorMsg.error) {
+      this.props.addExerEntry(this.state.newExerEntry);
+      this.setState({
+        newExerEntry: {
+          ...this.state.newExerEntry,
+          exerciseEntryDate: "",
+          exerciseName: "",
+          caloriesBurned: "",
+        }
+      });
+    } else {
+      return;
+    }
   };
 
   render() {
     return (
       <Form>
-        <label htmlFor="exerciseName">Name of Exercise</label>
-        <input
+        <TextField
+          required
+          error={this.state.errorMsg.errorName}
+          autoFocus
+          margin="dense"
+          label="Name of Exercise"
           className="form-field"
           type="text"
+          placeholder="Add exercise here..."
+          onChange={this.onInputChange}
           name="exerciseName"
           value={this.state.newExerEntry.exerciseName}
-          onChange={this.onInputChange}
+          aria-describedby="errorName-text"
         />
-        <label htmlFor="date">Date</label>
-        <input
+        <FormHelperText id="errorName-text">
+          {this.state.errorMsg.errorName}
+        </FormHelperText>
+
+        <TextField
+          label="Date"
           className="form-field"
           type="date"
           name="exerciseEntryDate"
-          value={this.state.newExerEntry.exerciseEntryDate}
+          error={this.state.errorMsg.errorDate}
           onChange={this.onInputChange}
+          required
+          aria-describedby="errorDate-text"
+          value={this.state.newExerEntry.exerciseEntryDate}
         />
-        <label htmlFor="caloriesBurned">Calories Burned</label>
-        <input
+        <FormHelperText id="errorDate-text">
+          {this.state.errorMsg.errorDate}
+        </FormHelperText>
+
+        <TextField
+          autoFocus
+          margin="dense"
+          error={this.state.errorMsg.errorCal}
+          label="Calories Burned"
           className="form-field"
           type="number"
-          step="1"
           name="caloriesBurned"
-          value={this.state.newExerEntry.caloriesBurned}
           onChange={this.onInputChange}
+          value={this.state.newExerEntry.caloriesBurned}
+          required
+          step="1"
+          aria-describedby="errorCal-text"
         />
-        <button className="form-field" type="submit" onClick={this.onSubmit}>
+        <FormHelperText id="errorCal-text">
+          {this.state.errorMsg.errorCal}
+        </FormHelperText>
+
+        <Button className="form-field" type="submit" onClick={this.onSubmit}>
           Add Entry
-        </button>
-        <button
-        onClick={this.props.closeExerEntry}
-        >Close </button>
+        </Button>
+        <Button onClick={this.props.closeExerEntry}>Close </Button>
       </Form>
     );
   }
