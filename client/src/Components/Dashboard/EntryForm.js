@@ -478,6 +478,7 @@ class EntryForm extends Component {
           type="number"
           name="servingQty"
           onChange={this.onInputChange}
+          value={this.state.newAddFood.servingQty ? this.state.newAddFood.servingQty : ""}
           required
           aria-describedby="errorQty-text"
         />
@@ -563,6 +564,8 @@ class EntryForm extends Component {
           onChange={this.onInputChange}
           required
           aria-describedby="errorDate-text"
+          value={this.state.newAddFood.date ? this.state.newAddFood.date : ""}
+
         />
         <FormHelperText id="errorDate-text">
           {this.state.errorMsg.errorDate}
