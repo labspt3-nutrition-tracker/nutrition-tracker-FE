@@ -79,8 +79,8 @@ class Dashboard extends Component {
                 }
               })
               .then(response => {
-                console.log(this.state.currentUser);
-                console.log("food response", response);
+                // console.log(this.state.currentUser);
+                // console.log("food response", response);
                 this.setState({
                   foodEntries: response.data.getFoodEntriesByUserId
                 });
@@ -236,7 +236,7 @@ class Dashboard extends Component {
   };
   render() {
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
-    console.log(this.props.selectedFood ? this.props.selectedFood.label : this.props.selectedFood);
+    // console.log(this.props.selectedFood ? this.props.selectedFood.label : this.props.selectedFood);
     return (
       <DashContainer>
         <DashTitle>{currentDate}</DashTitle>
