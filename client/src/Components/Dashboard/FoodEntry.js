@@ -109,7 +109,7 @@ class FoodEntry extends React.Component {
   };
 
   render() {
-    console.log(this.props.foodEntries);
+    // console.log(this.props.foodEntries);
 
     // let viewItem = this.props.item.map( item => {
     //   return ()

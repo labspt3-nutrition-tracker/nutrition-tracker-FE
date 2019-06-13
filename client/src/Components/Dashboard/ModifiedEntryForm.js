@@ -5,6 +5,12 @@ import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
 import { GET_ALL_FOOD } from "../../graphql/queries";
 import gql from "graphql-tag";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const Form = styled.form`
   display: flex;
@@ -12,7 +18,7 @@ const Form = styled.form`
   width: 30%;
   padding: 20px;
 
-  h1{
+  h1 {
     font-size: 1.5em;
     font-weight: bold;
     padding-bottom: 30px;
@@ -20,7 +26,7 @@ const Form = styled.form`
     color: blue;
   }
 
-  h3{
+  h3 {
     color: blue;
   }
 `;
@@ -29,7 +35,7 @@ const Error = styled.div`
   color: red;
   font-weight: bold;
   font-size: 2rem;
-`
+`;
 
 const GET_CURRENT = gql`
   query getCurrentUser {
@@ -44,7 +50,6 @@ class ModifiedEntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errors: [],
       edamamExist: false,
       newAddFood: {
         foodName: "",
@@ -56,6 +61,17 @@ class ModifiedEntryForm extends Component {
         meal_category_id: null,
         date: "",
         servingQty: null
+      },
+      errorMsg: {
+        error: false,
+        errorFood: "",
+        errorCal: "",
+        errorFats: "",
+        errorCarbs: "",
+        errorProteins: "",
+        errorCategory: "",
+        errorDate: "",
+        errorQty: ""
       }
     };
   }
@@ -91,41 +107,155 @@ class ModifiedEntryForm extends Component {
     });
   };
 
+  validate = () => {
+    // debugger;
+    const errorMsg = {
+      errorFood: "",
+      errorCal: "",
+      errorFats: "",
+      errorCarbs: "",
+      errorProteins: "",
+      errorCategory: "",
+      errorDate: "",
+      errorQty: "",
+      error: false
+    };
+
+    if (!this.state.newAddFood.foodName) {
+      errorMsg.errorFood = "Please provide name of food.";
+      errorMsg.error = true;
+    }
+    if (!this.state.newAddFood.caloriesPerServ) {
+      errorMsg.errorCal = "Please provide calories per serving.";
+      errorMsg.error = true;
+    }
+    if (!this.state.newAddFood.fats) {
+      errorMsg.errorFats = "Please provide grams of fat per serving.";
+      errorMsg.error = true;
+    }
+    if (!this.state.newAddFood.carbs) {
+      errorMsg.errorCarbs = "Please provide grams of carbs per serving.";
+      errorMsg.error = true;
+    }
+    if (!this.state.newAddFood.proteins) {
+      errorMsg.errorProteins = "Please provide grams of protein per serving.";
+      errorMsg.error = true;
+    }
+    if (!this.state.newAddFood.meal_category_id) {
+      errorMsg.errorCategory = "Please provide meal category.";
+      errorMsg.error = true;
+    }
+    if (!this.state.newAddFood.date) {
+      errorMsg.errorDate = "Please provide date of food entry.";
+      errorMsg.error = true;
+    }
+    if (!this.state.newAddFood.servingQty) {
+      errorMsg.errorQty = "Please provide number of servings.";
+      errorMsg.error = true;
+    }
+    this.setState({ errorMsg });
+  };
+
   onEntrySubmit = e => {
     e.preventDefault();
-    if (this.state.edamamExist === false) {
-      const mealCat = parseInt(this.state.newAddFood.meal_category_id);
-      if (mealCat > 0) {
-        const foodAddedToDB = {
-          foodName: this.state.newAddFood.foodName,
-          caloriesPerServ: parseInt(this.state.newAddFood.caloriesPerServ),
-          fats: this.state.newAddFood.fats,
-          carbs: this.state.newAddFood.carbs,
-          proteins: this.state.newAddFood.proteins,
-          edamam_id: this.state.newAddFood.edamam_id
-        };
-        console.log("foodAddedToDB", foodAddedToDB);
-        console.log(this.state.newAddFood.meal_category_id);
-        console.log("servingqty", this.state.newAddFood.servingQty);
+    this.validate();
+    if (!this.state.errorMsg.error) {
+      if (this.state.edamamExist === false) {
+        const mealCat = parseInt(this.state.newAddFood.meal_category_id);
+        if (mealCat > 0) {
+          const foodAddedToDB = {
+            foodName: this.state.newAddFood.foodName,
+            caloriesPerServ: parseInt(this.state.newAddFood.caloriesPerServ),
+            fats: this.state.newAddFood.fats,
+            carbs: this.state.newAddFood.carbs,
+            proteins: this.state.newAddFood.proteins,
+            edamam_id: this.state.newAddFood.edamam_id
+          };
+          console.log("foodAddedToDB", foodAddedToDB);
+          console.log(this.state.newAddFood.meal_category_id);
+          console.log("servingqty", this.state.newAddFood.servingQty);
+          const client = new ApolloClient({
+            uri: "https://nutrition-tracker-be.herokuapp.com"
+          });
+          client
+            .mutate({
+              mutation: ADD_FOOD,
+              variables: {
+                input: foodAddedToDB
+              }
+            })
+            .then(response => {
+              const entryAddedToDB = {
+                date: this.state.newAddFood.date,
+                food_id: parseInt(response.data.addFood.id),
+                user_id: parseInt(this.state.newAddFood.user_id),
+                servingQty: this.state.newAddFood.servingQty,
+                meal_category_id: parseInt(
+                  this.state.newAddFood.meal_category_id
+                )
+              };
+              this.props.addFoodEntry(entryAddedToDB);
+              this.setState({
+                errors: [],
+                edamamExist: false,
+                newAddFood: {
+                  foodName: "",
+                  caloriesPerServ: null,
+                  fats: null,
+                  carbs: null,
+                  proteins: null,
+                  edamam_id: null,
+                  meal_category_id: null,
+                  date: "",
+                  servingQty: null
+                }
+              });
+            })
+            .catch(err => {
+              console.log("food entry error", err);
+              this.setState({
+                errors: [],
+                edamamExist: false,
+                newFoodEntry: {
+                  foodName: "",
+                  caloriesPerServ: null,
+                  fats: null,
+                  carbs: null,
+                  proteins: null,
+                  edamam_id: null,
+                  meal_category_id: null,
+                  date: "",
+                  servingQty: null
+                }
+              });
+            });
+        } else {
+          this.setState({ errors: ["meal category is required"] });
+        }
+      } else {
         const client = new ApolloClient({
           uri: "https://nutrition-tracker-be.herokuapp.com"
         });
         client
-          .mutate({
-            mutation: ADD_FOOD,
-            variables: {
-              input: foodAddedToDB
-            }
+          .query({
+            query: GET_ALL_FOOD
           })
           .then(response => {
+            const filteredEdamam = response.data.getFoods.filter(food => {
+              return food.edamam_id === this.props.selectedFood.foodId;
+            });
+            return filteredEdamam;
+          })
+          .then(response => {
+            const foodId = response[0].id;
             const entryAddedToDB = {
               date: this.state.newAddFood.date,
-              food_id: parseInt(response.data.addFood.id),
+              food_id: parseInt(foodId),
               user_id: parseInt(this.state.newAddFood.user_id),
               servingQty: this.state.newAddFood.servingQty,
               meal_category_id: parseInt(this.state.newAddFood.meal_category_id)
             };
-            this.props.addFoodEntry(entryAddedToDB)
+            this.props.addFoodEntry(entryAddedToDB);
             this.setState({
               errors: [],
               edamamExist: false,
@@ -141,13 +271,13 @@ class ModifiedEntryForm extends Component {
                 servingQty: null
               }
             });
+            this.props.revertToNormalForm();
           })
           .catch(err => {
-            console.log("food entry error", err);
             this.setState({
               errors: [],
               edamamExist: false,
-              newFoodEntry: {
+              newAddFood: {
                 foodName: "",
                 caloriesPerServ: null,
                 fats: null,
@@ -159,132 +289,69 @@ class ModifiedEntryForm extends Component {
                 servingQty: null
               }
             });
+            console.error(err);
           });
-      } else {
-        this.setState({errors: ["meal category is required"]})
       }
+    } else {
+      return;
     }
-    else {
-      const client = new ApolloClient({
-        uri: "https://nutrition-tracker-be.herokuapp.com"
-      })
-      client
-        .query({
-          query: GET_ALL_FOOD
-        })
-        .then(response => {
-        const filteredEdamam  = response.data.getFoods.filter( food => {
-              return food.edamam_id === this.props.selectedFood.foodId;
-          })
-          return filteredEdamam;
-        })
-        .then( response => {
-          const foodId = response[0].id;
-          const entryAddedToDB = {
-            date: this.state.newAddFood.date,
-            food_id:  parseInt(foodId),
-            user_id: parseInt(this.state.newAddFood.user_id),
-            servingQty: this.state.newAddFood.servingQty,
-            meal_category_id: parseInt(this.state.newAddFood.meal_category_id)
-          };
-          this.props.addFoodEntry(entryAddedToDB)
-          this.setState({
-            errors: [],
-            edamamExist: false,
-            newAddFood: {
-              foodName: "",
-              caloriesPerServ: null,
-              fats: null,
-              carbs: null,
-              proteins: null,
-              edamam_id: null,
-              meal_category_id: null,
-              date: "",
-              servingQty: null
-            }
-          });
-          this.props.revertToNormalForm();
-        })
-        .catch(err =>{
-          this.setState({
-            errors: [],
-            edamamExist: false,
-            newAddFood: {
-            foodName: "",
-            caloriesPerServ: null,
-            fats: null,
-            carbs: null,
-            proteins: null,
-            edamam_id: null,
-            meal_category_id: null,
-            date: "",
-            servingQty: null
-        }
-      });
-      console.error(err)
-    }
-  )
-
-  }
-};
+  };
 
   edamamExistCheck = edamam_id => {
-
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
-    })
+    });
     client
       .query({
         query: GET_ALL_FOOD
       })
       .then(response => {
-       const filteredEdamam = response.data.getFoods.some( food => {
-            return food.edamam_id === edamam_id;
-        })
-        if(filteredEdamam) {
+        const filteredEdamam = response.data.getFoods.some(food => {
+          return food.edamam_id === edamam_id;
+        });
+        if (filteredEdamam) {
           this.setState({
             edamamExist: true
-          })
+          });
           // console.log(this.state.edamamExist)
         } else {
           this.setState({
             edamamExist: false
-          })
+          });
         }
       })
-      .catch(err => console.error(err))
-  }
+      .catch(err => console.error(err));
+  };
 
   getEdamamData = edamam_id => {
-
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
-    })
+    });
     client
       .query({
         query: GET_ALL_FOOD
       })
       .then(response => {
-      const filteredEdamam  = response.data.getFoods.filter( food => {
-            return food.edamam_id === edamam_id;
-        })
+        const filteredEdamam = response.data.getFoods.filter(food => {
+          return food.edamam_id === edamam_id;
+        });
 
         return filteredEdamam;
       })
-      .catch(err => console.error(err))
-  }
+      .catch(err => console.error(err));
+  };
 
-  componentDidMount(){
+  componentDidMount() {
     let foodName;
     let caloriesPerServ;
     let fats;
     let carbs;
-    let  proteins;
+    let proteins;
     let edamam_id;
 
-    if(this.props.selectedFood){
+    if (this.props.selectedFood) {
       foodName = this.props.selectedFood.label;
-      caloriesPerServ =  this.props.selectedFood.nutrients.ENERC_KCAL;
+      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL;
       fats = this.props.selectedFood.nutrients.FAT;
       carbs = this.props.selectedFood.nutrients.CHOCDF;
       proteins = this.props.selectedFood.nutrients.PROCNT;
@@ -298,22 +365,22 @@ class ModifiedEntryForm extends Component {
           proteins: proteins,
           edamam_id: edamam_id
         }
-      })
-      this.edamamExistCheck(this.props.selectedFood.foodId)
+      });
+      this.edamamExistCheck(this.props.selectedFood.foodId);
     }
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     let foodName;
     let caloriesPerServ;
     let fats;
     let carbs;
-    let  proteins;
+    let proteins;
     let edamam_id;
 
-    if(prevProps.selectedFood !== this.props.selectedFood){
+    if (prevProps.selectedFood !== this.props.selectedFood) {
       foodName = this.props.selectedFood.label;
-      caloriesPerServ =  this.props.selectedFood.nutrients.ENERC_KCAL;
+      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL;
       fats = this.props.selectedFood.nutrients.FAT;
       carbs = this.props.selectedFood.nutrients.CHOCDF;
       proteins = this.props.selectedFood.nutrients.PROCNT;
@@ -327,8 +394,8 @@ class ModifiedEntryForm extends Component {
           proteins: proteins,
           edamam_id: edamam_id
         }
-      })
-      this.edamamExistCheck(this.props.selectedFood.foodId)
+      });
+      this.edamamExistCheck(this.props.selectedFood.foodId);
     }
   }
 
@@ -337,30 +404,37 @@ class ModifiedEntryForm extends Component {
     return (
       <Form>
         <h1>Modified Food Entry</h1>
-        {this.state.errors
-          ? this.state.errors.map(error => {
-              return <Error key={error}>{error}</Error>
-            })
-          : null}
         <label htmlFor="foodName">Food</label>
+
         <h3>{this.state.newAddFood.foodName}</h3>
-        <label htmlFor="meal_category_id">Meal Category</label>
-        <select
+
+        <InputLabel htmlFor="meal_category_id">Meal Category</InputLabel>
+        <Select
+          autoFocus
+          margin="dense"
+          error={this.state.errorMsg.errorCategory}
+          label="Meal Category"
           required
           className="form-field"
           name="meal_category_id"
           type="number"
           onChange={this.onInputChange}
-          required
+          aria-describedby="errorCategory-text"
         >
-          <option>Select Meal Category</option>
-          <option value="1">breakfast</option>
-          <option value="2">lunch</option>
-          <option value="4">dinner</option>
-          <option value="3">snack</option>
-        </select>
-        <label htmlFor="servingQty">Serving Quantity</label>
-        <input
+          <MenuItem>Select Meal Category</MenuItem>
+          <MenuItem value="1">breakfast</MenuItem>
+          <MenuItem value="2">lunch</MenuItem>
+          <MenuItem value="4">dinner</MenuItem>
+          <MenuItem value="3">snack</MenuItem>
+        </Select>
+        <FormHelperText id="errorCategory-text">
+          {this.state.errorMsg.errorCategory}
+        </FormHelperText>
+
+        <TextField
+          autoFocus
+          margin="dense"
+          label="Serving Quantity"
           className="form-field"
           type="number"
           name="servingQty"
@@ -368,33 +442,60 @@ class ModifiedEntryForm extends Component {
         />
 
         <label htmlFor="caloriesPerServ">Calories per serving</label>
-        <h3>{this.state.newAddFood.caloriesPerServ? this.state.newAddFood.caloriesPerServ.toFixed(2) : 0}</h3>
+        <h3>
+          {this.state.newAddFood.caloriesPerServ
+            ? this.state.newAddFood.caloriesPerServ.toFixed(2)
+            : 0}
+        </h3>
 
         <label htmlFor="proteins">Grams of Protein per Serving</label>
-        <h3>{this.state.newAddFood.proteins ? this.state.newAddFood.proteins.toFixed(2): 0}</h3>
+        <h3>
+          {this.state.newAddFood.proteins
+            ? this.state.newAddFood.proteins.toFixed(2)
+            : 0}
+        </h3>
         <label htmlFor="carbs">Grams of Carbs per Serving</label>
-        <h3> {this.state.newAddFood.carbs ? this.state.newAddFood.carbs.toFixed(2) : 0}</h3>
+        <h3>
+          {" "}
+          {this.state.newAddFood.carbs
+            ? this.state.newAddFood.carbs.toFixed(2)
+            : 0}
+        </h3>
         <label htmlFor="fats">Grams of Fat per Serving</label>
-        <h3>{this.state.newAddFood.fats ? this.state.newAddFood.fats.toFixed(2) : ''}</h3>
-        <label htmlFor="date">Date</label>
-        <input
+        <h3>
+          {this.state.newAddFood.fats
+            ? this.state.newAddFood.fats.toFixed(2)
+            : ""}
+        </h3>
+
+        <TextField
+          label="Date"
           className="form-field"
           type="date"
           name="date"
+          error={this.state.errorMsg.errorDate}
           onChange={this.onInputChange}
+          required
+          aria-describedby="errorDate-text"
+          value={this.state.newAddFood.date ? this.state.newAddFood.date : ""}
         />
-        <button
+        <FormHelperText id="errorDate-text">
+          {this.state.errorMsg.errorDate}
+        </FormHelperText>
+
+        <Button
           className="form-field"
           type="submit"
-          onClick={this.onEntrySubmit}>
+          onClick={this.onEntrySubmit}
+        >
           Add Entry
-        </button>
-        <button onClick={this.props.handleShowFood}>
+        </Button>
+        <Button onClick={this.props.handleShowFood}>
           I'll add my own entry
-        </button>
+        </Button>
       </Form>
     );
   }
 }
 
-export default ModifiedEntryForm
+export default ModifiedEntryForm;
