@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
+import moment from "moment";
 import { GET_CURRENT_USERID } from "../../graphql/queries";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -95,15 +96,18 @@ class ExerForm extends Component {
   onSubmit = e => {
     e.preventDefault();
     this.validate();
+    const currentUser = this.state.newExerEntry.exercise_entry_user_id
+    const currentDate = moment(new Date()).format("YYYY-MM-DD");
     console.log(this.state.newExerEntry)
     if (!this.state.errorMsg.error) {
       this.props.addExerEntry(this.state.newExerEntry);
       this.setState({
         newExerEntry: {
           ...this.state.newExerEntry,
-          exerciseEntryDate: "",
+          exerciseEntryDate: currentDate,
           exerciseName: "",
           caloriesBurned: "",
+          exercise_entry_user_id: currentUser
         }
       });
     } else {

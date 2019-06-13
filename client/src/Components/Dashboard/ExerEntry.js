@@ -2,8 +2,8 @@ import React from "react";
 import Modal from 'react-modal';
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
-import { GET_CURRENT_USERID } from "../../graphql/queries";
-import { DELETE_EXERENTRY } from '../../graphql/mutations';
+import { GET_CURRENT_USERID, EXER_QUERY, GET_EXERCISE_ENTRIES_QUERY} from "../../graphql/queries";
+import { DELETE_EXERENTRY , EDIT_EXER_ENTRY } from '../../graphql/mutations';
 
 const ExerciseActivity = styled.div`
   padding: 10px;
@@ -29,10 +29,10 @@ class ExerEntry extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: null,
+      currentUser: 0,
       exerEntries: [],
       showModal: false,
-      exerEntry: []
+      exerEntry: [],
     };
   }
 
@@ -45,12 +45,33 @@ class ExerEntry extends React.Component {
   passExerData = (entry) => {
     this.setState({
       exerEntry: entry
-
     })
     this.openModal()
   }
 
-  deleteExerEntry = (id, idToken) => {
+  editExerEntry = (userId, exercise, idToken) => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    client 
+      .mutate({
+        mutation: EDIT_EXER_ENTRY,
+        variables: {
+         id:userId, input: exercise
+        }
+      })
+      .then(response => {
+        this.setState( { 
+          exerEntry: response.data.deleteExerciseEntry
+         });
+         this.closeModal()
+         console.log(this.state)
+        console.log(this.state.exerEntry);
+      })
+  }
+
+  deleteExerEntry = ( id, idToken) => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
@@ -58,15 +79,42 @@ class ExerEntry extends React.Component {
     client
       .mutate({
         mutation: DELETE_EXERENTRY, 
-        variables: {id}
+        variables: {id},
+        updateQuery:{query: EXER_QUERY}
       })
+  
       .then(response => {
-        this.setState({ 
-          exerEntry: null
+        console.log('response', response)
+        this.setState( { 
+          exerEntry: response.data.deleteExerciseEntry
          });
          this.closeModal()
+         console.log(this.state)
         console.log(this.state.exerEntry);
       })
+      .then(response => {
+        client
+          .query({
+            query: EXER_QUERY,
+            variables: {
+              userId: this.state.currentUser
+            },
+            updateQueries:
+              {query: EXER_QUERY}
+          })
+    })
+      // .then(response => {
+      //   this.setState(deleteState => { 
+      //     let deleteEntry = deleteState.exerEntries.filter ( i =>
+      //       i.id !== id ? response.data.deleteExerciseEntry : null
+      //     );
+      //     // return {exerEntry: response.data.deleteExerciseEntry}
+      //     return {exerEntry: deleteEntry}
+      //    });
+      //    this.closeModal()
+      //   console.log(this.state.exerEntry);
+      //   console.log(response.data.deleteExerciseEntry)
+      // })
       .catch(err => console.log(err));
   }
 
@@ -78,7 +126,10 @@ class ExerEntry extends React.Component {
 
     client
       .query({
-        query: GET_CURRENT_USERID
+        query: EXER_QUERY,
+        updateQueries: [
+          {query: EXER_QUERY}
+        ]
       })
       .then(response => {
         this.setState({ currentUser: response.data.getCurrentUser.id });
@@ -121,7 +172,7 @@ class ExerEntry extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.exerEntries !== this.props.exerEntries) {
-      this.setState({ exerEntries: this.props.exerEntries });
+      this.setState({ exerEntries: this.props.exerEntries, exerEntry: this.props.exerEntry });
 
     }
     
@@ -180,8 +231,7 @@ class ExerEntry extends React.Component {
           ))}
         <ExerciseModal
          isOpen={this.state.showModal}
-         itemOpen={this.state.foodEntries}
-        
+         itemOpen={this.state.foodEntries}    
          >
            {this.state.exerEntry && 
          

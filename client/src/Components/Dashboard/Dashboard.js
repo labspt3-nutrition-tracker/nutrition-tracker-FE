@@ -43,7 +43,7 @@ class Dashboard extends Component {
   state = {
     showFoodForm: true,
     showExerForm: true,
-    currentUser: 0,
+    currentUser: null,
     exerEntries: [],
     foodEntries: [],
     userType: ""
@@ -92,30 +92,53 @@ class Dashboard extends Component {
               });
           });
       })
-      // .then(
-      // client
-      //   .query({
-      //     query: GET_FOOD_ENTRIES_BY_USER_QUERY,
-      //     variables: {
-      //       userId: this.state.currentUser
-      //     }
-      //   })
-      //   .then(response => {
-      //     console.log(this.state.currentUser)
-      //     console.log('food response', response)
-      //     this.setState({
-      //       foodEntries: response.data.getFoodEntriesByUserId
-      //     })
-
-      //   })
-      // )
       .catch(err => console.log(err));
   };
 
   componentDidUpdate(prevProps) {
     if (prevProps.selectedFood !== this.props.selectedFood) {
       this.setState({ showFoodForm: false });
+      const idToken = localStorage.getItem("token");
+      const client = new ApolloClient({
+        uri: "https://nutrition-tracker-be.herokuapp.com",
+        headers: { authorization: idToken }
+      });
+      client
+        .query({
+          query: GET_CURRENT_USERID
+        })
+        .then(response => {
+          this.setState({ currentUser: response.data.getCurrentUser.id });
+          client
+            .query({
+              query: EXER_QUERY,
+              variables: {
+                userId: this.state.currentUser
+              }
+            })
+            .then(response => {
+              this.setState({
+                exerEntries: response.data.getExerciseEntriesByUserId
+              });
+              client
+                .query({
+                  query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+                  variables: {
+                    userId: this.state.currentUser
+                  }
+                })
+                .then(response => {
+                  console.log(this.state.currentUser);
+                  console.log("food response", response);
+                  this.setState({
+                    foodEntries: response.data.getFoodEntriesByUserId
+                  });
+                });
+            });
+        })
+        .catch(err => console.log(err));
     }
+    
   }
 
   addFoodEntry = newFoodEntry => {
@@ -175,6 +198,8 @@ class Dashboard extends Component {
       })
       .catch(err => console.log(err));
   };
+
+  
 
   // addExerEntry = (newExerEntry) => {
   //   const client = new ApolloClient({
@@ -240,6 +265,7 @@ class Dashboard extends Component {
       showExerForm: false
     });
   };
+
   render() {
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     // console.log(this.props.selectedFood ? this.props.selectedFood.label : this.props.selectedFood);

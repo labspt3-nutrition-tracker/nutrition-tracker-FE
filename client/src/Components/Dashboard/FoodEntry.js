@@ -7,6 +7,7 @@ import { GET_CURRENT_USERID } from "../../graphql/queries";
 const FoodEntryContainer = styled.div`
   width: 50%;
 `;
+
 const MealCategory = styled.h3`
   font-size: 2rem;
   font-weight: bold;
