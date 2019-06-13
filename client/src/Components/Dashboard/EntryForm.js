@@ -489,7 +489,7 @@ class EntryForm extends Component {
         <TextField
           autoFocus
           margin="dense"
-          error={this.state.errorMsg.errorCalories}
+          error={this.state.errorMsg.errorCal}
           label="Calories per Serving"
           className="form-field"
           type="number"
