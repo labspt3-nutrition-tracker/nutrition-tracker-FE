@@ -375,7 +375,7 @@ class ModifiedEntryForm extends Component {
         <label htmlFor="carbs">Grams of Carbs per Serving</label>
         <h3> {this.state.newAddFood.carbs ? this.state.newAddFood.carbs.toFixed(2) : 0}</h3>
         <label htmlFor="fats">Grams of Fat per Serving</label>
-        <h3>{this.state.newAddFood.fats ? this.state.newAddFood.fats.toFixed(2) : ''}</h3>
+        <h3>{this.state.newAddFood.fats ? this.state.newAddFood.fats.toFixed(2) : 0}</h3>
         <label htmlFor="date">Date</label>
         <input
           className="form-field"
