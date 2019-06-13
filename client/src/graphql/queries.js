@@ -78,6 +78,15 @@ export const GET_CURRENT_USERID = gql`
   query {
     getCurrentUser {
       id
+      userType
+    }
+  }
+`;
+
+export const USER_EXIST_QUERY = gql`
+  query getUserBy($param: String!, $value: String!) {
+    getUserBy(param: $param, value: $value) {
+      email
     }
   }
 `;

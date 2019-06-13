@@ -44,7 +44,7 @@ class Calories extends React.Component {
       })
       .then(response => {
         this.setState({currentUser: response.data.getCurrentUser.id});
-        console.log(this.state.currentUser)
+        // console.log(this.state.currentUser)
       })
       .catch(err => console.log(err));
   };
@@ -73,9 +73,9 @@ class Calories extends React.Component {
       <div>
         <Query query={CURRENT_USERID}>
           {({ loading, error, data }) => {
-            if (loading) {
-              console.log("loading...")
-            }
+            // if (loading) {
+            //   console.log("loading...")
+            // }
             return (
               <Query query={CAL_QUERY}>
                 {({ loading, error, data }) => {
