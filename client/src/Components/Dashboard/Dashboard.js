@@ -3,7 +3,7 @@ import Calories from "./Calories";
 import EntryForm from "./EntryForm";
 import ModifiedEntryForm from "./ModifiedEntryForm";
 import FoodEntry from "./FoodEntry";
-import Exercise from "./Exercise"
+import Exercise from "./Exercise";
 import ExerciseEntry from "./ExerEntry";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
@@ -45,7 +45,8 @@ class Dashboard extends Component {
     showExerForm: true,
     currentUser: 0,
     exerEntries: [],
-    foodEntries: []
+    foodEntries: [],
+    userType: ""
   };
 
   componentDidMount = () => {
@@ -59,7 +60,11 @@ class Dashboard extends Component {
         query: GET_CURRENT_USERID
       })
       .then(response => {
-        this.setState({ currentUser: response.data.getCurrentUser.id });
+        console.log(response.data.getCurrentUser);
+        this.setState({
+          currentUser: response.data.getCurrentUser.id,
+          userType: response.data.getCurrentUser.userType
+        });
         client
           .query({
             query: EXER_QUERY,
@@ -113,7 +118,6 @@ class Dashboard extends Component {
     }
   }
 
-
   addFoodEntry = newFoodEntry => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
@@ -135,7 +139,9 @@ class Dashboard extends Component {
             }
           })
           .then(response => {
-            this.setState({ foodEntries: response.data.getFoodEntriesByUserId });
+            this.setState({
+              foodEntries: response.data.getFoodEntriesByUserId
+            });
           });
       })
       .catch(err => console.log(err));
@@ -207,7 +213,7 @@ class Dashboard extends Component {
       showFoodForm: true,
       selectedFood: {}
     });
-    console.log(this.state)
+    console.log(this.state);
   };
 
   closeFoodForm = () => {
@@ -220,8 +226,8 @@ class Dashboard extends Component {
   revertToNormalForm = () => {
     this.setState({
       showFoodForm: true
-    })
-  }
+    });
+  };
 
   openExerEntry = () => {
     this.setState({
@@ -237,30 +243,71 @@ class Dashboard extends Component {
   render() {
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     // console.log(this.props.selectedFood ? this.props.selectedFood.label : this.props.selectedFood);
-    return (
-      <DashContainer>
-        <DashTitle>{currentDate}</DashTitle>
-        <Calories />
-        <DashDisplay className='container'>
-          <InfoCon>
-            <FoodEntry foodEntries={this.state.foodEntries} />
-            <ExerciseEntry exerEntries={this.state.exerEntries} />
-          </InfoCon>
+    if (this.state.userType === "Super User") {
+      return (
+        <DashContainer>
+          <DashTitle>{currentDate}</DashTitle>
+          <Calories />
+          <DashDisplay className="container">
+            <InfoCon>
+              <FoodEntry foodEntries={this.state.foodEntries} />
+              <ExerciseEntry exerEntries={this.state.exerEntries} />
+            </InfoCon>
 
-          {this.state.showFoodForm &&
-          <EntryForm addFoodEntry={this.addFoodEntry} closeFoodForm={this.closeFoodForm} />}
-
-          {!this.state.showFoodForm && (
-            <ModifiedEntryForm addFoodEntry={this.addFoodEntry} selectedFood={this.props.selectedFood} handleShowFood={this.handleShowFood}
-            revertToNormalForm={this.revertToNormalForm} />
+            {this.state.showFoodForm && (
+              <EntryForm
+                addFoodEntry={this.addFoodEntry}
+                closeFoodForm={this.closeFoodForm}
+              />
             )}
 
-          {this.state.showExerForm && (
-            <Exercise closeExerEntry={this.closeExerEntry} addExerEntry={this.addExerEntry} />
-          )}
-        </DashDisplay>
-      </DashContainer>
-    );
+            {!this.state.showFoodForm && (
+              <ModifiedEntryForm
+                addFoodEntry={this.addFoodEntry}
+                selectedFood={this.props.selectedFood}
+                handleShowFood={this.handleShowFood}
+                revertToNormalForm={this.revertToNormalForm}
+              />
+            )}
+
+            {this.state.showExerForm && (
+              <Exercise
+                closeExerEntry={this.closeExerEntry}
+                addExerEntry={this.addExerEntry}
+              />
+            )}
+          </DashDisplay>
+        </DashContainer>
+      );
+    } else {
+      return (
+        <DashContainer>
+          <DashTitle>{currentDate}</DashTitle>
+          <Calories />
+          <DashDisplay className="container">
+            <InfoCon>
+              <FoodEntry foodEntries={this.state.foodEntries} />
+            </InfoCon>
+
+            {this.state.showFoodForm && (
+              <EntryForm
+                addFoodEntry={this.addFoodEntry}
+                closeFoodForm={this.closeFoodForm}
+              />
+            )}
+
+            {!this.state.showFoodForm && (
+              <ModifiedEntryForm
+                addFoodEntry={this.addFoodEntry}
+                selectedFood={this.props.selectedFood}
+                handleShowFood={this.handleShowFood}
+                revertToNormalForm={this.revertToNormalForm}
+              />
+            )}
+          </DashDisplay>
+        </DashContainer>
+      );
+    }
   }
 }
 

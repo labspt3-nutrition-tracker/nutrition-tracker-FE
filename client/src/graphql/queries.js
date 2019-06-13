@@ -78,6 +78,7 @@ export const GET_CURRENT_USERID = gql`
   query {
     getCurrentUser {
       id
+      userType
     }
   }
 `;
