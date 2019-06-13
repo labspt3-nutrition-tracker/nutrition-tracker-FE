@@ -76,12 +76,53 @@ class JournalEntry extends React.Component {
       journalEntry: {
         date: "",
         foodName: "",
+        servingQty: "",
+        caloriesPerServ: "",
+        proteins: "",
+        carbs: "",
+        fats: "",
+        Breakfast: [],
+        Lunch: [],
+        Dinner: [],
+        Snack: [],
         user_id: null,
         food_id: null,
         meal_category_id: null,
         showModal: false
       }
     };
+  }
+
+  passBreakfastData = (Breakfast) => {
+    this.setState({
+      Breakfast: Breakfast
+    })
+
+    this.openModal()
+  }
+
+  passLunchData = (Lunch) => {
+    this.setState({
+      Lunch: Lunch
+    })
+
+    this.openModal()
+  }
+
+  passDinnerData = (Dinner) => {
+    this.setState({
+      Dinner: Dinner
+    })
+
+    this.openModal()
+  }
+
+  passSnackData = (Snack) => {
+    this.setState({
+      Snack: Snack
+    })
+
+    this.openModal()
   }
 
   openModal = () => {
@@ -94,6 +135,12 @@ class JournalEntry extends React.Component {
     console.log('modal closed')
     this.setState({ showModal: false})
   }
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
 
   componentDidMount(){
   }
@@ -131,65 +178,80 @@ class JournalEntry extends React.Component {
         <CategoryTitle> Breakfast</CategoryTitle>
         <div>
           {Breakfast.length > 0 ? (
-            Object.keys(Breakfast).map((key, i) => {
+            [...Breakfast].map( breakfast => {
               return (
-                <div key={i} onClick={() => this.openModal()}>
-                  { !this.state.showModal ? (
+                <div key={breakfast.id} onClick={this.openModal}>
                     <EntryItems>
-                      {Breakfast[key].food_id.foodName}
+                      {breakfast.food_id.foodName}
+
+                      <MealModal
+                        isOpen={this.state.showModal}
+                      >
+                        <div>
+                          <Button onClick={this.closeModal}>
+                            exit
+                          </Button>
+                        </div>
+                        <div>
+                          {breakfast.food_id.foodName}
+                        </div>
+                        <form>
+                          <TextField
+                            id="Serving Quantity"
+                            name="Serving Quantity"
+                            label="Serving Quantity"
+                            placeholder={`${breakfast.servingQty}`}
+                            value={this.state.servingQty}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Calories Per Serving"
+                            name="Calories Per Serving"
+                            label="Calories Per Serving"
+                            placeholder={`${breakfast.food_id.caloriesPerServ}`}
+                            value={this.state.caloriesPerServ}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Protein"
+                            name="Protein"
+                            label="Protein"
+                            placeholder={`${breakfast.food_id.proteins}`}
+                            value={this.state.proteins}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Carbs"
+                            name="Carbs"
+                            label="Carbs"
+                            placeholder={`${breakfast.food_id.carbs}`}
+                            value={this.state.carbs}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Fats"
+                            name="Fats"
+                            label="Fats"
+                            placeholder={`${breakfast.food_id.fats}`}
+                            value={this.state.fats}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                        </form>
+                        <div>
+                          <Button variant='contained' color='secondary'>
+                            Delete
+                          </Button>
+                          <Button variant='contained' color='primary'>
+                            Edit
+                          </Button>
+                        </div>
+                      </MealModal>
                     </EntryItems>
-                  ) : (
-                    <MealModal isOpen={this.state.showModal}>
-                      <div>
-                        {Breakfast[key].food_id.foodName}
-                      </div>
-                      <div>
-                        <TextField
-                          id="Serving Quantity"
-                          name="Serving Quantity"
-                          label="Serving Quantity"
-                          value={Breakfast[key].servingQty}
-                          margin="dense"
-                        />
-                        <TextField
-                          id="Calories Per Serving"
-                          name="Calories Per Serving"
-                          label="Calories Per Serving"
-                          value={Breakfast[key].food_id.caloriesPerServ}
-                          margin="dense"
-                        />
-                        <TextField
-                          id="Protein"
-                          name="Protein"
-                          label="Protein"
-                          value={Breakfast[key].food_id.proteins}
-                          margin="dense"
-                        />
-                        <TextField
-                          id="Carbs"
-                          name="Carbs"
-                          label="Carbs"
-                          value={Breakfast[key].food_id.carbs}
-                          margin="dense"
-                        />
-                        <TextField
-                          id="Fats"
-                          name="Fats"
-                          label="Fats"
-                          value={Breakfast[key].food_id.fats}
-                          margin="dense"
-                        />
-                      </div>
-                      <div>
-                        <Button variant='contained' color='secondary'>
-                          Delete
-                        </Button>
-                        <Button variant='contained' color='primary'>
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
-                  )}
                 </div>
               );
             })
@@ -200,53 +262,67 @@ class JournalEntry extends React.Component {
         <CategoryTitle> Lunch</CategoryTitle>
         <div>
           {Lunch.length > 0 ? (
-            Object.keys(Lunch).map((key, i) => {
+            [...Lunch].map( lunch => {
               return (
-                <div key={i} onClick={() => this.openModal()}>
-                  { !this.state.showModal ? (
+                <div key={lunch.id} onClick={this.openModal}>
                     <EntryItems>
-                      {Lunch[key].food_id.foodName}
+                      {lunch.food_id.foodName}
                     </EntryItems>
-                  ) : (
+
                     <MealModal isOpen={this.state.showModal}>
                       <div>
-                        {Lunch[key].food_id.foodName}
+                        <Button onClick={this.closeModal}>
+                          exit
+                        </Button>
+                      </div>
+                      <div>
+                        {lunch.food_id.foodName}
                       </div>
                       <div>
                         <TextField
                           id="Serving Quantity"
                           name="Serving Quantity"
                           label="Serving Quantity"
-                          value={Lunch[key].servingQty}
+                          placeholder={`${lunch.servingQty}`}
+                          value={this.state.servingQty}
                           margin="dense"
+                          onChange={this.handleChange}
                         />
                         <TextField
                           id="Calories Per Serving"
                           name="Calories Per Serving"
                           label="Calories Per Serving"
-                          value={Lunch[key].food_id.caloriesPerServ}
+                          placeholder={`${lunch.food_id.caloriesPerServ}`}
+                          value={this.state.caloriesPerServ}
                           margin="dense"
+                          onChange={this.handleChange}
                         />
                         <TextField
                           id="Protein"
                           name="Protein"
                           label="Protein"
-                          value={Lunch[key].food_id.proteins}
+                          placeholder={`${lunch.food_id.proteins}`}
+                          value={this.state.proteins}
                           margin="dense"
+                          onChange={this.handleChange}
                         />
                         <TextField
                           id="Carbs"
                           name="Carbs"
                           label="Carbs"
-                          value={Lunch[key].food_id.carbs}
+                          placeholder={`${lunch.food_id.carbs}`}
+                          value={this.state.carbs}
                           margin="dense"
+                          onChange={this.handleChange}
                         />
                         <TextField
                           id="Fats"
                           name="Fats"
                           label="Fats"
-                          value={Lunch[key].food_id.fats}
+                          placeholder={`${lunch.food_id.fats}`}
+                          value={this.state.fats}
                           margin="dense"
+                          onChange={this.handleChange}
                         />
                       </div>
                       <div>
@@ -258,7 +334,6 @@ class JournalEntry extends React.Component {
                         </Button>
                       </div>
                     </MealModal>
-                  )}
                 </div>
               );
             })
@@ -269,52 +344,61 @@ class JournalEntry extends React.Component {
         <CategoryTitle>Dinner</CategoryTitle>
         <div>
           {Dinner.length > 0 ? (
-            Object.keys(Dinner).map((key, i) => {
+            [...Dinner].map( dinner => {
               return (
-                <div key={i} onClick={() => this.openModal()}>
-                  { !this.state.showModal ? (
+                <div key={dinner.id} onClick={this.openModal}>
                     <EntryItems>
-                      {Dinner[key].food_id.foodName}
+                      {dinner.food_id.foodName}
                     </EntryItems>
-                  ) : (
+
                     <MealModal isOpen={this.state.showModal}>
                       <div>
-                        {Dinner[key].food_id.foodName}
+                        <Button onClick={this.closeModal}>
+                          exit
+                        </Button>
+                      </div>
+                      <div>
+                        {dinner.food_id.foodName}
                       </div>
                       <div>
                         <TextField
                           id="Serving Quantity"
                           name="Serving Quantity"
                           label="Serving Quantity"
-                          value={Dinner[key].servingQty}
+                          placeholder={`${dinner.servingQty}`}
+                          value={this.state.servingQty}
                           margin="dense"
                         />
                         <TextField
                           id="Calories Per Serving"
                           name="Calories Per Serving"
                           label="Calories Per Serving"
-                          value={Dinner[key].food_id.caloriesPerServ}
+                          placeholder={`${dinner.food_id.caloriesPerServ}`}
+                          value={this.state.caloriesPerServ}
                           margin="dense"
                         />
                         <TextField
                           id="Protein"
                           name="Protein"
                           label="Protein"
-                          value={Dinner[key].food_id.proteins}
+                          placeholder={`${dinner.food_id.proteins}`}
+                          value={this.state.proteins}
                           margin="dense"
                         />
                         <TextField
                           id="Carbs"
                           name="Carbs"
                           label="Carbs"
-                          value={Dinner[key].food_id.carbs}
+                          placeholder={`${dinner.food_id.carbs}`}
+                          value={this.state.carbs}
                           margin="dense"
                         />
                         <TextField
                           id="Fats"
                           name="Fats"
                           label="Fats"
-                          value={Dinner[key].food_id.fats}
+                          placeholder={`${dinner.food_id.fats}`}
+                          value={this.state.fats}
                           margin="dense"
                         />
                       </div>
@@ -327,7 +411,6 @@ class JournalEntry extends React.Component {
                         </Button>
                       </div>
                     </MealModal>
-                  )}
                 </div>
               );
             })
@@ -339,10 +422,10 @@ class JournalEntry extends React.Component {
         <CategoryTitle>Snacks</CategoryTitle>
         <div>
           {Snack.length > 0 ? (
-            Object.keys(Snack).map((key, i) => {
+            [...Snack].map( snack => {
               return (
-                <div key={i}>
-                  <EntryItems> {Snack[key].food_id.foodName}</EntryItems>
+                <div key={snack.id}>
+                  <EntryItems> {snack.food_id.foodName}</EntryItems>
                 </div>
               );
             })
