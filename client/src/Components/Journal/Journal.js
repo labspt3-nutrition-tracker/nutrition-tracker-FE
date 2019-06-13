@@ -76,9 +76,14 @@ class Journal extends React.Component {
         getFoodEntriesByUserId(userId: ${this.state.currentUser}){
           id
           date
+          servingQty
           food_id{
             id
             foodName
+            caloriesPerServ
+            fats
+            proteins
+            carbs
           }
           meal_category_id{
             id

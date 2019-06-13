@@ -1,8 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import moment from "moment";
+import Modal from 'react-modal';
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 import { GET_FOOD_ENTRIES_BY_USER_QUERY } from "../../graphql/queries";
 import gql from "graphql-tag";
+
+const MealModal = styled(Modal)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10% 20%;
+  padding: 10%;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+`;
 
 const JournalDateTitle = styled.h1`
   font-family: "Oxygen", sans-serif;
@@ -63,9 +78,21 @@ class JournalEntry extends React.Component {
         foodName: "",
         user_id: null,
         food_id: null,
-        meal_category_id: null
+        meal_category_id: null,
+        showModal: false
       }
     };
+  }
+
+  openModal = () => {
+    this.setState({
+      showModal: true
+    })
+  }
+
+  closeModal = () => {
+    console.log('modal closed')
+    this.setState({ showModal: false})
   }
 
   componentDidMount(){
@@ -106,8 +133,63 @@ class JournalEntry extends React.Component {
           {Breakfast.length > 0 ? (
             Object.keys(Breakfast).map((key, i) => {
               return (
-                <div key={i}>
-                  <EntryItems> {Breakfast[key].food_id.foodName}</EntryItems>
+                <div key={i} onClick={() => this.openModal()}>
+                  { !this.state.showModal ? (
+                    <EntryItems>
+                      {Breakfast[key].food_id.foodName}
+                    </EntryItems>
+                  ) : (
+                    <MealModal isOpen={this.state.showModal}>
+                      <div>
+                        {Breakfast[key].food_id.foodName}
+                      </div>
+                      <div>
+                        <TextField
+                          id="Serving Quantity"
+                          name="Serving Quantity"
+                          label="Serving Quantity"
+                          value={Breakfast[key].servingQty}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Calories Per Serving"
+                          name="Calories Per Serving"
+                          label="Calories Per Serving"
+                          value={Breakfast[key].food_id.caloriesPerServ}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Protein"
+                          name="Protein"
+                          label="Protein"
+                          value={Breakfast[key].food_id.proteins}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Carbs"
+                          name="Carbs"
+                          label="Carbs"
+                          value={Breakfast[key].food_id.carbs}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Fats"
+                          name="Fats"
+                          label="Fats"
+                          value={Breakfast[key].food_id.fats}
+                          margin="dense"
+                        />
+                      </div>
+                      <div>
+                        <Button variant='contained' color='secondary'>
+                          Delete
+                        </Button>
+                        <Button variant='contained' color='primary'>
+                          Edit
+                        </Button>
+                      </div>
+                    </MealModal>
+                  )}
                 </div>
               );
             })
@@ -120,8 +202,63 @@ class JournalEntry extends React.Component {
           {Lunch.length > 0 ? (
             Object.keys(Lunch).map((key, i) => {
               return (
-                <div key={i}>
-                  <EntryItems> {Lunch[key].food_id.foodName}</EntryItems>
+                <div key={i} onClick={() => this.openModal()}>
+                  { !this.state.showModal ? (
+                    <EntryItems>
+                      {Lunch[key].food_id.foodName}
+                    </EntryItems>
+                  ) : (
+                    <MealModal isOpen={this.state.showModal}>
+                      <div>
+                        {Lunch[key].food_id.foodName}
+                      </div>
+                      <div>
+                        <TextField
+                          id="Serving Quantity"
+                          name="Serving Quantity"
+                          label="Serving Quantity"
+                          value={Lunch[key].servingQty}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Calories Per Serving"
+                          name="Calories Per Serving"
+                          label="Calories Per Serving"
+                          value={Lunch[key].food_id.caloriesPerServ}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Protein"
+                          name="Protein"
+                          label="Protein"
+                          value={Lunch[key].food_id.proteins}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Carbs"
+                          name="Carbs"
+                          label="Carbs"
+                          value={Lunch[key].food_id.carbs}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Fats"
+                          name="Fats"
+                          label="Fats"
+                          value={Lunch[key].food_id.fats}
+                          margin="dense"
+                        />
+                      </div>
+                      <div>
+                        <Button variant='contained' color='secondary'>
+                          Delete
+                        </Button>
+                        <Button variant='contained' color='primary'>
+                          Edit
+                        </Button>
+                      </div>
+                    </MealModal>
+                  )}
                 </div>
               );
             })
@@ -134,8 +271,63 @@ class JournalEntry extends React.Component {
           {Dinner.length > 0 ? (
             Object.keys(Dinner).map((key, i) => {
               return (
-                <div key={i}>
-                  <EntryItems> {Dinner[key].food_id.foodName}</EntryItems>
+                <div key={i} onClick={() => this.openModal()}>
+                  { !this.state.showModal ? (
+                    <EntryItems>
+                      {Dinner[key].food_id.foodName}
+                    </EntryItems>
+                  ) : (
+                    <MealModal isOpen={this.state.showModal}>
+                      <div>
+                        {Dinner[key].food_id.foodName}
+                      </div>
+                      <div>
+                        <TextField
+                          id="Serving Quantity"
+                          name="Serving Quantity"
+                          label="Serving Quantity"
+                          value={Dinner[key].servingQty}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Calories Per Serving"
+                          name="Calories Per Serving"
+                          label="Calories Per Serving"
+                          value={Dinner[key].food_id.caloriesPerServ}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Protein"
+                          name="Protein"
+                          label="Protein"
+                          value={Dinner[key].food_id.proteins}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Carbs"
+                          name="Carbs"
+                          label="Carbs"
+                          value={Dinner[key].food_id.carbs}
+                          margin="dense"
+                        />
+                        <TextField
+                          id="Fats"
+                          name="Fats"
+                          label="Fats"
+                          value={Dinner[key].food_id.fats}
+                          margin="dense"
+                        />
+                      </div>
+                      <div>
+                        <Button variant='contained' color='secondary'>
+                          Delete
+                        </Button>
+                        <Button variant='contained' color='primary'>
+                          Edit
+                        </Button>
+                      </div>
+                    </MealModal>
+                  )}
                 </div>
               );
             })
