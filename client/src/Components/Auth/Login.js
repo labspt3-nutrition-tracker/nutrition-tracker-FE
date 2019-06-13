@@ -9,7 +9,7 @@ import { ADD_USER_MUTATION } from "../../graphql/mutations";
 import { USER_EXIST_QUERY } from "../../graphql/queries";
 
 const LoginOrRegisterContainer = styled.div`
-  background: #fcfcfb;
+  /* background: #fcfcfb; */
   display: flex;
   justify-content: center;
   align-content: center;
@@ -19,8 +19,8 @@ const LoginOrRegisterContainer = styled.div`
 `;
 
 const LoginOrRegisterForm = styled.div`
-  background: #3685b5;
-  width: 50%;
+  /* background: #3685b5; */
+  width: 60%;
   height: 500px;
   padding: 100px;
   display: flex;
@@ -31,12 +31,13 @@ const LoginOrRegisterForm = styled.div`
   -moz-box-shadow: 6px 7px 24px -1px rgba(0, 0, 0, 0.75);
   box-shadow: 6px 7px 24px -1px rgba(0, 0, 0, 0.75);
   border-radius: 10px;
+  border: 3px solid #f4b4c3;
 `;
 
 const FormContainer = styled.div`
   display: flex;
   justify-content: center;
-  width: 50%;
+  width: 60%;
 `;
 
 class LoginOrRegister extends React.Component {
@@ -135,6 +136,7 @@ class LoginOrRegister extends React.Component {
                   clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
                   onSuccess={this.onSuccess}
                   onFailure={this.onFailure}
+                  theme='dark'
                 />
               )}
             </div>
