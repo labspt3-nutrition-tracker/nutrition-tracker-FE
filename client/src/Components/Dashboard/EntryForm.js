@@ -56,7 +56,6 @@ class EntryForm extends Component {
         date: "",
         servingQty: null
       },
-      // errorText: "",
       errorMsg: {
         error: false,
         errorFood: "",
@@ -447,6 +446,7 @@ class EntryForm extends Component {
         <FormHelperText id="errorFood-text">
           {this.state.errorMsg.errorFood}
         </FormHelperText>
+
         <InputLabel htmlFor="meal_category_id">Meal Category</InputLabel>
         <Select
           autoFocus
@@ -469,6 +469,7 @@ class EntryForm extends Component {
         <FormHelperText id="errorCategory-text">
           {this.state.errorMsg.errorCategory}
         </FormHelperText>
+
         <TextField
           autoFocus
           margin="dense"
