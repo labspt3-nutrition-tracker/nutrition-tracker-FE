@@ -180,9 +180,10 @@ class JournalEntry extends React.Component {
           {Breakfast.length > 0 ? (
             [...Breakfast].map( breakfast => {
               return (
-                <div key={breakfast.id} onClick={this.openModal}>
-                    <EntryItems>
+                <div key={breakfast.id}>
+                    <EntryItems onClick={this.openModal}>
                       {breakfast.food_id.foodName}
+                    </EntryItems>
 
                       <MealModal
                         isOpen={this.state.showModal}
@@ -251,7 +252,6 @@ class JournalEntry extends React.Component {
                           </Button>
                         </div>
                       </MealModal>
-                    </EntryItems>
                 </div>
               );
             })
@@ -264,8 +264,8 @@ class JournalEntry extends React.Component {
           {Lunch.length > 0 ? (
             [...Lunch].map( lunch => {
               return (
-                <div key={lunch.id} onClick={this.openModal}>
-                    <EntryItems>
+                <div key={lunch.id} >
+                    <EntryItems onClick={this.openModal}>
                       {lunch.food_id.foodName}
                     </EntryItems>
 
@@ -346,8 +346,8 @@ class JournalEntry extends React.Component {
           {Dinner.length > 0 ? (
             [...Dinner].map( dinner => {
               return (
-                <div key={dinner.id} onClick={this.openModal}>
-                    <EntryItems>
+                <div key={dinner.id} >
+                    <EntryItems onClick={this.openModal}>
                       {dinner.food_id.foodName}
                     </EntryItems>
 
@@ -368,6 +368,7 @@ class JournalEntry extends React.Component {
                           placeholder={`${dinner.servingQty}`}
                           value={this.state.servingQty}
                           margin="dense"
+                          onChange={this.handleChange}
                         />
                         <TextField
                           id="Calories Per Serving"
@@ -376,6 +377,7 @@ class JournalEntry extends React.Component {
                           placeholder={`${dinner.food_id.caloriesPerServ}`}
                           value={this.state.caloriesPerServ}
                           margin="dense"
+                          onChange={this.handleChange}
                         />
                         <TextField
                           id="Protein"
@@ -384,6 +386,7 @@ class JournalEntry extends React.Component {
                           placeholder={`${dinner.food_id.proteins}`}
                           value={this.state.proteins}
                           margin="dense"
+                          onChange={this.handleChange}
                         />
                         <TextField
                           id="Carbs"
@@ -392,6 +395,7 @@ class JournalEntry extends React.Component {
                           placeholder={`${dinner.food_id.carbs}`}
                           value={this.state.carbs}
                           margin="dense"
+                          onChange={this.handleChange}
                         />
                         <TextField
                           id="Fats"
@@ -400,6 +404,7 @@ class JournalEntry extends React.Component {
                           placeholder={`${dinner.food_id.fats}`}
                           value={this.state.fats}
                           margin="dense"
+                          onChange={this.handleChange}
                         />
                       </div>
                       <div>
