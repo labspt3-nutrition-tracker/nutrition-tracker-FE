@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
+import moment from "moment";
 import { GET_CURRENT_USERID } from "../../graphql/queries";
 
 const Form = styled.form`
@@ -57,13 +58,15 @@ class ExerForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    const currentUser = this.state.newExerEntry.exercise_entry_user_id
+    const currentDate = moment(new Date()).format("YYYY-MM-DD");
     this.props.addExerEntry(this.state.newExerEntry);
     this.setState({
       newExerEntry: {
-        exerciseEntryDate: "",
+        exerciseEntryDate: currentDate,
         exerciseName: "",
         caloriesBurned: "",
-        exercise_entry_user_id: 0
+        exercise_entry_user_id: currentUser
       }
     });
   };
