@@ -1,10 +1,13 @@
 import React from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
+import ApolloClient from "apollo-boost";
+import { GET_CURRENT_USERID } from "../../graphql/queries";
 
 const FoodEntryContainer = styled.div`
   width: 50%;
 `;
+
 const MealCategory = styled.h3`
   font-size: 2rem;
   font-weight: bold;
@@ -107,7 +110,7 @@ class FoodEntry extends React.Component {
   };
 
   render() {
-    console.log(this.props.foodEntries);
+    // console.log(this.props.foodEntries);
 
     // let viewItem = this.props.item.map( item => {
     //   return ()

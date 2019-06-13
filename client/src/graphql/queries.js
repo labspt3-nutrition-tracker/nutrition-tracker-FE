@@ -54,7 +54,7 @@ query($userId: ID!)
 }
 `;
 
-export const GET_EXERCISE_ENTRIES_QUERY = `
+export const GET_EXERCISE_ENTRIES_QUERY = gql`
   query getExerciseEntriesByUserId($userId: ID!){
     getExerciseEntriesByUserId(userId: $userId) {
       exerciseEntryDate
@@ -78,6 +78,7 @@ export const GET_CURRENT_USERID = gql`
   query {
     getCurrentUser {
       id
+      userType
     }
   }
 `;
