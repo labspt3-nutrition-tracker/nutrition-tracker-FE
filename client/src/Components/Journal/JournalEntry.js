@@ -81,7 +81,7 @@ class JournalEntry extends React.Component {
         proteins: "",
         carbs: "",
         fats: "",
-        mealEntry: [],
+        mealEntry: {},
         user_id: null,
         food_id: null,
         meal_category_id: null,
@@ -91,9 +91,10 @@ class JournalEntry extends React.Component {
   }
 
   passMealData = mealEntry => {
-    this.setState({
+    console.log(mealEntry)
+    this.setState( prevState => ({
       mealEntry: mealEntry
-    })
+    }));
 
     this.openModal()
   }
@@ -106,7 +107,9 @@ class JournalEntry extends React.Component {
 
   closeModal = () => {
     console.log('modal closed')
-    this.setState({ showModal: false})
+    this.setState({
+      showModal: false
+    })
   }
 
   handleChange = e => {
@@ -119,6 +122,9 @@ class JournalEntry extends React.Component {
   }
 
   componentDidUpdate(prevProps){
+    if(prevProps.mealEntry !== this.props.mealEntry){
+      this.setState({mealEntry: this.props.mealEntry});
+    }
   }
 
   render() {
@@ -152,6 +158,7 @@ class JournalEntry extends React.Component {
         <div>
           {Breakfast.length > 0 ? (
             [...Breakfast].map( breakfast => {
+              console.log(breakfast)
               return (
                 <div key={breakfast.id}>
                     <div onClick={() => this.passMealData(breakfast)}>
@@ -159,10 +166,93 @@ class JournalEntry extends React.Component {
                         {breakfast.food_id.foodName}
                       </EntryItems>
                     </div>
-
+                    {this.state.mealEntry &&
                       <MealModal
-                        isOpen={this.state.showModal}
+                      isOpen={this.state.showModal}
                       >
+                      <div>
+                        <Button onClick={this.closeModal}>
+                          exit
+                        </Button>
+                      </div>
+                      <div>
+                        {this.state.mealEntry.food_id.foodName}
+                      </div>
+                      <form>
+                        <TextField
+                          id="Serving Quantity"
+                          name="Serving Quantity"
+                          label="Serving Quantity"
+                          placeholder={`${this.state.mealEntry}`}
+                          value={this.state.servingQty}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Calories Per Serving"
+                          name="Calories Per Serving"
+                          label="Calories Per Serving"
+                          placeholder={`${this.state.mealEntry}`}
+                          value={this.state.caloriesPerServ}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Protein"
+                          name="Protein"
+                          label="Protein"
+                          placeholder={`${this.state.mealEntry}`}
+                          value={this.state.proteins}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Carbs"
+                          name="Carbs"
+                          label="Carbs"
+                          placeholder={`${this.state.mealEntry}`}
+                          value={this.state.carbs}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Fats"
+                          name="Fats"
+                          label="Fats"
+                          placeholder={`${this.state.mealEntry}`}
+                          value={this.state.fats}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                      </form>
+                      <div>
+                        <Button variant='contained' color='secondary'>
+                          Delete
+                        </Button>
+                        <Button variant='contained' color='primary'>
+                          Edit
+                        </Button>
+                      </div>
+                    </MealModal>
+                    }
+                </div>
+              );
+            })
+          ) : (
+            <EntryItems>No Breakfast entries have been added</EntryItems>
+          )}
+        </div>
+        <CategoryTitle> Lunch</CategoryTitle>
+        <div>
+          {Lunch.length > 0 ? (
+            [...Lunch].map( lunch => {
+              return (
+                <div key={lunch.id} >
+                    <EntryItems onClick={() => this.passMealData(lunch)}>
+                      {lunch.food_id.foodName}
+                    </EntryItems>
+                    {this.state.mealEntry &&
+                      <MealModal isOpen={this.state.showModal}>
                         <div>
                           <Button onClick={this.closeModal}>
                             exit
@@ -171,7 +261,7 @@ class JournalEntry extends React.Component {
                         <div>
                           {this.state.mealEntry.food_id.foodName}
                         </div>
-                        <form>
+                        <div>
                           <TextField
                             id="Serving Quantity"
                             name="Serving Quantity"
@@ -217,7 +307,7 @@ class JournalEntry extends React.Component {
                             margin="dense"
                             onChange={this.handleChange}
                           />
-                        </form>
+                        </div>
                         <div>
                           <Button variant='contained' color='secondary'>
                             Delete
@@ -227,88 +317,7 @@ class JournalEntry extends React.Component {
                           </Button>
                         </div>
                       </MealModal>
-                </div>
-              );
-            })
-          ) : (
-            <EntryItems>No Breakfast entries have been added</EntryItems>
-          )}
-        </div>
-        <CategoryTitle> Lunch</CategoryTitle>
-        <div>
-          {Lunch.length > 0 ? (
-            [...Lunch].map( lunch => {
-              return (
-                <div key={lunch.id} >
-                    <EntryItems onClick={this.openModal}>
-                      {lunch.food_id.foodName}
-                    </EntryItems>
-
-                    <MealModal isOpen={this.state.showModal}>
-                      <div>
-                        <Button onClick={this.closeModal}>
-                          exit
-                        </Button>
-                      </div>
-                      <div>
-                        {lunch.food_id.foodName}
-                      </div>
-                      <div>
-                        <TextField
-                          id="Serving Quantity"
-                          name="Serving Quantity"
-                          label="Serving Quantity"
-                          placeholder={`${lunch.servingQty}`}
-                          value={this.state.servingQty}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Calories Per Serving"
-                          name="Calories Per Serving"
-                          label="Calories Per Serving"
-                          placeholder={`${lunch.food_id.caloriesPerServ}`}
-                          value={this.state.caloriesPerServ}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Protein"
-                          name="Protein"
-                          label="Protein"
-                          placeholder={`${lunch.food_id.proteins}`}
-                          value={this.state.proteins}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Carbs"
-                          name="Carbs"
-                          label="Carbs"
-                          placeholder={`${lunch.food_id.carbs}`}
-                          value={this.state.carbs}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Fats"
-                          name="Fats"
-                          label="Fats"
-                          placeholder={`${lunch.food_id.fats}`}
-                          value={this.state.fats}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                      </div>
-                      <div>
-                        <Button variant='contained' color='secondary'>
-                          Delete
-                        </Button>
-                        <Button variant='contained' color='primary'>
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
+                    }
                 </div>
               );
             })
@@ -322,75 +331,76 @@ class JournalEntry extends React.Component {
             [...Dinner].map( dinner => {
               return (
                 <div key={dinner.id} >
-                    <EntryItems onClick={this.openModal}>
+                    <EntryItems onClick={() => this.passMealData(dinner)}>
                       {dinner.food_id.foodName}
                     </EntryItems>
-
-                    <MealModal isOpen={this.state.showModal}>
-                      <div>
-                        <Button onClick={this.closeModal}>
-                          exit
-                        </Button>
-                      </div>
-                      <div>
-                        {dinner.food_id.foodName}
-                      </div>
-                      <div>
-                        <TextField
-                          id="Serving Quantity"
-                          name="Serving Quantity"
-                          label="Serving Quantity"
-                          placeholder={`${dinner.servingQty}`}
-                          value={this.state.servingQty}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Calories Per Serving"
-                          name="Calories Per Serving"
-                          label="Calories Per Serving"
-                          placeholder={`${dinner.food_id.caloriesPerServ}`}
-                          value={this.state.caloriesPerServ}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Protein"
-                          name="Protein"
-                          label="Protein"
-                          placeholder={`${dinner.food_id.proteins}`}
-                          value={this.state.proteins}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Carbs"
-                          name="Carbs"
-                          label="Carbs"
-                          placeholder={`${dinner.food_id.carbs}`}
-                          value={this.state.carbs}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Fats"
-                          name="Fats"
-                          label="Fats"
-                          placeholder={`${dinner.food_id.fats}`}
-                          value={this.state.fats}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                      </div>
-                      <div>
-                        <Button variant='contained' color='secondary'>
-                          Delete
-                        </Button>
-                        <Button variant='contained' color='primary'>
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
+                    {this.state.mealEntry &&
+                      <MealModal isOpen={this.state.showModal}>
+                        <div>
+                          <Button onClick={this.closeModal}>
+                            exit
+                          </Button>
+                        </div>
+                        <div>
+                          {this.state.mealEntry.food_id.foodName}
+                        </div>
+                        <div>
+                          <TextField
+                            id="Serving Quantity"
+                            name="Serving Quantity"
+                            label="Serving Quantity"
+                            placeholder={`${this.state.mealEntry.servingQty}`}
+                            value={this.state.servingQty}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Calories Per Serving"
+                            name="Calories Per Serving"
+                            label="Calories Per Serving"
+                            placeholder={`${this.state.mealEntry.food_id.caloriesPerServ}`}
+                            value={this.state.caloriesPerServ}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Protein"
+                            name="Protein"
+                            label="Protein"
+                            placeholder={`${this.state.mealEntry.food_id.proteins}`}
+                            value={this.state.proteins}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Carbs"
+                            name="Carbs"
+                            label="Carbs"
+                            placeholder={`${this.state.mealEntry.food_id.carbs}`}
+                            value={this.state.carbs}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Fats"
+                            name="Fats"
+                            label="Fats"
+                            placeholder={`${this.state.mealEntry.food_id.fats}`}
+                            value={this.state.fats}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                        </div>
+                        <div>
+                          <Button variant='contained' color='secondary'>
+                            Delete
+                          </Button>
+                          <Button variant='contained' color='primary'>
+                            Edit
+                          </Button>
+                        </div>
+                      </MealModal>
+                    }
                 </div>
               );
             })
