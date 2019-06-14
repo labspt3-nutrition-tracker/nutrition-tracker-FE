@@ -81,10 +81,7 @@ class JournalEntry extends React.Component {
         proteins: "",
         carbs: "",
         fats: "",
-        Breakfast: [],
-        Lunch: [],
-        Dinner: [],
-        Snack: [],
+        mealEntry: [],
         user_id: null,
         food_id: null,
         meal_category_id: null,
@@ -93,33 +90,9 @@ class JournalEntry extends React.Component {
     };
   }
 
-  passBreakfastData = (Breakfast) => {
+  passMealData = mealEntry => {
     this.setState({
-      Breakfast: Breakfast
-    })
-
-    this.openModal()
-  }
-
-  passLunchData = (Lunch) => {
-    this.setState({
-      Lunch: Lunch
-    })
-
-    this.openModal()
-  }
-
-  passDinnerData = (Dinner) => {
-    this.setState({
-      Dinner: Dinner
-    })
-
-    this.openModal()
-  }
-
-  passSnackData = (Snack) => {
-    this.setState({
-      Snack: Snack
+      mealEntry: mealEntry
     })
 
     this.openModal()
@@ -181,9 +154,11 @@ class JournalEntry extends React.Component {
             [...Breakfast].map( breakfast => {
               return (
                 <div key={breakfast.id}>
-                    <EntryItems onClick={this.openModal}>
-                      {breakfast.food_id.foodName}
-                    </EntryItems>
+                    <div onClick={() => this.passMealData(breakfast)}>
+                      <EntryItems>
+                        {breakfast.food_id.foodName}
+                      </EntryItems>
+                    </div>
 
                       <MealModal
                         isOpen={this.state.showModal}
@@ -194,14 +169,14 @@ class JournalEntry extends React.Component {
                           </Button>
                         </div>
                         <div>
-                          {breakfast.food_id.foodName}
+                          {this.state.mealEntry.food_id.foodName}
                         </div>
                         <form>
                           <TextField
                             id="Serving Quantity"
                             name="Serving Quantity"
                             label="Serving Quantity"
-                            placeholder={`${breakfast.servingQty}`}
+                            placeholder={`${this.state.mealEntry.servingQty}`}
                             value={this.state.servingQty}
                             margin="dense"
                             onChange={this.handleChange}
@@ -210,7 +185,7 @@ class JournalEntry extends React.Component {
                             id="Calories Per Serving"
                             name="Calories Per Serving"
                             label="Calories Per Serving"
-                            placeholder={`${breakfast.food_id.caloriesPerServ}`}
+                            placeholder={`${this.state.mealEntry.food_id.caloriesPerServ}`}
                             value={this.state.caloriesPerServ}
                             margin="dense"
                             onChange={this.handleChange}
@@ -219,7 +194,7 @@ class JournalEntry extends React.Component {
                             id="Protein"
                             name="Protein"
                             label="Protein"
-                            placeholder={`${breakfast.food_id.proteins}`}
+                            placeholder={`${this.state.mealEntry.food_id.proteins}`}
                             value={this.state.proteins}
                             margin="dense"
                             onChange={this.handleChange}
@@ -228,7 +203,7 @@ class JournalEntry extends React.Component {
                             id="Carbs"
                             name="Carbs"
                             label="Carbs"
-                            placeholder={`${breakfast.food_id.carbs}`}
+                            placeholder={`${this.state.mealEntry.food_id.carbs}`}
                             value={this.state.carbs}
                             margin="dense"
                             onChange={this.handleChange}
@@ -237,7 +212,7 @@ class JournalEntry extends React.Component {
                             id="Fats"
                             name="Fats"
                             label="Fats"
-                            placeholder={`${breakfast.food_id.fats}`}
+                            placeholder={`${this.state.mealEntry.food_id.fats}`}
                             value={this.state.fats}
                             margin="dense"
                             onChange={this.handleChange}
