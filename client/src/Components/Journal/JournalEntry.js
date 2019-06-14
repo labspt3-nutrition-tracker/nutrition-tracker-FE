@@ -4,7 +4,8 @@ import moment from "moment";
 import Modal from 'react-modal';
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { GET_FOOD_ENTRIES_BY_USER_QUERY } from "../../graphql/queries";
+import { GET_FOOD_ENTRIES_BY_USER_QUERY , GET_CURRENT_USERID } from "../../graphql/queries";
+import ApolloClient from "apollo-boost"
 import gql from "graphql-tag";
 
 const MealModal = styled(Modal)`
@@ -81,11 +82,12 @@ class JournalEntry extends React.Component {
         proteins: "",
         carbs: "",
         fats: "",
-        mealEntry: {},
+        mealEntry: [],
         user_id: null,
         food_id: null,
         meal_category_id: null,
-        showModal: false
+        showModal: false,
+        currentUser: 0
       }
     };
   }
@@ -125,7 +127,44 @@ class JournalEntry extends React.Component {
     this.closeModal()
   }
 
+  editMealEntry = e => {
+    e.preventDefault()
+
+    console.log(this.state.currentUser)
+    const foodEntry = {
+        id: this.state.mealEntry.id,
+        date: this.state.mealEntry.date,
+        servingQty: this.state.mealEntry.servingQty,
+        user_id: this.state.currentUser,
+        food_id: {
+          id: this.state.mealEntry.food_id.id,
+          foodName: this.state.mealEntry.food_id.foodName,
+          caloriesPerServ: this.state.caloriesPerServ,
+          proteins: this.state.proteins,
+          carbs: this.state.carbs,
+          fats: this.state.fats
+        },
+        meal_category_id: this.state.mealEntry.meal_category_id.id
+    }
+    console.log(foodEntry)
+    this.props.editMeal(this.state.mealEntry.id, foodEntry)
+
+    this.closeModal()
+  }
+
   componentDidMount(){
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    client
+      .query({
+        query: GET_CURRENT_USERID
+      })
+      .then(response => {
+        this.setState({ currentUser: response.data.getCurrentUser.id })
+      }).catch(err => console.log(err));
   }
 
   componentDidUpdate(prevProps){
@@ -188,7 +227,7 @@ class JournalEntry extends React.Component {
                       <form>
                         <TextField
                           id="Serving Quantity"
-                          name="Serving Quantity"
+                          name="servingQty"
                           label="Serving Quantity"
                           placeholder={`${this.state.mealEntry}`}
                           value={this.state.servingQty}
@@ -197,7 +236,7 @@ class JournalEntry extends React.Component {
                         />
                         <TextField
                           id="Calories Per Serving"
-                          name="Calories Per Serving"
+                          name="caloriesPerServ"
                           label="Calories Per Serving"
                           placeholder={`${this.state.mealEntry}`}
                           value={this.state.caloriesPerServ}
@@ -206,7 +245,7 @@ class JournalEntry extends React.Component {
                         />
                         <TextField
                           id="Protein"
-                          name="Protein"
+                          name="proteins"
                           label="Protein"
                           placeholder={`${this.state.mealEntry}`}
                           value={this.state.proteins}
@@ -215,7 +254,7 @@ class JournalEntry extends React.Component {
                         />
                         <TextField
                           id="Carbs"
-                          name="Carbs"
+                          name="carbs"
                           label="Carbs"
                           placeholder={`${this.state.mealEntry}`}
                           value={this.state.carbs}
@@ -224,7 +263,7 @@ class JournalEntry extends React.Component {
                         />
                         <TextField
                           id="Fats"
-                          name="Fats"
+                          name="fats"
                           label="Fats"
                           placeholder={`${this.state.mealEntry}`}
                           value={this.state.fats}
@@ -236,7 +275,7 @@ class JournalEntry extends React.Component {
                         <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
                           Delete
                         </Button>
-                        <Button variant='contained' color='primary'>
+                        <Button onClick={this.editMealEntry} variant='contained' color='primary'>
                           Edit
                         </Button>
                       </div>
@@ -271,7 +310,7 @@ class JournalEntry extends React.Component {
                         <div>
                           <TextField
                             id="Serving Quantity"
-                            name="Serving Quantity"
+                            name="servingQty"
                             label="Serving Quantity"
                             placeholder={`${this.state.mealEntry.servingQty}`}
                             value={this.state.servingQty}
@@ -280,7 +319,7 @@ class JournalEntry extends React.Component {
                           />
                           <TextField
                             id="Calories Per Serving"
-                            name="Calories Per Serving"
+                            name="caloriesPerServ"
                             label="Calories Per Serving"
                             placeholder={`${this.state.mealEntry.food_id.caloriesPerServ}`}
                             value={this.state.caloriesPerServ}
@@ -289,7 +328,7 @@ class JournalEntry extends React.Component {
                           />
                           <TextField
                             id="Protein"
-                            name="Protein"
+                            name="proteins"
                             label="Protein"
                             placeholder={`${this.state.mealEntry.food_id.proteins}`}
                             value={this.state.proteins}
@@ -298,7 +337,7 @@ class JournalEntry extends React.Component {
                           />
                           <TextField
                             id="Carbs"
-                            name="Carbs"
+                            name="carbs"
                             label="Carbs"
                             placeholder={`${this.state.mealEntry.food_id.carbs}`}
                             value={this.state.carbs}
@@ -307,7 +346,7 @@ class JournalEntry extends React.Component {
                           />
                           <TextField
                             id="Fats"
-                            name="Fats"
+                            name="fats"
                             label="Fats"
                             placeholder={`${this.state.mealEntry.food_id.fats}`}
                             value={this.state.fats}
@@ -319,7 +358,7 @@ class JournalEntry extends React.Component {
                           <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
                             Delete
                           </Button>
-                          <Button variant='contained' color='primary'>
+                          <Button onClick={this.editMealEntry} variant='contained' color='primary'>
                             Edit
                           </Button>
                         </div>
@@ -354,7 +393,7 @@ class JournalEntry extends React.Component {
                         <div>
                           <TextField
                             id="Serving Quantity"
-                            name="Serving Quantity"
+                            name="servingQty"
                             label="Serving Quantity"
                             placeholder={`${this.state.mealEntry.servingQty}`}
                             value={this.state.servingQty}
@@ -363,7 +402,7 @@ class JournalEntry extends React.Component {
                           />
                           <TextField
                             id="Calories Per Serving"
-                            name="Calories Per Serving"
+                            name="caloriesPerServ"
                             label="Calories Per Serving"
                             placeholder={`${this.state.mealEntry.food_id.caloriesPerServ}`}
                             value={this.state.caloriesPerServ}
@@ -372,7 +411,7 @@ class JournalEntry extends React.Component {
                           />
                           <TextField
                             id="Protein"
-                            name="Protein"
+                            name="proteins"
                             label="Protein"
                             placeholder={`${this.state.mealEntry.food_id.proteins}`}
                             value={this.state.proteins}
@@ -381,7 +420,7 @@ class JournalEntry extends React.Component {
                           />
                           <TextField
                             id="Carbs"
-                            name="Carbs"
+                            name="carbs"
                             label="Carbs"
                             placeholder={`${this.state.mealEntry.food_id.carbs}`}
                             value={this.state.carbs}
@@ -390,7 +429,7 @@ class JournalEntry extends React.Component {
                           />
                           <TextField
                             id="Fats"
-                            name="Fats"
+                            name="fats"
                             label="Fats"
                             placeholder={`${this.state.mealEntry.food_id.fats}`}
                             value={this.state.fats}
@@ -402,7 +441,7 @@ class JournalEntry extends React.Component {
                           <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
                             Delete
                           </Button>
-                          <Button variant='contained' color='primary'>
+                          <Button onClick={this.editMealEntry} variant='contained' color='primary'>
                             Edit
                           </Button>
                         </div>

@@ -55,10 +55,19 @@ const  UPDATE_MEAL = gql`
     updateFoodEntry(id: $id, input: $input ){
       id
       date
-      food_id
-      user_id
       servingQty
-      meal_category_id
+      food_id{
+        id
+        foodName
+        caloriesPerServ
+        fats
+        proteins
+        carbs
+      }
+      meal_category_id{
+        id
+        mealCategoryName
+      }
     }
   }
 `;
@@ -147,10 +156,20 @@ class Journal extends React.Component {
       .mutate({
         mutation: UPDATE_MEAL,
         variables: {
-          id,
+          id: id,
           input: foodEntry
         }
       })
+      .then(response => {
+        client
+          .query({
+            query: FOODENTRYQUERY,
+            variables: {
+              userId: this.state.currentUser
+            }
+          })
+      })
+      .catch(err => console.log(err))
   }
 
   render() {
@@ -187,7 +206,7 @@ class Journal extends React.Component {
             return (
               <JournalContainer>
                 <JournalEntryDiv>
-                  <JournalEntry foodEntries={foodEntries} datePicked={this.state.datePicked} deleteMeal={this.deleteMealEntry} />
+                  <JournalEntry foodEntries={foodEntries} datePicked={this.state.datePicked} deleteMeal={this.deleteMealEntry} editMeal={this.editMealEntry}/>
                 </JournalEntryDiv>
                 <CalendarDiv>
                   <Calendar datePicked={this.state.datePicked} handleDateClick={this.handleDateClick} />
