@@ -25,7 +25,8 @@ const PrivateRoute = ({ component: Component, render, ...rest }) => {
   getCurrentUser(token)
     .then()
     .catch(err => {
-      localStorage.removeItem("token"); //If token expired, remove it
+      console.log(err);
+      localStorage.removeItem("token"); //If token expired or not valid, remove it
     });
   return (
     <Route
@@ -85,7 +86,7 @@ class App extends React.Component {
       .then(response => {
         this.setState({
           searchResults: response.data.hints,
-          searchInput: '',
+          searchInput: "",
           noResultError: "",
           showModal: true
         });
