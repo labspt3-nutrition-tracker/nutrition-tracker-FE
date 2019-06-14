@@ -79,10 +79,8 @@ class ExerEntry extends React.Component {
     client
       .mutate({
         mutation: DELETE_EXERENTRY, 
-        variables: {id},
-        updateQuery:{query: EXER_QUERY}
+        variables: {id}
       })
-  
       .then(response => {
         console.log('response', response)
         this.setState( { 
@@ -93,16 +91,8 @@ class ExerEntry extends React.Component {
         console.log(this.state.exerEntry);
       })
       .then(response => {
-        client
-          .query({
-            query: EXER_QUERY,
-            variables: {
-              userId: this.state.currentUser
-            },
-            updateQueries:
-              {query: EXER_QUERY}
-          })
-    })
+
+      })
       // .then(response => {
       //   this.setState(deleteState => { 
       //     let deleteEntry = deleteState.exerEntries.filter ( i =>
@@ -126,10 +116,7 @@ class ExerEntry extends React.Component {
 
     client
       .query({
-        query: EXER_QUERY,
-        updateQueries: [
-          {query: EXER_QUERY}
-        ]
+        query: EXER_QUERY
       })
       .then(response => {
         this.setState({ currentUser: response.data.getCurrentUser.id });
