@@ -14,6 +14,7 @@ import gql from "graphql-tag";
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  
   width: 30%;
   padding: 20px;
   h1 {
@@ -22,6 +23,10 @@ const Form = styled.form`
     padding-bottom: 30px;
     text-align: center;
     color: blue;
+  }
+  @media(max-width: 800px) {
+    max-width: 500px;
+    width: 100%;
   }
 `;
 

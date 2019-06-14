@@ -17,6 +17,10 @@ const Form = styled.form`
   flex-direction: column;
   width: 30%;
   padding: 20px;
+  @media(max-width: 800px) {
+    max-width: 500px;
+    width: 100%;
+  }
 
   h1 {
     font-size: 1.5em;

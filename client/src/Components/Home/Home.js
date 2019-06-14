@@ -11,8 +11,8 @@ const Container = styled.div`
   height: 70vh;
 
   @media (max-width: 800px){
-    flex-direction: column;reverse;
-
+    flex-direction: column;
+    height: 50vh;
   }
 `;
 
@@ -20,6 +20,10 @@ const Main = styled.div`
   width: 50%;
   padding-left: 10%;
   padding-top: 250px;
+  @media (max-width: 800px){
+    padding-top: 160px;
+    padding-left: 0;
+  }
 
   h1 {
     color: #40a798;
@@ -63,7 +67,7 @@ const SecondPane = styled.section`
 const BillingDiv = styled.div`
   background: #fcfcfb;
   padding-top: 50px;
-  height: 70vh;
+  padding-bottom: 50px;
 `;
 
 const Features = styled.div`
