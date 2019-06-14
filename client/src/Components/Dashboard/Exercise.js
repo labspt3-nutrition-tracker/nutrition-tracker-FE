@@ -95,6 +95,10 @@ class Exercise extends Component {
 const ExerciseContainer = styled.div`
   width: 30%;
   padding: 20px;
+  @media(max-width: 800px) {
+    max-width: 500px;
+    width: 100%;
+  }
 `;
 
 const ExerTitle = styled.h1`

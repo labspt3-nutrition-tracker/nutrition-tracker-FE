@@ -344,12 +344,19 @@ const DashTitle = styled.div`
 const InfoCon = styled.div`
   display: flex;
   width: 40%;
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 const DashDisplay = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;
+  @media (max-width: 800px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export default Dashboard;

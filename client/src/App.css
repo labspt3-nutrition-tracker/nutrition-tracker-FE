@@ -69,9 +69,10 @@ body {
 
 
 .home {
-  min-height: 700px;
-  background: url(./Assets/healthy_food.jpg);
-	background-size: 100% 100%;
+  /* min-height: 700px; */
+	background: url(./Assets/healthy_food.jpg);
+	/* background-size: 100% 100%; */
+	background-size: cover;
 	background-repeat: no-repeat;
   color: #000;
 
