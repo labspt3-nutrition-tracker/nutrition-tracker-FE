@@ -17,6 +17,14 @@ const Meal = styled.div`
   padding: 10px;
 `;
 
+const ModalButton = styled.button`
+  color: #FCFCFB;
+  background: #F4B4C3;
+  margin-bottom: 5px;
+  padding: 5px 15px;
+  font-size: .9em;
+`;
+
 const FoodModal = styled(Modal)`
   display: flex;
   flex-direction: column;
@@ -252,7 +260,7 @@ class FoodEntry extends React.Component {
             </Meal>
             <FoodModal isOpen={this.state.showModal} itemOpen={this.state.foodEntries}>
               In the modal
-              <div onClick={this.closeModal}>No?</div>
+              <ModalButton onClick={this.closeModal}>No?</ModalButton>
             </FoodModal>
           </div>
         </div>

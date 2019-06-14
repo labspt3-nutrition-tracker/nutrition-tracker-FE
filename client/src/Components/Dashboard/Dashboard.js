@@ -198,6 +198,24 @@ class Dashboard extends Component {
       .catch(err => console.log(err));
   };
 
+  onInputChange = e => {
+    this.setState({
+      exerEntry: {
+        ...this.state.exerEntry,
+        [e.target.name]:
+          e.target.type === "number" ? parseInt(e.target.value) : e.target.value
+      }
+    });
+    console.log("exerentry change",this.state.exerEntry)
+  };
+
+  editExerEntry = (entry) => {
+    console.log('edit', entry)
+    console.log(this.state.exerEntry)
+  }
+
+  
+
   deleteExerEntry = ( id, idToken) => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
@@ -213,17 +231,19 @@ class Dashboard extends Component {
         .query({
           query: GET_EXERCISE_ENTRIES_QUERY,
           variables:{
-            userId: this.state.currentUserd
+            userId: this.state.currentUser
           }
         })
         .then(response => {
           console.log(response);
+          console.log('this before', this.state.exerEntries)
           this.setState({
-            exerEntry: ""
+            exerEntry: "",
+            exerEntries: response.data.getExerciseEntriesByUserId
            });
+           console.log('this after', this.state.exerEntries)
         })
       })
-
       .catch(err => console.log(err));
   }
 
@@ -260,6 +280,12 @@ class Dashboard extends Component {
     });
   };
 
+  passExerData = (entry) => {
+    this.setState({
+      exerEntry: entry
+    })
+  }
+
   render() {
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     if (this.state.userType === "Super User") {
@@ -272,7 +298,12 @@ class Dashboard extends Component {
               <FoodEntry foodEntries={this.state.foodEntries} />
               <ExerciseEntry
                 exerEntries={this.state.exerEntries}
-                deleteExerEntry={this.deleteExerEntry}/>
+                deleteExerEntry={this.deleteExerEntry}
+                onInputChange={this.onInputChange}
+                exerEntry={this.state.exerEntry}
+                editExerEntry={this.editExerEntry}
+                passExerData={this.passExerData}
+                />
             </InfoCon>
 
             {this.state.showFoodForm && (
