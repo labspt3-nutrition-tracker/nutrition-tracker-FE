@@ -73,15 +73,13 @@ export const ADD_FOOD_ENTRY = gql`
 //   }
 // `;
 
-
-
 // export const DELETE_FOOD_ENTRY = gql`
 //   mutation{
 //     deleteFoodentry($id: ID!)
 //   }
 // `;
 
-export const ADD_WEIGHT_ENTRY_MUTATION = `
+export const ADD_WEIGHT_ENTRY_MUTATION = gql`
   mutation($input: WeightEntryInput!) {
     addWeightEntry(input: $input) {
       id
@@ -99,7 +97,7 @@ export const ADD_USER_MUTATION = gql`
   }
 `;
 
-export const UPDATE_USER_MUTATION = `
+export const UPDATE_USER_MUTATION = gql`
   mutation($id: ID!, $input: UserInput!) {
     updateUser(id: $id, input: $input) {
       id
@@ -109,19 +107,18 @@ export const UPDATE_USER_MUTATION = `
 
 export const DELETE_EXERENTRY = gql`
   mutation deleteExerciseEntry($id: ID!) {
-    deleteExerciseEntry(id: $id) 
+    deleteExerciseEntry(id: $id)
   }
 `;
 
 export const EDIT_EXER_ENTRY = gql`
-  mutation($id: ID!, $input: ExerciseEntryInput!){
-    updateExerciseEntry(id: $id, input: $ExerciseEntry)
-    {
+  mutation($id: ID!, $input: ExerciseEntryInput!) {
+    updateExerciseEntry(id: $id, input: $ExerciseEntry) {
       id
       exerciseEntryDate
       exerciseName
       caloriesBurned
-      exercise_entry_user_id{
+      exercise_entry_user_id {
         id
       }
     }
