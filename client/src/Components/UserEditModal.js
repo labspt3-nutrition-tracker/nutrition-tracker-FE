@@ -30,7 +30,7 @@ const styles = theme => ({
   },
   formTextInput: {
     fontFamily: "Oxygen",
-    fontSize: "1.5rem",
+    fontSize: "1.5rem"
   },
   btn: {
     fontFamily: "Oxygen",
@@ -53,21 +53,21 @@ class UserEditModal extends Component {
     this.setState({ editInput: event.target.value });
   };
 
-  hadleCancel = () => {
-    this.setState({editInput: "", errorText: "", error: false});
-  }
+  handleCancel = () => {
+    this.setState({ editInput: "", errorText: "", error: false });
+  };
 
   handleEdit = editType => {
     console.log({ editType });
     console.log("new value: ", this.state.editInput);
     if (editType === "userType") {
-        this.props.handleClose();
-        this.props.history.push("/billing");
+      this.props.handleClose();
+      this.props.history.push("/billing");
     } else {
-      if(!this.state.editInput.trim()) {
-        this.setState({errorText: "Please provide a value", error: true})
-      } else if( !Number(this.state.editInput)) {
-        this.setState({errorText: "Please provide a number value", error: true})
+      if (!this.state.editInput.trim()) {
+        this.setState({ errorText: "Please provide a value", error: true });
+      } else if (!Number(this.state.editInput)) {
+        this.setState({ errorText: "Please provide a number value", error: true });
       } else {
         if (editType === "weight") {
           const input = {
@@ -82,7 +82,9 @@ class UserEditModal extends Component {
             })
             .catch(err => console.log(err));
         } else if (editType === "caloriesGoal") {
-          const newGoal = this.state.editInput.trim() ? Number(this.state.editInput) : this.props.currentUser.calorieGoal;
+          const newGoal = this.state.editInput.trim()
+            ? Number(this.state.editInput)
+            : this.props.currentUser.calorieGoal;
           const { firstName, lastName, username, email, userType, weight } = this.props.currentUser;
           const newUser = {
             firstName,
@@ -100,8 +102,8 @@ class UserEditModal extends Component {
             })
             .catch(err => console.log(err));
         }
-          this.setState({errorText: "", error: false, editInput: ""});
-          this.props.handleClose();
+        this.setState({ errorText: "", error: false, editInput: "" });
+        this.props.handleClose();
       }
     }
   };
@@ -163,8 +165,8 @@ class UserEditModal extends Component {
                   input: classes.formTextInput
                 }
               }}
-               FormHelperTextProps={{
-                classes:{
+              FormHelperTextProps={{
+                classes: {
                   error: classes.errors
                 }
               }}
@@ -172,7 +174,14 @@ class UserEditModal extends Component {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => { this.hadleCancel(); handleClose();}} color='primary' className={classes.btn}>
+          <Button
+            onClick={() => {
+              this.handleCancel();
+              handleClose();
+            }}
+            color='primary'
+            className={classes.btn}
+          >
             Cancel
           </Button>
           <Button

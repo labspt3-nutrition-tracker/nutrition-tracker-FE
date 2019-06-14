@@ -177,7 +177,6 @@ const Home = () => (
           <FeatureInfo>
             <h2> Custom Reports</h2>
             <p>
-              {" "}
               See your progress with our customer reports. Whether your goal is
               to keep track of your nutrients or just a calory count, we have it
               all for you.
@@ -195,7 +194,6 @@ const Home = () => (
           <FeatureInfo>
             <h2> Trainer functionality (future release)</h2>
             <p>
-              {" "}
               Have your trainer be included in your journey. Whether it's just
               to see your progress or keep you accountable, our trainer feature
               allows you to get that trainer-trainee communication.

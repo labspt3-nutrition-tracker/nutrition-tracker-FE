@@ -9,8 +9,8 @@ import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import moment from "moment";
 import gql from "graphql-tag";
-import { ADD_EXERENTRY, ADD_FOOD_ENTRY } from "../../graphql/mutations";
-import { EXER_QUERY, GET_CURRENT_USERID } from "../../graphql/queries";
+import { ADD_EXERENTRY, ADD_FOOD_ENTRY, DELETE_EXERENTRY } from "../../graphql/mutations";
+import { EXER_QUERY, GET_CURRENT_USERID, GET_EXERCISE_ENTRIES_QUERY } from "../../graphql/queries";
 
 const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
   query($userId: ID!) {
@@ -46,7 +46,8 @@ class Dashboard extends Component {
     currentUser: null,
     exerEntries: [],
     foodEntries: [],
-    userType: ""
+    userType: "",
+    exerEntry: []
   };
 
   componentDidMount = () => {
@@ -84,8 +85,6 @@ class Dashboard extends Component {
                 }
               })
               .then(response => {
-                // console.log(this.state.currentUser);
-                // console.log("food response", response);
                 this.setState({
                   foodEntries: response.data.getFoodEntriesByUserId
                 });
@@ -138,7 +137,7 @@ class Dashboard extends Component {
         })
         .catch(err => console.log(err));
     }
-    
+
   }
 
   addFoodEntry = newFoodEntry => {
@@ -199,40 +198,35 @@ class Dashboard extends Component {
       .catch(err => console.log(err));
   };
 
-  
+  deleteExerEntry = ( id, idToken) => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    client
+      .mutate({
+        mutation: DELETE_EXERENTRY,
+        variables: {id}
+      })
+      .then(response => {
+        client
+        .query({
+          query: GET_EXERCISE_ENTRIES_QUERY,
+          variables:{
+            userId: this.state.currentUserd
+          }
+        })
+        .then(response => {
+          console.log(response);
+          this.setState({
+            exerEntry: ""
+           });
+        })
+      })
 
-  // addExerEntry = (newExerEntry) => {
-  //   const client = new ApolloClient({
-  //     uri: "https://nutrition-tracker-be.herokuapp.com"
-  //   });
+      .catch(err => console.log(err));
+  }
 
-  //   client
-  //     .mutate({
-  //       mutation: ADD_EXERENTRY,
-  //       variables: {
-  //         input: newExerEntry
-  //       }
-  //     })
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch(err => console.log(err));
-  // };
-  // maybe add ?
-  // {this.props.selectedFood && !this.state.showFoodForm &&
-  // <EntryForm
-  //   selectedFood={this.props.selectedFood}
-  // />
-  // }
-  // {!this.props.selectedFood && this.state.showFoodForm &&
-  // <EntryForm closeFoodForm={this.closeFoodForm} />}
-  // {this.state.showExerForm && <Exercise
-  //   addExerEntry={this.addExerEntry}
-  //   closeExerEntry={this.closeExerEntry} />}
-
-  // {this.state.showFoodForm && (
-  //   <EntryForm addFoodEntry={this.addFoodEntry} selectedFood={this.props.selectedFood} />
-  // )}
   handleShowFood = () => {
     this.setState({
       showFoodForm: true,
@@ -268,7 +262,6 @@ class Dashboard extends Component {
 
   render() {
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
-    // console.log(this.props.selectedFood ? this.props.selectedFood.label : this.props.selectedFood);
     if (this.state.userType === "Super User") {
       return (
         <DashContainer>
@@ -277,7 +270,9 @@ class Dashboard extends Component {
           <DashDisplay className="container">
             <InfoCon>
               <FoodEntry foodEntries={this.state.foodEntries} />
-              <ExerciseEntry exerEntries={this.state.exerEntries} />
+              <ExerciseEntry
+                exerEntries={this.state.exerEntries}
+                deleteExerEntry={this.deleteExerEntry}/>
             </InfoCon>
 
             {this.state.showFoodForm && (
