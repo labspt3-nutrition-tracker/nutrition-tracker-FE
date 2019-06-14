@@ -108,7 +108,6 @@ class ModifiedEntryForm extends Component {
   };
 
   validate = () => {
-    // debugger;
     const errorMsg = {
       errorFood: "",
       errorCal: "",
@@ -171,9 +170,6 @@ class ModifiedEntryForm extends Component {
             proteins: this.state.newAddFood.proteins,
             edamam_id: this.state.newAddFood.edamam_id
           };
-          console.log("foodAddedToDB", foodAddedToDB);
-          console.log(this.state.newAddFood.meal_category_id);
-          console.log("servingqty", this.state.newAddFood.servingQty);
           const client = new ApolloClient({
             uri: "https://nutrition-tracker-be.herokuapp.com"
           });
@@ -313,7 +309,6 @@ class ModifiedEntryForm extends Component {
           this.setState({
             edamamExist: true
           });
-          // console.log(this.state.edamamExist)
         } else {
           this.setState({
             edamamExist: false

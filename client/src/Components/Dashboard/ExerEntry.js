@@ -37,7 +37,7 @@ class ExerEntry extends React.Component {
   }
 
   openModal = () => {
-    this.setState({ 
+    this.setState({
       showModal: true
     })
   }
@@ -54,7 +54,7 @@ class ExerEntry extends React.Component {
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
-    client 
+    client
       .mutate({
         mutation: EDIT_EXER_ENTRY,
         variables: {
@@ -62,39 +62,53 @@ class ExerEntry extends React.Component {
         }
       })
       .then(response => {
-        this.setState( { 
+        this.setState( {
           exerEntry: response.data.deleteExerciseEntry
          });
          this.closeModal()
          console.log(this.state)
         console.log(this.state.exerEntry);
       })
+  };
+
+  deleteExercise = (id) => {
+    console.log(id)
+    this.props.deleteExerEntry(id)
+    this.closeModal();
   }
 
-  deleteExerEntry = ( id, idToken) => {
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
-      headers: { authorization: idToken }
-    });
-    client
-      .mutate({
-        mutation: DELETE_EXERENTRY, 
-        variables: {id}
-      })
-      .then(response => {
-        console.log('response', response)
-        this.setState( { 
-          exerEntry: response.data.deleteExerciseEntry
-         });
-         this.closeModal()
-         console.log(this.state)
-        console.log(this.state.exerEntry);
-      })
-      .then(response => {
-
-      })
+  // deleteExerEntry = ( id, idToken) => {
+  //   const client = new ApolloClient({
+  //     uri: "https://nutrition-tracker-be.herokuapp.com",
+  //     headers: { authorization: idToken }
+  //   });
+  //   client
+  //     .mutate({
+  //       mutation: DELETE_EXERENTRY,
+  //       variables: {id},
+  //       updateQuery:{query: EXER_QUERY}
+  //     })
+  //
+  //     .then(response => {
+  //       console.log('response', response)
+  //       this.setState( {
+  //         exerEntry: response.data.deleteExerciseEntry
+  //        });
+  //        this.closeModal()
+  //        console.log(this.state)
+  //       console.log(this.state.exerEntry);
+  //     })
       // .then(response => {
-      //   this.setState(deleteState => { 
+      //   client
+      //     .query({
+      //       query: EXER_QUERY,
+      //       variables: {
+      //         userId: this.state.currentUser
+      //       };
+      //     });
+      //   })
+      // .then(response => {
+      //   this.setState(deleteState => {
       //     let deleteEntry = deleteState.exerEntries.filter ( i =>
       //       i.id !== id ? response.data.deleteExerciseEntry : null
       //     );
@@ -105,8 +119,8 @@ class ExerEntry extends React.Component {
       //   console.log(this.state.exerEntry);
       //   console.log(response.data.deleteExerciseEntry)
       // })
-      .catch(err => console.log(err));
-  }
+  //     .catch(err => console.log(err));
+  // }
 
   getCurrentUser = idToken => {
     const client = new ApolloClient({
@@ -160,12 +174,10 @@ class ExerEntry extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.exerEntries !== this.props.exerEntries) {
       this.setState({ exerEntries: this.props.exerEntries, exerEntry: this.props.exerEntry });
-
     }
-    
   }
 
-  
+
 
   render() {
 //     let exerciseId = this.props;
@@ -178,7 +190,7 @@ class ExerEntry extends React.Component {
 //       exerciseName = editExercise.exerciseName;
 //       caloriesBurned = editExercise.caloriesBurned;
 //       // id = editExercise.id;
-//     } 
+//     }
 //     console.log("this.props", this.props)
 
 
@@ -210,28 +222,28 @@ class ExerEntry extends React.Component {
 
                   <div>Activity: {entry.exerciseName}</div>
                   <div>Calories burned: {entry.caloriesBurned}</div>
-             
+
                 </ExerciseActivity>
-                
+
               </div>
             </div>
           ))}
         <ExerciseModal
          isOpen={this.state.showModal}
-         itemOpen={this.state.foodEntries}    
+         itemOpen={this.state.foodEntries}
          >
-           {this.state.exerEntry && 
-         
+           {this.state.exerEntry &&
+
                 <ExerciseActivity key={this.state.exerEntry.id}>
                   <div>Activity: {this.state.exerEntry.exerciseName}</div>
                   <div>Calories burned: {this.state.exerEntry.caloriesBurned}</div>
-             
+
                 </ExerciseActivity>
                  }
-         
-           
+
+
          <div onClick={this.closeModal}>No?</div>
-          <div onClick={() => this.deleteExerEntry(this.state.exerEntry.id)}>Delete?</div>
+          <div onClick={() => this.deleteExercise(this.state.exerEntry.id)}>Delete?</div>
     </ExerciseModal>
         </ExerciseEntry>
       );

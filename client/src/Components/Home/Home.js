@@ -84,7 +84,7 @@ const Feature= styled.div`
 
 `;
 
-const Feature_Reverse= styled.div`
+const FeatureReverse= styled.div`
   display: flex;
   flex-direction: row-reverse;
   width: 70%;
@@ -146,13 +146,13 @@ const Home = () => (
             </FeatureInfo>
           </Feature>
 
-          <Feature_Reverse>
+          <FeatureReverse>
             <FeatureImg src={require("../../Assets/custom_reports.png")} />
             <FeatureInfo>
               <h2> Custom Reports</h2>
               <p> See your progress with our customer reports. Whether your goal is to keep track of your nutrients or just a calory count, we have it all for you.</p>
             </FeatureInfo>
-          </Feature_Reverse>
+          </FeatureReverse>
 
           <Feature>
             <FeatureImg alt="photo by bruce mars - unsplash @brucemars" src={require("../../Assets/trainer.jpeg")} />
