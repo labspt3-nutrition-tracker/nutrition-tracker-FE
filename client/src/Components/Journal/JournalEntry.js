@@ -130,7 +130,6 @@ class JournalEntry extends React.Component {
   editMealEntry = e => {
     e.preventDefault()
 
-    console.log(this.state.currentUser)
     const foodEntry = {
         id: this.state.mealEntry.id,
         date: this.state.mealEntry.date,
@@ -461,7 +460,77 @@ class JournalEntry extends React.Component {
             [...Snack].map( snack => {
               return (
                 <div key={snack.id}>
-                  <EntryItems> {snack.food_id.foodName}</EntryItems>
+                  <EntryItems>
+                    {snack.food_id.foodName}
+                  </EntryItems>
+
+                  {this.state.mealEntry &&
+                    <MealModal isOpen={this.state.showModal}>
+                      <div>
+                        <Button onClick={this.closeModal}>
+                          exit
+                        </Button>
+                      </div>
+                      <div>
+                        {this.state.mealEntry.food_id.foodName}
+                      </div>
+                      <div>
+                        <TextField
+                          id="Serving Quantity"
+                          name="servingQty"
+                          label="Serving Quantity"
+                          placeholder={`${this.state.mealEntry.servingQty}`}
+                          value={this.state.servingQty}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Calories Per Serving"
+                          name="caloriesPerServ"
+                          label="Calories Per Serving"
+                          placeholder={`${this.state.mealEntry.food_id.caloriesPerServ}`}
+                          value={this.state.caloriesPerServ}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Protein"
+                          name="proteins"
+                          label="Protein"
+                          placeholder={`${this.state.mealEntry.food_id.proteins}`}
+                          value={this.state.proteins}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Carbs"
+                          name="carbs"
+                          label="Carbs"
+                          placeholder={`${this.state.mealEntry.food_id.carbs}`}
+                          value={this.state.carbs}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Fats"
+                          name="fats"
+                          label="Fats"
+                          placeholder={`${this.state.mealEntry.food_id.fats}`}
+                          value={this.state.fats}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div>
+                        <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
+                          Delete
+                        </Button>
+                        <Button onClick={this.editMealEntry} variant='contained' color='primary'>
+                          Edit
+                        </Button>
+                      </div>
+                    </MealModal>
+                  }
                 </div>
               );
             })
