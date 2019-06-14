@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+// import { Query } from "react-apollo";
 import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
 import { GET_ALL_FOOD } from "../../graphql/queries";
@@ -10,11 +11,16 @@ const Form = styled.form`
   flex-direction: column;
   width: 30%;
   padding: 20px;
+
   h1{
     font-size: 1.5em;
     font-weight: bold;
     padding-bottom: 30px;
     text-align: center;
+    color: blue;
+  }
+
+  h3{
     color: blue;
   }
 `;
@@ -34,7 +40,7 @@ const GET_CURRENT = gql`
   }
 `;
 
-class EntryForm extends Component {
+class ModifiedEntryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -119,16 +125,6 @@ class EntryForm extends Component {
               servingQty: this.state.newAddFood.servingQty,
               meal_category_id: parseInt(this.state.newAddFood.meal_category_id)
             };
-            // client
-            //   .mutate({
-            //     mutation: ADD_FOOD_ENTRY,
-            //     variables: {
-            //       input: entryAddedToDB
-            //     }
-            //   })
-            //   .then(response => {
-            //     console.log(response);
-            //   });
             this.props.addFoodEntry(entryAddedToDB)
             this.setState({
               errors: [],
@@ -191,13 +187,6 @@ class EntryForm extends Component {
             servingQty: this.state.newAddFood.servingQty,
             meal_category_id: parseInt(this.state.newAddFood.meal_category_id)
           };
-          // client
-          //   .mutate({
-          //     mutation: ADD_FOOD_ENTRY,
-          //     variables: {
-          //       input: entryAddedToDB
-          //     }
-          //   })
           this.props.addFoodEntry(entryAddedToDB)
           this.setState({
             errors: [],
@@ -214,52 +203,30 @@ class EntryForm extends Component {
               servingQty: null
             }
           });
-            // .then(response => {
-            //   console.log(response);
-            //   this.setState({
-            //     errors: [],
-            //     edamamExist: false,
-            //     newAddFood: {
-            //       foodName: "",
-            //       caloriesPerServ: null,
-            //       fats: null,
-            //       carbs: null,
-            //       proteins: null,
-            //       edamam_id: null,
-            //       meal_category_id: null,
-            //       date: "",
-            //       servingQty: null
-            //     }
-            //   });
-            // });
-
-          // console.log("response:", response);
-          // console.log("currentUser:", this.state.newAddFood.user_id);
-          // console.log("mealCategory:", this.state.newAddFood.meal_category_id);
-          })
-          .catch(err =>{
-            this.setState({
-                errors: [],
-                edamamExist: false,
-                newAddFood: {
-                  foodName: "",
-                  caloriesPerServ: null,
-                  fats: null,
-                  carbs: null,
-                  proteins: null,
-                  edamam_id: null,
-                  meal_category_id: null,
-                  date: "",
-                  servingQty: null
-                }
-            });
-              console.error(err)
-            }
-          )
-
+          this.props.revertToNormalForm();
+        })
+        .catch(err =>{
+          this.setState({
+            errors: [],
+            edamamExist: false,
+            newAddFood: {
+            foodName: "",
+            caloriesPerServ: null,
+            fats: null,
+            carbs: null,
+            proteins: null,
+            edamam_id: null,
+            meal_category_id: null,
+            date: "",
+            servingQty: null
+        }
+      });
+      console.error(err)
     }
+  )
 
-  };
+  }
+};
 
   edamamExistCheck = edamam_id => {
 
@@ -369,22 +336,14 @@ class EntryForm extends Component {
     this.getCurrentUser(localStorage.getItem("token"));
     return (
       <Form>
-        <h1> Add food entry</h1>
+        <h1>Modified Food Entry</h1>
         {this.state.errors
           ? this.state.errors.map(error => {
               return <Error key={error}>{error}</Error>
             })
           : null}
         <label htmlFor="foodName">Food</label>
-        <input
-          className="form-field"
-          type="text"
-          placeholder="Add food here..."
-          onChange={this.onInputChange}
-          name="foodName"
-          value={this.state.newAddFood.foodName}
-          required
-        />
+        <h3>{this.state.newAddFood.foodName}</h3>
         <label htmlFor="meal_category_id">Meal Category</label>
         <select
           required
@@ -409,40 +368,14 @@ class EntryForm extends Component {
         />
 
         <label htmlFor="caloriesPerServ">Calories per serving</label>
-        <input
-          className="form-field"
-          type="number"
-          name="caloriesPerServ"
-          onChange={this.onInputChange}
-          value={this.state.newAddFood.caloriesPerServ ? this.state.newAddFood.caloriesPerServ : ''}
-        />
+        <h3>{this.state.newAddFood.caloriesPerServ? this.state.newAddFood.caloriesPerServ.toFixed(2) : 0}</h3>
 
         <label htmlFor="proteins">Grams of Protein per Serving</label>
-        <input
-          className="form-field"
-          type="number"
-          name="proteins"
-          onChange={this.onInputChange}
-          value={this.state.newAddFood.proteins ? this.state.newAddFood.proteins: ''}
-        />
+        <h3>{this.state.newAddFood.proteins ? this.state.newAddFood.proteins.toFixed(2): 0}</h3>
         <label htmlFor="carbs">Grams of Carbs per Serving</label>
-
-        <input
-          className="form-field"
-          type="number"
-          name="carbs"
-          onChange={this.onInputChange}
-          value={this.state.newAddFood.carbs ? this.state.newAddFood.carbs : ''}
-        />
+        <h3> {this.state.newAddFood.carbs ? this.state.newAddFood.carbs.toFixed(2) : 0}</h3>
         <label htmlFor="fats">Grams of Fat per Serving</label>
-
-        <input
-          className="form-field"
-          type="number"
-          name="fats"
-          onChange={this.onInputChange}
-          value={this.state.newAddFood.fats ? this.state.newAddFood.fats : ''}
-        />
+        <h3>{this.state.newAddFood.fats ? this.state.newAddFood.fats.toFixed(2) : ''}</h3>
         <label htmlFor="date">Date</label>
         <input
           className="form-field"
@@ -453,13 +386,15 @@ class EntryForm extends Component {
         <button
           className="form-field"
           type="submit"
-          onClick={this.onEntrySubmit}
-        >
+          onClick={this.onEntrySubmit}>
           Add Entry
+        </button>
+        <button onClick={this.props.handleShowFood}>
+          I'll add my own entry
         </button>
       </Form>
     );
   }
 }
 
-export default EntryForm;
+export default ModifiedEntryForm

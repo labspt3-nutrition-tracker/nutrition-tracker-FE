@@ -1,208 +1,136 @@
 import React from "react";
-import Header from "../Reusables/Header";
-import BillingPlans from "./BillingPlans";
-import { Link } from 'react-router-dom';
-// import Modal from 'react-modal';
-import styled from "styled-components";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles/index";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import { gql } from "apollo-boost";
+import { Mutation } from "react-apollo";
+import StripeCheckout from 'react-stripe-checkout';
+import BillingHistory from './BillingHistory';
+import ApolloClient from "apollo-boost";
+import moment from 'moment';
 
-
-// const styles = theme => ({
-//   root: {
-//     padding: theme.spacing.unit * 4,
-//     margin: 'auto',
-//     maxWidth: 500,
-//     background: "#FCFCFB",
-//     display: "flex",
-//     justifyContent: "center",
-//     alignContent: "center"
-//   }
-
-// });
-
-const BillingContainer = styled.div`
-  background: #fcfcfb;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  height: 100vh;
+const createSubscriptionMutation = gql`
+  mutation createSubscriptionMutation($source: String!, $email: String!){
+    createSubscription(source: $source, email: $email){
+      id
+    }
+  }
 `;
 
-const BillingSubmitButton = withStyles({
-  root: {
-    color: "#FCFCFB",
-    backgroundColor: "#F4B4C3",
-    width: "200px",
-    height: 90,
-    "&:hover": {
-      backgroundColor: "#dba2af"
+const getRecentBillingQuery  = gql`
+  query getRecentBilling($id: ID!){
+    getRecentBilling(id: $id){
+      date
     }
   }
-})(Button);
+`;
 
-const BillingCheckLabel = withStyles({
-  root: {
-    color: "#3685B5",
-    "&$checked": {
-      color: "#3685B5"
+const GET_CURRENT = gql`
+  query getCurrentUser {
+    getCurrentUser {
+      id
+      email
     }
-  },
-  checked: {}
-});
+  }
+`;
 
-class Billing extends React.Component {
-  constructor(props) {
+class Billing extends React.Component{
+  constructor(props){
     super(props);
     this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      creditCardNumber: "",
-      expiration: "",
-      cvv: "",
-      showModal: false,
-      subscriptionType: "",
-      checkedLabel: false,
-      checkedDummy: false
-    };
+      subscriptionLapse: "",
+      premiumCurrent: false
+    }
+  }
+  componentDidMount(){
+    this.getCurrentUser(localStorage.getItem("token"))
+  }
+  getCurrentUser = idToken => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    client
+      .query({
+        query: GET_CURRENT
+      })
+      .then(response => {
+        this.getRecentBilling(response.data.getCurrentUser.id)
+      })
+      .catch(err => console.log(err));
+  };
+
+  getRecentBilling = id => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    });
+
+    client
+      .query({
+        query: getRecentBillingQuery,
+        variables: {
+          id: id
+        }
+      })
+      .then(response => {
+        this.getDates(response.data.getRecentBilling.date)
+      })
+      .catch(err => console.log(err))
   }
 
-  // componentDidMount() {
+  getDates = date => {
+    const lastCycle = moment(date).format();
+    const today = moment();
+    const thirtyDays = moment(lastCycle).add(30, 'days').format('ddd MMMM D YYYY')
 
-  // }
+    if(today.diff(lastCycle, 'days') < 30){
+      this.setState({
+        subscriptionLapse: thirtyDays,
+        premiumCurrent: !this.state.premiumCurrent
+      })
+    }else{
+      this.setState({
+        premiumCurrent: !this.state.premiumCurrent
+      })
+    }
 
-
-  // openModal = () => {
-  //   this.setState({ showModal: true});
-  // }
-
-  // // Close out the modal / say no paying for super user account
-  // closeModal = () => {
-  //   this.setState({ showModal: false});
-  // }
-
-  // handleModal = () => {
-  //   this.setState({ showModal: false})
-  // }
-
-  handleChange = input => e => {
-    this.setState({ [input]: e.target.value });
-    console.log(e.target.value);
   };
 
-  handleSubmit = e => {
-    console.log(e);
-    e.preventDefault();
-    // const { firstName, lastName, email } = this.state;
-  };
 
-  render(props) {
-    const { classes } = this.props;
-    return (
+
+  render(){
+    return(
       <div>
-           <Header />
-           {/* <BillingPlans /> */}
-    <div className="BillingModal"
-    isOpen={this.state.showModal}
-    >
-      <BillingContainer>
-        <button><Link to="/billing-plan">Close</Link></button>
-        <Grid
-          container
-          spacing={8}
-          lg={8}
-          direction="row"
-          justify="center"
-          alignItems="center"
-        >
-          <form onSubmit={this.handleSubmit}>
-            <input
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              onChange={this.handleChange("firstName")}
-              value={this.state.firstName}
+        <div>
+          <p>{this.state.premiumCurrent ? "Premium":"Basic"} User</p>
+          {
+            this.state.subscriptionLapse.length > 1 ? (
+              <p>Current Until: {this.state.subscriptionLapse}</p>
+            ) : (null)
+          }
+        </div>
+        <Mutation mutation={createSubscriptionMutation}>
+          {mutation => (
+            <StripeCheckout
+              amount={700}
+              billingAddress
+              description="Become a Super User!"
+              locale="auto"
+              name="NutritionTrkr"
+              stripeKey="pk_test_Pq1dd4riM4hc3cc35SbfPQxk00HJAoDPfA"
+              token={async token => {
+                const response = await mutation({
+                  variables: {source: token.id,
+                  email: token.email}
+                });
+                console.log(response)
+              }}
+              zipcode
             />
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              onChange={this.handleChange("lastName")}
-              value={this.state.lastName}
-            />
-            <input
-              type="text"
-              name="email"
-              placeholder="Email"
-              onChange={this.handleChange("email")}
-              value={this.state.email}
-            />
-            <input
-              type="text"
-              name="creditCardNumber"
-              placeholder="CC#"
-              onChange={this.handleChange("creditCardNumber")}
-              value={this.state.creditCardNumber}
-            />
-            <input
-              type="text"
-              name="expiration"
-              placeholder="Expiration Date"
-              onChange={this.handleChange("expiration")}
-              value={this.state.expiration}
-            />
-            <input
-              type="text"
-              name="cvv"
-              placeholder="cvv"
-              onChange={this.handleChange("cvv")}
-              value={this.state.cvv}
-            />
-            <label>
-              <input
-                name="checkedDummy"
-                type="checkbox"
-                checked={this.state.icheckedDummy}
-                onChange={this.handleChange}
-              />
-              monthly subscription - $ 5.99
-            </label>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name={this.state.checkedLabel}
-                  //   type='checkbox'
-                  onChange={this.handleChange("checkedLabel")}
-                  value={this.state.checkedLabel}
-                  classes={{
-                    root: classes.root,
-                    checked: classes.checked
-                  }}
-                />
-              }
-              label="1 Year Subscription - $9.99"
-            />
-          </form>
-          <BillingSubmitButton variant="contained" type="submit" size="large">
-            Buy Now
-          </BillingSubmitButton>
-        </Grid>
-      </BillingContainer>
+          )}
+        </Mutation>
+        <BillingHistory/>
       </div>
-      </div>
-    );
+    )
   }
 }
 
-Billing.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(BillingCheckLabel)(Billing);
+export default Billing;
