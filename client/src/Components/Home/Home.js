@@ -80,6 +80,9 @@ const Feature = styled.div`
   justify-content: space-around;
   padding-bottom: 50px;
   align-items: center;
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 const Feature_Reverse = styled.div`
@@ -89,6 +92,9 @@ const Feature_Reverse = styled.div`
   justify-content: space-around;
   padding-bottom: 50px;
   align-items: center;
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 const FeatureImg = styled.img`
@@ -98,6 +104,10 @@ const FeatureImg = styled.img`
 const FeatureInfo = styled.div`
   width: 50%;
   padding: 20px;
+  @media (max-width: 500px) {
+    width: 100%;
+    text-align: center;
+  }
   h2 {
     color: #2c363f;
     font-size: 1.4em;
@@ -112,6 +122,9 @@ const FeatureInfo = styled.div`
 
 const ImgCon = styled.div`
   max-width: 50%;
+  @media (max-width: 500px) {
+    max-width: 100%;
+  }
 `
 
 const Home = () => (
