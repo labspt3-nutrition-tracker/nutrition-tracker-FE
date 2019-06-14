@@ -9,6 +9,7 @@ import gql from "graphql-tag";
 import "@fullcalendar/core/main.css";
 
 import { getCurrentUser } from "../../util/getCurrentUser";
+import ApolloClient from "apollo-boost";
 
 const JournalContainer = styled.div`
   margin: 3%;
@@ -43,6 +44,47 @@ const CalendarDiv = styled.div`
   }
 `;
 
+const DELETE_MEAL = gql`
+  mutation deleteFoodEntry($id: ID!){
+    deleteFoodEntry(id: $id)
+  }
+`;
+
+const  UPDATE_MEAL = gql`
+  mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!){
+    updateFoodEntry(id: $id, input: $input ){
+      id
+      date
+      food_id
+      user_id
+      servingQty
+      meal_category_id
+    }
+  }
+`;
+
+const FOODENTRYQUERY = gql`
+  query getFoodEntry($userId: ID!){
+    getFoodEntriesByUserId(userId: $userId){
+      id
+      date
+      servingQty
+      food_id{
+        id
+        foodName
+        caloriesPerServ
+        fats
+        proteins
+        carbs
+      }
+      meal_category_id{
+        id
+        mealCategoryName
+      }
+    }
+  }
+`;
+
 class Journal extends React.Component {
   constructor(props) {
     super(props);
@@ -70,6 +112,47 @@ class Journal extends React.Component {
     }
   };
 
+  deleteMealEntry = id => {
+    console.log(id)
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    });
+
+    client
+      .mutate({
+        mutation: DELETE_MEAL,
+        variables: {id}
+      })
+      .then( response => {
+        console.log(response)
+      })
+      .then( response => {
+        client
+          .query({
+            query: FOODENTRYQUERY,
+            variables: {
+              userId: this.state.currentUser
+            }
+          })
+      })
+      .catch(err => console.log(err));
+  }
+
+  editMealEntry = (id, foodEntry) => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    })
+
+    client
+      .mutate({
+        mutation: UPDATE_MEAL,
+        variables: {
+          id,
+          input: foodEntry
+        }
+      })
+  }
+
   render() {
     const FOODENTRYQUERY = gql`
       query{
@@ -91,8 +174,7 @@ class Journal extends React.Component {
           }
         }
       }
-    `;
-
+`;
     return (
       <div>
         <Query query={FOODENTRYQUERY}>
@@ -105,7 +187,7 @@ class Journal extends React.Component {
             return (
               <JournalContainer>
                 <JournalEntryDiv>
-                  <JournalEntry foodEntries={foodEntries} datePicked={this.state.datePicked} />
+                  <JournalEntry foodEntries={foodEntries} datePicked={this.state.datePicked} deleteMeal={this.deleteMealEntry} />
                 </JournalEntryDiv>
                 <CalendarDiv>
                   <Calendar datePicked={this.state.datePicked} handleDateClick={this.handleDateClick} />

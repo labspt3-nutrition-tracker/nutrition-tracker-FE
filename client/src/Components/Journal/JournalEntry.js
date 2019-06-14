@@ -118,6 +118,13 @@ class JournalEntry extends React.Component {
     });
   };
 
+  deleteMealEntry = e => {
+    e.preventDefault();
+    this.props.deleteMeal(this.state.mealEntry.id)
+
+    this.closeModal()
+  }
+
   componentDidMount(){
   }
 
@@ -226,7 +233,7 @@ class JournalEntry extends React.Component {
                         />
                       </form>
                       <div>
-                        <Button variant='contained' color='secondary'>
+                        <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
                           Delete
                         </Button>
                         <Button variant='contained' color='primary'>
@@ -309,7 +316,7 @@ class JournalEntry extends React.Component {
                           />
                         </div>
                         <div>
-                          <Button variant='contained' color='secondary'>
+                          <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
                             Delete
                           </Button>
                           <Button variant='contained' color='primary'>
@@ -392,7 +399,7 @@ class JournalEntry extends React.Component {
                           />
                         </div>
                         <div>
-                          <Button variant='contained' color='secondary'>
+                          <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
                             Delete
                           </Button>
                           <Button variant='contained' color='primary'>
