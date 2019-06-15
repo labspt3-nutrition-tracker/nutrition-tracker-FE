@@ -1,8 +1,10 @@
 import React from "react";
-import Login from "./Components/Auth/Login";
-import "./App.css";
-import Header from "./Components/Reusables/Header";
 import { Route, withRouter, Redirect } from "react-router-dom";
+import axios from "axios";
+
+import "./App.css";
+import Login from "./Components/Auth/Login";
+import Header from "./Components/Reusables/Header";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Journal from "./Components/Journal/Journal";
 import Home from "./Components/Home/Home";
@@ -13,8 +15,7 @@ import AccountNav from "./Components/AccountNav";
 import BillingPlans from "./Components/Billing/BillingPlans";
 import AppModal from "./Components/Reusables/AppModal";
 import Footer from "./Components/Reusables/Footer";
-import axios from "axios";
-
+import PDFReport from "./Components/PDFReport";
 import { getCurrentUser } from "./util/getCurrentUser";
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;

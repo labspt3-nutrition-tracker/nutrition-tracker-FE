@@ -1,5 +1,4 @@
 import React from "react";
-import { GraphQLClient } from "graphql-request";
 import ApolloClient from "apollo-boost";
 import * as moment from "moment";
 import Tabs from "@material-ui/core/Tabs";
@@ -8,6 +7,9 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Zoom from "@material-ui/core/Zoom";
+import { Link } from "react-router-dom";
+import { PDFViewer, PDFDownloadLink, StyleSheet } from "@react-pdf/renderer";
+import styled from "styled-components";
 
 import StatsDashboard from "./StatsDashboard";
 import OneDayStats from "./OneDayStats";
@@ -15,14 +17,13 @@ import ManyDaysStats from "./ManyDaysStats";
 import WeightStats from "./WeightStats";
 import ExerciseStats from "./ExerciseStats";
 import Accomplishments from "./Accomplishments";
+import PDFReport from "../PDFReport";
 import {
   GET_FOOD_ENTRIES_BY_USER_QUERY,
   GET_CURRENT_USER_QUERY,
   GET_WEIGHT_ENTRIES_QUERY,
   GET_EXERCISE_ENTRIES_QUERY
 } from "../../graphql/queries";
-
-const BASE_URL = "https://nutrition-tracker-be.herokuapp.com/";
 
 class StatsView extends React.Component {
   state = {
@@ -38,26 +39,19 @@ class StatsView extends React.Component {
 
   componentDidMount = async () => {
     const idToken = localStorage.getItem("token");
-    // const client = new GraphQLClient(BASE_URL, {
-    //   mode: "cors",
-    //   headers: { authorization: idToken }
-    // });
+
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
     try {
-      // const user = await client.request(GET_CURRENT_USER_QUERY);
       const user = await client.query({ query: GET_CURRENT_USER_QUERY });
       const userId = user.data.getCurrentUser.id;
       const initialWeight = user.data.getCurrentUser.weight;
       const variables = { userId };
-      // const foodEntries = await client.request(GET_FOOD_ENTRIES_BY_USER_QUERY, variables);
       const foodEntries = await client.query({ query: GET_FOOD_ENTRIES_BY_USER_QUERY, variables });
-      // const weightEntries = await client.request(GET_WEIGHT_ENTRIES_QUERY, variables);
       const weightEntries = await client.query({ query: GET_WEIGHT_ENTRIES_QUERY, variables });
-      // const exerciseEntries = await client.request(GET_EXERCISE_ENTRIES_QUERY, variables);
       const exerciseEntries = await client.query({ query: GET_EXERCISE_ENTRIES_QUERY, variables });
       this.setState({
         foodEntries: foodEntries.data.getFoodEntriesByUserId,
@@ -123,7 +117,9 @@ class StatsView extends React.Component {
                   </Tooltip>
                 )}
               </CloneProps>
+              <Tab label='PDF Report' className={classes.tab} />
             </Tabs>
+            {/* <Link to='/pdfReport'>PDF REPORT</Link> */}
           </Paper>
           {option === 0 ? (
             <>
@@ -152,13 +148,28 @@ class StatsView extends React.Component {
             </>
           ) : (
             <>
-              {currentUser.userType !== "basic" && (
-                <Accomplishments
-                  currentUser={currentUser}
-                  foodEntries={foodEntries}
-                  weightEntries={weightEntries}
-                  exerciseEntries={exerciseEntries}
-                />
+              {option === 1 ? (
+                <>
+                  {currentUser.userType !== "basic" && (
+                    <Accomplishments
+                      currentUser={currentUser}
+                      foodEntries={foodEntries}
+                      weightEntries={weightEntries}
+                      exerciseEntries={exerciseEntries}
+                    />
+                  )}
+                </>
+              ) : (
+                <>
+                  <PDFLink>
+                    <PDFDownloadLink document={<PDFReport />} fileName='report.pdf' style={PDFstyles.link}>
+                      {({ blob, url, loading, error }) => (loading ? "Loading document..." : "Download PDF Report")}
+                    </PDFDownloadLink>
+                  </PDFLink>
+                  <PDFViewer style={PDFstyles.document}>
+                    <PDFReport />
+                  </PDFViewer>
+                </>
               )}
             </>
           )}
@@ -195,5 +206,26 @@ const styles = theme => ({
     backgroundColor: "#F4B4C3"
   }
 });
+
+const PDFstyles = StyleSheet.create({
+  document: {
+    width: "100%",
+    height: "100vh"
+  },
+  link: {
+    textDecoration: "none",
+    fontSize: "1.5rem",
+    color: "white",
+    backgroundColor: "#F4B4C3",
+    border: "1px solid #F4B4C3",
+    padding: "5px 15px"
+  }
+});
+
+const PDFLink = styled.div`
+  margin: 15px auto;
+  text-align: center;
+  font-family: "Oxygen";
+`;
 
 export default withStyles(styles)(StatsView);
