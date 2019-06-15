@@ -222,24 +222,22 @@ class FoodEntry extends React.Component {
             isOpen={this.state.showModal}>
             { this.props.foodEntry && this.props.foodEntry.food_id &&
             <div>
-              <h2> {this.props.foodEntry.food_id.foodName}</h2>
-              <h3> {this.props.foodEntry.servingQty}</h3>
-                <Form>
-                  <h1> Add food entry</h1>
-                  <TextField
-                    required
-                    error={this.state.errorMsg.errorFood}
-                    autoFocus
-                    margin="dense"
-                    label="Food"
-                    className="form-field"
-                    type="text"
-                    placeholder="Add food here..."
-                    onChange={this.props.onFoodChange}
-                    name="foodName"
-                    value={this.props.foodEntry.food_id.foodName}
-                    aria-describedby="errorFood-text"
-                  />
+              <Form>
+                <h1> Edit food entry</h1>
+                <TextField
+                  required
+                  error={this.state.errorMsg.errorFood}
+                  autoFocus
+                  margin="dense"
+                  label="Food"
+                  className="form-field"
+                  type="text"
+                  placeholder="Add food here..."
+                  onChange={this.props.onFoodChange}
+                  name="foodName"
+                  value={this.props.foodEntry.food_id.foodName}
+                  aria-describedby="errorFood-text"
+                />  
               </Form>
             </div>}
               <ModalButton onClick={this.closeModal}>No?</ModalButton>
