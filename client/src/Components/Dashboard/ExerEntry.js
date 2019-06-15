@@ -247,7 +247,7 @@ class ExerEntry extends React.Component {
   {this.state.errorMsg.errorCal}
 </FormHelperText>
 
-<Button className="form-field" type="submit" onClick={() => this.editExerciseEntry(this.props.exerEntry)}>
+<Button className="form-field" type="submit" onClick={() => this.editExerciseEntry(this.props.exerEntry.id)}>
   Edit Entry
 </Button>
 </Form>
