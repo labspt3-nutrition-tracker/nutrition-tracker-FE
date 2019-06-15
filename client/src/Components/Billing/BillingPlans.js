@@ -117,7 +117,7 @@ function Pricing(props) {
           </Typography>
         </div>
         {/* End hero unit */}
-        <Grid container spacing={40} alignItems="flex-end">
+        <Grid container spacing={40} alignItems="flex-end" justify="center">
           {tiers.map(tier => (
             // Enterprise card is full width at sm breakpoint
             <Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>

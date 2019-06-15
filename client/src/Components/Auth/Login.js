@@ -1,10 +1,11 @@
 import React from "react";
-import LoginForm from "./LoginForm";
 import { Redirect } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
+import FacebookLogin from "react-facebook-login";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 
+import LoginForm from "./LoginForm";
 import { ADD_USER_MUTATION } from "../../graphql/mutations";
 import { USER_EXIST_QUERY } from "../../graphql/queries";
 
@@ -40,6 +41,15 @@ const FormContainer = styled.div`
   width: 60%;
 `;
 
+const FacebookBtn = styled.div`
+  button {
+    margin-top: 20px;
+    padding: 9px;
+    font-size: 1.2rem;
+    height: 47px;
+  }
+`;
+
 class LoginOrRegister extends React.Component {
   constructor(props) {
     super(props);
@@ -51,11 +61,31 @@ class LoginOrRegister extends React.Component {
       email: ""
     };
   }
-  onSuccess = async googleUser => {
-    const email = googleUser.profileObj.email;
-    const lastName = googleUser.profileObj.familyName;
-    const firstName = googleUser.profileObj.givenName;
-    const idToken = googleUser.getAuthResponse().id_token;
+  onSuccess = googleUser => {
+    this.loginUser(googleUser, "google");
+  };
+
+  responseFacebook = response => {
+    console.log(response);
+    this.loginUser(response, "facebook");
+  };
+
+  loginUser = async (userInfo, auth) => {
+    let email, lastName, firstName, idToken;
+    if (auth === "google") {
+      email = userInfo.profileObj.email;
+      lastName = userInfo.profileObj.familyName;
+      firstName = userInfo.profileObj.givenName;
+      idToken = userInfo.getAuthResponse().id_token;
+    } else if (auth === "facebook") {
+      email = userInfo.email;
+      const name = userInfo.name.split(" ");
+      lastName = name.pop();
+      firstName = name.join(" ");
+      idToken = userInfo.accessToken;
+      //testing authenticating the token with fb
+      console.log("userID: ", userInfo.userID);
+    }
     localStorage.setItem("token", idToken);
 
     const client = new ApolloClient({
@@ -131,13 +161,24 @@ class LoginOrRegister extends React.Component {
               {this.state.checkExistence ? (
                 <LoginForm addUser={this.createUser} handleChange={this.handleChange} props={this.state} />
               ) : (
-                <GoogleLogin
-                  style={{ height: 10 }}
-                  clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
-                  onSuccess={this.onSuccess}
-                  onFailure={this.onFailure}
-                  theme='dark'
-                />
+                <>
+                  <GoogleLogin
+                    style={{ height: 10 }}
+                    clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
+                    onSuccess={this.onSuccess}
+                    onFailure={this.onFailure}
+                    theme='dark'
+                  />
+                  {/* <FacebookBtn>
+                    <FacebookLogin
+                      appId='390080238272158'
+                      // autoLoad={true}
+                      fields='name,email'
+                      callback={this.responseFacebook}
+                      icon='fa-facebook'
+                    />
+                  </FacebookBtn> */}
+                </>
               )}
             </div>
           </LoginOrRegisterForm>

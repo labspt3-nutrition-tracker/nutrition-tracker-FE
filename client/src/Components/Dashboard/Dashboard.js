@@ -9,8 +9,33 @@ import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import moment from "moment";
 import gql from "graphql-tag";
-import { ADD_EXERENTRY, ADD_FOOD_ENTRY, DELETE_EXERENTRY, EDIT_EXER_ENTRY, DELETE_FOOD_ENTRY } from "../../graphql/mutations";
-import { EXER_QUERY, GET_CURRENT_USERID, GET_EXERCISE_ENTRIES_QUERY, FOODENTRYQUERY} from "../../graphql/queries";
+import Card from "@material-ui/core/Card";
+
+import {
+  ADD_EXERENTRY,
+  ADD_FOOD_ENTRY,
+  DELETE_EXERENTRY,
+  EDIT_EXER_ENTRY, 
+  DELETE_FOOD_ENTRY
+} from "../../graphql/mutations";
+import {
+  EXER_QUERY,
+  GET_CURRENT_USERID,
+  GET_EXERCISE_ENTRIES_QUERY
+} from "../../graphql/queries";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+  root: {
+    maxWidth: 960,
+    width: "100%"
+  },
+  forms: {
+    display: "flex"
+  }
+});
 
 const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
   query($userId: ID!) {
@@ -140,7 +165,6 @@ class Dashboard extends Component {
         })
         .catch(err => console.log(err));
     }
-
   }
 
   addFoodEntry = newFoodEntry => {
@@ -241,7 +265,7 @@ class Dashboard extends Component {
           e.target.type === "number" ? parseInt(e.target.value) : e.target.value
       }
     });
-    console.log("exerentry change",this.state.exerEntry)
+    console.log("exerentry change", this.state.exerEntry);
   };
 
   editExerEntry = ( editId, editEntry, idToken) => {
@@ -291,7 +315,7 @@ class Dashboard extends Component {
 
   
 
-  deleteExerEntry = ( id, idToken) => {
+  deleteExerEntry = (id, idToken) => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
@@ -299,28 +323,28 @@ class Dashboard extends Component {
     client
       .mutate({
         mutation: DELETE_EXERENTRY,
-        variables: {id}
+        variables: { id }
       })
       .then(response => {
         client
-        .query({
-          query: GET_EXERCISE_ENTRIES_QUERY,
-          variables:{
-            userId: this.state.currentUser
-          }
-        })
-        .then(response => {
-          console.log(response);
-          console.log('this before', this.state.exerEntries)
-          this.setState({
-            exerEntry: "",
-            exerEntries: response.data.getExerciseEntriesByUserId
-           });
-           console.log('this after', this.state.exerEntries)
-        })
+          .query({
+            query: GET_EXERCISE_ENTRIES_QUERY,
+            variables: {
+              userId: this.state.currentUser
+            }
+          })
+          .then(response => {
+            console.log(response);
+            console.log("this before", this.state.exerEntries);
+            this.setState({
+              exerEntry: "",
+              exerEntries: response.data.getExerciseEntriesByUserId
+            });
+            console.log("this after", this.state.exerEntries);
+          });
       })
       .catch(err => console.log(err));
-  }
+  };
 
   handleShowFood = () => {
     this.setState({
@@ -355,11 +379,11 @@ class Dashboard extends Component {
     });
   };
 
-  passExerData = (entry) => {
+  passExerData = entry => {
     this.setState({
       exerEntry: entry
-    })
-  }
+    });
+  };
 
   passFoodData = (entry) => {
     this.setState({
@@ -369,14 +393,15 @@ class Dashboard extends Component {
 
 
   render() {
+    const { classes } = this.props;
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     if (this.state.userType === "Super User") {
       return (
-        <DashContainer>
-          <DashTitle>{currentDate}</DashTitle>
+        <Container className={classes.root}>
+          <Typography variant="h3">{currentDate}</Typography>
           <Calories />
           <DashDisplay className="container">
-            <InfoCon>
+            <Card>
               <FoodEntry 
               foodEntries={this.state.foodEntries} 
               deleteSingleFoodEntry={this.deleteSingleFoodEntry}
@@ -390,37 +415,38 @@ class Dashboard extends Component {
                 exerEntry={this.state.exerEntry}
                 editExerEntry={this.editExerEntry}
                 passExerData={this.passExerData}
+              />
+            </Card>
+            <Card className={classes.forms}>
+              {this.state.showFoodForm && (
+                <EntryForm
+                  addFoodEntry={this.addFoodEntry}
+                  closeFoodForm={this.closeFoodForm}
                 />
-            </InfoCon>
+              )}
 
-            {this.state.showFoodForm && (
-              <EntryForm
-                addFoodEntry={this.addFoodEntry}
-                closeFoodForm={this.closeFoodForm}
-              />
-            )}
+              {!this.state.showFoodForm && (
+                <ModifiedEntryForm
+                  addFoodEntry={this.addFoodEntry}
+                  selectedFood={this.props.selectedFood}
+                  handleShowFood={this.handleShowFood}
+                  revertToNormalForm={this.revertToNormalForm}
+                />
+              )}
 
-            {!this.state.showFoodForm && (
-              <ModifiedEntryForm
-                addFoodEntry={this.addFoodEntry}
-                selectedFood={this.props.selectedFood}
-                handleShowFood={this.handleShowFood}
-                revertToNormalForm={this.revertToNormalForm}
-              />
-            )}
-
-            {this.state.showExerForm && (
-              <Exercise
-                closeExerEntry={this.closeExerEntry}
-                addExerEntry={this.addExerEntry}
-              />
-            )}
+              {this.state.showExerForm && (
+                <Exercise
+                  closeExerEntry={this.closeExerEntry}
+                  addExerEntry={this.addExerEntry}
+                />
+              )}
+            </Card>
           </DashDisplay>
-        </DashContainer>
+        </Container>
       );
     } else {
       return (
-        <DashContainer>
+        <Container className={classes.root}>
           <DashTitle>{currentDate}</DashTitle>
           <Calories />
           <DashDisplay className="container">
@@ -444,30 +470,33 @@ class Dashboard extends Component {
               />
             )}
           </DashDisplay>
-        </DashContainer>
+        </Container>
       );
     }
   }
 }
 
-const DashContainer = styled.div`
-  width: 100%;
-`;
-
 const DashTitle = styled.div`
-  font-size: 3rem;
-  text-align: center;
+  /* font-size: 3rem;
+  text-align: center; */
 `;
 
 const InfoCon = styled.div`
-  display: flex;
+  /* display: flex;
   width: 40%;
+  @media (max-width: 800px) {
+    width: 100%; */
+  /* } */
 `;
 
 const DashDisplay = styled.div`
-  width: 100%;
+  /* width: 100%;
   display: flex;
   justify-content: space-around;
+  @media (max-width: 800px) {
+    flex-direction: column;
+    align-items: center;
+  } */
 `;
 
-export default Dashboard;
+export default withStyles(styles)(Dashboard);

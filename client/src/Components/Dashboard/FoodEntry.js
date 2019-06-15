@@ -2,6 +2,10 @@ import React from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+
 import { GET_CURRENT_USERID } from "../../graphql/queries";
 
 const FoodEntryContainer = styled.div`
@@ -18,11 +22,11 @@ const Meal = styled.div`
 `;
 
 const ModalButton = styled.button`
-  color: #FCFCFB;
-  background: #F4B4C3;
+  color: #fcfcfb;
+  background: #f4b4c3;
   margin-bottom: 5px;
   padding: 5px 15px;
-  font-size: .9em;
+  font-size: 0.9em;
 `;
 
 const FoodModal = styled(Modal)`
@@ -52,6 +56,16 @@ const FoodModal = styled(Modal)`
 // };
 
 Modal.setAppElement("#root");
+
+const styles = theme => ({
+  title: {
+    // flexGrow: 1,
+    fontSize: 16,
+    background: "#2C363F",
+    padding: 10,
+    color: "#ffffff",
+  },
+})
 
 class FoodEntry extends React.Component {
   constructor(props){
@@ -156,7 +170,7 @@ class FoodEntry extends React.Component {
 
   render() {
      console.log(this.props.foodEntry);
-
+     const { classes } = this.props;
     const dateToday = new Date();
     const month = dateToday.getMonth();
     const day = dateToday.getDate();
@@ -189,7 +203,9 @@ class FoodEntry extends React.Component {
     return (
       <FoodEntryContainer>
         <div>
-          <div>Today's Meals:</div>
+          <CardContent>
+            <Typography className={classes.title}>Today's Summary:</Typography>
+          </CardContent>
 
           {/* {({ loading, error, data }) => {
               if (loading) return <div>Fetching Entries</div>;
@@ -245,7 +261,7 @@ class FoodEntry extends React.Component {
               <MealCategory>Lunch</MealCategory>
               {Lunch.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type='submit' onClick={this.openModal}>
+                  <div type="submit" onClick={this.openModal}>
                     <div key={entry.id}>{entry.food_id.foodName}</div>
                   </div>
                 </div>
@@ -255,7 +271,7 @@ class FoodEntry extends React.Component {
               <MealCategory>Dinner</MealCategory>
               {Dinner.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type='submit' onClick={this.openModal}>
+                  <div type="submit" onClick={this.openModal}>
                     <div key={entry.id}>{entry.food_id.foodName}</div>
                   </div>
                 </div>
@@ -265,7 +281,7 @@ class FoodEntry extends React.Component {
               <MealCategory>Snack</MealCategory>
               {Snack.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type='submit' onClick={this.openModal}>
+                  <div type="submit" onClick={this.openModal}>
                     <div key={entry.id}>{entry.food_id.foodName}</div>
                     {/* <div type="submit" onClick={this.openModal}>edit</div> */}
                   </div>
@@ -296,4 +312,4 @@ class FoodEntry extends React.Component {
   }
 }
 
-export default FoodEntry;
+export default withStyles(styles)(FoodEntry);

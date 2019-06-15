@@ -10,14 +10,17 @@ import { NavLink } from "react-router-dom";
 const LogoContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  align-self: flex-end;
-
-
+  align-items: center;
+  padding-top: 20px;
 `;
+
 const Logo = styled.div`
-  max-width: 100px;
+  max-width: 300px;
+  width: 100%;
   padding-left: 24px;
+  img {
+    width: 100%;
+  }
 `;
 
 const LogInOutContainer = styled.div`

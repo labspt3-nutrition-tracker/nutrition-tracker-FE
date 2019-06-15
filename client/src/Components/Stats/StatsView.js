@@ -1,5 +1,6 @@
 import React from "react";
 import { GraphQLClient } from "graphql-request";
+import ApolloClient from "apollo-boost";
 import * as moment from "moment";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -37,31 +38,40 @@ class StatsView extends React.Component {
 
   componentDidMount = async () => {
     const idToken = localStorage.getItem("token");
-    const client = new GraphQLClient(BASE_URL, {
-      mode: "cors",
+    // const client = new GraphQLClient(BASE_URL, {
+    //   mode: "cors",
+    //   headers: { authorization: idToken }
+    // });
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
+
     try {
-      const user = await client.request(GET_CURRENT_USER_QUERY);
-      const userId = user.getCurrentUser.id;
-      const initialWeight = user.getCurrentUser.weight;
+      // const user = await client.request(GET_CURRENT_USER_QUERY);
+      const user = await client.query({ query: GET_CURRENT_USER_QUERY });
+      const userId = user.data.getCurrentUser.id;
+      const initialWeight = user.data.getCurrentUser.weight;
       const variables = { userId };
-      const foodEntries = await client.request(GET_FOOD_ENTRIES_BY_USER_QUERY, variables);
-      const weightEntries = await client.request(GET_WEIGHT_ENTRIES_QUERY, variables);
-      const exerciseEntries = await client.request(GET_EXERCISE_ENTRIES_QUERY, variables);
+      // const foodEntries = await client.request(GET_FOOD_ENTRIES_BY_USER_QUERY, variables);
+      const foodEntries = await client.query({ query: GET_FOOD_ENTRIES_BY_USER_QUERY, variables });
+      // const weightEntries = await client.request(GET_WEIGHT_ENTRIES_QUERY, variables);
+      const weightEntries = await client.query({ query: GET_WEIGHT_ENTRIES_QUERY, variables });
+      // const exerciseEntries = await client.request(GET_EXERCISE_ENTRIES_QUERY, variables);
+      const exerciseEntries = await client.query({ query: GET_EXERCISE_ENTRIES_QUERY, variables });
       this.setState({
-        foodEntries: foodEntries.getFoodEntriesByUserId,
-        weightEntries: weightEntries.getWeightEntriesByUserId,
-        exerciseEntries: exerciseEntries.getExerciseEntriesByUserId,
+        foodEntries: foodEntries.data.getFoodEntriesByUserId,
+        weightEntries: weightEntries.data.getWeightEntriesByUserId,
+        exerciseEntries: exerciseEntries.data.getExerciseEntriesByUserId,
         initialWeight: initialWeight,
-        currentUser: user.getCurrentUser
+        currentUser: user.data.getCurrentUser
       });
     } catch (err) {
       console.log(err);
-      if (err.response.errors[0].message === "You must be logged in!") {
-        localStorage.removeItem("token");
-        // this.props.history.push("/login");
-      }
+      // if (err.response.errors[0].message === "You must be logged in!") {
+      //   localStorage.removeItem("token");
+      //   // this.props.history.push("/login");
+      // }
     }
   };
 

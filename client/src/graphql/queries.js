@@ -27,60 +27,37 @@ query($userId: ID!)
       mealCategoryName
     }
   }
-}
 `;
 
-export const FOODENTRYQUERY = gql`
-  query getFoodEntry($userId: ID!){
-    getFoodEntriesByUserId(userId: $userId){
+export const GET_CURRENT_USER_QUERY = gql`
+  {
+    getCurrentUser {
       id
-      date
-      servingQty
-      food_id{
-        id
-        foodName
-        caloriesPerServ
-        fats
-        proteins
-        carbs
-      }
-      meal_category_id{
-        id
-        mealCategoryName
-      }
+      username
+      firstName
+      lastName
+      email
+      userType
+      calorieGoal
+      weight
     }
   }
 `;
 
 
-export const GET_CURRENT_USER_QUERY = `
-{
-  getCurrentUser {
-    id
-    username
-    firstName
-    lastName
-    email
-    userType
-    calorieGoal
-    weight
-  }
-}
-`;
 
-export const GET_WEIGHT_ENTRIES_QUERY = `
-query($userId: ID!)
-{
-  getWeightEntriesByUserId(userId: $userId) {
-    id
-    date
-    weight
+export const GET_WEIGHT_ENTRIES_QUERY = gql`
+  query($userId: ID!) {
+    getWeightEntriesByUserId(userId: $userId) {
+      id
+      date
+      weight
+    }
   }
-}
 `;
 
 export const GET_EXERCISE_ENTRIES_QUERY = gql`
-  query getExerciseEntriesByUserId($userId: ID!){
+  query getExerciseEntriesByUserId($userId: ID!) {
     getExerciseEntriesByUserId(userId: $userId) {
       exerciseEntryDate
       exerciseName

@@ -1,33 +1,55 @@
 import React from "react";
-import styled from "styled-components";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import ApolloClient from "apollo-boost";
-import { GET_CURRENT_USERID } from "../../graphql/queries";;
+import { GET_CURRENT_USERID } from "../../graphql/queries";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { withStyles } from "@material-ui/core/styles";
 
-const CalCon = styled.div`
-  padding: 20px 0;
-  display: flex;
-  justify-content: space-evenly;
-  text-align: center;
-`;
-
-const CalTitle = styled.h3`
-  font-size: 2rem;
-  font-weight: bold;
-`;
-
-const CalAmt = styled.div`
-  font-size: 4rem;
-`;
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    background: "#3685b5"
+  },
+  title: {
+    // flexGrow: 1,
+    fontSize: 16,
+    background: "#2C363F",
+    padding: 10,
+    color: "#ffffff",
+  },
+  card: {
+    width: "100%",
+    maxWidth: 960,
+    margin: "0 auto",
+    display: "flex",
+    flexDirection: "column",
+    marginTop: 30,
+    marginBottom: 30
+  },
+  num: {
+    fontSize: 20
+  },
+  calCon: {
+    display: "flex",
+    textAlign: "center",
+    justifyContent: "center"
+  }
+});
 
 class Calories extends React.Component {
-  state = {
-    currentUser: null,
-    calGoal: 2000
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: null,
+      calGoal: 2000
+    };
+  }
 
-  componentDidMount(){
+  componentDidMount() {
     const idToken = localStorage.getItem("token");
     this.getCurrentUser(idToken);
   }
@@ -43,13 +65,14 @@ class Calories extends React.Component {
         query: GET_CURRENT_USERID
       })
       .then(response => {
-        this.setState({currentUser: response.data.getCurrentUser.id});
+        this.setState({ currentUser: response.data.getCurrentUser.id });
         // console.log(this.state.currentUser)
       })
       .catch(err => console.log(err));
   };
 
   render() {
+    const { classes } = this.props;
     const CAL_QUERY = gql`
     query {
       getFoodEntriesByUserId(userId: ${this.state.currentUser}) {
@@ -62,7 +85,7 @@ class Calories extends React.Component {
     }
     `;
     const CURRENT_USERID = gql`
-      query getCurrentUser{
+      query getCurrentUser {
         getCurrentUser {
           id
         }
@@ -105,20 +128,41 @@ class Calories extends React.Component {
                     const mealCal = 0;
                     const remainCal = calGoal - mealCal;
                     return (
-                      <CalCon>
-                        <div className="cal-current">
-                          <CalTitle>Current Calories Today</CalTitle>
-                          <CalAmt>{mealCal}</CalAmt>
-                        </div>
-                        <div className="cal-remain">
-                          <CalTitle>Remaining Calories Today</CalTitle>
-                          <CalAmt>{remainCal}</CalAmt>
-                        </div>
-                        <div className="cal-goal">
-                          <CalTitle>Daily Calorie Goal</CalTitle>
-                          <CalAmt>{calGoal}</CalAmt>
-                        </div>
-                      </CalCon>
+                      <Card className={classes.card}>
+                        <CardContent>
+                          <Typography className={classes.title}>
+                            Today's Summary:
+                          </Typography>
+                        </CardContent>
+                        <Container className={classes.calCon}>
+                          <CardContent>
+                            <Typography variant="h4">
+                              Current Calories
+                            </Typography>
+                            <Typography className={classes.num}>
+                              {mealCal}
+                            </Typography>
+                          </CardContent>
+
+                          <CardContent>
+                            <Typography variant="h4">
+                              Remaining Calories
+                            </Typography>
+                            <Typography className={classes.num}>
+                              {remainCal}
+                            </Typography>
+                          </CardContent>
+
+                          <CardContent>
+                            <Typography variant="h4">
+                              Daily Calorie Goal
+                            </Typography>
+                            <Typography className={classes.num}>
+                              {calGoal}
+                            </Typography>
+                          </CardContent>
+                        </Container>
+                      </Card>
                     );
                   } else {
                     foodEntries.map(entry =>
@@ -131,20 +175,41 @@ class Calories extends React.Component {
                     });
                     const remainCal = calGoal - mealCal;
                     return (
-                      <CalCon>
-                        <div className="cal-current">
-                          <CalTitle>Current Calories Today</CalTitle>
-                          <CalAmt>{mealCal}</CalAmt>
-                        </div>
-                        <div className="cal-remain">
-                          <CalTitle>Remaining Calories Today</CalTitle>
-                          <CalAmt>{remainCal}</CalAmt>
-                        </div>
-                        <div className="cal-goal">
-                          <CalTitle>Daily Calorie Goal</CalTitle>
-                          <CalAmt>{calGoal}</CalAmt>
-                        </div>
-                      </CalCon>
+                      <Card className={classes.card}>
+                        <CardContent>
+                          <Typography className={classes.title}>
+                            Today's Summary:
+                          </Typography>
+                        </CardContent>
+                        <Container className={classes.calCon}>
+                          <CardContent>
+                            <Typography variant="h4">
+                              Current Calories
+                            </Typography>
+                            <Typography className={classes.num}>
+                              {mealCal}
+                            </Typography>
+                          </CardContent>
+
+                          <CardContent>
+                            <Typography variant="h4">
+                              Remaining Calories
+                            </Typography>
+                            <Typography className={classes.num}>
+                              {remainCal}
+                            </Typography>
+                          </CardContent>
+
+                          <CardContent>
+                            <Typography variant="h4">
+                              Daily Calorie Goal
+                            </Typography>
+                            <Typography className={classes.num}>
+                              {calGoal}
+                            </Typography>
+                          </CardContent>
+                        </Container>
+                      </Card>
                     );
                   }
                 }}
@@ -157,4 +222,4 @@ class Calories extends React.Component {
   }
 }
 
-export default Calories;
+export default withStyles(styles)(Calories);

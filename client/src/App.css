@@ -54,9 +54,11 @@ table {
 
 
 /* Begin custom styles  */
+
 * {
   box-sizing: border-box;
 }
+
 html {
   font-size: 62.5%;
   font-family: Roboto, sans-serif;
@@ -69,18 +71,20 @@ body {
 
 
 .home {
-  min-height: 700px;
-  background: url(./Assets/healthy_food.jpg);
-	background-size: 100% 100%;
+  /* min-height: 700px; */
+	background: url(./Assets/healthy-food-lg.jpg) no-repeat;
+	/* background-size: 100% 100%; */
+	background-size: cover;
 	background-repeat: no-repeat;
   color: #000;
 
 
 }
 
-@media (max-width: 800px){
+@media (max-width: 500px){
 	.home{
-		background: none;
+		background: url(./Assets/healthy-food-sm.jpg) no-repeat;
+		background-size: cover;
 	}
 
 }

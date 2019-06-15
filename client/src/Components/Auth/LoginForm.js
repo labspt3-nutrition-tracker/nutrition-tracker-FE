@@ -84,7 +84,6 @@ class LoginForm extends React.Component {
   render() {
     const { classes } = this.props;
     const { error } = this.state;
-    console.log({ error });
     const usernameErr = error.find(err => err.field === "username");
     const caloriesGoalErr = error.find(err => err.field === "calorieGoal");
     const weightErr = error.find(err => err.field === "weight");
