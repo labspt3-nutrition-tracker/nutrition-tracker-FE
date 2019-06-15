@@ -50,16 +50,9 @@ class ExerEntry extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // currentUser: 0,
-      // exerEntries: [],
+      currentUser: "",
       showModal: false,
       exerEntry: [],
-      newExerEntry: {
-        exerciseEntryDate: "",
-        exerciseName: "",
-        caloriesBurned: "",
-        exercise_entry_user_id: 0
-      },
       errorMsg: {
         error: false,
         errorName: "",
@@ -68,6 +61,23 @@ class ExerEntry extends React.Component {
       }
     };
   }
+
+componentDidMount(){
+  const idToken = localStorage.getItem("token");
+  const client = new ApolloClient({
+    uri: "https://nutrition-tracker-be.herokuapp.com",
+    headers: { authorization: idToken }
+  });
+  client
+    .query({
+      query: GET_CURRENT_USERID
+    })
+    .then(response => {
+      this.setState({ currentUser: response.data.getCurrentUser.id });
+    })
+    .catch(error => console.log(error))
+}
+
 
   openModal = () => {
     this.setState({
@@ -80,86 +90,38 @@ class ExerEntry extends React.Component {
     this.openModal()
   }
 
-
-  // editExerEntry = (userId, exercise, idToken) => {
-  //   const client = new ApolloClient({
-  //     uri: "https://nutrition-tracker-be.herokuapp.com",
-  //     headers: { authorization: idToken }
-  //   });
-  //   client
-  //     .mutate({
-  //       mutation: EDIT_EXER_ENTRY,
-  //       variables: {
-  //        id:userId, input: exercise
-  //       }
-  //     })
-  //     .then(response => {
-  //       this.setState( {
-  //         exerEntry: response.data.
-  //        });
-  //        this.closeModal()
-  //        console.log(this.state)
-  //       console.log(this.state.exerEntry);
-  //     })
-  // };
-
   editExerciseEntry = (entry) => {
-    console.log('edit', entry)
-    this.props.editExerEntry(entry)
+    let exerEntry = {
+      exerciseEntryDate: entry.exerciseEntryDate,
+      exerciseName: entry.exerciseName,
+      caloriesBurned: entry.caloriesBurned,
+      exercise_entry_user_id: this.state.currentUser
+    }
+    this.props.editExerEntry(entry.id, exerEntry)
     this.closeModal();
   }
 
   deleteExercise = (id) => {
-    console.log(id)
     this.props.deleteExerEntry(id)
     this.closeModal();
   }
 
-  
 
   closeModal = () => {
-    console.log('modal closed')
     this.setState({ showModal: false})
   }
-  
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.exerEntries !== this.props.exerEntries) {
-      this.setState({ exerEntries: this.props.exerEntries, exerEntry: this.props.exerEntry });
-    }
-  }
-
-  // onInputChange = e => {
-  //   this.setState({
-  //     exerEntry: {
-  //       ...this.state.exerEntry,
-  //       [e.target.name]:
-  //         e.target.type === "number" ? parseInt(e.target.value) : e.target.value
-  //     }
-  //   });
-  //   console.log("exerentry change",this.state.exerEntry)
-  // };
-
 
   render() {
-
-    //  let date = moment(new Date()).format("MMMM Do YYYY");
-    //  console.log('date', date)
     const dateToday = new Date();
     const month = dateToday.getMonth();
     const day = dateToday.getDate();
     const year = dateToday.getFullYear();
     let exerEntries = this.props.exerEntries;
-    console.log(exerEntries)
     exerEntries = exerEntries.filter(entry => {
       const dateEntry = new Date(entry.exerciseEntryDate);
       const entryMonth = dateEntry.getMonth();
       const entryDay = dateEntry.getDate();
       const entryYear = dateEntry.getFullYear();
-      // let date = moment().format("ddd MMMM D YYYY");
-    //  date = entry.date
-
-    // return moment(new Date(entry.date)).format("ddd MMMM D YYYY") ===  moment(new Date(date)).format("ddd MMMM D YYYY")
       return entryMonth === month && entryDay === day && entryYear === year;
     });
     if (exerEntries.length === 0) {
@@ -185,12 +147,7 @@ class ExerEntry extends React.Component {
             </div>
           ))}
  <ExerciseModal
-         isOpen={this.state.showModal}
-        //  itemOpen={this.state.foodEntries}
-         >
-
-
-
+  isOpen={this.state.showModal}>
            {this.props.exerEntry &&
 
 <Form>
@@ -247,18 +204,11 @@ class ExerEntry extends React.Component {
   {this.state.errorMsg.errorCal}
 </FormHelperText>
 
-<Button className="form-field" type="submit" onClick={() => this.editExerciseEntry(this.props.exerEntry.id)}>
+<Button className="form-field" type="submit" onClick={() => this.editExerciseEntry(this.props.exerEntry)}>
   Edit Entry
 </Button>
 </Form>
-
-
-                // <ExerciseActivity key={this.state.exerEntry.id}>
-                //   <div>Activity: {this.state.exerEntry.exerciseName}</div>
-                //   <div>Calories burned: {this.state.exerEntry.caloriesBurned}</div>
-
-                // </ExerciseActivity>
-                 }
+}
 
 
          <ModalButton onClick={this.closeModal}>No?</ModalButton>

@@ -41,25 +41,10 @@ const FoodModal = styled(Modal)`
   background-color: white;
 `;
 
-// const customStyles = {
-//   content : {
-//     top: "50%",
-//     left: "50%",
-//     right: "auto",
-//     bottom: "auto",
-//     marginRight: "-50%",
-//     height: "50%",
-//     width: "50%",
-//     transform: "translate(-50%, -50%)",
-//     position: "absolute"
-//   }
-// };
-
 Modal.setAppElement("#root");
 
 const styles = theme => ({
   title: {
-    // flexGrow: 1,
     fontSize: 16,
     background: "#2C363F",
     padding: 10,
@@ -71,7 +56,7 @@ class FoodEntry extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      currentUser: null,
+      currentUser: "",
       foodEntries: [],
       foodEntry:[],
       showModal: false,
@@ -99,7 +84,7 @@ class FoodEntry extends React.Component {
       }
     };
   }
-  
+
 
   openModal = item => {
     this.setState({
@@ -107,7 +92,7 @@ class FoodEntry extends React.Component {
     });
   };
 
-  passFoodData = entry => {
+  passFoodEntryData = entry => {
     this.props.passFoodData(entry)
     this.openModal()
   }
@@ -117,9 +102,7 @@ class FoodEntry extends React.Component {
   };
 
   deleteFood = (id) => {
-    console.log('id', id)
-    console.log(this.props.foodEntry.food_id.id)
-     this.deleteSingleFoodEntry(id)
+    this.props.deleteFoodEntry(id)
     this.closeModal();
   }
 
@@ -130,53 +113,28 @@ class FoodEntry extends React.Component {
     }
   }
 
-  // componentDidUpdate(prevProps, prevState){
-  //   const idToken = localStorage.getItem("token");
-  //   this.getCurrentUser(idToken);
-  //   const ENTRIES_QUERY = gql`
-  //   query getFoodEntriesByUserId{
-  //     getFoodEntriesByUserId(userId: ${this.state.currentUser}) {
-  //       date
-  //       food_id {
-  //         id
-  //         foodName
-  //       }
-  //       meal_category_id {
-  //         id
-  //         mealCategoryName
-  //       }
-  //     }
-  //   }
-  // `;
-  //   console.log("componentdidMount prevProps", prevProps)
-  //   console.log("componentdidMount prevState", prevState)
-  // }
-
   getCurrentUser = idToken => {
-    // const client = new ApolloClient({
-    //   uri: "https://nutrition-tracker-be.herokuapp.com",
-    //   headers: { authorization: idToken }
-    // });
-    // client
-    //   .query({
-    //     query: GET_CURRENT_USERID
-    //   })
-    //   .then(response => {
-    //     this.setState({ currentUser: response.data.getCurrentUser.id });
-    //     console.log(this.state.currentUser);
-    //   })
-    //   .catch(err => console.log(err));
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    client
+      .query({
+        query: GET_CURRENT_USERID
+      })
+      .then(response => {
+        this.setState({ currentUser: response.data.getCurrentUser.id });
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
-     console.log(this.props.foodEntry);
-     const { classes } = this.props;
+    const { classes } = this.props;
     const dateToday = new Date();
     const month = dateToday.getMonth();
     const day = dateToday.getDate();
     const year = dateToday.getFullYear();
     let foodEntries = this.props.foodEntries;
-    console.log(foodEntries)
     foodEntries = foodEntries.filter(entry => {
       const dateEntry = new Date(entry.date);
       const entryMonth = dateEntry.getMonth();
@@ -206,53 +164,12 @@ class FoodEntry extends React.Component {
           <CardContent>
             <Typography className={classes.title}>Today's Summary:</Typography>
           </CardContent>
-
-          {/* {({ loading, error, data }) => {
-              if (loading) return <div>Fetching Entries</div>;
-
-              if (error) return <div>Error</div>; */}
-
-          {/* const dateToday = new Date();
-              const month = dateToday.getMonth();
-              const day = dateToday.getDate();
-              const year = dateToday.getFullYear();
-              let foodEntries = this.props.foodEntries;
-
-              foodEntries = foodEntries.filter(entry => {
-                const dateEntry = new Date(entry.date);
-                const entryMonth = dateEntry.getMonth();
-                const entryDay = dateEntry.getDate();
-                const entryYear = dateEntry.getFullYear();
-                return (
-                  entryMonth === month && entryDay === day && entryYear === year
-                );
-              });
-
-              const Breakfast = foodEntries.filter(function(entry) {
-                return entry.meal_category_id.mealCategoryName === "Breakfast";
-              });
-
-              const Lunch = foodEntries.filter(function(entry) {
-                return entry.meal_category_id.mealCategoryName === "Lunch";
-              });
-
-              const Dinner = foodEntries.filter(function(entry) {
-                return entry.meal_category_id.mealCategoryName === "Dinner";
-              });
-
-              const Snack = foodEntries.filter(function(entry) {
-                return entry.meal_category_id.mealCategoryName === "Snack";
-              }); */}
-
-          {/* return ( */}
           <div>
             <Meal>
               <MealCategory>Breakfast</MealCategory>
               {Breakfast.map(entry => (
-                <div onClick={() => this.passFoodData(entry)}>
-                  {/* <div type='submit' onClick={this.openModal}> */}
+                <div onClick={() => this.passFoodEntryData(entry)}>
                     <div key={entry.id} entry={entry}>{entry.food_id.foodName}</div>
-                  {/* </div> */}
                  </div>
               ))}
             </Meal>
@@ -288,22 +205,18 @@ class FoodEntry extends React.Component {
                 </div>
               ))}
             </Meal>
-            <FoodModal 
-            isOpen={this.state.showModal} 
-         
 
-            >
-
-{this.props.foodEntry && <div type='submit'>
-                                   <div>{this.props.foodEntry.food_id.foodName}</div>
-                                 </div>
-                   }   
-                 
-      
+            <FoodModal
+            isOpen={this.state.showModal}>
+            { this.props.foodEntry && this.props.foodEntry.food_id &&
+            <div>
+              <h2> {this.props.foodEntry.food_id.foodName}</h2>
+              <h3> {this.props.foodEntry.servingQty}</h3>
+            </div>}
               <ModalButton onClick={this.closeModal}>No?</ModalButton>
               <ModalButton onClick={() => this.deleteFood(this.props.foodEntry.id)}>Delete?</ModalButton>
 
-          
+
             </FoodModal>
           </div>
         </div>

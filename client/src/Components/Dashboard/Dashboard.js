@@ -15,7 +15,7 @@ import {
   ADD_EXERENTRY,
   ADD_FOOD_ENTRY,
   DELETE_EXERENTRY,
-  EDIT_EXER_ENTRY, 
+  EDIT_EXER_ENTRY,
   DELETE_FOOD_ENTRY
 } from "../../graphql/mutations";
 import {
@@ -89,7 +89,6 @@ class Dashboard extends Component {
         query: GET_CURRENT_USERID
       })
       .then(response => {
-        console.log(response.data.getCurrentUser);
         this.setState({
           currentUser: response.data.getCurrentUser.id,
           userType: response.data.getCurrentUser.userType
@@ -225,38 +224,6 @@ class Dashboard extends Component {
       .catch(err => console.log(err));
   };
 
-  deleteSingleFoodEntry = ( id, idToken) => {
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
-      headers: { authorization: idToken }
-    });
-    client
-      .mutate({
-        mutation: DELETE_FOOD_ENTRY,
-        variables: {id}
-      })
-      .then(response => {
-        client
-        .query({
-          query: GET_FOOD_ENTRIES_BY_USER_QUERY,
-          variables:{
-            userId: this.state.currentUser
-          }
-        })
-        .then(response => {
-          console.log(response);
-          console.log('this before', this.state.foodEntries)
-          this.setState({
-            foodEntry: "",
-            foodEntries: response.data.getFoodEntriesByUserId
-           });
-           console.log('this after', this.state.foodEntries)
-        })
-      })
-      .catch(err => console.log(err));
-  }
-
-
   onInputChange = e => {
     this.setState({
       exerEntry: {
@@ -269,20 +236,8 @@ class Dashboard extends Component {
   };
 
   editExerEntry = ( editId, editEntry, idToken) => {
-    console.log('edit', editEntry)
-
-    // const exerciseInput = {
-    //   editId: editId,
-    //     exerciseEntryDate: editEntry.exerciseEntryDate,
-    //     exerciseName: editEntry.exerciseName,
-    //     caloriesBurned: editEntry.caloriesBurned,
-    //     exercise_entry_user_id: editEntry.exercise_entry_user_id
-    // }
-    console.log(this.state.exerEntry)
-    // console.log('exerciseInput', exerciseInput)
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
-      onError: (e) => { console.log(e) },
       headers: { authorization: idToken }
     });
     client
@@ -290,30 +245,53 @@ class Dashboard extends Component {
         mutation: EDIT_EXER_ENTRY,
         variables: {id: editId, input: editEntry}
       })
-      .then( response => {
-        //console.log('first part of then statement edit response', response)
+      .then(response => {
         client
-        .query({
-          query: GET_EXERCISE_ENTRIES_QUERY,
-          variables: {
-            userId: this.state.currentUser
-          }
-        })
-        .then( response => {
-          console.log('chained in edit response', response)
-          this.setState({
-            exerEntry: response.data.updateExerciseEntry,
-            exerEntries: response.data.getExerciseEntriesByUserId
+          .query({
+            query: GET_EXERCISE_ENTRIES_QUERY,
+            variables: {
+              userId: this.state.currentUser
+            }
+          })
+          .then(response => {
+            this.setState({
+              exerEntry: "",
+              exerEntries: response.data.getExerciseEntriesByUserId
+            });
           });
-          console.log('response', response.data)
-          console.log('line 236', this.state.exerEntry)
-          console.log('this after', this.state.exerEntries)
-        });
       })
       .catch(err => console.log(err));
   }
 
-  
+  deleteFoodEntry = (id, idToken) => {
+    const client = new ApolloClient({
+    uri: "https://nutrition-tracker-be.herokuapp.com",
+    headers: { authorization: idToken }
+    });
+    client
+      .mutate({
+        mutation: DELETE_FOOD_ENTRY,
+        variables: {id}
+      })
+      .then(response => {
+        console.log(response)
+        client
+        .query({
+          query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+          variables:{
+            userId: this.state.currentUser
+          }
+        })
+        .then(response => {
+          console.log(response)
+          this.setState({
+            foodEntry: "",
+            foodEntries: response.data.getFoodEntriesByUserId
+           });
+        })
+      })
+    .catch(err => console.log(err));
+  }
 
   deleteExerEntry = (id, idToken) => {
     const client = new ApolloClient({
@@ -334,13 +312,10 @@ class Dashboard extends Component {
             }
           })
           .then(response => {
-            console.log(response);
-            console.log("this before", this.state.exerEntries);
             this.setState({
               exerEntry: "",
               exerEntries: response.data.getExerciseEntriesByUserId
             });
-            console.log("this after", this.state.exerEntries);
           });
       })
       .catch(err => console.log(err));
@@ -351,7 +326,6 @@ class Dashboard extends Component {
       showFoodForm: true,
       selectedFood: {}
     });
-    console.log(this.state);
   };
 
   closeFoodForm = () => {
@@ -385,11 +359,11 @@ class Dashboard extends Component {
     });
   };
 
-  passFoodData = (entry) => {
+  passFoodData = entry => {
     this.setState({
       foodEntry: entry
-    })
-  }
+    });
+  };
 
 
   render() {
@@ -402,9 +376,9 @@ class Dashboard extends Component {
           <Calories />
           <DashDisplay className="container">
             <Card>
-              <FoodEntry 
-              foodEntries={this.state.foodEntries} 
-              deleteSingleFoodEntry={this.deleteSingleFoodEntry}
+              <FoodEntry
+              foodEntries={this.state.foodEntries}
+              deleteFoodEntry={this.deleteFoodEntry}
               foodEntry={this.state.foodEntry}
               passFoodData={this.passFoodData}
               />
@@ -436,6 +410,7 @@ class Dashboard extends Component {
 
               {this.state.showExerForm && (
                 <Exercise
+                  editExerEntry={this.editExerEntry}
                   closeExerEntry={this.closeExerEntry}
                   addExerEntry={this.addExerEntry}
                 />
