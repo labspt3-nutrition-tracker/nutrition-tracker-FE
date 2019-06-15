@@ -117,6 +117,8 @@ class FoodEntry extends React.Component {
   }
 
   editFood = entry => {
+    this.props.editFoodEntry(entry.id, entry)
+    console.log(entry.food_id.caloriesPerServ)
     this.closeModal();
   }
 
@@ -181,8 +183,8 @@ class FoodEntry extends React.Component {
             <Meal>
               <MealCategory>Breakfast</MealCategory>
               {Breakfast.map(entry => (
-                <div onClick={() => this.passFoodEntryData(entry)}>
-                    <div key={entry.id} entry={entry}>{entry.food_id.foodName}</div>
+                <div key={entry.id} onClick={() => this.passFoodEntryData(entry)}>
+                    <div  entry={entry}>{entry.food_id.foodName}</div>
                  </div>
               ))}
             </Meal>
@@ -191,8 +193,8 @@ class FoodEntry extends React.Component {
               <MealCategory>Lunch</MealCategory>
               {Lunch.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type="submit" onClick={() => this.passFoodEntryData(entry)}>
-                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  <div key={entry.id} onClick={() => this.passFoodEntryData(entry)}>
+                    <div >{entry.food_id.foodName}</div>
                   </div>
                 </div>
               ))}
@@ -201,8 +203,8 @@ class FoodEntry extends React.Component {
               <MealCategory>Dinner</MealCategory>
               {Dinner.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type="submit" onClick={() => this.passFoodEntryData(entry)}>
-                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  <div key={entry.id} onClick={() => this.passFoodEntryData(entry)}>
+                    <div>{entry.food_id.foodName}</div>
                   </div>
                 </div>
               ))}
@@ -211,8 +213,8 @@ class FoodEntry extends React.Component {
               <MealCategory>Snack</MealCategory>
               {Snack.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type="submit" onClick={() => this.passFoodEntryData(entry)}>
-                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  <div key={entry.id} onClick={() => this.passFoodEntryData(entry)}>
+                    <div>{entry.food_id.foodName}</div>
                   </div>
                 </div>
               ))}
@@ -220,7 +222,7 @@ class FoodEntry extends React.Component {
 
             <FoodModal
             isOpen={this.state.showModal}>
-            { this.props.foodEntry && this.props.foodEntry.food_id &&
+            { this.props.foodEntry && this.props.foodEntry.food_id && this.props.foodEntry.meal_category_id &&
             <div>
               <Form>
                 <h1> Edit food entry</h1>
@@ -237,7 +239,59 @@ class FoodEntry extends React.Component {
                   name="foodName"
                   value={this.props.foodEntry.food_id.foodName}
                   aria-describedby="errorFood-text"
-                />  
+                />
+
+                <InputLabel htmlFor="meal_category_id">Meal Category</InputLabel>
+                <Select
+                  autoFocus
+                  margin="dense"
+                  error={this.state.errorMsg.errorCategory}
+                  label="Meal Category"
+                  required
+                  className="form-field"
+                  name="meal_category_id"
+                  type="number"
+                  onChange={this.props.onFoodEntryChange}
+                  value={this.props.foodEntry.meal_category_id.mealCategoryName}
+                  aria-describedby="errorCategory-text"
+                >
+                  <MenuItem>Select Meal Category</MenuItem>
+                  <MenuItem value="1">breakfast</MenuItem>
+                  <MenuItem value="2">lunch</MenuItem>
+                  <MenuItem value="4">dinner</MenuItem>
+                  <MenuItem value="3">snack</MenuItem>
+                </Select>
+
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  error={this.state.errorMsg.errorQty}
+                  label="Serving Quantity"
+                  className="form-field"
+                  type="number"
+                  name="servingQty"
+                  onChange={this.props.onFoodEntryChange}
+                  value={this.props.foodEntry.servingQty}
+                  required
+                  aria-describedby="errorQty-text"
+                />
+
+                <TextField
+                  required
+                  error={this.state.errorMsg.errorFood}
+                  autoFocus
+                  margin="dense"
+                  label="Calories Per Serving"
+                  className="form-field"
+                  type="number"
+                  placeholder="Add food here..."
+                  onChange={this.props.onFoodChange}
+                  name="caloriesPerServ"
+                  value={this.props.foodEntry.food_id.caloriesPerServ}
+                  aria-describedby="errorCal-text"
+                />
+
+
               </Form>
             </div>}
               <ModalButton onClick={this.closeModal}>No?</ModalButton>

@@ -257,9 +257,21 @@ class Dashboard extends Component {
       }
     })
   }
+  // onMealChange = e => {
+  //   this.setState({
+  //     foodEntry:{
+  //       meal_category_id:{
+  //         ...this.state.foodEntry.meal_category_id,
+  //         [e.target.name]:
+  //           e.target.type === "number" ? parseInt(e.target.value) : e.target.value
+  //       }
+  //     }
+  //   })
+  // }
 
   editFoodEntry = (editId, editEntry, idToken) => {
-    console.log(editEntry)
+    console.log('arg', editEntry)
+    console.log('props', this.state.foodEntry)
   }
 
   editExerEntry = ( editId, editEntry, idToken) => {
@@ -409,6 +421,7 @@ class Dashboard extends Component {
               foodEntry={this.state.foodEntry}
               onFoodEntryChange={this.onFoodEntryChange}
               onFoodChange={this.onFoodChange}
+              onMealChange={this.onMealChange}
               editFoodEntry={this.editFoodEntry}
               passFoodData={this.passFoodData}
               />
