@@ -1,66 +1,76 @@
 import React from "react";
-import styled from "styled-components";
+import { withStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 import { NavLink } from "react-router-dom";
+import { NONAME } from "dns";
 
 import SearchInputComponent from "./../SearchComponent/SearchInputComponent";
 
-const AppBar = styled.div`
-  display: flex;
-  height: 75px;
-  flex-direction: row;
-  justify-content: space-between;
-  background: #3685b5;
-  align-items: center;
-  padding: 5px;
-  padding-left: 15px;
-  font-size: 1.3em;
-
-  @media (max-width: 800px) {
-    flex-direction: column-reverse;
-    height: 300px;
-    aligh-items: center;
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    background: "#3685b5"
+  },
+  title: {
+    flexGrow: 1,
+    fontSize: 16,
+    textDecoration: "none",
+    color: "#ffffff"
   }
-`;
+});
 
-const Toolbar = styled.div`
-  width: 50%;
+function ButtonAppBar(props) {
+  const { classes } = props;
 
-  @media (max-width: 800px) {
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-    width: 100%;
-  }
-`;
-
-const ButtonAppBar = props => {
-    return (
-      <AppBar className='appbar' position='static'>
+  return (
+    <div className={classes.root}>
+      <AppBar position="static" className={classes.root}>
         <Toolbar>
-          <NavLink className='navLink' exact to='/'>
-            Home
-          </NavLink>
-          <NavLink className='navLink' to='/account'>
-            Account
-          </NavLink>
-          <NavLink className='navLink' to='/reports'>
-            Reports
-          </NavLink>
-          <NavLink className='navLink' to='/dashboard'>
-            Dashboard
-          </NavLink>
-          <NavLink className='navLink' to='/journal'>
-            Journal
-          </NavLink>
-        </Toolbar>
-        <SearchInputComponent
-          updateSearch={props.updateSearch}
-          searchInput={props.searchInput}
-          getFoodData={props.getFoodData}
-        />
-      </AppBar>
-    );
-};
+          {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
+            <MenuIcon />
+          </IconButton> */}
+          <Button className={classes.title}>
+            <NavLink className="navLink" exact to="/">
+              Home
+            </NavLink>
+          </Button>
 
-// export default withStyles(styles)(ButtonAppBar);
-export default ButtonAppBar;
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/account">
+              Account
+            </NavLink>
+          </Button>
+
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/reports">
+              Reports
+            </NavLink>
+          </Button>
+
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/dashboard">
+              Dashboard
+            </NavLink>
+          </Button>
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/journal">
+              Journal
+            </NavLink>
+          </Button>
+          <SearchInputComponent
+            updateSearch={props.updateSearch}
+            searchInput={props.searchInput}
+            getFoodData={props.getFoodData}
+          />
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+}
+
+export default withStyles(styles)(ButtonAppBar);
