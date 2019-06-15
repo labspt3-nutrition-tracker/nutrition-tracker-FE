@@ -131,22 +131,19 @@ class JournalEntry extends React.Component {
     e.preventDefault()
 
     const foodEntry = {
-        id: this.state.mealEntry.id,
-        date: this.state.mealEntry.date,
-        servingQty: this.state.mealEntry.servingQty,
-        user_id: this.state.currentUser,
-        food_id: {
-          id: this.state.mealEntry.food_id.id,
-          foodName: this.state.mealEntry.food_id.foodName,
-          caloriesPerServ: this.state.caloriesPerServ,
-          proteins: this.state.proteins,
-          carbs: this.state.carbs,
-          fats: this.state.fats
-        },
-        meal_category_id: this.state.mealEntry.meal_category_id.id
+      foodName: this.state.mealEntry.food_id.foodName,
+      caloriesPerServ: parseInt(this.state.caloriesPerServ),
+      fats: parseInt(this.state.fats),
+      carbs: parseInt(this.state.carbs),
+      proteins: parseInt(this.state.proteins),
+      date: this.state.mealEntry.date,
+      food_id: this.state.mealEntry.food_id.id,
+      user_id: this.state.currentUser,
+      meal_category_id: this.state.mealEntry.meal_category_id.id,
+      servingQty: parseInt(this.state.servingQty)
     }
     console.log(foodEntry)
-    this.props.editMeal(this.state.mealEntry.id, foodEntry)
+    this.props.editMeal(this.state.mealEntry.id, this.state.mealEntry.food_id.id, foodEntry)
 
     this.closeModal()
   }

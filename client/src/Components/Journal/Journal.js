@@ -50,24 +50,24 @@ const DELETE_MEAL = gql`
   }
 `;
 
-const  UPDATE_MEAL = gql`
+const  UPDATE_FOOD_ENTRY = gql`
   mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!){
     updateFoodEntry(id: $id, input: $input ){
       id
-      date
-      servingQty
-      food_id{
-        id
-        foodName
-        caloriesPerServ
-        fats
-        proteins
-        carbs
-      }
-      meal_category_id{
-        id
-        mealCategoryName
-      }
+    }
+  }
+`;
+
+const UPDATE_FOOD = gql`
+  mutation updateFood($id: ID!, $input: FoodInput!){
+    updateFood(id: $id, input: $input){
+      id
+      foodName
+      caloriesPerServ
+      fats
+      carbs
+      proteins
+      edamam_id
     }
   }
 `;
@@ -147,18 +147,47 @@ class Journal extends React.Component {
       .catch(err => console.log(err));
   }
 
-  editMealEntry = (id, foodEntry) => {
+  editMealEntry = (entry_id, food_id, foodEntry) => {
+    console.log(entry_id)
+    console.log(food_id)
+    console.log(foodEntry.food_id)
+
+    const foodInput = {
+      foodName: foodEntry.foodName,
+      caloriesPerServ: foodEntry.caloriesPerServ,
+      fats: foodEntry.fats,
+      carbs: foodEntry.carbs,
+      proteins: foodEntry.proteins,
+      edamam_id: foodEntry.edamam_id
+    }
+
+    const foodEntryInput ={
+      date: foodEntry.date,
+      food_id: food_id,
+      user_id: foodEntry.user_id,
+      servingQty: foodEntry.servingQty,
+      meal_category_id: foodEntry.meal_category_id
+    }
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     })
 
     client
       .mutate({
-        mutation: UPDATE_MEAL,
+        mutation: UPDATE_FOOD,
         variables: {
-          id: id,
-          input: foodEntry
+          id: food_id,
+          input: foodInput
         }
+      }).then(response => {
+        client
+          .mutate({
+            mutation: UPDATE_FOOD_ENTRY,
+            variables: {
+              id: entry_id,
+              input: foodEntryInput
+            }
+          })
       })
       .then(response => {
         client
