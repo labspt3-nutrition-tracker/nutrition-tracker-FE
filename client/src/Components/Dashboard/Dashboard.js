@@ -235,6 +235,33 @@ class Dashboard extends Component {
     console.log("exerentry change", this.state.exerEntry);
   };
 
+  onFoodEntryChange = e => {
+    this.setState({
+      foodEntry: {
+        ...this.state.foodEntry,
+        [e.target.name]:
+          e.target.type === "number" ? parseInt(e.target.value) : e.target.value
+      }
+    })
+    console.log(this.state.foodEntry.foodName)
+  }
+
+  onFoodChange = e => {
+    this.setState({
+      foodEntry:{
+        food_id:{
+          ...this.state.foodEntry.food_id,
+          [e.target.name]:
+            e.target.type === "number" ? parseInt(e.target.value) : e.target.value
+        }
+      }
+    })
+  }
+
+  editFoodEntry = (editId, editEntry, idToken) => {
+    console.log(editEntry)
+  }
+
   editExerEntry = ( editId, editEntry, idToken) => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
@@ -380,6 +407,9 @@ class Dashboard extends Component {
               foodEntries={this.state.foodEntries}
               deleteFoodEntry={this.deleteFoodEntry}
               foodEntry={this.state.foodEntry}
+              onFoodEntryChange={this.onFoodEntryChange}
+              onFoodChange={this.onFoodChange}
+              editFoodEntry={this.editFoodEntry}
               passFoodData={this.passFoodData}
               />
               <ExerciseEntry

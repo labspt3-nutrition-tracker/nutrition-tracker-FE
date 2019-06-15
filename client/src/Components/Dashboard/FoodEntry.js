@@ -5,9 +5,21 @@ import ApolloClient from "apollo-boost";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 import { GET_CURRENT_USERID } from "../../graphql/queries";
 
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+`;
 const FoodEntryContainer = styled.div`
   width: 50%;
 `;
@@ -57,19 +69,17 @@ class FoodEntry extends React.Component {
     super(props);
     this.state = {
       currentUser: "",
-      foodEntries: [],
-      foodEntry:[],
       showModal: false,
       newAddFood: {
+        date: "",
         foodName: "",
+        servingQty: null,
         caloriesPerServ: null,
         fats: null,
         carbs: null,
         proteins: null,
         edamam_id: "",
         meal_category_id: null,
-        date: "",
-        servingQty: null
       },
       errorMsg: {
         error: false,
@@ -106,6 +116,9 @@ class FoodEntry extends React.Component {
     this.closeModal();
   }
 
+  editFood = entry => {
+    this.closeModal();
+  }
 
   componentDidUpdate(prevProps) {
     if (prevProps.foodEntries !== this.props.foodEntries) {
@@ -178,7 +191,7 @@ class FoodEntry extends React.Component {
               <MealCategory>Lunch</MealCategory>
               {Lunch.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type="submit" onClick={this.openModal}>
+                  <div type="submit" onClick={() => this.passFoodEntryData(entry)}>
                     <div key={entry.id}>{entry.food_id.foodName}</div>
                   </div>
                 </div>
@@ -188,7 +201,7 @@ class FoodEntry extends React.Component {
               <MealCategory>Dinner</MealCategory>
               {Dinner.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type="submit" onClick={this.openModal}>
+                  <div type="submit" onClick={() => this.passFoodEntryData(entry)}>
                     <div key={entry.id}>{entry.food_id.foodName}</div>
                   </div>
                 </div>
@@ -198,9 +211,8 @@ class FoodEntry extends React.Component {
               <MealCategory>Snack</MealCategory>
               {Snack.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type="submit" onClick={this.openModal}>
+                  <div type="submit" onClick={() => this.passFoodEntryData(entry)}>
                     <div key={entry.id}>{entry.food_id.foodName}</div>
-                    {/* <div type="submit" onClick={this.openModal}>edit</div> */}
                   </div>
                 </div>
               ))}
@@ -212,8 +224,26 @@ class FoodEntry extends React.Component {
             <div>
               <h2> {this.props.foodEntry.food_id.foodName}</h2>
               <h3> {this.props.foodEntry.servingQty}</h3>
+                <Form>
+                  <h1> Add food entry</h1>
+                  <TextField
+                    required
+                    error={this.state.errorMsg.errorFood}
+                    autoFocus
+                    margin="dense"
+                    label="Food"
+                    className="form-field"
+                    type="text"
+                    placeholder="Add food here..."
+                    onChange={this.props.onFoodChange}
+                    name="foodName"
+                    value={this.props.foodEntry.food_id.foodName}
+                    aria-describedby="errorFood-text"
+                  />
+              </Form>
             </div>}
               <ModalButton onClick={this.closeModal}>No?</ModalButton>
+              <ModalButton onClick={() => this.editFood(this.props.foodEntry)}>Edit</ModalButton>
               <ModalButton onClick={() => this.deleteFood(this.props.foodEntry.id)}>Delete?</ModalButton>
 
 
