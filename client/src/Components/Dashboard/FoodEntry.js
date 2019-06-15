@@ -68,28 +68,65 @@ const styles = theme => ({
 })
 
 class FoodEntry extends React.Component {
-  state = {
-    currentUser: null,
-    foodEntries: [],
-    showModal: false
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      currentUser: null,
+      foodEntries: [],
+      foodEntry:[],
+      showModal: false,
+      newAddFood: {
+        foodName: "",
+        caloriesPerServ: null,
+        fats: null,
+        carbs: null,
+        proteins: null,
+        edamam_id: "",
+        meal_category_id: null,
+        date: "",
+        servingQty: null
+      },
+      errorMsg: {
+        error: false,
+        errorFood: "",
+        errorCal: "",
+        errorFats: "",
+        errorCarbs: "",
+        errorProteins: "",
+        errorCategory: "",
+        errorDate: "",
+        errorQty: ""
+      }
+    };
+  }
+  
 
   openModal = item => {
-    console.log("modal open");
     this.setState({
       showModal: true,
-      foodEntries: item.id
     });
   };
 
+  passFoodData = entry => {
+    this.props.passFoodData(entry)
+    this.openModal()
+  }
+
   closeModal = () => {
-    console.log("modal closed");
     this.setState({ showModal: false });
   };
 
+  deleteFood = (id) => {
+    console.log('id', id)
+    console.log(this.props.foodEntry.food_id.id)
+     this.deleteSingleFoodEntry(id)
+    this.closeModal();
+  }
+
+
   componentDidUpdate(prevProps) {
     if (prevProps.foodEntries !== this.props.foodEntries) {
-      this.setState({ foodEntries: this.props.foodEntries });
+      this.setState({ foodEntries: this.props.foodEntries, foodEntry: this.props.foodEntry});
     }
   }
 
@@ -132,38 +169,14 @@ class FoodEntry extends React.Component {
   };
 
   render() {
-    // console.log(this.props.foodEntries);
-
-    // let viewItem = this.props.item.map( item => {
-    //   return ()
-    // })
-    // let foodId = this.props.foodEntries.match.params.food_id;
-    // console.log('foodId', foodId)
-    // let theFoodId = this.props.match.params.id;
-    // console.log('theFoodId', theFoodId)
-    // this.getCurrentUser(localStorage.getItem("token"))
-    // const ENTRIES_QUERY = gql`
-    //   query getFoodEntriesByUserId{
-    //     getFoodEntriesByUserId(userId: ${this.state.currentUser}) {
-    //       date
-    //       food_id {
-    //         id
-    //         foodName
-    //       }
-    //       meal_category_id {
-    //         id
-    //         mealCategoryName
-    //       }
-    //     }
-    //   }
-    // `;
-    const { classes } = this.props;
+     console.log(this.props.foodEntry);
+     const { classes } = this.props;
     const dateToday = new Date();
     const month = dateToday.getMonth();
     const day = dateToday.getDate();
     const year = dateToday.getFullYear();
     let foodEntries = this.props.foodEntries;
-
+    console.log(foodEntries)
     foodEntries = foodEntries.filter(entry => {
       const dateEntry = new Date(entry.date);
       const entryMonth = dateEntry.getMonth();
@@ -236,11 +249,11 @@ class FoodEntry extends React.Component {
             <Meal>
               <MealCategory>Breakfast</MealCategory>
               {Breakfast.map(entry => (
-                <div onClick={this.openModal}>
-                  <div type="submit" onClick={this.openModal}>
-                    <div key={entry.id}>{entry.food_id.foodName}</div>
-                  </div>
-                </div>
+                <div onClick={() => this.passFoodData(entry)}>
+                  {/* <div type='submit' onClick={this.openModal}> */}
+                    <div key={entry.id} entry={entry}>{entry.food_id.foodName}</div>
+                  {/* </div> */}
+                 </div>
               ))}
             </Meal>
 
@@ -275,12 +288,22 @@ class FoodEntry extends React.Component {
                 </div>
               ))}
             </Meal>
-            <FoodModal
-              isOpen={this.state.showModal}
-              itemOpen={this.state.foodEntries}
+            <FoodModal 
+            isOpen={this.state.showModal} 
+         
+
             >
-              In the modal
+
+{this.props.foodEntry && <div type='submit'>
+                                   <div>{this.props.foodEntry.food_id.foodName}</div>
+                                 </div>
+                   }   
+                 
+      
               <ModalButton onClick={this.closeModal}>No?</ModalButton>
+              <ModalButton onClick={() => this.deleteFood(this.props.foodEntry.id)}>Delete?</ModalButton>
+
+          
             </FoodModal>
           </div>
         </div>
