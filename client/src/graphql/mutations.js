@@ -112,13 +112,13 @@ export const DELETE_EXERENTRY = gql`
 `;
 
 export const DELETE_FOOD = gql`
-  mutation deleteFood($id: ID!){
+  mutation deleteFood($id: ID!) {
     deleteFood(id: $id)
   }
 `;
 
 export const DELETE_FOOD_ENTRY = gql`
-  mutation deleteFoodentry($id: ID!){
+  mutation deleteFoodentry($id: ID!) {
     deleteFoodentry(id: $id)
   }
 `;
@@ -139,14 +139,8 @@ export const DELETE_FOOD_ENTRY = gql`
 // `;
 
 export const EDIT_EXER_ENTRY = gql`
-<<<<<<< HEAD
-  mutation updateExerciseEntry($id: ID!, $input: ExerciseEntryInput!){
-    updateExerciseEntry(id: $id, input: $input)
-    {
-=======
-  mutation($id: ID!, $input: ExerciseEntryInput!) {
-    updateExerciseEntry(id: $id, input: $ExerciseEntry) {
->>>>>>> development
+  mutation updateExerciseEntry($id: ID!, $input: ExerciseEntryInput!) {
+    updateExerciseEntry(id: $id, input: $input) {
       id
       exerciseEntryDate
       exerciseName
