@@ -11,10 +11,10 @@ import { ADD_FOOD } from "../../graphql/mutations";
 import { GET_ALL_FOOD } from "../../graphql/queries";
 import gql from "graphql-tag";
 
-const Form = styled.form`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  
+
   width: 30%;
   padding: 20px;
   h1 {

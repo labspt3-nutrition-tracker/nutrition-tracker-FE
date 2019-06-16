@@ -15,7 +15,6 @@ query($userId: ID!)
       id
     }
     food_id {
- 
       foodName
       caloriesPerServ
       fats
@@ -23,10 +22,10 @@ query($userId: ID!)
       carbs
     }
     meal_category_id {
-  
       mealCategoryName
     }
   }
+}  
 `;
 
 export const GET_CURRENT_USER_QUERY = gql`
