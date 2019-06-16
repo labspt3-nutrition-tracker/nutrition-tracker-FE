@@ -9,9 +9,15 @@ import { getExercises } from "../../../util/getExercises";
 import List, { Item } from "./List";
 
 const styles = StyleSheet.create({
-  document: {
+  body: {
+    display: "flex",
+    flexDirection: "row",
     width: "100%",
-    height: "100vh"
+    alignContent: "apace-between"
+  },
+  info: {
+    width: "40%",
+    margin: "10px 20px"
   },
   title: {
     margin: 20,
@@ -27,9 +33,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 20
   },
-  row: {
-    marginLeft: 15
-  },
   category: {
     marginBottom: 10,
     marginTop: 20,
@@ -39,7 +42,7 @@ const styles = StyleSheet.create({
     color: "#F4B4C3"
   },
   date: {
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 5,
     marginTop: 10
   }
@@ -56,19 +59,19 @@ const PDFReport = props => {
     <>
       <Document>
         <Page size='A4'>
-          <View style={styles.body}>
-            <View>
-              <Text style={styles.title}>
-                Last 7 days: {moment(days[0]).format("MM/DD")} - {moment(days[6]).format("MM/DD")}
+          <View>
+            <Text style={styles.title}>
+              Last 7 days: {moment(days[0]).format("MM/DD")} - {moment(days[6]).format("MM/DD")}
+            </Text>
+            {currentUser && (
+              <Text style={styles.subTitle}>
+                {currentUser.firstName} {currentUser.lastName}
               </Text>
-              {currentUser && (
-                <Text style={styles.subTitle}>
-                  {currentUser.firstName} {currentUser.lastName}
-                </Text>
-              )}
-            </View>
-            <View style={styles.row}>
-              <Text style={styles.category}>Food Entries:</Text>
+            )}
+          </View>
+          <View style={styles.body}>
+            <View style={styles.info}>
+              <Text style={styles.category}>Food Entries</Text>
               <List>
                 {foods.map((food, i) => (
                   <>
@@ -83,17 +86,15 @@ const PDFReport = props => {
                           ))}
                         </List>
                         <Text style={styles.date}>Total Calories: {totalCal[i]} kcal.</Text>
-                        <Text style={styles.hr}>
-                          ---------------------------------------------------------------------------------------------
-                        </Text>
+                        <Text style={styles.hr}>---------------------------------------</Text>
                       </>
                     )}
                   </>
                 ))}
               </List>
             </View>
-            <View style={styles.row}>
-              <Text style={styles.category}>Exercise Entries:</Text>
+            <View style={styles.info}>
+              <Text style={styles.category}>Exercise Entries</Text>
               <List>
                 {exercises.map((exercise, i) => (
                   <>
@@ -108,9 +109,7 @@ const PDFReport = props => {
                           ))}
                         </List>
                         <Text style={styles.date}>Total Calories: {totalExer[i]} kcal.</Text>
-                        <Text style={styles.hr}>
-                          ---------------------------------------------------------------------------------------------
-                        </Text>
+                        <Text style={styles.hr}>---------------------------------------</Text>
                       </>
                     )}
                   </>
