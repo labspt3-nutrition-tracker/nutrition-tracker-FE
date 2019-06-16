@@ -1,28 +1,30 @@
 import { gql } from "apollo-boost";
 
 export const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
-  query($userId: ID!) {
-    getFoodEntriesByUserId(userId: $userId) {
+query($userId: ID!)
+{
+  getFoodEntriesByUserId(userId: $userId) {
+    id
+    date
+    servingQty
+    user_id {
+      username
+      firstName
+      lastName
+      email
       id
-      date
-      servingQty
-      user_id {
-        username
-        firstName
-        lastName
-        email
-        id
-      }
-      food_id {
-        foodName
-        caloriesPerServ
-        fats
-        proteins
-        carbs
-      }
-      meal_category_id {
-        mealCategoryName
-      }
+    }
+    food_id {
+ 
+      foodName
+      caloriesPerServ
+      fats
+      proteins
+      carbs
+    }
+    meal_category_id {
+  
+      mealCategoryName
     }
   }
 `;
@@ -41,6 +43,8 @@ export const GET_CURRENT_USER_QUERY = gql`
     }
   }
 `;
+
+
 
 export const GET_WEIGHT_ENTRIES_QUERY = gql`
   query($userId: ID!) {
