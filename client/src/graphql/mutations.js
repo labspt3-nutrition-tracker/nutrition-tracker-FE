@@ -119,7 +119,7 @@ export const DELETE_FOOD = gql`
 
 export const DELETE_FOOD_ENTRY = gql`
   mutation deleteFoodentry($id: ID!) {
-    deleteFoodentry(id: $id)
+    deleteFoodEntry(id: $id)
   }
 `;
 

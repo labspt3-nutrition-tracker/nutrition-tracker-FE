@@ -25,6 +25,7 @@ export const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
       }
     }
   }
+}  
 `;
 
 export const GET_CURRENT_USER_QUERY = gql`

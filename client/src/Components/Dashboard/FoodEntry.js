@@ -5,9 +5,23 @@ import ApolloClient from "apollo-boost";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Menu from "@material-ui/core/Menu";
+import moment from 'moment';
 
 import { GET_CURRENT_USERID } from "../../graphql/queries";
 
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+`;
 const FoodEntryContainer = styled.div`
   width: 50%;
 `;
@@ -41,25 +55,10 @@ const FoodModal = styled(Modal)`
   background-color: white;
 `;
 
-// const customStyles = {
-//   content : {
-//     top: "50%",
-//     left: "50%",
-//     right: "auto",
-//     bottom: "auto",
-//     marginRight: "-50%",
-//     height: "50%",
-//     width: "50%",
-//     transform: "translate(-50%, -50%)",
-//     position: "absolute"
-//   }
-// };
-
 Modal.setAppElement("#root");
 
 const styles = theme => ({
   title: {
-    // flexGrow: 1,
     fontSize: 16,
     background: "#2C363F",
     padding: 10,
@@ -71,20 +70,18 @@ class FoodEntry extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      currentUser: null,
-      foodEntries: [],
-      foodEntry:[],
+      currentUser: "",
       showModal: false,
       newAddFood: {
+        date: "",
         foodName: "",
+        servingQty: null,
         caloriesPerServ: null,
         fats: null,
         carbs: null,
         proteins: null,
         edamam_id: "",
         meal_category_id: null,
-        date: "",
-        servingQty: null
       },
       errorMsg: {
         error: false,
@@ -99,7 +96,7 @@ class FoodEntry extends React.Component {
       }
     };
   }
-  
+
 
   openModal = item => {
     this.setState({
@@ -107,7 +104,7 @@ class FoodEntry extends React.Component {
     });
   };
 
-  passFoodData = entry => {
+  passFoodEntryData = entry => {
     this.props.passFoodData(entry)
     this.openModal()
   }
@@ -117,12 +114,15 @@ class FoodEntry extends React.Component {
   };
 
   deleteFood = (id) => {
-    console.log('id', id)
-    console.log(this.props.foodEntry.food_id.id)
-     this.deleteSingleFoodEntry(id)
+    this.props.deleteFoodEntry(id)
     this.closeModal();
   }
 
+  editFood = entry => {
+    this.props.editFoodEntry(entry.id, entry)
+    console.log(entry.food_id.caloriesPerServ)
+    this.closeModal();
+  }
 
   componentDidUpdate(prevProps) {
     if (prevProps.foodEntries !== this.props.foodEntries) {
@@ -130,53 +130,28 @@ class FoodEntry extends React.Component {
     }
   }
 
-  // componentDidUpdate(prevProps, prevState){
-  //   const idToken = localStorage.getItem("token");
-  //   this.getCurrentUser(idToken);
-  //   const ENTRIES_QUERY = gql`
-  //   query getFoodEntriesByUserId{
-  //     getFoodEntriesByUserId(userId: ${this.state.currentUser}) {
-  //       date
-  //       food_id {
-  //         id
-  //         foodName
-  //       }
-  //       meal_category_id {
-  //         id
-  //         mealCategoryName
-  //       }
-  //     }
-  //   }
-  // `;
-  //   console.log("componentdidMount prevProps", prevProps)
-  //   console.log("componentdidMount prevState", prevState)
-  // }
-
   getCurrentUser = idToken => {
-    // const client = new ApolloClient({
-    //   uri: "https://nutrition-tracker-be.herokuapp.com",
-    //   headers: { authorization: idToken }
-    // });
-    // client
-    //   .query({
-    //     query: GET_CURRENT_USERID
-    //   })
-    //   .then(response => {
-    //     this.setState({ currentUser: response.data.getCurrentUser.id });
-    //     console.log(this.state.currentUser);
-    //   })
-    //   .catch(err => console.log(err));
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    client
+      .query({
+        query: GET_CURRENT_USERID
+      })
+      .then(response => {
+        this.setState({ currentUser: response.data.getCurrentUser.id });
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
-     console.log(this.props.foodEntry);
-     const { classes } = this.props;
+    const { classes } = this.props;
     const dateToday = new Date();
     const month = dateToday.getMonth();
     const day = dateToday.getDate();
     const year = dateToday.getFullYear();
     let foodEntries = this.props.foodEntries;
-    console.log(foodEntries)
     foodEntries = foodEntries.filter(entry => {
       const dateEntry = new Date(entry.date);
       const entryMonth = dateEntry.getMonth();
@@ -206,53 +181,12 @@ class FoodEntry extends React.Component {
           <CardContent>
             <Typography className={classes.title}>Today's Summary:</Typography>
           </CardContent>
-
-          {/* {({ loading, error, data }) => {
-              if (loading) return <div>Fetching Entries</div>;
-
-              if (error) return <div>Error</div>; */}
-
-          {/* const dateToday = new Date();
-              const month = dateToday.getMonth();
-              const day = dateToday.getDate();
-              const year = dateToday.getFullYear();
-              let foodEntries = this.props.foodEntries;
-
-              foodEntries = foodEntries.filter(entry => {
-                const dateEntry = new Date(entry.date);
-                const entryMonth = dateEntry.getMonth();
-                const entryDay = dateEntry.getDate();
-                const entryYear = dateEntry.getFullYear();
-                return (
-                  entryMonth === month && entryDay === day && entryYear === year
-                );
-              });
-
-              const Breakfast = foodEntries.filter(function(entry) {
-                return entry.meal_category_id.mealCategoryName === "Breakfast";
-              });
-
-              const Lunch = foodEntries.filter(function(entry) {
-                return entry.meal_category_id.mealCategoryName === "Lunch";
-              });
-
-              const Dinner = foodEntries.filter(function(entry) {
-                return entry.meal_category_id.mealCategoryName === "Dinner";
-              });
-
-              const Snack = foodEntries.filter(function(entry) {
-                return entry.meal_category_id.mealCategoryName === "Snack";
-              }); */}
-
-          {/* return ( */}
           <div>
             <Meal>
               <MealCategory>Breakfast</MealCategory>
               {Breakfast.map(entry => (
-                <div onClick={() => this.passFoodData(entry)}>
-                  {/* <div type='submit' onClick={this.openModal}> */}
-                    <div key={entry.id} entry={entry}>{entry.food_id.foodName}</div>
-                  {/* </div> */}
+                <div key={entry.id} onClick={() => this.passFoodEntryData(entry)}>
+                    <div  entry={entry}>{entry.food_id.foodName}</div>
                  </div>
               ))}
             </Meal>
@@ -261,8 +195,8 @@ class FoodEntry extends React.Component {
               <MealCategory>Lunch</MealCategory>
               {Lunch.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type="submit" onClick={this.openModal}>
-                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  <div key={entry.id} onClick={() => this.passFoodEntryData(entry)}>
+                    <div >{entry.food_id.foodName}</div>
                   </div>
                 </div>
               ))}
@@ -271,8 +205,8 @@ class FoodEntry extends React.Component {
               <MealCategory>Dinner</MealCategory>
               {Dinner.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type="submit" onClick={this.openModal}>
-                    <div key={entry.id}>{entry.food_id.foodName}</div>
+                  <div key={entry.id} onClick={() => this.passFoodEntryData(entry)}>
+                    <div>{entry.food_id.foodName}</div>
                   </div>
                 </div>
               ))}
@@ -281,29 +215,150 @@ class FoodEntry extends React.Component {
               <MealCategory>Snack</MealCategory>
               {Snack.map(entry => (
                 <div onClick={this.openModal}>
-                  <div type="submit" onClick={this.openModal}>
-                    <div key={entry.id}>{entry.food_id.foodName}</div>
-                    {/* <div type="submit" onClick={this.openModal}>edit</div> */}
+                  <div key={entry.id} onClick={() => this.passFoodEntryData(entry)}>
+                    <div>{entry.food_id.foodName}</div>
                   </div>
                 </div>
               ))}
             </Meal>
-            <FoodModal 
-            isOpen={this.state.showModal} 
-         
 
-            >
+            <FoodModal
+            isOpen={this.state.showModal}>
+            { this.props.foodEntry && this.props.foodEntry.food_id && this.props.foodEntry.meal_category_id &&
+            <div>
+              <Form>
+                <h1> Edit food entry</h1>
+                <TextField
+                  required
+                  error={this.state.errorMsg.errorFood}
+                  autoFocus
+                  margin="dense"
+                  className="form-field"
+                  type="text"
+                  name="foodName"
+                  value={this.props.foodEntry.food_id.foodName}
+                  aria-describedby="errorFood-text"
+                />
 
-{this.props.foodEntry && <div type='submit'>
-                                   <div>{this.props.foodEntry.food_id.foodName}</div>
-                                 </div>
-                   }   
-                 
-      
+                <InputLabel htmlFor="meal_category_id">Meal Category</InputLabel>
+                <Select
+                  autoFocus
+                  margin="dense"
+                  error={this.state.errorMsg.errorCategory}
+                  label="Meal Category"
+                  required
+                  className="form-field"
+                  name="meal_category_id"
+                  type="number"
+                  placeholder={this.props.foodEntry.meal_category_id.meal_category_id}
+                  value={this.props.foodEntry.meal_category_id.meal_category_id}
+                  aria-describedby="errorCategory-text"
+                >
+                  <MenuItem>Select Meal Category</MenuItem>
+                  <MenuItem value="1">breakfast</MenuItem>
+                  <MenuItem value="2">lunch</MenuItem>
+                  <MenuItem value="4">dinner</MenuItem>
+                  <MenuItem value="3">snack</MenuItem>
+                </Select>
+
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  error={this.state.errorMsg.errorQty}
+                  label="Serving Quantity"
+                  className="form-field"
+                  type="number"
+                  name="servingQty"
+                  onChange={this.props.onFoodEntryChange}
+                  value={this.props.foodEntry.servingQty}
+                  required
+                  aria-describedby="errorQty-text"
+                />
+
+                <TextField
+                  required
+                  error={this.state.errorMsg.errorFood}
+                  autoFocus
+                  margin="dense"
+                  label="Calories Per Serving"
+                  className="form-field"
+                  type="number"
+                  placeholder="Add food here..."
+                  name="caloriesPerServ"
+                  value={this.props.foodEntry.food_id.caloriesPerServ}
+                  aria-describedby="errorCal-text"
+                />
+
+                <FormHelperText id="errorCal-text">
+                  {this.state.errorMsg.errorCal}
+                </FormHelperText>
+
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label="Grams of Protein per Serving"
+                  className="form-field"
+                  type="number"
+                  name="proteins"
+                  error={this.state.errorMsg.errorProteins}
+                  value={this.props.foodEntry.food_id.proteins}
+                  required
+                  aria-describedby="errorProteins-text"
+                />
+                <FormHelperText id="errorProteins-text">
+                  {this.state.errorMsg.errorProteins}
+                </FormHelperText>
+
+                <TextField
+                  label="Grams of Carbs per Serving"
+                  className="form-field"
+                  type="number"
+                  name="carbs"
+                  error={this.state.errorMsg.errorCarbs}
+                  value={this.props.foodEntry.food_id.carbs}
+                  required
+                  aria-describedby="errorCarbs-text"
+                />
+                <FormHelperText id="errorCarbs-text">
+                  {this.state.errorMsg.errorCarbs}
+                </FormHelperText>
+
+                <TextField
+                  label="Grams of Fat per Serving"
+                  className="form-field"
+                  type="number"
+                  name="fats"
+                  error={this.state.errorMsg.errorFats}
+                  onChange={this.onInputChange}
+                  value={this.props.foodEntry.food_id.fats}
+                  required
+                  aria-describedby="errorFats-text"
+                />
+                <FormHelperText id="errorFats-text">
+                  {this.state.errorMsg.errorFats}
+                </FormHelperText>
+
+                <TextField
+                  label="Date"
+                  className="form-field"
+                  type="date"
+                  name="date"
+                  error={this.state.errorMsg.errorDate}
+                  onChange={this.onInputChange}
+                  required
+                  aria-describedby="errorDate-text"
+                  value={moment(this.props.foodEntry.date).format('YYYY-MM-DD')}
+                />
+                <FormHelperText id="errorDate-text">
+                  {this.state.errorMsg.errorDate}
+                </FormHelperText>
+              </Form>
+            </div>}
               <ModalButton onClick={this.closeModal}>No?</ModalButton>
+              <ModalButton onClick={() => this.editFood(this.props.foodEntry)}>Edit</ModalButton>
               <ModalButton onClick={() => this.deleteFood(this.props.foodEntry.id)}>Delete?</ModalButton>
 
-          
+
             </FoodModal>
           </div>
         </div>
