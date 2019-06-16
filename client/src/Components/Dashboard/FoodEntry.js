@@ -11,6 +11,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Menu from "@material-ui/core/Menu";
+import moment from 'moment';
 
 import { GET_CURRENT_USERID } from "../../graphql/queries";
 
@@ -231,11 +233,8 @@ class FoodEntry extends React.Component {
                   error={this.state.errorMsg.errorFood}
                   autoFocus
                   margin="dense"
-                  label="Food"
                   className="form-field"
                   type="text"
-                  placeholder="Add food here..."
-                  onChange={this.props.onFoodChange}
                   name="foodName"
                   value={this.props.foodEntry.food_id.foodName}
                   aria-describedby="errorFood-text"
@@ -251,8 +250,8 @@ class FoodEntry extends React.Component {
                   className="form-field"
                   name="meal_category_id"
                   type="number"
-                  onChange={this.props.onFoodEntryChange}
-                  value={this.props.foodEntry.meal_category_id.mealCategoryName}
+                  placeholder={this.props.foodEntry.meal_category_id.meal_category_id}
+                  value={this.props.foodEntry.meal_category_id.meal_category_id}
                   aria-describedby="errorCategory-text"
                 >
                   <MenuItem>Select Meal Category</MenuItem>
@@ -285,13 +284,74 @@ class FoodEntry extends React.Component {
                   className="form-field"
                   type="number"
                   placeholder="Add food here..."
-                  onChange={this.props.onFoodChange}
                   name="caloriesPerServ"
                   value={this.props.foodEntry.food_id.caloriesPerServ}
                   aria-describedby="errorCal-text"
                 />
 
+                <FormHelperText id="errorCal-text">
+                  {this.state.errorMsg.errorCal}
+                </FormHelperText>
 
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label="Grams of Protein per Serving"
+                  className="form-field"
+                  type="number"
+                  name="proteins"
+                  error={this.state.errorMsg.errorProteins}
+                  value={this.props.foodEntry.food_id.proteins}
+                  required
+                  aria-describedby="errorProteins-text"
+                />
+                <FormHelperText id="errorProteins-text">
+                  {this.state.errorMsg.errorProteins}
+                </FormHelperText>
+
+                <TextField
+                  label="Grams of Carbs per Serving"
+                  className="form-field"
+                  type="number"
+                  name="carbs"
+                  error={this.state.errorMsg.errorCarbs}
+                  value={this.props.foodEntry.food_id.carbs}
+                  required
+                  aria-describedby="errorCarbs-text"
+                />
+                <FormHelperText id="errorCarbs-text">
+                  {this.state.errorMsg.errorCarbs}
+                </FormHelperText>
+
+                <TextField
+                  label="Grams of Fat per Serving"
+                  className="form-field"
+                  type="number"
+                  name="fats"
+                  error={this.state.errorMsg.errorFats}
+                  onChange={this.onInputChange}
+                  value={this.props.foodEntry.food_id.fats}
+                  required
+                  aria-describedby="errorFats-text"
+                />
+                <FormHelperText id="errorFats-text">
+                  {this.state.errorMsg.errorFats}
+                </FormHelperText>
+
+                <TextField
+                  label="Date"
+                  className="form-field"
+                  type="date"
+                  name="date"
+                  error={this.state.errorMsg.errorDate}
+                  onChange={this.onInputChange}
+                  required
+                  aria-describedby="errorDate-text"
+                  value={moment(this.props.foodEntry.date).format('YYYY-MM-DD')}
+                />
+                <FormHelperText id="errorDate-text">
+                  {this.state.errorMsg.errorDate}
+                </FormHelperText>
               </Form>
             </div>}
               <ModalButton onClick={this.closeModal}>No?</ModalButton>
