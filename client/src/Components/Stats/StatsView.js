@@ -8,7 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Zoom from "@material-ui/core/Zoom";
 import { Link } from "react-router-dom";
-import { PDFViewer, PDFDownloadLink, StyleSheet } from "@react-pdf/renderer";
+import { PDFViewer, StyleSheet } from "@react-pdf/renderer";
 import styled from "styled-components";
 
 import StatsDashboard from "./StatsDashboard";
@@ -17,7 +17,7 @@ import ManyDaysStats from "./ManyDaysStats";
 import WeightStats from "./WeightStats";
 import ExerciseStats from "./ExerciseStats";
 import Accomplishments from "./Accomplishments";
-import PDFReport from "../PDFReport";
+import PDFReport from "./PDFReports/PDFReport";
 import {
   GET_FOOD_ENTRIES_BY_USER_QUERY,
   GET_CURRENT_USER_QUERY,
@@ -160,16 +160,14 @@ class StatsView extends React.Component {
                   )}
                 </>
               ) : (
-                <>
-                  <PDFLink>
-                    <PDFDownloadLink document={<PDFReport />} fileName='report.pdf' style={PDFstyles.link}>
-                      {({ blob, url, loading, error }) => (loading ? "Loading document..." : "Download PDF Report")}
-                    </PDFDownloadLink>
-                  </PDFLink>
-                  <PDFViewer style={PDFstyles.document}>
-                    <PDFReport />
-                  </PDFViewer>
-                </>
+                <PDFViewer style={PDFstyles.document}>
+                  <PDFReport
+                    currentUser={currentUser}
+                    foodEntries={foodEntries}
+                    // weightEntries={weightEntries}
+                    exerciseEntries={exerciseEntries}
+                  />
+                </PDFViewer>
               )}
             </>
           )}
@@ -211,21 +209,7 @@ const PDFstyles = StyleSheet.create({
   document: {
     width: "100%",
     height: "100vh"
-  },
-  link: {
-    textDecoration: "none",
-    fontSize: "1.5rem",
-    color: "white",
-    backgroundColor: "#F4B4C3",
-    border: "1px solid #F4B4C3",
-    padding: "5px 15px"
   }
 });
-
-const PDFLink = styled.div`
-  margin: 15px auto;
-  text-align: center;
-  font-family: "Oxygen";
-`;
 
 export default withStyles(styles)(StatsView);
