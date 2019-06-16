@@ -93,29 +93,31 @@ const PDFReport = props => {
                 ))}
               </List>
             </View>
-            <View style={styles.info}>
-              <Text style={styles.category}>Exercise Entries</Text>
-              <List>
-                {exercises.map((exercise, i) => (
-                  <>
-                    {exercise.length > 0 && (
-                      <>
-                        <Text style={styles.date}>-- {exercise[0].exerciseEntryDate}: </Text>
-                        <List key={i}>
-                          {exercise.map((entry, j) => (
-                            <Item key={j}>
-                              {entry.exerciseName}, burned {entry.caloriesBurned}
-                            </Item>
-                          ))}
-                        </List>
-                        <Text style={styles.date}>Total Calories: {totalExer[i]} kcal.</Text>
-                        <Text style={styles.hr}>---------------------------------------</Text>
-                      </>
-                    )}
-                  </>
-                ))}
-              </List>
-            </View>
+            {currentUser.userType !== "basic" && (
+              <View style={styles.info}>
+                <Text style={styles.category}>Exercise Entries</Text>
+                <List>
+                  {exercises.map((exercise, i) => (
+                    <>
+                      {exercise.length > 0 && (
+                        <>
+                          <Text style={styles.date}>-- {exercise[0].exerciseEntryDate}: </Text>
+                          <List key={i}>
+                            {exercise.map((entry, j) => (
+                              <Item key={j}>
+                                {entry.exerciseName}, burned {entry.caloriesBurned}
+                              </Item>
+                            ))}
+                          </List>
+                          <Text style={styles.date}>Total Calories: {totalExer[i]} kcal.</Text>
+                          <Text style={styles.hr}>---------------------------------------</Text>
+                        </>
+                      )}
+                    </>
+                  ))}
+                </List>
+              </View>
+            )}
           </View>
         </Page>
       </Document>
