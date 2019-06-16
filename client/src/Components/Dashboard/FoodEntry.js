@@ -5,13 +5,13 @@ import ApolloClient from "apollo-boost";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+//import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import Menu from "@material-ui/core/Menu";
+//import Menu from "@material-ui/core/Menu";
 import moment from 'moment';
 
 import { GET_CURRENT_USERID } from "../../graphql/queries";
@@ -250,8 +250,9 @@ class FoodEntry extends React.Component {
                   className="form-field"
                   name="meal_category_id"
                   type="number"
-                  placeholder={this.props.foodEntry.meal_category_id.meal_category_id}
-                  value={this.props.foodEntry.meal_category_id.meal_category_id}
+                  placeholder={this.props.foodEntry.meal_category_id}
+                  value={this.props.foodEntry.meal_category_id}
+                  onChange={this.props.onFoodEntryChange}
                   aria-describedby="errorCategory-text"
                 >
                   <MenuItem>Select Meal Category</MenuItem>
