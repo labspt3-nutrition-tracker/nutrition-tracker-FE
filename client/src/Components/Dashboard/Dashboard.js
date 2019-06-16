@@ -236,6 +236,11 @@ class Dashboard extends Component {
   };
 
   onFoodEntryChange = e => {
+    e.preventDefault();
+    let food_id = this.state.foodEntry.food_id;
+    let key = e.target.name;
+    let value = e.target.value;
+    food_id[key] = value;
     this.setState({
       foodEntry: {
         ...this.state.foodEntry,

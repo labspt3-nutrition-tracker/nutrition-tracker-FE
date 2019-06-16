@@ -224,7 +224,7 @@ class FoodEntry extends React.Component {
 
             <FoodModal
             isOpen={this.state.showModal}>
-            { this.props.foodEntry && this.props.foodEntry.food_id && this.props.foodEntry.meal_category_id &&
+            { this.props.foodEntry && this.props.foodEntry.food_id  && this.props.foodEntry.meal_category_id &&
             <div>
               <Form>
                 <h1> Edit food entry</h1>
@@ -236,6 +236,8 @@ class FoodEntry extends React.Component {
                   className="form-field"
                   type="text"
                   name="foodName"
+                  onChange={this.props.onFoodEntryChange}
+                  //onChange={event => {this.onFoodEntryChange(event, this.props.onFoodEntryChange, 'foodName'); }}
                   value={this.props.foodEntry.food_id.foodName}
                   aria-describedby="errorFood-text"
                 />
@@ -255,7 +257,7 @@ class FoodEntry extends React.Component {
                   onChange={this.props.onFoodEntryChange}
                   aria-describedby="errorCategory-text"
                 >
-                  <MenuItem>Select Meal Category</MenuItem>
+                  <MenuItem value="NaN">Select Meal Category</MenuItem>
                   <MenuItem value="1">breakfast</MenuItem>
                   <MenuItem value="2">lunch</MenuItem>
                   <MenuItem value="4">dinner</MenuItem>
@@ -286,6 +288,7 @@ class FoodEntry extends React.Component {
                   type="number"
                   placeholder="Add food here..."
                   name="caloriesPerServ"
+                  onChange={this.props.onFoodEntryChange}
                   value={this.props.foodEntry.food_id.caloriesPerServ}
                   aria-describedby="errorCal-text"
                 />
@@ -302,6 +305,7 @@ class FoodEntry extends React.Component {
                   type="number"
                   name="proteins"
                   error={this.state.errorMsg.errorProteins}
+                  onChange={this.props.onFoodEntryChange}
                   value={this.props.foodEntry.food_id.proteins}
                   required
                   aria-describedby="errorProteins-text"
@@ -316,6 +320,7 @@ class FoodEntry extends React.Component {
                   type="number"
                   name="carbs"
                   error={this.state.errorMsg.errorCarbs}
+                  onChange={this.props.onFoodEntryChange}
                   value={this.props.foodEntry.food_id.carbs}
                   required
                   aria-describedby="errorCarbs-text"
@@ -330,7 +335,7 @@ class FoodEntry extends React.Component {
                   type="number"
                   name="fats"
                   error={this.state.errorMsg.errorFats}
-                  onChange={this.onInputChange}
+                  onChange={this.props.onFoodEntryChange}
                   value={this.props.foodEntry.food_id.fats}
                   required
                   aria-describedby="errorFats-text"
@@ -345,7 +350,8 @@ class FoodEntry extends React.Component {
                   type="date"
                   name="date"
                   error={this.state.errorMsg.errorDate}
-                  onChange={this.onInputChange}
+                  onChange={this.props.onFoodEntryChange}
+                  // onChange={this.onInputChange}
                   required
                   aria-describedby="errorDate-text"
                   value={moment(this.props.foodEntry.date).format('YYYY-MM-DD')}
