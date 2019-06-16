@@ -16,7 +16,7 @@ import UserEditModal from "../Components/UserEditModal";
 
 const styles = theme => ({
   root: {
-    margin: "0 10px",
+    margin: "0 10px"
   },
   card: {
     maxWidth: 600,
@@ -115,7 +115,9 @@ class Settings extends React.Component {
                   secondary={currentUser.userType}
                   classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
                 />
-                <EditIcon className={classes.editIcon} onClick={() => this.openModal("userType")} />
+                {currentUser.userType === "basic" && (
+                  <EditIcon className={classes.editIcon} onClick={() => this.openModal("userType")} />
+                )}
               </ListItem>{" "}
               <ListItem>
                 <ListItemIcon>
