@@ -37,7 +37,7 @@ class ExerEntry extends React.Component {
   }
 
   openModal = () => {
-    this.setState({ 
+    this.setState({
       showModal: true
     })
   }
@@ -57,11 +57,11 @@ class ExerEntry extends React.Component {
     });
     client
       .mutate({
-        mutation: DELETE_EXERENTRY, 
+        mutation: DELETE_EXERENTRY,
         variables: {id}
       })
       .then(response => {
-        this.setState({ 
+        this.setState({
           exerEntry: null
          });
          this.closeModal()
@@ -124,10 +124,10 @@ class ExerEntry extends React.Component {
       this.setState({ exerEntries: this.props.exerEntries });
 
     }
-    
+
   }
 
-  
+
 
   render() {
 //     let exerciseId = this.props;
@@ -140,7 +140,7 @@ class ExerEntry extends React.Component {
 //       exerciseName = editExercise.exerciseName;
 //       caloriesBurned = editExercise.caloriesBurned;
 //       // id = editExercise.id;
-//     } 
+//     }
 //     console.log("this.props", this.props)
 
 
@@ -172,27 +172,27 @@ class ExerEntry extends React.Component {
 
                   <div>Activity: {entry.exerciseName}</div>
                   <div>Calories burned: {entry.caloriesBurned}</div>
-             
+
                 </ExerciseActivity>
-                
+
               </div>
             </div>
           ))}
         <ExerciseModal
          isOpen={this.state.showModal}
          itemOpen={this.state.foodEntries}
-        
+
          >
-           {this.state.exerEntry && 
-         
+           {this.state.exerEntry &&
+
                 <ExerciseActivity key={this.state.exerEntry.id}>
                   <div>Activity: {this.state.exerEntry.exerciseName}</div>
                   <div>Calories burned: {this.state.exerEntry.caloriesBurned}</div>
-             
+
                 </ExerciseActivity>
                  }
-         
-           
+
+
          <div onClick={this.closeModal}>No?</div>
           <div onClick={() => this.deleteExerEntry(this.state.exerEntry.id)}>Delete?</div>
     </ExerciseModal>

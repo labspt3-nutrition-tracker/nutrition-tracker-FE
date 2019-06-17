@@ -8,6 +8,15 @@ import { GET_FOOD_ENTRIES_BY_USER_QUERY , GET_CURRENT_USERID } from "../../graph
 import ApolloClient from "apollo-boost"
 import gql from "graphql-tag";
 
+const GET_FOOD_BY_ID = gql`
+  query getFoodById($foodId: ID!){
+    getFoodById(foodId: $foodId){
+      id
+      edamam_id
+    }
+  }
+`;
+
 const MealModal = styled(Modal)`
   display: flex;
   flex-direction: column;
@@ -74,6 +83,7 @@ class JournalEntry extends React.Component {
     const { foodEntries } = props;
     this.state = {
       foodEntries: foodEntries,
+      edamamExist: false,
       journalEntry: {
         date: "",
         foodName: "",
@@ -94,6 +104,31 @@ class JournalEntry extends React.Component {
 
   passMealData = mealEntry => {
     console.log(mealEntry)
+    const edamam_id = mealEntry.food_id.edamam_id;
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    })
+
+    client
+      .query({
+        query:GET_FOOD_BY_ID,
+        variables: {
+          foodId: mealEntry.food_id.id
+        }
+      })
+      .then(response => {
+        if(response.data.getFoodById.edamam_id === edamam_id){
+          this.setState({
+            edamamExist: true
+          })
+        } else {
+          this.setState({
+            edamamExist: false
+          })
+        }
+      })
+      .catch(err => console.log(err))
+
     this.setState( prevState => ({
       mealEntry: mealEntry
     }));
@@ -208,7 +243,7 @@ class JournalEntry extends React.Component {
                         {breakfast.food_id.foodName}
                       </EntryItems>
                     </div>
-                    {this.state.mealEntry &&
+                    {this.state.mealEntry && !this.state.edamamExist &&
                       <MealModal
                       isOpen={this.state.showModal}
                       >
@@ -263,6 +298,50 @@ class JournalEntry extends React.Component {
                           label="Fats"
                           placeholder={`${this.state.mealEntry}`}
                           value={this.state.fats}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                      </form>
+                      <div>
+                        <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
+                          Delete
+                        </Button>
+                        <Button onClick={this.editMealEntry} variant='contained' color='primary'>
+                          Edit
+                        </Button>
+                      </div>
+                    </MealModal>
+                    }
+
+                    {this.state.mealEntry && this.state.edamamExist &&
+                      <MealModal
+                      isOpen={this.state.showModal}
+                      >
+                      <div>
+                        <Button onClick={this.closeModal}>
+                          exit
+                        </Button>
+                      </div>
+                      <div>
+                        {this.state.mealEntry.food_id.foodName}
+                      </div>
+                      <form>
+                        <TextField
+                          id="Serving Quantity"
+                          name="servingQty"
+                          label="Serving Quantity"
+                          placeholder={`${this.state.mealEntry}`}
+                          value={this.state.servingQty}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+
+                        <TextField
+                          id="MealCategory"
+                          name="MealCategory"
+                          label="MealCategory"
+                          placeholder={`${this.state.mealEntry}`}
+                          value={this.state.mealCategory}
                           margin="dense"
                           onChange={this.handleChange}
                         />
