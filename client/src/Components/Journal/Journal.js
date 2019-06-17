@@ -45,22 +45,22 @@ const CalendarDiv = styled.div`
 `;
 
 const DELETE_MEAL = gql`
-  mutation deleteFoodEntry($id: ID!){
+  mutation deleteFoodEntry($id: ID!) {
     deleteFoodEntry(id: $id)
   }
 `;
 
-const  UPDATE_FOOD_ENTRY = gql`
-  mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!){
-    updateFoodEntry(id: $id, input: $input ){
+const UPDATE_FOOD_ENTRY = gql`
+  mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
+    updateFoodEntry(id: $id, input: $input) {
       id
     }
   }
 `;
 
 const UPDATE_FOOD = gql`
-  mutation updateFood($id: ID!, $input: FoodInput!){
-    updateFood(id: $id, input: $input){
+  mutation updateFood($id: ID!, $input: FoodInput!) {
+    updateFood(id: $id, input: $input) {
       id
       foodName
       caloriesPerServ
@@ -73,12 +73,12 @@ const UPDATE_FOOD = gql`
 `;
 
 const FOODENTRYQUERY = gql`
-  query getFoodEntry($userId: ID!){
-    getFoodEntriesByUserId(userId: $userId){
+  query getFoodEntry($userId: ID!) {
+    getFoodEntriesByUserId(userId: $userId) {
       id
       date
       servingQty
-      food_id{
+      food_id {
         id
         foodName
         caloriesPerServ
@@ -86,7 +86,7 @@ const FOODENTRYQUERY = gql`
         proteins
         carbs
       }
-      meal_category_id{
+      meal_category_id {
         id
         mealCategoryName
       }
@@ -122,7 +122,7 @@ class Journal extends React.Component {
   };
 
   deleteMealEntry = id => {
-    console.log(id)
+    console.log(id);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
@@ -130,28 +130,23 @@ class Journal extends React.Component {
     client
       .mutate({
         mutation: DELETE_MEAL,
-        variables: {id}
+        variables: { id }
       })
-      .then( response => {
-        console.log(response)
+      .then(response => {
+        console.log(response);
       })
-      .then( response => {
-        client
-          .query({
-            query: FOODENTRYQUERY,
-            variables: {
-              userId: this.state.currentUser
-            }
-          })
+      .then(response => {
+        client.query({
+          query: FOODENTRYQUERY,
+          variables: {
+            userId: this.state.currentUser
+          }
+        });
       })
       .catch(err => console.log(err));
-  }
+  };
 
   editMealEntry = (entry_id, food_id, foodEntry) => {
-    console.log(entry_id)
-    console.log(food_id)
-    console.log(foodEntry.food_id)
-
     const foodInput = {
       foodName: foodEntry.foodName,
       caloriesPerServ: foodEntry.caloriesPerServ,
@@ -159,18 +154,18 @@ class Journal extends React.Component {
       carbs: foodEntry.carbs,
       proteins: foodEntry.proteins,
       edamam_id: foodEntry.edamam_id
-    }
+    };
 
-    const foodEntryInput ={
+    const foodEntryInput = {
       date: foodEntry.date,
       food_id: food_id,
       user_id: foodEntry.user_id,
       servingQty: foodEntry.servingQty,
       meal_category_id: foodEntry.meal_category_id
-    }
+    };
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
-    })
+    });
 
     client
       .mutate({
@@ -179,27 +174,26 @@ class Journal extends React.Component {
           id: food_id,
           input: foodInput
         }
-      }).then(response => {
-        client
-          .mutate({
-            mutation: UPDATE_FOOD_ENTRY,
-            variables: {
-              id: entry_id,
-              input: foodEntryInput
-            }
-          })
       })
       .then(response => {
-        client
-          .query({
-            query: FOODENTRYQUERY,
-            variables: {
-              userId: this.state.currentUser
-            }
-          })
+        client.mutate({
+          mutation: UPDATE_FOOD_ENTRY,
+          variables: {
+            id: entry_id,
+            input: foodEntryInput
+          }
+        });
       })
-      .catch(err => console.log(err))
-  }
+      .then(response => {
+        client.query({
+          query: FOODENTRYQUERY,
+          variables: {
+            userId: this.state.currentUser
+          }
+        });
+      })
+      .catch(err => console.log(err));
+  };
 
   render() {
     const FOODENTRYQUERY = gql`
@@ -235,10 +229,18 @@ class Journal extends React.Component {
             return (
               <JournalContainer>
                 <JournalEntryDiv>
-                  <JournalEntry foodEntries={foodEntries} datePicked={this.state.datePicked} deleteMeal={this.deleteMealEntry} editMeal={this.editMealEntry}/>
+                  <JournalEntry
+                    foodEntries={foodEntries}
+                    datePicked={this.state.datePicked}
+                    deleteMeal={this.deleteMealEntry}
+                    editMeal={this.editMealEntry}
+                  />
                 </JournalEntryDiv>
                 <CalendarDiv>
-                  <Calendar datePicked={this.state.datePicked} handleDateClick={this.handleDateClick} />
+                  <Calendar
+                    datePicked={this.state.datePicked}
+                    handleDateClick={this.handleDateClick}
+                  />
                 </CalendarDiv>
               </JournalContainer>
             );

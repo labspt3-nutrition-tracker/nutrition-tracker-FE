@@ -3,7 +3,10 @@ import styled from "styled-components";
 import moment from "moment";
 import Modal from 'react-modal';
 import TextField from "@material-ui/core/TextField";
+import InputLabel from '@material-ui/core/InputLabel';
 import Button from "@material-ui/core/Button";
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import { GET_FOOD_ENTRIES_BY_USER_QUERY , GET_CURRENT_USERID } from "../../graphql/queries";
 import ApolloClient from "apollo-boost"
 import gql from "graphql-tag";
@@ -95,7 +98,6 @@ class JournalEntry extends React.Component {
         mealEntry: [],
         user_id: null,
         food_id: null,
-        mealCategoryName: "",
         meal_category_id: null,
         showModal: false,
         currentUser: 0
@@ -154,6 +156,8 @@ class JournalEntry extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+
+    console.log(this.state.date)
   };
 
   deleteMealEntry = e => {
@@ -166,29 +170,6 @@ class JournalEntry extends React.Component {
   editMealEntry = e => {
     e.preventDefault()
 
-    switch(this.state.mealCategoryName){
-      case this.state.mealCategoryName === "Breakfast":
-        this.setState({
-          meal_category_id: 1
-        })
-        break;
-      case this.state.mealCategoryName === "Lunch":
-        this.setState({
-          meal_category_id: 2
-        })
-        break;
-       case this.state.mealCategoryName === "Dinner":
-        this.setState({
-          meal_category_id: 3
-        })
-        break;
-      case this.state.mealCategoryName === "Snack":
-        this.setState({
-          meal_category_id: 4
-        })
-        break;
-      default:
-    }
 
     const foodEntry = {
       foodName: this.state.mealEntry.food_id.foodName,
@@ -196,10 +177,10 @@ class JournalEntry extends React.Component {
       fats: parseInt(this.state.fats),
       carbs: parseInt(this.state.carbs),
       proteins: parseInt(this.state.proteins),
-      date: this.state.mealEntry.date,
+      date: this.state.date,
       food_id: this.state.mealEntry.food_id.id,
       user_id: this.state.currentUser,
-      meal_category_id: this.state.mealEntry.meal_category_id.id,
+      meal_category_id: this.state.meal_category_id,
       servingQty: parseInt(this.state.servingQty)
     }
     console.log(foodEntry)
@@ -281,145 +262,15 @@ class JournalEntry extends React.Component {
                         {this.state.mealEntry.food_id.foodName}
                       </div>
                       <form>
-                        <TextField
-                          id="Serving Quantity"
-                          name="servingQty"
-                          label="Serving Quantity"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.servingQty}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Calories Per Serving"
-                          name="caloriesPerServ"
-                          label="Calories Per Serving"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.caloriesPerServ}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Protein"
-                          name="proteins"
-                          label="Protein"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.proteins}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Carbs"
-                          name="carbs"
-                          label="Carbs"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.carbs}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Fats"
-                          name="fats"
-                          label="Fats"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.fats}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="MealCategory"
-                          name="MealCategoryName"
-                          label="MealCategory"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.mealCategoryName}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                      </form>
-                      <div>
-                        <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
-                          Delete
-                        </Button>
-                        <Button onClick={this.editMealEntry} variant='contained' color='primary'>
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
-                    }
 
-                    {this.state.mealEntry && this.state.edamamExist &&
-                      <MealModal
-                      isOpen={this.state.showModal}
-                      >
-                      <div>
-                        <Button onClick={this.closeModal}>
-                          exit
-                        </Button>
-                      </div>
-                      <div>
-                        {this.state.mealEntry.food_id.foodName}
-                      </div>
-                      <form>
-                        <TextField
-                          id="Serving Quantity"
-                          name="servingQty"
-                          label="Serving Quantity"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.servingQty}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
+                      <label htmlFor="date">Date</label>
+                      <input
+                        className="form-field"
+                        type="date"
+                        name="date"
+                        onChange={this.handleChange}
+                      />
 
-                        <TextField
-                          id="MealCategory"
-                          name="MealCategoryName"
-                          label="MealCategory"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.mealCategoryName}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                      </form>
-                      <div>
-                        <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
-                          Delete
-                        </Button>
-                        <Button onClick={this.editMealEntry} variant='contained' color='primary'>
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
-                    }
-                </div>
-              );
-            })
-          ) : (
-            <EntryItems>No Breakfast entries have been added</EntryItems>
-          )}
-        </div>
-        <CategoryTitle> Lunch</CategoryTitle>
-        <div>
-          {Lunch.length > 0 ? (
-            [...Lunch].map( lunch => {
-              return (
-                <div key={lunch.id} >
-                    <EntryItems onClick={() => this.passMealData(lunch)}>
-                      {lunch.food_id.foodName}
-                    </EntryItems>
-
-                    {this.state.mealEntry && !this.state.edamamExist &&
-                      <MealModal
-                      isOpen={this.state.showModal}
-                      >
-                      <div>
-                        <Button onClick={this.closeModal}>
-                          exit
-                        </Button>
-                      </div>
-                      <div>
-                        {this.state.mealEntry.food_id.foodName}
-                      </div>
-                      <form>
                         <TextField
                           id="Serving Quantity"
                           name="servingQty"
@@ -465,15 +316,196 @@ class JournalEntry extends React.Component {
                           margin="dense"
                           onChange={this.handleChange}
                         />
+                        <InputLabel htmlFor="meal-simple">MealCategory</InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: 'meal_category_id',
+                              id: 'meal-simple',
+                            }}
+                          >
+                            <MenuItem value={null}>
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={1}>Breakfast</MenuItem>
+                            <MenuItem value={2}>Lunch</MenuItem>
+                            <MenuItem value={4}>Dinner</MenuItem>
+                            <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
+                      </form>
+                      <div>
+                        <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
+                          Delete
+                        </Button>
+                        <Button onClick={this.editMealEntry} variant='contained' color='primary'>
+                          Edit
+                        </Button>
+                      </div>
+                    </MealModal>
+                    }
+
+                    {this.state.mealEntry && this.state.edamamExist &&
+                      <MealModal
+                      isOpen={this.state.showModal}
+                      >
+                      <div>
+                        <Button onClick={this.closeModal}>
+                          exit
+                        </Button>
+                      </div>
+                      <div>
+                        {this.state.mealEntry.food_id.foodName}
+                      </div>
+                      <form>
+
+                      <label htmlFor="date">Date</label>
+                      <input
+                        className="form-field"
+                        type="date"
+                        name="date"
+                        onChange={this.handleChange}
+                      />
+
                         <TextField
-                          id="MealCategory"
-                          name="MealCategoryName"
-                          label="MealCategory"
-                          placeholder={`${this.state.mealEntry.mealCategoryName}`}
-                          value={this.state.mealCategoryName}
+                          id="Serving Quantity"
+                          name="servingQty"
+                          label="Serving Quantity"
+                          placeholder={`${this.state.mealEntry.servingQty}`}
+                          value={this.state.servingQty}
                           margin="dense"
                           onChange={this.handleChange}
                         />
+
+                        <InputLabel htmlFor="meal-simple">MealCategory</InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: 'meal_category_id',
+                              id: 'meal-simple',
+                            }}
+                        >
+                          <MenuItem value={null}>
+                            <em>None</em>
+                          </MenuItem>
+                          <MenuItem value={1}>Breakfast</MenuItem>
+                          <MenuItem value={2}>Lunch</MenuItem>
+                          <MenuItem value={4}>Dinner</MenuItem>
+                          <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
+                      </form>
+                      <div>
+                        <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
+                          Delete
+                        </Button>
+                        <Button onClick={this.editMealEntry} variant='contained' color='primary'>
+                          Edit
+                        </Button>
+                      </div>
+                    </MealModal>
+                    }
+                </div>
+              );
+            })
+          ) : (
+            <EntryItems>No Breakfast entries have been added</EntryItems>
+          )}
+        </div>
+        <CategoryTitle> Lunch</CategoryTitle>
+        <div>
+          {Lunch.length > 0 ? (
+            [...Lunch].map( lunch => {
+              return (
+                <div key={lunch.id} >
+                    <EntryItems onClick={() => this.passMealData(lunch)}>
+                      {lunch.food_id.foodName}
+                    </EntryItems>
+
+                    {this.state.mealEntry && !this.state.edamamExist &&
+                      <MealModal
+                      isOpen={this.state.showModal}
+                      >
+                      <div>
+                        <Button onClick={this.closeModal}>
+                          exit
+                        </Button>
+                      </div>
+                      <div>
+                        {this.state.mealEntry.food_id.foodName}
+                      </div>
+                      <form>
+
+                      <label htmlFor="date">Date</label>
+                      <input
+                        className="form-field"
+                        type="date"
+                        name="date"
+                        onChange={this.handleChange}
+                      />
+
+                        <TextField
+                          id="Serving Quantity"
+                          name="servingQty"
+                          label="Serving Quantity"
+                          placeholder={`${this.state.mealEntry.servingQty}`}
+                          value={this.state.servingQty}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Calories Per Serving"
+                          name="caloriesPerServ"
+                          label="Calories Per Serving"
+                          placeholder={`${this.state.mealEntry.food_id.caloriesPerServ}`}
+                          value={this.state.caloriesPerServ}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Protein"
+                          name="proteins"
+                          label="Protein"
+                          placeholder={`${this.state.mealEntry.food_id.proteins}`}
+                          value={this.state.proteins}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Carbs"
+                          name="carbs"
+                          label="Carbs"
+                          placeholder={`${this.state.mealEntry.food_id.carbs}`}
+                          value={this.state.carbs}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <TextField
+                          id="Fats"
+                          name="fats"
+                          label="Fats"
+                          placeholder={`${this.state.mealEntry.food_id.fats}`}
+                          value={this.state.fats}
+                          margin="dense"
+                          onChange={this.handleChange}
+                        />
+                        <InputLabel htmlFor="meal-simple">MealCategory</InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: 'meal_category_id',
+                              id: 'meal-simple',
+                            }}
+                          >
+                            <MenuItem value={null}>
+                              <em>Choose Meal Category</em>
+                            </MenuItem>
+                            <MenuItem value="1">Breakfast</MenuItem>
+                            <MenuItem value="2">Lunch</MenuItem>
+                            <MenuItem value="3">Dinner</MenuItem>
+                            <MenuItem value="4">Snack</MenuItem>
+                          </Select>
                       </form>
                       <div>
                         <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
@@ -509,15 +541,23 @@ class JournalEntry extends React.Component {
                           onChange={this.handleChange}
                         />
 
-                        <TextField
-                          id="MealCategory"
-                          name="MealCategoryName"
-                          label="MealCategory"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.mealCategoryName}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
+                        <InputLabel htmlFor="meal-simple">MealCategory</InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: 'meal_category_id',
+                              id: 'meal-simple',
+                            }}
+                        >
+                          <MenuItem value={null}>
+                            <em>None</em>
+                          </MenuItem>
+                          <MenuItem value={1}>Breakfast</MenuItem>
+                          <MenuItem value={2}>Lunch</MenuItem>
+                          <MenuItem value={4}>Dinner</MenuItem>
+                          <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
                       </form>
                       <div>
                         <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
@@ -559,11 +599,20 @@ class JournalEntry extends React.Component {
                         {this.state.mealEntry.food_id.foodName}
                       </div>
                       <form>
+
+                      <label htmlFor="date">Date</label>
+                      <input
+                        className="form-field"
+                        type="date"
+                        name="date"
+                        onChange={this.handleChange}
+                      />
+
                         <TextField
                           id="Serving Quantity"
                           name="servingQty"
                           label="Serving Quantity"
-                          placeholder={`${this.state.mealEntry}`}
+                          placeholder={`${this.state.mealEntry.servingQty}`}
                           value={this.state.servingQty}
                           margin="dense"
                           onChange={this.handleChange}
@@ -572,7 +621,7 @@ class JournalEntry extends React.Component {
                           id="Calories Per Serving"
                           name="caloriesPerServ"
                           label="Calories Per Serving"
-                          placeholder={`${this.state.mealEntry}`}
+                          placeholder={`${this.state.mealEntry.food_id.caloriesPerServ}`}
                           value={this.state.caloriesPerServ}
                           margin="dense"
                           onChange={this.handleChange}
@@ -581,7 +630,7 @@ class JournalEntry extends React.Component {
                           id="Protein"
                           name="proteins"
                           label="Protein"
-                          placeholder={`${this.state.mealEntry}`}
+                          placeholder={`${this.state.mealEntry.food_id.proteins}`}
                           value={this.state.proteins}
                           margin="dense"
                           onChange={this.handleChange}
@@ -590,7 +639,7 @@ class JournalEntry extends React.Component {
                           id="Carbs"
                           name="carbs"
                           label="Carbs"
-                          placeholder={`${this.state.mealEntry}`}
+                          placeholder={`${this.state.mealEntry.food_id.carbs}`}
                           value={this.state.carbs}
                           margin="dense"
                           onChange={this.handleChange}
@@ -599,20 +648,28 @@ class JournalEntry extends React.Component {
                           id="Fats"
                           name="fats"
                           label="Fats"
-                          placeholder={`${this.state.mealEntry}`}
+                          placeholder={`${this.state.mealEntry.food_id.fats}`}
                           value={this.state.fats}
                           margin="dense"
                           onChange={this.handleChange}
                         />
-                        <TextField
-                          id="MealCategory"
-                          name="MealCategoryName"
-                          label="MealCategory"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.mealCategoryName}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
+                        <InputLabel htmlFor="meal-simple">MealCategory</InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: 'meal_category_id',
+                              id: 'meal-simple',
+                            }}
+                        >
+                          <MenuItem value={null}>
+                            <em>None</em>
+                          </MenuItem>
+                          <MenuItem value={1}>Breakfast</MenuItem>
+                          <MenuItem value={2}>Lunch</MenuItem>
+                          <MenuItem value={4}>Dinner</MenuItem>
+                          <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
                       </form>
                       <div>
                         <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
@@ -638,25 +695,42 @@ class JournalEntry extends React.Component {
                         {this.state.mealEntry.food_id.foodName}
                       </div>
                       <form>
+
+                      <label htmlFor="date">Date</label>
+                      <input
+                        className="form-field"
+                        type="date"
+                        name="date"
+                        onChange={this.handleChange}
+                      />
+
                         <TextField
                           id="Serving Quantity"
                           name="servingQty"
                           label="Serving Quantity"
-                          placeholder={`${this.state.mealEntry}`}
+                          placeholder={`${this.state.mealEntry.servingQty}`}
                           value={this.state.servingQty}
                           margin="dense"
                           onChange={this.handleChange}
                         />
 
-                        <TextField
-                          id="MealCategory"
-                          name="MealCategoryName"
-                          label="MealCategory"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.mealCategoryName}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
+                        <InputLabel htmlFor="meal-simple">MealCategory</InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: 'meal_category_id',
+                              id: 'meal-simple',
+                            }}
+                        >
+                          <MenuItem value={null}>
+                            <em>None</em>
+                          </MenuItem>
+                          <MenuItem value={1}>Breakfast</MenuItem>
+                          <MenuItem value={2}>Lunch</MenuItem>
+                          <MenuItem value={4}>Dinner</MenuItem>
+                          <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
                       </form>
                       <div>
                         <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
@@ -682,7 +756,7 @@ class JournalEntry extends React.Component {
             [...Snack].map( snack => {
               return (
                 <div key={snack.id}>
-                  <EntryItems>
+                  <EntryItems EntryItems onClick={() => this.passMealData(snack)}>
                     {snack.food_id.foodName}
                   </EntryItems>
 
@@ -699,6 +773,15 @@ class JournalEntry extends React.Component {
                       {this.state.mealEntry.food_id.foodName}
                     </div>
                     <form>
+
+                    <label htmlFor="date">Date</label>
+                    <input
+                      className="form-field"
+                      type="date"
+                      name="date"
+                      onChange={this.handleChange}
+                    />
+
                       <TextField
                         id="Serving Quantity"
                         name="servingQty"
@@ -712,7 +795,7 @@ class JournalEntry extends React.Component {
                         id="Calories Per Serving"
                         name="caloriesPerServ"
                         label="Calories Per Serving"
-                        placeholder={`${this.state.mealEntry}`}
+                        placeholder={`${this.state.mealEntry.food_id.caloriesPerServ}`}
                         value={this.state.caloriesPerServ}
                         margin="dense"
                         onChange={this.handleChange}
@@ -721,7 +804,7 @@ class JournalEntry extends React.Component {
                         id="Protein"
                         name="proteins"
                         label="Protein"
-                        placeholder={`${this.state.mealEntry}`}
+                        placeholder={`${this.state.mealEntry.food_id.proteins}`}
                         value={this.state.proteins}
                         margin="dense"
                         onChange={this.handleChange}
@@ -730,7 +813,7 @@ class JournalEntry extends React.Component {
                         id="Carbs"
                         name="carbs"
                         label="Carbs"
-                        placeholder={`${this.state.mealEntry}`}
+                        placeholder={`${this.state.mealEntry.food_id.carbs}`}
                         value={this.state.carbs}
                         margin="dense"
                         onChange={this.handleChange}
@@ -739,20 +822,28 @@ class JournalEntry extends React.Component {
                         id="Fats"
                         name="fats"
                         label="Fats"
-                        placeholder={`${this.state.mealEntry}`}
+                        placeholder={`${this.state.mealEntry.food_id.fats}`}
                         value={this.state.fats}
                         margin="dense"
                         onChange={this.handleChange}
                       />
-                      <TextField
-                        id="MealCategory"
-                        name="MealCategoryName"
-                        label="MealCategory"
-                        placeholder={`${this.state.mealEntry}`}
-                        value={this.state.mealCategoryName}
-                        margin="dense"
-                        onChange={this.handleChange}
-                      />
+                      <InputLabel htmlFor="meal-simple">MealCategory</InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: 'meal_category_id',
+                              id: 'meal-simple',
+                            }}
+                        >
+                          <MenuItem value={null}>
+                            <em>None</em>
+                          </MenuItem>
+                          <MenuItem value={1}>Breakfast</MenuItem>
+                          <MenuItem value={2}>Lunch</MenuItem>
+                          <MenuItem value={4}>Dinner</MenuItem>
+                          <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
                     </form>
                     <div>
                       <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
@@ -788,15 +879,23 @@ class JournalEntry extends React.Component {
                         onChange={this.handleChange}
                       />
 
-                      <TextField
-                        id="MealCategory"
-                        name="MealCategoryName"
-                        label="MealCategory"
-                        placeholder={`${this.state.mealEntry}`}
-                        value={this.state.mealCategoryName}
-                        margin="dense"
-                        onChange={this.handleChange}
-                      />
+                      <InputLabel htmlFor="meal-simple">MealCategory</InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: 'meal_category_id',
+                              id: 'meal-simple',
+                            }}
+                        >
+                          <MenuItem value={null}>
+                            <em>None</em>
+                          </MenuItem>
+                          <MenuItem value={1}>Breakfast</MenuItem>
+                          <MenuItem value={2}>Lunch</MenuItem>
+                          <MenuItem value={4}>Dinner</MenuItem>
+                          <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
                     </form>
                     <div>
                       <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
