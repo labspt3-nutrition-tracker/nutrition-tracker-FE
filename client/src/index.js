@@ -58,11 +58,3 @@ ReactDOM.render(
 //   cache: new InMemoryCache()
 // });
 
-// ReactDOM.render(
-//   <ApolloProvider client={client}>
-//     <Router>
-//       <App />
-//     </Router>
-//   </ApolloProvider>,
-//   document.getElementById("root")
-// );

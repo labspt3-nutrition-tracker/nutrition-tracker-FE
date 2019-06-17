@@ -28,9 +28,13 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+html {
+	font-size: 100%;
+}
 body {
 	line-height: 1;
 	width: 100%;
+	/* font-size: 62.5%; */
 }
 ol, ul {
 	list-style: none;
@@ -50,9 +54,11 @@ table {
 
 
 /* Begin custom styles  */
+
 * {
   box-sizing: border-box;
 }
+
 html {
   font-size: 62.5%;
   font-family: Roboto, sans-serif;
@@ -65,27 +71,27 @@ body {
 
 
 .home {
-  min-height: 700px;
-	height: 800px;
-  background: url(./Assets/healthy_food.jpg);
+  /* min-height: 700px; */
+	background: url(./Assets/healthy-food-lg.jpg) no-repeat;
+	/* background-size: 100% 100%; */
 	background-size: cover;
+	background-repeat: no-repeat;
   color: #000;
+
+
 }
 
-.header-home {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-	align-self: flex-end;
-  padding: 20px 0;
+@media (max-width: 500px){
+	.home{
+		background: url(./Assets/healthy-food-sm.jpg) no-repeat;
+		background-size: cover;
+	}
+
 }
 
-.home-text {
-  text-align: center;
-	width: 50%;
-}
 
-.tagline {
+
+/* .tagline {
   font-size: 2.5rem;
 }
 
@@ -104,7 +110,6 @@ body {
 
 .feature-img {
   max-width: 100%;
-  /* width: 100%; */
 }
 
 .feature-img img {
@@ -114,7 +119,7 @@ body {
 .form-field {
   margin-bottom: 10px;
   font-size: 1.6rem;
-}
+} */
 
 .fc-today{
 	background: #40A798 !important;

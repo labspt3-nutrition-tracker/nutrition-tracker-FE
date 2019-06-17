@@ -37,8 +37,12 @@ class WeightStats extends Component {
   render() {
     defaults.global.defaultFontColor = "#2196F3";
     const { classes, initialWeight, days } = this.props;
+    const { entries } = this.state;
     const labels = this.state.labels.map(day => moment(day).format("MM/DD"));
-    labels.unshift("Day 1");
+    if (initialWeight) {
+      labels.unshift("Day 1");
+      entries.unshift(initialWeight);
+    }
     const lineColor = makeRandomColor();
     const data = {
       labels: labels,
@@ -49,7 +53,7 @@ class WeightStats extends Component {
           borderColor: lineColor,
           pointRadius: 6,
           fill: "false",
-          data: [initialWeight, ...this.state.entries]
+          data: entries
         }
       ]
     };
@@ -62,7 +66,9 @@ class WeightStats extends Component {
             <Grid item xs={3}>
               {this.state.entries.map((entry, i) => (
                 <div key={labels[i]} className={classes.dataInfo}>
-                  <span className={classes.title}>{moment(new Date(labels[i])).format("MMM Do")}</span>
+                  <span className={classes.title}>
+                    {labels[i] !== "Day 1" ? moment(new Date(labels[i])).format("MMM Do") : labels[i]}
+                  </span>
                   <div className={classes.value}>{entry === 0 ? "No Entry" : entry.toFixed(2)}</div>
                 </div>
               ))}
