@@ -24,7 +24,7 @@ export const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
         mealCategoryName
       }
     }
-  }
+  
 }  
 `;
 
