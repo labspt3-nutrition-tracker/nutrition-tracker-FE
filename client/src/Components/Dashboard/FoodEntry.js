@@ -255,6 +255,7 @@ class FoodEntry extends React.Component {
                   placeholder={this.props.foodEntry.meal_category_id}
                   value={this.props.foodEntry.meal_category_id}
                   onChange={this.props.onFoodEntryChange}
+                  onClick={this.props.onFoodEntryChange}
                   aria-describedby="errorCategory-text"
                 >
                   <MenuItem value="NaN">Select Meal Category</MenuItem>
