@@ -1,94 +1,76 @@
 import React from "react";
-import PropTypes from "prop-types";
-// import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import blue from "@material-ui/core/colors/blue";
-// import red from "@material-ui/core/colors/red";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 import { NavLink } from "react-router-dom";
+import { NONAME } from "dns";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: blue,
-    secondary: blue
+import SearchInputComponent from "./../SearchComponent/SearchInputComponent";
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    background: "#3685b5"
   },
-  typography: {
-    fontSize: 25,
-    useNextVariants: true,
-  },
-})
+  title: {
+    flexGrow: 1,
+    fontSize: 16,
+    textDecoration: "none",
+    color: "#ffffff"
+  }
+});
 
-// const styles = {
-//   root: {
-//     flexGrow: 1
-//   },
-//   grow: {
-//     flexGrow: 1
-//   },
-//   menuButton: {
-//     marginLeft: -12,
-//     marginRight: 20
-//   }
-// };
+function ButtonAppBar(props) {
+  const { classes } = props;
 
-// function ButtonAppBar(props) {
-//   const { classes } = props;
-//   return (
-//     <div className={classes.root}>
-//       <AppBar position="static">
-//         <Toolbar>
-//           <NavLink to="/">
-//             <Button color="inherit">Home</Button>
-//           </NavLink>
-//           <NavLink to="/login">
-//             <Button color="inherit">Login</Button>
-//           </NavLink>
-//           <NavLink to="/settings">
-//             <Button color="inherit">Account</Button>
-//           </NavLink>
-//           <NavLink to="/reports">
-//             <Button color="inherit">Reports</Button>
-//           </NavLink>
-//           <NavLink to="/dashboard">
-//             <Button color="inherit">Dashboard</Button>
-//           </NavLink>
-//         </Toolbar>
-//       </AppBar>
-//     </div>
-//   );
-// }
-
-function ButtonAppBar() {
   return (
-    <MuiThemeProvider theme={theme}>
-      <AppBar position="static">
+    <div className={classes.root}>
+      <AppBar position="static" className={classes.root}>
         <Toolbar>
-          <NavLink to="/">
-            <Button color="inherit">Home</Button>
-          </NavLink>
-          <NavLink to="/login">
-            <Button color="inherit">Login</Button>
-          </NavLink>
-          <NavLink to="/account">
-            <Button color="inherit">Account</Button>
-          </NavLink>
-          <NavLink to="/stats">
-            <Button color="inherit">Reports</Button>
-          </NavLink>
-          <NavLink to="/dashboard">
-            <Button color="inherit">Dashboard</Button>
-          </NavLink>
+          {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
+            <MenuIcon />
+          </IconButton> */}
+          <Button className={classes.title}>
+            <NavLink className="navLink" exact to="/">
+              Home
+            </NavLink>
+          </Button>
+
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/account">
+              Account
+            </NavLink>
+          </Button>
+
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/reports">
+              Reports
+            </NavLink>
+          </Button>
+
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/dashboard">
+              Dashboard
+            </NavLink>
+          </Button>
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/journal">
+              Journal
+            </NavLink>
+          </Button>
+          <SearchInputComponent
+            updateSearch={props.updateSearch}
+            searchInput={props.searchInput}
+            getFoodData={props.getFoodData}
+          />
         </Toolbar>
       </AppBar>
-    </MuiThemeProvider>
+    </div>
   );
 }
 
-ButtonAppBar.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-// export default withStyles(styles)(ButtonAppBar);
-export default ButtonAppBar;
+export default withStyles(styles)(ButtonAppBar);

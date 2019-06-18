@@ -1,9 +1,8 @@
 import React from 'react';
-import classNames from 'classnames';
-import Header from '../Reusables/Header';
+// import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
+// import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -65,7 +64,7 @@ const tiers = [
     price: '0',
     description: [
         'Calorie entry',
-         'One week food diary options', 
+         'One week food diary options',
          'Help center access',
           'Email support'
         ],
@@ -106,7 +105,6 @@ function Pricing(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Header />
       <main className={classes.layout}>
         {/* Hero unit */}
         <div className={classes.heroContent}>
@@ -114,12 +112,12 @@ function Pricing(props) {
             Pricing
           </Typography>
           <Typography variant="h6" align="center" color="textSecondary" component="p">
-            Welcome to the pricing page of Nutrition Tracker! Take advantage of our 
+            Welcome to the pricing page of Nutrition Tracker! Take advantage of our
              popular super user account to get the full benefits of what we have to offer!
           </Typography>
         </div>
         {/* End hero unit */}
-        <Grid container spacing={40} alignItems="flex-end">
+        <Grid container spacing={40} alignItems="flex-end" justify="center">
           {tiers.map(tier => (
             // Enterprise card is full width at sm breakpoint
             <Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
@@ -148,8 +146,8 @@ function Pricing(props) {
                   ))}
                 </CardContent>
                 <CardActions className={classes.cardActions}
-              > 
-              action={tier.title === 'Super User' ? <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing" >   {tier.buttonText}
+              >
+              action={tier.title === 'Super User' ? <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/login" >   {tier.buttonText}
                 </Button>  : <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/login" >   {tier.buttonText}
                 </Button> }
                   {/* <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing"   >

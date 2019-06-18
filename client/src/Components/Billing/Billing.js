@@ -1,238 +1,136 @@
 import React from "react";
-import Header from "../Reusables/Header";
-import { Link } from 'react-router-dom';
-import styled from "styled-components";
-// import Checkbox from "@material-ui/core/Checkbox";
-// import FormControlLabel from "@material-ui/core/FormControlLabel";
-import PropTypes from "prop-types";
-import classNames from 'classnames';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { withStyles } from "@material-ui/core/styles/index";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
+import { gql } from "apollo-boost";
+import { Mutation } from "react-apollo";
+import StripeCheckout from 'react-stripe-checkout';
+import BillingHistory from './BillingHistory';
+import ApolloClient from "apollo-boost";
+import moment from 'moment';
 
-
-
-const BillingContainer = styled.div`
-  background: #fcfcfb;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  height: 100vh;
-`;
-
-const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit,
-    height: 40,
-    width: 100,
-    color: "white",
-    textDecoration: "none",
-    disableUnderline: true,
-  },
-  container: {
-    display: 'flex',
-    width: '1000px',
-    maxWidth: '1500px',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    flexBasis: 200,
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-  dense: {
-    marginTop: 16,
-  },
-  menu: {
-    width: 200,
-  },
-  withoutLabel: {
-    marginTop: theme.spacing.unit * 3,
-  },
-});
-
-const plans = [
-  {
-    plan: 'Monthly',
-    label: 7
-  },
-  {
-    plan: 'Yearly',
-    label: 70
-  }
-]
-
-const BillingSubmitButton = withStyles({
-  root: {
-    color: "#FCFCFB",
-    backgroundColor: "#F4B4C3",
-    width: "200px",
-    height: 90,
-    "&:hover": {
-      backgroundColor: "#dba2af"
+const createSubscriptionMutation = gql`
+  mutation createSubscriptionMutation($source: String!, $email: String!){
+    createSubscription(source: $source, email: $email){
+      id
     }
   }
-})(Button);
+`;
 
-class Billing extends React.Component {
-  constructor(props) {
+const getRecentBillingQuery  = gql`
+  query getRecentBilling($id: ID!){
+    getRecentBilling(id: $id){
+      date
+    }
+  }
+`;
+
+const GET_CURRENT = gql`
+  query getCurrentUser {
+    getCurrentUser {
+      id
+      email
+    }
+  }
+`;
+
+class Billing extends React.Component{
+  constructor(props){
     super(props);
     this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      creditCardNumber: "",
-      expiration: "",
-      cvv: "",
-      subscriptionType: "",
-    };
+      subscriptionLapse: "",
+      premiumCurrent: false
+    }
+  }
+  componentDidMount(){
+    this.getCurrentUser(localStorage.getItem("token"))
+  }
+  getCurrentUser = idToken => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    client
+      .query({
+        query: GET_CURRENT
+      })
+      .then(response => {
+        this.getRecentBilling(response.data.getCurrentUser.id)
+      })
+      .catch(err => console.log(err));
+  };
+
+  getRecentBilling = id => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    });
+
+    client
+      .query({
+        query: getRecentBillingQuery,
+        variables: {
+          id: id
+        }
+      })
+      .then(response => {
+        this.getDates(response.data.getRecentBilling.date)
+      })
+      .catch(err => console.log(err))
   }
 
-  // componentDidMount() {
+  getDates = date => {
+    const lastCycle = moment(date).format();
+    const today = moment();
+    const thirtyDays = moment(lastCycle).add(30, 'days').format('ddd MMMM D YYYY')
 
-  // }
+    if(today.diff(lastCycle, 'days') < 30){
+      this.setState({
+        subscriptionLapse: thirtyDays,
+        premiumCurrent: !this.state.premiumCurrent
+      })
+    }else{
+      this.setState({
+        premiumCurrent: !this.state.premiumCurrent
+      })
+    }
 
-
-  handleChange = name => e => {
-    this.setState({ [name]: e.target.value });
-    console.log(e.target.value);
   };
 
-  handleSubmit = e => {
-    console.log(e);
-    e.preventDefault();
-    // const { firstName, lastName, email } = this.state;
-  };
 
-  render(props) {
-    const { classes } = this.props;
-    return (
+
+  render(){
+    return(
       <div>
-           <Header />
-      {/* <BillingContainer> */}
-        <Button color="secondary" variant="contained" className={classes.button}><Link to="/billing-plan">Close</Link></Button>
-        <Grid
-          container
-          spacing={0}
-          // lg={8}
-          direction="column"
-          justify="center"
-          alignItems="center"
-        >
-          {/* <form onSubmit={this.handleSubmit}> */}
-          <form className={classes.container} noValidate autoComplete="off">
-            <TextField
-              required
-              id="filled-required"
-              label="Required"
-              type="text"
-              label="First Name"
-              className={classes.textField}
-              onChange={this.handleChange("firstName")}
-              value={this.state.firstName}
-              margin="normal"
-            variant="filled"
+        <div>
+          <p>{this.state.premiumCurrent ? "Premium":"Basic"} User</p>
+          {
+            this.state.subscriptionLapse.length > 1 ? (
+              <p>Current Until: {this.state.subscriptionLapse}</p>
+            ) : (null)
+          }
+        </div>
+        <Mutation mutation={createSubscriptionMutation}>
+          {mutation => (
+            <StripeCheckout
+              amount={700}
+              billingAddress
+              description="Become a Super User!"
+              locale="auto"
+              name="NutritionTrkr"
+              stripeKey="pk_test_Pq1dd4riM4hc3cc35SbfPQxk00HJAoDPfA"
+              token={async token => {
+                const response = await mutation({
+                  variables: {source: token.id,
+                  email: token.email}
+                });
+                console.log(response)
+              }}
+              zipcode
             />
-            <TextField
-              required
-              id="filled-required"
-              type="text"
-              label="Last Name"
-              className={classes.textField}
-              onChange={this.handleChange("lastName")}
-              value={this.state.lastName}
-              margin="normal"
-            variant="filled"
-            />
-            <TextField
-              required
-              id="filled-email-input"
-              label="Email "
-              className={classes.textField}
-              type="email"
-              name="email"
-              onChange={this.handleChange("email")}
-              value={this.state.email}
-              autoComplete="email"
-              margin="normal"
-              variant="filled"
-            />
-             <TextField
-              required
-              id="filled-number"
-              label="CC #"
-              className={classes.textField}
-              type="CC#"
-              onChange={this.handleChange("creditCardNumber")}
-              value={this.state.creditCardNumber}
-              autoComplete="CC #"
-              margin="normal"
-              variant="filled"
-            />
-              <TextField
-              required
-              id="filled-number"
-              label="expiration date"
-              className={classes.textField}
-              type="expiration"
-              onChange={this.handleChange("expiration")}
-              value={this.state.expiration}
-              autoComplete="expiration"
-              margin="normal"
-              variant="filled"
-            />
-               <TextField
-              required
-              id="filled-number"
-              label="cvv"
-              className={classes.textField}
-              type="cvv"
-              onChange={this.handleChange("cvv")}
-              value={this.state.cvv}
-              autoComplete="cvv"
-              margin="normal"
-              variant="filled"
-            />
-              <TextField
-                required
-                select
-                label="Plan Type"
-                className={classes.textField}
-                value={this.state.subscriptionType}
-                onChange={this.handleChange('subscriptionType')}
-                margin="normal"
-                variant="filled"
-                // InputProps={{
-                //   startAdornment: <InputAdornment position="start">Plan Type</InputAdornment>,
-                // }}
-              >
-                {plans.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                      {option.plan}: {option.label}
-                  </MenuItem>
-                ))}
-            </TextField>
-          </form>
-          <BillingSubmitButton variant="contained" type="submit" size="large">
-            Buy Now
-          </BillingSubmitButton>
-        </Grid>
-      {/* </BillingContainer> */}
-      {/* </div> */}
+          )}
+        </Mutation>
+        <BillingHistory/>
       </div>
-    );
+    )
   }
 }
 
-Billing.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(Billing);
+export default Billing;
