@@ -13,6 +13,8 @@ import StatsView from "./Components/Stats/StatsView";
 import Settings from "./Components/Settings";
 import AccountNav from "./Components/AccountNav";
 import AppModal from "./Components/Reusables/AppModal";
+import CoachPage from "./Components/Coaches/CoachPage";
+import MessagePage from "./Components/Messages/MessagePage";
 import Footer from "./Components/Reusables/Footer";
 import { getCurrentUser } from "./util/getCurrentUser";
 
@@ -130,6 +132,8 @@ class App extends React.Component {
           <Route exact path='/login' render={() => <Login />} />
           <PrivateRoute exact path='/settings' render={() => <Settings />} />
           <PrivateRoute path='/journal' render={() => <Journal />} />
+          <PrivateRoute path='/coach' render={() => <CoachPage />} />
+          <PrivateRoute path='/messages' render={() => <MessagePage/>} />
         </div>
         <PrivateRoute path='/account' component={AccountNav} />
         <Footer />
