@@ -120,13 +120,19 @@ class JournalEntry extends React.Component {
         }
       })
       .then(response => {
-        if(response.data.getFoodById.edamam_id === edamam_id){
+        console.log(response)
+        // if(response.data.getFoodById.edamam_id === edamam_id){
+          if(response.data.getFoodById.edamam_id !== ""){
           this.setState({
-            edamamExist: true
+            edamamExist: false
           })
         } else {
           this.setState({
-            edamamExist: false
+            edamamExist: true,
+            caloriesPerServ: mealEntry.caloriesPerServ,
+            proteins: mealEntry.proteins,
+            carbs: mealEntry.carbs,
+            fats: mealEntry.fats,
           })
         }
       })
@@ -183,6 +189,7 @@ class JournalEntry extends React.Component {
       meal_category_id: this.state.meal_category_id,
       servingQty: parseInt(this.state.servingQty)
     }
+    console.log(this.state.edamamExist)
     console.log(foodEntry)
     this.props.editMeal(this.state.mealEntry.id, this.state.mealEntry.food_id.id, foodEntry)
 
@@ -531,6 +538,15 @@ class JournalEntry extends React.Component {
                         {this.state.mealEntry.food_id.foodName}
                       </div>
                       <form>
+
+                      <label htmlFor="date">Date</label>
+                      <input
+                        className="form-field"
+                        type="date"
+                        name="date"
+                        onChange={this.handleChange}
+                      />
+
                         <TextField
                           id="Serving Quantity"
                           name="servingQty"
@@ -869,6 +885,15 @@ class JournalEntry extends React.Component {
                       {this.state.mealEntry.food_id.foodName}
                     </div>
                     <form>
+
+                    <label htmlFor="date">Date</label>
+                      <input
+                        className="form-field"
+                        type="date"
+                        name="date"
+                        onChange={this.handleChange}
+                      />
+
                       <TextField
                         id="Serving Quantity"
                         name="servingQty"

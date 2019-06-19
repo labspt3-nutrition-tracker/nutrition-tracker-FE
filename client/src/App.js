@@ -9,7 +9,7 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import Journal from "./Components/Journal/Journal";
 import Home from "./Components/Home/Home";
 import Billing from "./Components/Billing/Billing";
-import StatsView from "./Components/Stats/StatsView";
+import StatsView from "./Components/Reports/StatsView";
 import Settings from "./Components/Settings";
 import AccountNav from "./Components/AccountNav";
 import AppModal from "./Components/Reusables/AppModal";
