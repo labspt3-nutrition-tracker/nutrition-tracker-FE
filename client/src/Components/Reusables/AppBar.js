@@ -62,6 +62,16 @@ function ButtonAppBar(props) {
               Journal
             </NavLink>
           </Button>
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/coach">
+              Coach
+            </NavLink>
+          </Button>
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/messages">
+              Messages
+            </NavLink>
+          </Button>
           <SearchInputComponent
             updateSearch={props.updateSearch}
             searchInput={props.searchInput}
