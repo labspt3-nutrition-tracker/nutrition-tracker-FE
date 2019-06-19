@@ -97,6 +97,7 @@ class EntryForm extends Component {
   };
 
   onInputChange = e => {
+    
     this.setState({
       newAddFood: {
         ...this.state.newAddFood,
@@ -370,7 +371,7 @@ class EntryForm extends Component {
       caloriesPerServ =  this.props.selectedFood.nutrients.ENERC_KCAL ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2) : 0;
       fats = this.props.selectedFood.nutrients.FAT ? this.props.selectedFood.nutrients.FAT.toFixed(2) : 0;
       carbs = this.props.selectedFood.nutrients.CHOCDF ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2) : 0;
-      proteins = this.props.selectedFood.nutrients.PROCNT ? this.props.selectedFood.nutrients.PROCNT.toFixed(2) : 0;;
+      proteins = this.props.selectedFood.nutrients.PROCNT ? this.props.selectedFood.nutrients.PROCNT.toFixed(2) : 0;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {

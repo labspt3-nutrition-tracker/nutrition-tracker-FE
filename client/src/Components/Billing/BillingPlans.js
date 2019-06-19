@@ -147,7 +147,7 @@ function Pricing(props) {
                 </CardContent>
                 <CardActions className={classes.cardActions}
               >
-              action={tier.title === 'Super User' ? <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/login" >   {tier.buttonText}
+              {tier.title === 'Super User' ? <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/login" >   {tier.buttonText}
                 </Button>  : <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/login" >   {tier.buttonText}
                 </Button> }
                   {/* <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing"   >
