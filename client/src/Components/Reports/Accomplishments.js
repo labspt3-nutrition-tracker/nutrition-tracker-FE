@@ -228,7 +228,7 @@ const styles = theme => ({
     padding: "20px"
   },
   card: {
-    minHeight: "350px",
+    minHeight: "380px",
     margin: "10px",
     display: "flex",
     flexDirection: "column",
@@ -242,7 +242,7 @@ const styles = theme => ({
     fontFamily: "Oxygen"
   },
   title: {
-    fontSize: "2rem",
+    fontSize: "1.5rem",
     marginBottom: 20,
     color: "#3685B5",
     textAlign: "center",
@@ -251,13 +251,13 @@ const styles = theme => ({
     fontFamily: "Oxygen"
   },
   category: {
-    fontSize: "1.7rem",
+    fontSize: "1.3rem",
     color: "#3685B5",
     marginTop: 10,
     fontFamily: "Oxygen"
   },
   pos: {
-    fontSize: "1.7rem",
+    fontSize: "1.3rem",
     marginBottom: 12,
     fontFamily: "Oxygen"
   },
@@ -268,6 +268,7 @@ const styles = theme => ({
   },
   listItem: {
     margin: 10,
+    fontSize: "1.2rem",
     fontFamily: "Oxygen"
   },
   link: {

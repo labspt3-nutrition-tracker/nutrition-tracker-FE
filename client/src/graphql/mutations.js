@@ -74,8 +74,8 @@ export const ADD_FOOD_ENTRY = gql`
 // `;
 
 export const EDIT_FOOD_ENTRY = gql`
-   mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
-     updateFoodEntry(id: $id, input: $FoodEntry) {
+  mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
+    updateFoodEntry(id: $id, input: $FoodEntry) {
       id
       foodName
       caloriesPerServ
@@ -89,7 +89,6 @@ export const EDIT_FOOD_ENTRY = gql`
     }
   }
 `;
-
 
 export const ADD_WEIGHT_ENTRY_MUTATION = gql`
   mutation($input: WeightEntryInput!) {
@@ -124,13 +123,13 @@ export const DELETE_EXERENTRY = gql`
 `;
 
 export const DELETE_FOOD = gql`
-  mutation deleteFood($id: ID!){
+  mutation deleteFood($id: ID!) {
     deleteFood(id: $id)
   }
 `;
 
 export const DELETE_FOOD_ENTRY = gql`
-  mutation deleteFoodEntry($id: ID!){
+  mutation deleteFoodEntry($id: ID!) {
     deleteFoodEntry(id: $id)
   }
 `;
@@ -170,6 +169,36 @@ export const ADD_EXERENTRY = gql`
       id
       exerciseName
       caloriesBurned
+    }
+  }
+`;
+
+export const DELETE_MESSAGE_MUTATION = gql`
+  mutation deleteMessage($id: ID!) {
+    deleteMessage(id: $id)
+  }
+`;
+
+export const ADD_MESSAGE_MUTATION = gql`
+  mutation addMessage($input: MessageInput!) {
+    addMessage(input: $input) {
+      id
+      created_at
+      type
+      text
+      read
+      sender {
+        id
+        firstName
+        lastName
+        email
+      }
+      recipient {
+        id
+        firstName
+        lastName
+        email
+      }
     }
   }
 `;
