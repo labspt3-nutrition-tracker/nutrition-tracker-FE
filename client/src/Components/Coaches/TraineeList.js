@@ -1,16 +1,22 @@
 import React from 'react';
 import Trainee from './Trainee';
-import TraineeSearch from './TraineeSearch';
 import styled from 'styled-components';
 
 const TraineeListDiv = styled.div`
   padding: 20px 0px;
+  width: 100%;
+  height: 100%;
+
+  & h1{
+    text-align: center;
+    font-size: 1.5em;
+  }
 `;
 
 const data = {
     "getUsers": [
       {
-        "id": "1",
+        "id": "10",
         "username": "amazingMax",
         "email": "maxdoe@gmail.com",
         "firstName": "Max",
@@ -40,14 +46,9 @@ class TraineeList extends React.Component{
   render(){
     return(
       <TraineeListDiv>
-        <TraineeSearch
-          traineeSearchInput={this.props.traineeSearchInput}
-          updateTraineeSearch={this.props.updateTraineeSearch}
-          getUserData={this.props.getUserData}
-          />
         <h1> Trainee List </h1>
         { data && data.getUsers.map(data => {
-          return <Trainee key={data.id} data={data}/>
+          return <Trainee key={data.id} handleChooseUser={this.props.handleChooseUser} data={data}/>
         })}
       </TraineeListDiv>
   )

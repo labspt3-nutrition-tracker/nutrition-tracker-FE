@@ -3,13 +3,25 @@ import TraineeList from './TraineeList';
 import styled from 'styled-components';
 import { SEARCH_USER_BY_EMAIL } from "../../graphql/queries";
 import ApolloClient from "apollo-boost";
-import TraineeResultModal from './TraineeResultModal';
+import TraineeResult from './TraineeResult';
+import TraineeSearch from './TraineeSearch';
+import TraineeInfo from './TraineeInfo';
 
 const CoachPageContainer = styled.div`
   padding: 2% 4%;
   min-height: 90vh;
   width: 100%;
-  border: 1px solid blue;
+  border: 1px solid pink;
+  display: flex;
+`;
+
+const TraineeBasic = styled.div`
+  width: 50%;
+  height: 90vh;
+`;
+const TraineeDetailed = styled.div`
+  width: 50%;
+  height: 90vh;
 `;
 
 class CoachPage extends React.Component{
@@ -20,7 +32,7 @@ class CoachPage extends React.Component{
       traineeSearchInput: '',
       traineeSearchResults: [],
       isSearchModalOpen: false,
-      selectedUser: [],
+      selectedTrainee: [],
       noUserFoundError: ""
     }
   }
@@ -31,23 +43,11 @@ class CoachPage extends React.Component{
     });
   };
 
-  openSearchModal = () => {
-    this.setState({
-      isSearchModalOpen: true
-    });
-  };
-
-  closeSearchModal = () => {
-    this.setState({
-      isSearchModalOpen: false
-    });
-  };
-
-  handleChooseUser = user => {
-    this.setState({
-      selectedUser: user
-    });
-    this.closeModal();
+  handleChooseUser = async user => {
+    await this.setState({
+      selectedTrainee: user
+    })
+    console.log(this.state.selectedTrainee)
   }
 
   getUserData = email => {
@@ -87,18 +87,20 @@ class CoachPage extends React.Component{
   render(){
     return(
       <CoachPageContainer>
-        <TraineeResultModal
-        isSearchModalOpen={this.state.isSearchModalOpen}
-        traineeSearchResults={this.state.traineeSearchResults}
-        noUserFoundError={this.state.noUserFoundError}
-        openSearchModal={this.openSearchModal}
-        closeSearchModal={this.closeSearchModal}
-        handleChooseUser={this.handleChooseUser} />
-        <h1> Coach Page</h1>
-        <TraineeList
-          traineeSearchInput={this.state.traineeSearchInput}
-          updateTraineeSearch={this.updateTraineeSearch}
-          getUserData={this.getUserData}/>
+        <TraineeBasic>
+          <TraineeSearch
+            traineeSearchInput={this.state.traineeSearchInput}
+            updateTraineeSearch={this.updateTraineeSearch}
+            getUserData={this.getUserData} />
+          <TraineeResult
+            traineeSearchResults={this.state.traineeSearchResults}
+            noUserFoundError={this.state.noUserFoundError} />
+          <TraineeList handleChooseUser={this.handleChooseUser}/>
+        </TraineeBasic>
+        <TraineeDetailed>
+          <TraineeInfo traineeID = {this.state.selectedTrainee.id} />
+        </TraineeDetailed>
+
       </CoachPageContainer>
     )
   }
