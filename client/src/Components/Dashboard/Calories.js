@@ -8,6 +8,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = theme => ({
   root: {
@@ -19,7 +20,7 @@ const styles = theme => ({
     fontSize: 16,
     background: "#2C363F",
     padding: 10,
-    color: "#ffffff",
+    color: "#ffffff"
   },
   card: {
     width: "100%",
@@ -37,6 +38,9 @@ const styles = theme => ({
     display: "flex",
     textAlign: "center",
     justifyContent: "center"
+  },
+  progress: {
+    margin: theme.spacing(2)
   }
 });
 
@@ -96,13 +100,15 @@ class Calories extends React.Component {
       <div>
         <Query query={CURRENT_USERID}>
           {({ loading, error, data }) => {
-            // if (loading) {
-            //   console.log("loading...")
-            // }
             return (
               <Query query={CAL_QUERY}>
                 {({ loading, error, data }) => {
-                  if (loading) return <div>Loading...</div>;
+                  if (loading)
+                    return (
+                      <Card className={classes.card}>
+                        <CircularProgress className={classes.progress} />
+                      </Card>
+                    );
                   if (error) return <div>Error</div>;
                   const dateToday = new Date();
                   const month = dateToday.getMonth();

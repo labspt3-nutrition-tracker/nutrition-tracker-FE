@@ -35,7 +35,7 @@ justify-content: center;
 align-items: center;
 width: 100%;
 // max-width: 1000px;
-`
+`;
 
 const ButtonDiv = styled.div`
 // margin-top: 2.5%;

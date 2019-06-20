@@ -38,7 +38,7 @@ const PrivateRoute = ({ component: Component, render, ...rest }) => {
             <Component {...props} />
           ) : (
             render(props)
-          )
+          )          
         ) : (
           <Redirect
             to={{
@@ -46,7 +46,9 @@ const PrivateRoute = ({ component: Component, render, ...rest }) => {
               state: { from: props.location }
             }}
           />
+          
         )
+        
       }
     />
   );
@@ -59,11 +61,13 @@ class App extends React.Component {
       searchInput: "",
       searchResults: [],
       noResultError: "",
-      showModal: false
+      showModal: false,
+      resultsLoading: true,
     };
   }
 
   updateSearch = e => {
+    console.log(this.state.searchInput)
     this.setState({
       searchInput: e.target.value
     });
@@ -74,12 +78,14 @@ class App extends React.Component {
   };
 
   closeModal = () => {
-    this.setState({ showModal: false });
+    console.log(this.state.searchInput)
+    this.setState({ showModal: false, searchInput: " " });
   };
 
   getFoodData = food => {
     food = this.state.searchInput;
     let encodedFood = food.replace(" ", "%20");
+    this.setState({showModal: true})
     axios
       .get(
         `https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`
@@ -89,9 +95,11 @@ class App extends React.Component {
           searchResults: response.data.hints,
           searchInput: "",
           noResultError: "",
-          showModal: true
+          // showModal: true
+          resultsLoading: false,
         });
         console.log("search results", this.state.searchResults);
+        console.log("search input", this.state.searchInput);
       })
       .catch(error => {
         this.setState({
@@ -112,7 +120,7 @@ class App extends React.Component {
   render() {
     return (
       <div className='App'>
-        <Header searchInput={this.state.searchInput} updateSearch={this.updateSearch} getFoodData={this.getFoodData} />
+        <Header searchInput={this.state.searchInput}  updateSearch={this.updateSearch} getFoodData={this.getFoodData} closeModal={this.closeModal}/>
         <AppModal
           isOpen={this.state.showModal}
           openModal={this.openModal}
@@ -120,6 +128,8 @@ class App extends React.Component {
           noResultError={this.state.noResultError}
           handleFoodSubmit={this.handleFoodSubmit}
           searchResults={this.state.searchResults}
+          resultsLoading={this.state.resultsLoading}
+          updateSearch={this.updateSearch}
         />
         <div>
           <Route exact path='/' component={Home} />
