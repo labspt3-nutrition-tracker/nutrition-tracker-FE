@@ -91,7 +91,7 @@ class Header extends React.Component{
       })
     }
   }
-
+ 
   render(){
     const loggedOut = this.state.loggedOut
     return(
@@ -111,6 +111,7 @@ class Header extends React.Component{
                 </NavLink>
               )}
           </LogInOutContainer>
+    
         </LogoContainer>
 
         <AppBar updateSearch={this.props.updateSearch}  searchInput={this.props.inputSearch} getFoodData={this.props.getFoodData} />

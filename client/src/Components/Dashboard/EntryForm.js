@@ -427,8 +427,8 @@ class EntryForm extends Component {
           <MenuItem>Select Meal Category</MenuItem>
           <MenuItem value="1">breakfast</MenuItem>
           <MenuItem value="2">lunch</MenuItem>
-          <MenuItem value="4">dinner</MenuItem>
-          <MenuItem value="3">snack</MenuItem>
+          <MenuItem value="3">dinner</MenuItem>
+          <MenuItem value="4">snack</MenuItem>
         </Select>
         <FormHelperText id="errorCategory-text">
           {this.state.errorMsg.errorCategory}

@@ -4,10 +4,13 @@ import { GoogleLogin } from "react-google-login";
 import FacebookLogin from "react-facebook-login";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
+import logo from "../../Assets/logo-black.png";
+import { Pulse } from 'animate-css-styled-components';
 
 import LoginForm from "./LoginForm";
 import { ADD_USER_MUTATION } from "../../graphql/mutations";
 import { USER_EXIST_QUERY } from "../../graphql/queries";
+
 
 const LoginOrRegisterContainer = styled.div`
   /* background: #fcfcfb; */
@@ -19,11 +22,26 @@ const LoginOrRegisterContainer = styled.div`
   height: 100vh;
 `;
 
+const LogoContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+`;
+
+const Logo = styled.div`
+  max-width: 800px;
+  width: 100%;
+  img {
+    width: 100%;
+  }
+`;
+
 const LoginOrRegisterForm = styled.div`
-  /* background: #3685b5; */
+ background: #40a798;
   width: 60%;
   height: 500px;
-  padding: 100px;
+  padding: 0 100px;
   display: flex;
   justify-content: center;
   align-content: center;
@@ -32,7 +50,7 @@ const LoginOrRegisterForm = styled.div`
   -moz-box-shadow: 6px 7px 24px -1px rgba(0, 0, 0, 0.75);
   box-shadow: 6px 7px 24px -1px rgba(0, 0, 0, 0.75);
   border-radius: 10px;
-  border: 3px solid #f4b4c3;
+  border: 3px solid #f4b4c3;  
 `;
 
 const FormContainer = styled.div`
@@ -40,6 +58,11 @@ const FormContainer = styled.div`
   justify-content: center;
   width: 60%;
 `;
+
+const PulseContainer = styled.div`
+display: flex;
+justify-content: center;
+`
 
 const FacebookBtn = styled.div`
   button {
@@ -49,6 +72,15 @@ const FacebookBtn = styled.div`
     height: 47px;
   }
 `;
+
+
+const LoginMessage = styled.div`
+background: #40a798;
+display: flex;
+justify-content: center;
+padding: 40% 0;
+
+`
 
 class LoginOrRegister extends React.Component {
   constructor(props) {
@@ -156,11 +188,21 @@ class LoginOrRegister extends React.Component {
     return (
       <LoginOrRegisterContainer>
         <FormContainer>
+        <Pulse delay=".3s" >
+          <PulseContainer>
+     
           <LoginOrRegisterForm>
+          <LogoContainer>
+          <Logo>
+            <img src={logo} alt="Created my free logo at LogoMakr.com" />
+          </Logo>
+          </LogoContainer>
             <div>
               {this.state.checkExistence ? (
                 <LoginForm addUser={this.createUser} handleChange={this.handleChange} props={this.state} />
               ) : (
+                <>
+                <LoginMessage>Login to your account!</LoginMessage>
                 <>
                   <GoogleLogin
                     style={{ height: 10 }}
@@ -179,9 +221,13 @@ class LoginOrRegister extends React.Component {
                     />
                   </FacebookBtn> */}
                 </>
+                </>
               )}
             </div>
           </LoginOrRegisterForm>
+         
+          </PulseContainer>
+          </Pulse>
         </FormContainer>
       </LoginOrRegisterContainer>
     );
