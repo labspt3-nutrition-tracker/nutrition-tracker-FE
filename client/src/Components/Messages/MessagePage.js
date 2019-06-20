@@ -6,11 +6,15 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationIcon from "@material-ui/icons/NotificationImportant";
 import ApolloClient from "apollo-boost";
+import Modal from "@material-ui/core/Modal";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 import MessageList from "./MessageList";
 import NewMessage from "./NewMessage";
 import AlertsList from "./AlertsList";
 import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
+import { DELETE_MESSAGE_MUTATION } from "../../graphql/mutations";
 
 const styles = theme => ({
   root: {
@@ -31,6 +35,21 @@ const styles = theme => ({
   },
   icon: {
     fontSize: "1.5rem"
+  },
+  modal: {
+    position: "absolute",
+    top: "30%",
+    left: "30%",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(4),
+    outline: "none"
+  },
+  btn: {
+    backgroundColor: "#F4B4C3",
+    color: "white",
+    margin: 10
   }
 });
 
@@ -38,13 +57,20 @@ class MessagePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentUser: null,
       messages: [],
       coaches: [],
-      option: 0
+      option: 0,
+      currentMessage: null,
+      modalOpen: false
     };
   }
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
+    this.getData();
+  };
+
+  getData = async () => {
     const idToken = localStorage.getItem("token");
 
     const client = new ApolloClient({
@@ -73,7 +99,7 @@ class MessagePage extends React.Component {
       console.log({ coaches });
       //*** */
 
-      this.setState({ messages: messages.data.getMessagesBy, coaches: coaches });
+      this.setState({ messages: messages.data.getMessagesBy, coaches: coaches, currentUser: user.data.getCurrentUser });
     } catch (err) {
       console.log(err);
     }
@@ -83,17 +109,51 @@ class MessagePage extends React.Component {
     this.setState({ option: newOption });
   };
 
-  showMessage = id => {
-    console.log("Showing message with id: ", id);
+  showMessage = message => {
+    //Show full message in a modal
+    this.setState({ currentMessage: message, modalOpen: true });
+  };
+
+  handleClose = () => {
+    this.setState({ modalOpen: false });
+  };
+
+  handleAccept = async () => {
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    /************************************ */
+    //create a link (entry) between the sender and current user
+    //*********************************** */
+
+    //delete the alert message
+    console.log("Deleting message alert: ", this.state.currentMessage.id);
+    try {
+      const variables = { id: this.state.currentMessage.id };
+      const count = await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
+      console.log({ count });
+      this.handleClose();
+      this.getData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  handleReply = () => {
+    this.setState({ option: 1 });
+    this.handleClose();
   };
 
   render() {
-    const { option, messages, coaches } = this.state;
+    const { messages, coaches, currentMessage, modalOpen } = this.state;
+    let { option } = this.state;
     const { classes } = this.props;
 
     const alerts = messages.filter(message => message.type === "alert");
-    console.log({ alerts });
-
+    if (option === 2 && alerts.length === 0) option = 0;
     return (
       <div>
         <Tabs
@@ -117,6 +177,35 @@ class MessagePage extends React.Component {
           <NewMessage />
         ) : (
           <AlertsList alerts={alerts} showMessage={this.showMessage} />
+        )}
+        {currentMessage && (
+          <Modal
+            aria-labelledby='display message'
+            aria-describedby='display message'
+            open={modalOpen}
+            onClose={this.handleClose}
+          >
+            <div className={classes.modal}>
+              <Typography variant='h6' id='modal-title'>
+                Sender: {currentMessage.sender.firstName} {currentMessage.sender.lastName}
+              </Typography>
+              <Typography variant='subtitle1' id='simple-modal-description'>
+                {currentMessage.text}
+              </Typography>
+              <Button onClick={this.handleClose} className={classes.btn}>
+                Close
+              </Button>
+              {currentMessage.type === "alert" ? (
+                <Button onClick={this.handleAccept} className={classes.btn}>
+                  Accept
+                </Button>
+              ) : (
+                <Button onClick={this.handleReply} className={classes.btn}>
+                  Reply
+                </Button>
+              )}
+            </div>
+          </Modal>
         )}
       </div>
     );

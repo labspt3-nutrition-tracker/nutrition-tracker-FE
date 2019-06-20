@@ -31,12 +31,13 @@ const AlertsList = props => {
       {alerts.length > 0 ? (
         <List>
           {alerts.map(alert => (
-            <ListItem key={alert.id} button onClick={() => props.showMessage(alert.id)}>
+            <ListItem key={alert.id} button onClick={() => props.showMessage(alert)}>
               {!alert.read && (
                 <ListItemIcon className={classes.icon}>
                   <NotificationIcon />
                 </ListItemIcon>
               )}
+              <ListItemText secondary={`${alert.sender.firstName} ${alert.sender.lastName}`} />
               <ListItemText
                 primary={alert.text}
                 classes={{

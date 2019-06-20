@@ -19,14 +19,13 @@ const styles = theme => ({
 const MessageInfo = props => {
   const { sender, messages, classes } = props;
   const messagesArr = messages.filter(message => message.sender.id === sender.id && message.type === "text");
-  console.log({ messagesArr });
 
   return (
     <>
-      {messages.length > 0 ? (
+      {messagesArr.length > 0 ? (
         <List>
           {messagesArr.map(message => (
-            <ListItem key={message.id} button onClick={() => props.showMessage(message.id)}>
+            <ListItem key={message.id} button onClick={() => props.showMessage(message)}>
               {!message.read && (
                 <ListItemIcon className={classes.icon}>
                   <UnreadIcon />

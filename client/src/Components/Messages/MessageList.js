@@ -88,7 +88,7 @@ class MessageList extends Component {
             )}
           </Grid>
           <Grid item md={8} xs={12}>
-            {coaches.length > 0 ? (
+            {messages.length > 0 ? (
               <MessageInfo messages={messages} sender={coaches[selectedCoach]} showMessage={showMessage} />
             ) : (
               <div>You have no coaches.</div>
