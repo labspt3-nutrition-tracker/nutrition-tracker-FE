@@ -36,7 +36,7 @@ const PrivateRoute = ({ component: Component, render, ...rest }) => {
             <Component {...props} />
           ) : (
             render(props)
-          )
+          )          
         ) : (
           <Redirect
             to={{
@@ -44,7 +44,9 @@ const PrivateRoute = ({ component: Component, render, ...rest }) => {
               state: { from: props.location }
             }}
           />
+          
         )
+        
       }
     />
   );
