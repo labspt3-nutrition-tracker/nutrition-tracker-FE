@@ -22,7 +22,7 @@ class Trainee extends React.Component{
   render(){
     const data = this.props.data;
     return(
-      <TraineeDiv>
+      <TraineeDiv onClick={() => this.props.handleChooseUser(data)}>
         <h2> {data.firstName} {data.lastName}</h2>
         <h3> {data.calorieGoal}</h3>
         <h3> {data.weight} </h3>

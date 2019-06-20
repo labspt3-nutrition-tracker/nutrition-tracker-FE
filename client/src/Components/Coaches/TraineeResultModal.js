@@ -74,7 +74,7 @@ const TraineeResultModal = props =>{
       {props.traineeSearchResults === [] || props.traineeSearchResults === null && <NoResultDiv> No Results Found </NoResultDiv> }
       {props.traineeSearchResults !== null &&
 
-          <div>
+          <div onClick={() => { props.handleChooseUser(props.traineeSearchResults)}}>
           <h1> {props.traineeSearchResults.firstName} {props.traineeSearchResults.lastName} </h1>
           <h2> {props.traineeSearchResults.email}</h2>
           </div>

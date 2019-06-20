@@ -47,7 +47,7 @@ class TraineeList extends React.Component{
           />
         <h1> Trainee List </h1>
         { data && data.getUsers.map(data => {
-          return <Trainee key={data.id} data={data}/>
+          return <Trainee key={data.id} handleChooseUser={this.props.handleChooseUser} data={data}/>
         })}
       </TraineeListDiv>
   )

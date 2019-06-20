@@ -20,7 +20,7 @@ class CoachPage extends React.Component{
       traineeSearchInput: '',
       traineeSearchResults: [],
       isSearchModalOpen: false,
-      selectedUser: [],
+      selectedTrainee: [],
       noUserFoundError: ""
     }
   }
@@ -44,10 +44,8 @@ class CoachPage extends React.Component{
   };
 
   handleChooseUser = user => {
-    this.setState({
-      selectedUser: user
-    });
-    this.closeModal();
+    console.log('user', user)
+    this.closeSearchModal();
   }
 
   getUserData = email => {
