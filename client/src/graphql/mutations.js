@@ -55,8 +55,8 @@ export const ADD_FOOD_ENTRY = gql`
 `;
 
 // export const EDIT_FOOD_ENTRY = gql`
-//   mutation{
-//     updateFoodEntry($id: ID!, input: FoodEntryInput!){
+//    mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
+//      updateFoodEntry(id: $id, input: $input) {
 //       id
 //       date
 //       food_id{
@@ -72,6 +72,23 @@ export const ADD_FOOD_ENTRY = gql`
 //     }
 //   }
 // `;
+
+export const EDIT_FOOD_ENTRY = gql`
+   mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
+     updateFoodEntry(id: $id, input: $FoodEntry) {
+      id
+      foodName
+      caloriesPerServ
+      fats
+      carbs
+      proteins
+      edamam_id
+      meal_category_id {
+        id
+      }
+    }
+  }
+`;
 
 
 export const ADD_WEIGHT_ENTRY_MUTATION = gql`
@@ -136,20 +153,6 @@ export const DELETE_FOOD_ENTRY = gql`
 export const EDIT_EXER_ENTRY = gql`
   mutation($id: ID!, $input: ExerciseEntryInput!) {
     updateExerciseEntry(id: $id, input: $ExerciseEntry) {
-      id
-      exerciseEntryDate
-      exerciseName
-      caloriesBurned
-      exercise_entry_user_id {
-        id
-      }
-    }
-  }
-`;
-
-export const EDIT_FOOD_ENTRY = gql`
-  mutation($id: ID!, $input: FoodEntryInput!) {
-    updateFoodEntry(id: $id, input: $FoodEntry) {
       id
       exerciseEntryDate
       exerciseName

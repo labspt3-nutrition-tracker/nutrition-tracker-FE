@@ -72,6 +72,7 @@ class FoodEntry extends React.Component {
     this.state = {
       currentUser: "",
       showModal: false,
+      foodEntry: [],
       newAddFood: {
         date: "",
         foodName: "",
@@ -119,7 +120,8 @@ class FoodEntry extends React.Component {
   }
 
   editFood = entry => {
-    this.props.editFoodEntry(entry.id, entry)
+     this.props.editFoodEntry(entry.id, entry)
+     console.log(entry.food_id.meal_category_id)
     console.log(entry.food_id.caloriesPerServ)
     this.closeModal();
   }
@@ -255,14 +257,13 @@ class FoodEntry extends React.Component {
                   placeholder={this.props.foodEntry.meal_category_id}
                   value={this.props.foodEntry.meal_category_id}
                   onChange={this.props.onFoodEntryChange}
-                  onClick={this.props.onFoodEntryChange}
                   aria-describedby="errorCategory-text"
                 >
                   <MenuItem value="NaN">Select Meal Category</MenuItem>
                   <MenuItem value="1">breakfast</MenuItem>
                   <MenuItem value="2">lunch</MenuItem>
-                  <MenuItem value="4">dinner</MenuItem>
-                  <MenuItem value="3">snack</MenuItem>
+                  <MenuItem value="3">dinner</MenuItem>
+                  <MenuItem value="4">snack</MenuItem>
                 </Select>
 
                 <TextField

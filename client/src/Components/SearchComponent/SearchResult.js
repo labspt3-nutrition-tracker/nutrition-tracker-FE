@@ -22,9 +22,10 @@ class SearchResults extends React.Component{
     }
   }
 
-  toggleHidden(){
+  toggleHidden(e){
+    e.preventDefault();
     this.setState({
-      isHidden: !this.state.isHidden
+       isHidden: !this.state.isHidden
     })
   }
 
