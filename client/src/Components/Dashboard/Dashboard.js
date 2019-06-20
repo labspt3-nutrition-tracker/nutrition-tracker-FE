@@ -16,7 +16,8 @@ import {
   ADD_FOOD_ENTRY,
   DELETE_EXERENTRY,
   EDIT_EXER_ENTRY,
-  DELETE_FOOD_ENTRY
+  DELETE_FOOD_ENTRY,
+  EDIT_FOOD_ENTRY
 } from "../../graphql/mutations";
 import {
   EXER_QUERY,
@@ -283,9 +284,35 @@ class Dashboard extends Component {
   // }
 
   editFoodEntry = (editId, editEntry, idToken) => {
-    console.log("arg", editEntry);
-    console.log("props", this.state.foodEntry);
-  };
+    console.log('arg food', editEntry)
+    console.log('props', this.state.foodEntry)
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    client
+      .mutate({
+        mutation: EDIT_FOOD_ENTRY,
+        variables: {id: editId, input: editEntry}
+      })
+      .then(response => {
+        client
+          .query({
+            query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+            variables: {
+              userId: this.state.currentUser
+            }
+          })
+          .then(response => {
+            console.log(response)
+            this.setState({
+              foodEntry: "",
+              foodEntries: response.data.getFoodEntriesByUserId
+            });
+          });
+      })
+      .catch(err => console.log('error message edit food', err));
+  }
 
   editExerEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
@@ -314,6 +341,7 @@ class Dashboard extends Component {
       })
       .catch(err => console.log(err));
   };
+
 
   deleteFoodEntry = (id, idToken) => {
     const client = new ApolloClient({
