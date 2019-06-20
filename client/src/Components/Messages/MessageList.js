@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ApolloClient from "apollo-boost";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -7,7 +6,6 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import PersonIcon from "@material-ui/icons/Person";
 
-import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import MessageInfo from "./MessageInfo";
 
 const styles = theme => ({
@@ -23,7 +21,7 @@ const styles = theme => ({
     flexDirection: "column"
   },
   tab: {
-    fontSize: "1.8rem",
+    fontSize: "1.2rem",
     color: "#3685B5",
     fontFamily: "Oxygen",
     margin: "10px 0"
@@ -36,7 +34,7 @@ const styles = theme => ({
     backgroundColor: "white"
   },
   icon: {
-    fontSize: "2.5rem"
+    fontSize: "1.5rem"
   }
 });
 
@@ -44,58 +42,17 @@ class MessageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [],
-      coaches: [],
       selectedCoach: 0
     };
   }
-
-  componentDidMount = async () => {
-    const idToken = localStorage.getItem("token");
-
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
-      headers: { authorization: idToken }
-    });
-
-    try {
-      const user = await client.query({ query: GET_CURRENT_USER_QUERY });
-      const userId = user.data.getCurrentUser.id;
-      const variables = { param: "recipient", value: userId };
-      let messages = await client.query({ query: GET_MESSAGES_QUERY, variables: variables });
-
-      //**** */
-      //get coaches - query not ready yet - doing it manually for now
-      let senders = messages.data.getMessagesBy.map(message => {
-        return {
-          id: message.sender.id,
-          name: `${message.sender.firstName} ${message.sender.lastName}`
-        };
-      });
-      const coaches = [];
-      senders.forEach(s => {
-        if (!coaches.find(u => u.id === s.id)) coaches.push(s);
-      });
-      console.log({ coaches });
-      //*** */
-
-      this.setState({ messages: messages.data.getMessagesBy, coaches: coaches });
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   handleCoachChange = (event, newCoach) => {
     this.setState({ selectedCoach: newCoach });
   };
 
-  showMessage = id => {
-    console.log("Showing message with id: ", id);
-  };
-
   render() {
-    const { messages, coaches, selectedCoach } = this.state;
-    const { classes } = this.props;
+    const { selectedCoach } = this.state;
+    const { messages, coaches, classes, showMessage } = this.props;
     return (
       <Paper className={classes.root}>
         <Grid container justify='center' alignItems='center'>
@@ -132,7 +89,7 @@ class MessageList extends Component {
           </Grid>
           <Grid item md={8} xs={12}>
             {coaches.length > 0 ? (
-              <MessageInfo messages={messages} sender={coaches[selectedCoach]} showMessage={this.showMessage} />
+              <MessageInfo messages={messages} sender={coaches[selectedCoach]} showMessage={showMessage} />
             ) : (
               <div>You have no coaches.</div>
             )}

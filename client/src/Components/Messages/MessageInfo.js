@@ -8,7 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   text: {
-    fontSize: "1.8rem"
+    fontSize: "1.5rem"
   },
   icon: {
     color: "#F4B4C3",
@@ -23,7 +23,7 @@ const MessageInfo = props => {
 
   return (
     <>
-      {props.messages.length > 0 ? (
+      {messages.length > 0 ? (
         <List>
           {messagesArr.map(message => (
             <ListItem key={message.id} button onClick={() => props.showMessage(message.id)}>
@@ -38,12 +38,7 @@ const MessageInfo = props => {
                   primary: classes.text
                 }}
               />
-              <ListItemText
-                secondary={message.created_at}
-                classes={{
-                  secondary: classes.text
-                }}
-              />
+              <ListItemText secondary={message.created_at} />
             </ListItem>
           ))}
         </List>
