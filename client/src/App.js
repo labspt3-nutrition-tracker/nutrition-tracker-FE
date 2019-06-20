@@ -59,7 +59,8 @@ class App extends React.Component {
       searchInput: "",
       searchResults: [],
       noResultError: "",
-      showModal: false
+      showModal: false,
+      resultsLoading: true,
     };
   }
 
@@ -80,6 +81,7 @@ class App extends React.Component {
   getFoodData = food => {
     food = this.state.searchInput;
     let encodedFood = food.replace(" ", "%20");
+    this.setState({showModal: true})
     axios
       .get(
         `https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`
@@ -89,7 +91,8 @@ class App extends React.Component {
           searchResults: response.data.hints,
           searchInput: "",
           noResultError: "",
-          showModal: true
+          // showModal: true
+          resultsLoading: false,
         });
         console.log("search results", this.state.searchResults);
       })
@@ -120,6 +123,7 @@ class App extends React.Component {
           noResultError={this.state.noResultError}
           handleFoodSubmit={this.handleFoodSubmit}
           searchResults={this.state.searchResults}
+          resultsLoading={this.state.resultsLoading}
         />
         <div>
           <Route exact path='/' component={Home} />

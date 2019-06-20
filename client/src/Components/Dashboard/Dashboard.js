@@ -79,7 +79,7 @@ class Dashboard extends Component {
     exerEntry: [],
     foodEntry: [],
     foodIsLoading: true,
-    exerIsLoading: true
+    exerIsLoading: true,
   };
 
   componentDidMount = () => {
