@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 const TraineeListDiv = styled.div`
   padding: 20px 0px;
-  border: 1px solid blue;
-  width: 50%;
+  width: 100%;
+  height: 100%;
 
   & h1{
     text-align: center;
@@ -16,7 +16,7 @@ const TraineeListDiv = styled.div`
 const data = {
     "getUsers": [
       {
-        "id": "1",
+        "id": "10",
         "username": "amazingMax",
         "email": "maxdoe@gmail.com",
         "firstName": "Max",

@@ -5,7 +5,7 @@ import { SEARCH_USER_BY_EMAIL } from "../../graphql/queries";
 
 const Search = styled.div`
   height: 80px;
-  width: 50%;
+  width: 100%;
   text-align: center;
 `;
 

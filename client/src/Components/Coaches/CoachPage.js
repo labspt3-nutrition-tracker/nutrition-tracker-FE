@@ -5,12 +5,23 @@ import { SEARCH_USER_BY_EMAIL } from "../../graphql/queries";
 import ApolloClient from "apollo-boost";
 import TraineeResult from './TraineeResult';
 import TraineeSearch from './TraineeSearch';
+import TraineeInfo from './TraineeInfo';
 
 const CoachPageContainer = styled.div`
   padding: 2% 4%;
   min-height: 90vh;
   width: 100%;
-  border: 1px solid blue;
+  border: 1px solid pink;
+  display: flex;
+`;
+
+const TraineeBasic = styled.div`
+  width: 50%;
+  height: 90vh;
+`;
+const TraineeDetailed = styled.div`
+  width: 50%;
+  height: 90vh;
 `;
 
 class CoachPage extends React.Component{
@@ -32,8 +43,11 @@ class CoachPage extends React.Component{
     });
   };
 
-  handleChooseUser = user => {
-    console.log('user', user)
+  handleChooseUser = async user => {
+    await this.setState({
+      selectedTrainee: user
+    })
+    console.log(this.state.selectedTrainee)
   }
 
   getUserData = email => {
@@ -73,14 +87,20 @@ class CoachPage extends React.Component{
   render(){
     return(
       <CoachPageContainer>
-        <TraineeSearch
-          traineeSearchInput={this.state.traineeSearchInput}
-          updateTraineeSearch={this.updateTraineeSearch}
-          getUserData={this.getUserData} />
-        <TraineeResult
-          traineeSearchResults={this.state.traineeSearchResults}
-          noUserFoundError={this.state.noUserFoundError} />
-        <TraineeList/>
+        <TraineeBasic>
+          <TraineeSearch
+            traineeSearchInput={this.state.traineeSearchInput}
+            updateTraineeSearch={this.updateTraineeSearch}
+            getUserData={this.getUserData} />
+          <TraineeResult
+            traineeSearchResults={this.state.traineeSearchResults}
+            noUserFoundError={this.state.noUserFoundError} />
+          <TraineeList handleChooseUser={this.handleChooseUser}/>
+        </TraineeBasic>
+        <TraineeDetailed>
+          <TraineeInfo traineeID = {this.state.selectedTrainee.id} />
+        </TraineeDetailed>
+
       </CoachPageContainer>
     )
   }

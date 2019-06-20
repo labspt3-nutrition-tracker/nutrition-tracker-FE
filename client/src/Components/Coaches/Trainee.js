@@ -14,15 +14,12 @@ const TraineeDiv = styled.div`
 class Trainee extends React.Component{
   constructor(props){
     super(props)
-    this.state = {
-
-    }
   }
 
   render(){
     const data = this.props.data;
     return(
-      <TraineeDiv>
+      <TraineeDiv onClick={() => {this.props.handleChooseUser(this.props.data)}}>
         <h2> {data.firstName} {data.lastName}</h2>
         <h3> {data.calorieGoal}</h3>
         <h3> {data.weight} </h3>

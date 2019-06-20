@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const TraineeSearchResult = styled.div`
   background: #3685b5;
-  width: 50%;
+  width: 100%;
   height: 100px;
   padding: 5px 0px;
   display: flex;
