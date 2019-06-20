@@ -24,7 +24,7 @@ class SearchInputComponent extends React.Component {
     super(props);
 
     this.state = {
-
+      
     }
   }
 

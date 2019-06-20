@@ -38,7 +38,7 @@ const PrivateRoute = ({ component: Component, render, ...rest }) => {
             <Component {...props} />
           ) : (
             render(props)
-          )
+          )          
         ) : (
           <Redirect
             to={{
@@ -46,7 +46,9 @@ const PrivateRoute = ({ component: Component, render, ...rest }) => {
               state: { from: props.location }
             }}
           />
+          
         )
+        
       }
     />
   );
@@ -65,6 +67,7 @@ class App extends React.Component {
   }
 
   updateSearch = e => {
+    console.log(this.state.searchInput)
     this.setState({
       searchInput: e.target.value
     });
@@ -75,7 +78,8 @@ class App extends React.Component {
   };
 
   closeModal = () => {
-    this.setState({ showModal: false });
+    console.log(this.state.searchInput)
+    this.setState({ showModal: false, searchInput: " " });
   };
 
   getFoodData = food => {
@@ -95,6 +99,7 @@ class App extends React.Component {
           resultsLoading: false,
         });
         console.log("search results", this.state.searchResults);
+        console.log("search input", this.state.searchInput);
       })
       .catch(error => {
         this.setState({
@@ -115,7 +120,7 @@ class App extends React.Component {
   render() {
     return (
       <div className='App'>
-        <Header searchInput={this.state.searchInput} updateSearch={this.updateSearch} getFoodData={this.getFoodData} />
+        <Header searchInput={this.state.searchInput}  updateSearch={this.updateSearch} getFoodData={this.getFoodData} closeModal={this.closeModal}/>
         <AppModal
           isOpen={this.state.showModal}
           openModal={this.openModal}
@@ -124,6 +129,7 @@ class App extends React.Component {
           handleFoodSubmit={this.handleFoodSubmit}
           searchResults={this.state.searchResults}
           resultsLoading={this.state.resultsLoading}
+          updateSearch={this.updateSearch}
         />
         <div>
           <Route exact path='/' component={Home} />
