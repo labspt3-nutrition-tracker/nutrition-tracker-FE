@@ -3,7 +3,8 @@ import TraineeList from './TraineeList';
 import styled from 'styled-components';
 import { SEARCH_USER_BY_EMAIL } from "../../graphql/queries";
 import ApolloClient from "apollo-boost";
-import TraineeResultModal from './TraineeResultModal';
+import TraineeResult from './TraineeResult';
+import TraineeSearch from './TraineeSearch';
 
 const CoachPageContainer = styled.div`
   padding: 2% 4%;
@@ -31,21 +32,8 @@ class CoachPage extends React.Component{
     });
   };
 
-  openSearchModal = () => {
-    this.setState({
-      isSearchModalOpen: true
-    });
-  };
-
-  closeSearchModal = () => {
-    this.setState({
-      isSearchModalOpen: false
-    });
-  };
-
   handleChooseUser = user => {
     console.log('user', user)
-    this.closeSearchModal();
   }
 
   getUserData = email => {
@@ -85,18 +73,14 @@ class CoachPage extends React.Component{
   render(){
     return(
       <CoachPageContainer>
-        <TraineeResultModal
-        isSearchModalOpen={this.state.isSearchModalOpen}
-        traineeSearchResults={this.state.traineeSearchResults}
-        noUserFoundError={this.state.noUserFoundError}
-        openSearchModal={this.openSearchModal}
-        closeSearchModal={this.closeSearchModal}
-        handleChooseUser={this.handleChooseUser} />
-        <h1> Coach Page</h1>
-        <TraineeList
+        <TraineeSearch
           traineeSearchInput={this.state.traineeSearchInput}
           updateTraineeSearch={this.updateTraineeSearch}
-          getUserData={this.getUserData}/>
+          getUserData={this.getUserData} />
+        <TraineeResult
+          traineeSearchResults={this.state.traineeSearchResults}
+          noUserFoundError={this.state.noUserFoundError} />
+        <TraineeList/>
       </CoachPageContainer>
     )
   }

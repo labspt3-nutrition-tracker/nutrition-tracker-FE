@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 const TraineeDiv = styled.div`
   display: block;
-  width: 20%;
+  margin: 0 auto;
+  width: 80%;
   height: 80px;
-  border: 1px solid blue;
   text-align: center;
   padding-top: 10px;
 `;
@@ -22,7 +22,7 @@ class Trainee extends React.Component{
   render(){
     const data = this.props.data;
     return(
-      <TraineeDiv onClick={() => this.props.handleChooseUser(data)}>
+      <TraineeDiv>
         <h2> {data.firstName} {data.lastName}</h2>
         <h3> {data.calorieGoal}</h3>
         <h3> {data.weight} </h3>
