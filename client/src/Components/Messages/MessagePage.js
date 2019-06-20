@@ -14,7 +14,7 @@ import MessageList from "./MessageList";
 import NewMessage from "./NewMessage";
 import AlertsList from "./AlertsList";
 import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
-import { DELETE_MESSAGE_MUTATION } from "../../graphql/mutations";
+import { DELETE_MESSAGE_MUTATION, ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
 
 const styles = theme => ({
   root: {
@@ -147,6 +147,35 @@ class MessagePage extends React.Component {
     this.handleClose();
   };
 
+  handleCancel = () => {
+    this.setState({ option: 0 });
+  };
+
+  sendMessage = async ({ recipient, message }) => {
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    const NewMessage = {
+      type: "text",
+      text: message,
+      read: false,
+      sender: this.state.currentUser.id,
+      recipient: recipient
+    };
+    console.log("adding message: ", { NewMessage });
+    try {
+      const variables = { input: NewMessage };
+      const createdMessage = await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
+      console.log({ createdMessage });
+      this.setState({ option: 0 });
+      this.getData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   render() {
     const { messages, coaches, currentMessage, modalOpen } = this.state;
     let { option } = this.state;
@@ -174,7 +203,12 @@ class MessagePage extends React.Component {
         {option === 0 ? (
           <MessageList messages={messages} coaches={coaches} showMessage={this.showMessage} />
         ) : option === 1 ? (
-          <NewMessage />
+          <NewMessage
+            coaches={coaches}
+            recipient={currentMessage && currentMessage.sender.id}
+            handleCancel={this.handleCancel}
+            sendMessage={this.sendMessage}
+          />
         ) : (
           <AlertsList alerts={alerts} showMessage={this.showMessage} />
         )}

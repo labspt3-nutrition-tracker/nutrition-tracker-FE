@@ -178,3 +178,27 @@ export const DELETE_MESSAGE_MUTATION = gql`
     deleteMessage(id: $id)
   }
 `;
+
+export const ADD_MESSAGE_MUTATION = gql`
+  mutation addMessage($input: MessageInput!) {
+    addMessage(input: $input) {
+      id
+      created_at
+      type
+      text
+      read
+      sender {
+        id
+        firstName
+        lastName
+        email
+      }
+      recipient {
+        id
+        firstName
+        lastName
+        email
+      }
+    }
+  }
+`;
