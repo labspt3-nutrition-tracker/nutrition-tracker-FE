@@ -217,7 +217,7 @@ class Journal extends React.Component {
       })
       .then( response => {
         this.setState({
-
+          foodEntry: response.data.getFoodEntriesByUserId
         })
       })
       .catch(err => console.log(err));
