@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 //import styled from 'styled-components';
@@ -17,7 +16,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Payment from '@material-ui/icons/Payment';
 // import Button from '@material-ui/core/Button';
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,13 +49,6 @@ export default function  AccountNav() {
   return (
         <div 
         className={classes.root}
-        // MuiAppBarPositionFixed= {
-        //     marginTop: "10%",
-        //     top: 0,
-        //     left: "auto",
-        //     right: 0,
-        //     position: "fixed",
-        // },
         >
         <CssBaseline />
         <AppBar position="absolute" className={classes.appBar}>
