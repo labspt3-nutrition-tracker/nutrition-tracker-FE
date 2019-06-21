@@ -136,7 +136,7 @@ class TraineeInfo extends React.Component{
     return(
       <TraineeInfoContainer>
         {this.props.traineeID &&
-          <>
+          <div>
             <StatsDashboard
               chartChange={this.handleChartChange}
               dataChange={this.handleDataChange}
@@ -146,21 +146,21 @@ class TraineeInfo extends React.Component{
             {days.length === 1 ? (
               <OneDayStats foodEntries={foodEntries} days={days} data={data} />
             ) : (
-              <>
+              <div>
                 {data === "weight" ? (
                   <WeightStats weightEntries={weightEntries} days={days} initialWeight={initialWeight} />
                 ) : (
-                  <>
+                  <div>
                     {data === "exercise" ? (
                       <ExerciseStats exerciseEntries={exerciseEntries} days={days} />
                     ) : (
                       <ManyDaysStats foodEntries={foodEntries} days={days} dataType={data} />
                     )}
-                  </>
+                  </div>
                 )}
-              </>
+              </div>
             )}
-          </>
+          </div>
       }
 
 
