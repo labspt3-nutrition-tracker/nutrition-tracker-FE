@@ -2,16 +2,25 @@ import React from 'react';
 import ApolloClient from "apollo-boost";
 import * as moment from "moment";
 import styled from 'styled-components';
+import OneDayStats from './../Reports/OneDayStats';
+import StatsDashboard from './../Reports/StatsDashboard';
+import ManyDaysStats from "./../Reports/ManyDaysStats";
+import WeightStats from "./../Reports/WeightStats";
+import ExerciseStats from "./../Reports/ExerciseStats";
+import Accomplishments from "./../Reports/Accomplishments";
+import PDFReport from "./../Reports/PDFReports/PDFReport";
+import { getLastXDays }  from '../../util/getLastXDays.js';
 import {
   GET_FOOD_ENTRIES_BY_USER_QUERY,
   GET_WEIGHT_ENTRIES_QUERY,
-  GET_EXERCISE_ENTRIES_QUERY
+  GET_EXERCISE_ENTRIES_QUERY,
+  GET_USER_BY_ID
 } from "../../graphql/queries";
+
 
 const TraineeInfoContainer = styled.div`
   width: 100%;
   height: 50vh;
-  border: 1px solid green;
 `;
 
 const SelectDay = styled.select`
@@ -40,9 +49,24 @@ class TraineeInfo extends React.Component{
       weightEntries: [],
       exerciseEntries: [],
       initialWeight: 0,
-      dayValue: moment().format("YYYY-MM-DD")
+      option: 0,
+      days: [moment().format("YYYY-MM-DD")],
+      data: "caloriesPerServ",
     }
   }
+  handleChartChange = days => {
+    if (days.length === 1 && (this.state.data === "weight" || this.state.data === "exercise"))
+      this.setState({ data: "caloriesPerServ" });
+    this.setState({ days: days });
+  };
+
+  handleDataChange = data => {
+    this.setState({ data: data });
+  };
+
+  handleOptionChange = (event, option) => {
+    this.setState({ option: option });
+  };
 
   componentDidUpdate = async (prevProps) => {
     if (prevProps.traineeID !== this.props.traineeID){
@@ -82,6 +106,17 @@ class TraineeInfo extends React.Component{
             this.setState({
               exerciseEntries: response.data.getExerciseEntriesByUserId
             })
+            client.query({
+              query: GET_USER_BY_ID,
+              variables: {
+                userId: trainee
+              }
+            })
+            .then(response =>{
+              this.setState({
+                initialWeight: response.data.getUserById.weight
+              })
+            })
           })
         })
       })
@@ -96,34 +131,38 @@ class TraineeInfo extends React.Component{
   }
 
   render(){
-    const { foodEntries, weightEntries, exerciseEntries } = this.state;
-    const todayFoodEntries = foodEntries.filter(function(entry){
-      return moment(new Date(entry.date)).format("MM/DD") === moment().format("MM/DD")
-    })
-    const todayWeightEntries = weightEntries.filter(function(entry){
-      return moment(new Date(entry.date)).format("MM/DD") === moment().format("MM/DD")
-    })
-    const todayExerciseEntries = exerciseEntries.filter(function(entry){
-      return moment(new Date(entry.date)).format("MM/DD") === moment().format("MM/DD")
-    })
-    console.log(todayFoodEntries)
-
+    const { foodEntries, weightEntries, exerciseEntries, days, data, option, initialWeight } = this.state;
+    console.log('this.state', this.state)
     return(
       <TraineeInfoContainer>
-        <SelectDay onChange={this.handleViewChange} >
-          <option value="today"> Today</option>
-          <option value="seven_days"> Last week's data</option>
-        </SelectDay>
-        {this.state.viewMode === "today" &&
-        <ViewData>
-          <h1> Today's Info </h1>
-        </ViewData>
-        }
-        {this.state.viewMode === "seven_days" &&
-        <ViewData>
-          <h1> Last 7 days </h1>
-        </ViewData>
+        {this.props.traineeID &&
+          <>
+            <StatsDashboard
+              chartChange={this.handleChartChange}
+              dataChange={this.handleDataChange}
+              currentUser={this.props.traineeID}
+            />
+
+            {days.length === 1 ? (
+              <OneDayStats foodEntries={foodEntries} days={days} data={data} />
+            ) : (
+              <>
+                {data === "weight" ? (
+                  <WeightStats weightEntries={weightEntries} days={days} initialWeight={initialWeight} />
+                ) : (
+                  <>
+                    {data === "exercise" ? (
+                      <ExerciseStats exerciseEntries={exerciseEntries} days={days} />
+                    ) : (
+                      <ManyDaysStats foodEntries={foodEntries} days={days} dataType={data} />
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          </>
       }
+
 
       </TraineeInfoContainer>
     )

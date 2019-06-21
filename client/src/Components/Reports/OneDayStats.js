@@ -55,7 +55,7 @@ class WeekFoodLogStats extends Component {
         }
       ]
     };
-
+  console.log('stats props', this.props)
     return (
       <div className={classes.root}>
         <h2 className={classes.header}>
