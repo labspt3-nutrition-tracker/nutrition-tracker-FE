@@ -1,46 +1,33 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from "styled-components";
+// import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import Icon from '@material-ui/core/Icon';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-const FooterDiv = styled.div`
-background: #F4B4C3;
-left: 0;
-right: 0;
-bottom:0;
-top: 0;
-`
+const useStyles = makeStyles({
+  root: {
+    width: 500,
+  },
+});
 
-  {/* Footer */}
-    const Footer = () => (
-      <FooterDiv>
-      <footer className="page-footer">
-      <div className="container">
-        <div className="row">
-          <div className="col l6 s12">
-            <h5 className="white-text">Footer Content</h5>
-            <p className="grey-text text-lighten-4">Will update soon</p>
-          </div>
-          <div className="col l4 offset-l2 s12">
-            <h5 className="white-text">Links</h5>
-            <ul>
-              <li><a className="grey-text text-lighten-3" href="#!">Link 1</a></li>
-              <li><a className="grey-text text-lighten-3" href="#!">Link 2</a></li>
-              <li><a className="grey-text text-lighten-3" href="#!">Link 3</a></li>
-              <li><a className="grey-text text-lighten-3" href="#!">Link 4</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="footer-copyright">
-        <div className="container">
-        © 2019 Nutrition Tracker
-        <br></br>
-        <a className="grey-text text-lighten-4 right" href="#!">More Links</a>
-        </div>
-      </div>
-    </footer>
-    </FooterDiv>
-    )
-      {/* End footer */}
+export default function Footer(props) {
+  const classes = useStyles();
+  const [value, setValue] = React.useState('recents');
 
-      export default Footer;
+  function handleChange(event, newValue) {
+    setValue(newValue);
+  }
+
+  return (
+    <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
+      <div>Lambda School</div>
+      <div>Nutrition Tracker App</div>
+      <BottomNavigationAction label="Favorites" value="favorites" icon={<FavoriteIcon />} />
+      {/* <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOnIcon />} /> */}
+      <BottomNavigationAction label="Folder" value="folder" icon={<Icon>folder</Icon>} />
+    </BottomNavigation>
+  );
+}

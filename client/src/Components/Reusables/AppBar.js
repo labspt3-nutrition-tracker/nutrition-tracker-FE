@@ -41,7 +41,7 @@ function ButtonAppBar(props) {
           </Button>
 
           <Button className={classes.title}>
-            <NavLink className="navLink" to="/account">
+            <NavLink className="navLink" to="/settings">
               Account
             </NavLink>
           </Button>
@@ -60,6 +60,16 @@ function ButtonAppBar(props) {
           <Button className={classes.title}>
             <NavLink className="navLink" to="/journal">
               Journal
+            </NavLink>
+          </Button>
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/coach">
+              Coach
+            </NavLink>
+          </Button>
+          <Button className={classes.title}>
+            <NavLink className="navLink" to="/messages">
+              Messages
             </NavLink>
           </Button>
           <SearchInputComponent

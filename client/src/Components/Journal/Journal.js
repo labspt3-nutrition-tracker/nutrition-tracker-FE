@@ -85,6 +85,7 @@ const FOODENTRYQUERY = gql`
         fats
         proteins
         carbs
+        edamam_id
       }
       meal_category_id {
         id
@@ -208,6 +209,7 @@ class Journal extends React.Component {
         });
       })
       .then(response => {
+        console.log(response)
         client.query({
           query: FOODENTRYQUERY,
           variables: {
@@ -219,6 +221,9 @@ class Journal extends React.Component {
         this.setState({
           foodEntry: response.data.getFoodEntriesByUserId
         })
+      .then(response => {
+       console.log('response from journal', response)
+       console.log(this.props)
       })
       .catch(err => console.log(err));
   };

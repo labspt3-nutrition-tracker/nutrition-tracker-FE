@@ -5,6 +5,7 @@ import StripeCheckout from 'react-stripe-checkout';
 import BillingHistory from './BillingHistory';
 import ApolloClient from "apollo-boost";
 import moment from 'moment';
+import AccountNav from '../AccountNav';
 
 const createSubscriptionMutation = gql`
   mutation createSubscriptionMutation($source: String!, $email: String!, $amount: Int!){
@@ -30,6 +31,10 @@ const GET_CURRENT = gql`
     }
   }
 `;
+
+let divStyle = {
+  marginLeft: "25%"
+}
 
 class Billing extends React.Component{
   constructor(props){
@@ -98,7 +103,8 @@ class Billing extends React.Component{
     const premium = 700;
     const coach = 1000;
     return(
-      <div>
+      <div style={divStyle}>
+            <AccountNav />
         <div>
           <p>{this.state.premiumCurrent ? "Premium":"Basic"} User</p>
           {
