@@ -25,7 +25,7 @@ export const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
         mealCategoryName
       }
     }
-}  
+}
 `;
 
 export const GET_CURRENT_USER_QUERY = gql`
@@ -42,6 +42,20 @@ export const GET_CURRENT_USER_QUERY = gql`
     }
   }
 `;
+
+export const SEARCH_USER_BY_EMAIL = gql`
+  query getUserBy($param: String!, $value: String!){
+    getUserBy(param: $param, value: $value){
+      username
+      email
+      id
+      firstName
+      lastName
+      calorieGoal
+      weight
+  }
+}
+`
 
 export const GET_WEIGHT_ENTRIES_QUERY = gql`
   query getWeightEntriesByUserId($userId: ID!) {
