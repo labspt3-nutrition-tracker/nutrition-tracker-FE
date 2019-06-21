@@ -60,14 +60,14 @@ class NewMessage extends React.Component {
       this.setState({ error: true, errorText: "Please enter a valid message" });
     } else {
       this.setState({ error: false });
+      if (!this.state.recipient) {
+        this.setState({ selectError: true, formErrorText: "Please select a recipient" });
+      } else {
+        this.setState({ selectError: false });
+        console.log("Submitting message: ", this.state);
+        this.props.sendMessage({ recipient: this.state.recipient, message: this.state.message });
+      }
     }
-    if (!this.state.recipient) {
-      this.setState({ selectError: true, formErrorText: "Please select a recipient" });
-    } else {
-      this.setState({ selectError: false });
-    }
-    console.log("Submitting message: ", this.state);
-    this.props.sendMessage({ recipient: this.state.recipient, message: this.state.message });
   };
 
   render() {
