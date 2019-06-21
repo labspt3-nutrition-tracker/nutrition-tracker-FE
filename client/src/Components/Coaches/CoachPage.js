@@ -1,54 +1,55 @@
-import React from 'react';
-import TraineeList from './TraineeList';
-import styled from 'styled-components';
-import { SEARCH_USER_BY_EMAIL } from "../../graphql/queries";
+import React from "react";
+import styled from "styled-components";
 import ApolloClient from "apollo-boost";
-import TraineeResultModal from './TraineeResultModal';
+
+import TraineeList from "./TraineeList";
+import TraineeResult from "./TraineeResult";
+import TraineeSearch from "./TraineeSearch";
+import TraineeInfo from "./TraineeInfo";
+import { SEARCH_USER_BY_EMAIL, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
+import { ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
 
 const CoachPageContainer = styled.div`
   padding: 2% 4%;
   min-height: 90vh;
   width: 100%;
-  border: 1px solid blue;
+  border: 1px solid pink;
+  display: flex;
 `;
 
-class CoachPage extends React.Component{
+const TraineeBasic = styled.div`
+  width: 50%;
+  height: 90vh;
+`;
+const TraineeDetailed = styled.div`
+  width: 50%;
+  height: 90vh;
+`;
 
-  constructor(props){
-    super(props)
+class CoachPage extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      traineeSearchInput: '',
+      traineeSearchInput: "",
       traineeSearchResults: [],
       isSearchModalOpen: false,
-      selectedUser: [],
+      selectedTrainee: [],
       noUserFoundError: ""
-    }
+    };
   }
 
-  updateTraineeSearch =  e => {
+  updateTraineeSearch = e => {
     this.setState({
       traineeSearchInput: e.target.value
     });
   };
 
-  openSearchModal = () => {
-    this.setState({
-      isSearchModalOpen: true
+  handleChooseUser = async user => {
+    await this.setState({
+      selectedTrainee: user
     });
+    console.log(this.state.selectedTrainee);
   };
-
-  closeSearchModal = () => {
-    this.setState({
-      isSearchModalOpen: false
-    });
-  };
-
-  handleChooseUser = user => {
-    this.setState({
-      selectedUser: user
-    });
-    this.closeModal();
-  }
 
   getUserData = email => {
     email = this.state.traineeSearchInput;
@@ -60,7 +61,7 @@ class CoachPage extends React.Component{
     client
       .query({
         query: SEARCH_USER_BY_EMAIL,
-        variables:{
+        variables: {
           param: "email",
           value: email
         }
@@ -71,36 +72,66 @@ class CoachPage extends React.Component{
           isSearchModalOpen: true,
           noUserFoundError: "",
           traineeSearchInput: ""
-        })
+        });
       })
       .catch(error => {
         this.setState({
-          traineeSearchInput: '',
+          traineeSearchInput: "",
           traineeSearchResults: [],
           isSearchModalOpen: true,
           noUserFoundError: "No user by that email found"
-        })
-      })
+        });
+      });
+  };
 
-  }
+  handleRequest = async () => {
+    //send requet message to traineeSearchResults.id
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    try {
+      const user = await client.query({ query: GET_CURRENT_USER_QUERY });
+      const userId = user.data.getCurrentUser.id;
+      const name = `${user.data.getCurrentUser.firstName} ${user.data.getCurrentUser.lastName}`;
+      const variables = {
+        input: {
+          type: "alert",
+          text: `This is a request from ${name} to follow your progress. 
+          Click ACCEPT to allow access.`,
+          read: false,
+          sender: userId,
+          recipient: this.state.traineeSearchResults.id
+        }
+      };
+      await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  render(){
-    return(
+  render() {
+    return (
       <CoachPageContainer>
-        <TraineeResultModal
-        isSearchModalOpen={this.state.isSearchModalOpen}
-        traineeSearchResults={this.state.traineeSearchResults}
-        noUserFoundError={this.state.noUserFoundError}
-        openSearchModal={this.openSearchModal}
-        closeSearchModal={this.closeSearchModal}
-        handleChooseUser={this.handleChooseUser} />
-        <h1> Coach Page</h1>
-        <TraineeList
-          traineeSearchInput={this.state.traineeSearchInput}
-          updateTraineeSearch={this.updateTraineeSearch}
-          getUserData={this.getUserData}/>
+        <TraineeBasic>
+          <TraineeSearch
+            traineeSearchInput={this.state.traineeSearchInput}
+            updateTraineeSearch={this.updateTraineeSearch}
+            getUserData={this.getUserData}
+          />
+          <TraineeResult
+            traineeSearchResults={this.state.traineeSearchResults}
+            noUserFoundError={this.state.noUserFoundError}
+            request={this.handleRequest}
+          />
+          <TraineeList handleChooseUser={this.handleChooseUser} />
+        </TraineeBasic>
+        <TraineeDetailed>
+          <TraineeInfo traineeID={this.state.selectedTrainee.id} />
+        </TraineeDetailed>
       </CoachPageContainer>
-    )
+    );
   }
 }
 

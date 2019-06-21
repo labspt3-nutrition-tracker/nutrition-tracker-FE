@@ -125,6 +125,7 @@ class LoginOrRegister extends React.Component {
   };
 
   loginUser = async (userInfo, auth) => {
+    console.log({ userInfo }, { auth });
     let email, lastName, firstName, idToken;
     if (auth === "google") {
       email = userInfo.profileObj.email;
