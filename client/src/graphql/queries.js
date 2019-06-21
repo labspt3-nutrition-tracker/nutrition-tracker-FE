@@ -100,9 +100,13 @@ export const GET_USER_BY_ID = gql`
   query getUserById($userId: ID!){
     getUserById(userId: $userId){
       id
+      weight
     }
   }
 `;
+
+
+
 
 export const USER_EXIST_QUERY = gql`
   query getUserBy($param: String!, $value: String!) {

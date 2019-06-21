@@ -11,7 +11,17 @@ import LoginForm from "./LoginForm";
 import { ADD_USER_MUTATION } from "../../graphql/mutations";
 import { USER_EXIST_QUERY } from "../../graphql/queries";
 
-
+import Avatar from '@material-ui/core/Avatar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+// add min width for logo
 const LoginOrRegisterContainer = styled.div`
   /* background: #fcfcfb; */
   display: flex;
@@ -50,7 +60,7 @@ const LoginOrRegisterForm = styled.div`
   -moz-box-shadow: 6px 7px 24px -1px rgba(0, 0, 0, 0.75);
   box-shadow: 6px 7px 24px -1px rgba(0, 0, 0, 0.75);
   border-radius: 10px;
-  border: 3px solid #f4b4c3;  
+  border: 3px solid #3685b5;  
 `;
 
 const FormContainer = styled.div`
@@ -81,6 +91,18 @@ justify-content: center;
 padding: 40% 0;
 
 `
+
+const MadeWithLove = () => {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Built with love by the '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Material-UI
+      </Link>
+      {' team.'}
+    </Typography>
+  );
+}
 
 class LoginOrRegister extends React.Component {
   constructor(props) {

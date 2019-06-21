@@ -151,7 +151,7 @@ export const DELETE_FOOD_ENTRY = gql`
 
 export const EDIT_EXER_ENTRY = gql`
   mutation($id: ID!, $input: ExerciseEntryInput!) {
-    updateExerciseEntry(id: $id, input: $ExerciseEntry) {
+    updateExerciseEntry(id: $id, input: $input) {
       id
       exerciseEntryDate
       exerciseName
