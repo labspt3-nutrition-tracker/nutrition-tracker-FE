@@ -106,6 +106,7 @@ class CoachPage extends React.Component {
         }
       };
       await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
+      this.setState({ traineeSearchResults: [] }); //reset after sending request
     } catch (err) {
       console.log(err);
     }
