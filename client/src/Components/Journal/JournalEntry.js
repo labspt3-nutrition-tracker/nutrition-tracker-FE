@@ -110,7 +110,6 @@ class JournalEntry extends React.Component {
 
   passMealData = mealEntry => {
     console.log(mealEntry);
-    const edamam_id = mealEntry.food_id.edamam_id;
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
@@ -123,7 +122,7 @@ class JournalEntry extends React.Component {
         }
       })
       .then(response => {
-        if (response.data.getFoodById.edamam_id === edamam_id) {
+        if (response.data.getFoodById.edamam_id) {
           this.setState({
             edamamExist: true
           });
@@ -173,6 +172,9 @@ class JournalEntry extends React.Component {
   editMealEntry = e => {
     e.preventDefault();
 
+    console.log(this.state.mealEntry.food_id.caloriesPerServ)
+    console.log(this.state.edamamExist)
+
     const foodEntry = {
       foodName: this.state.mealEntry.food_id.foodName,
       caloriesPerServ: parseInt(this.state.caloriesPerServ),
@@ -185,11 +187,24 @@ class JournalEntry extends React.Component {
       meal_category_id: this.state.meal_category_id,
       servingQty: parseInt(this.state.servingQty)
     };
-    console.log(foodEntry);
+
+    const edamamFoodEntry = {
+      foodName: this.state.mealEntry.food_id.foodName,
+      caloriesPerServ: this.state.mealEntry.food_id.caloriesPerServ,
+      fats: this.state.mealEntry.food_id.fats,
+      carbs: this.state.mealEntry.food_id.carbs,
+      proteins: this.state.mealEntry.food_id.proteins,
+      date: this.state.date,
+      food_id: this.state.mealEntry.food_id.id,
+      user_id: this.state.currentUser,
+      meal_category_id: this.state.meal_category_id,
+      servingQty: parseInt(this.state.servingQty)
+    }
+
     this.props.editMeal(
       this.state.mealEntry.id,
       this.state.mealEntry.food_id.id,
-      foodEntry
+      (this.state.edamamExist ? edamamFoodEntry : foodEntry)
     );
 
     this.closeModal();
@@ -225,7 +240,7 @@ class JournalEntry extends React.Component {
 
   render() {
     const datePicked = this.props.datePicked;
-    const ModifiedEntry = this.state.foodEntries.filter(function(entry) {
+    const ModifiedEntry = this.props.foodEntries.filter((entry) => {
       //  return entry.date === datePicked;
       return (
         moment(new Date(entry.date)).format("MM/DD") ===

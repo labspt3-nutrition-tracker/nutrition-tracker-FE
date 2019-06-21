@@ -99,7 +99,8 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
-      datePicked: ""
+      datePicked: "",
+      foodEntry: []
     };
   }
 
@@ -119,7 +120,29 @@ class Journal extends React.Component {
         localStorage.removeItem("token");
       }
     }
+
+    this.loadFoodEntries();
   };
+
+  loadFoodEntries = async () => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    });
+
+    await client
+      .query({
+        query: FOODENTRYQUERY,
+        variables: {
+          userId: this.state.currentUser
+        }
+      }).then(response => {
+        this.setState(prevState => ({
+          foodEntry: response.data.getFoodEntriesByUserId
+        }))
+      })
+
+      console.log(this.state.foodEntry)
+  }
 
   deleteMealEntry = id => {
     console.log(id);
@@ -192,62 +215,33 @@ class Journal extends React.Component {
           }
         });
       })
+      .then( response => {
+        this.setState({
+
+        })
+      })
       .catch(err => console.log(err));
   };
 
   render() {
-    const FOODENTRYQUERY = gql`
-      query{
-        getFoodEntriesByUserId(userId: ${this.state.currentUser}){
-          id
-          date
-          servingQty
-          food_id{
-            id
-            foodName
-            caloriesPerServ
-            fats
-            proteins
-            carbs
-          }
-          meal_category_id{
-            id
-            mealCategoryName
-          }
-        }
-      }
-`;
-    return (
-      <div>
-        <Query query={FOODENTRYQUERY}>
-          {({ loading, error, data }) => {
-            if (loading) return <div>Fetching Entries</div>;
-            if (error) return <div>Cannot Load</div>;
-
-            const foodEntries = data.getFoodEntriesByUserId;
-
-            return (
-              <JournalContainer>
-                <JournalEntryDiv>
-                  <JournalEntry
-                    foodEntries={foodEntries}
-                    datePicked={this.state.datePicked}
-                    deleteMeal={this.deleteMealEntry}
-                    editMeal={this.editMealEntry}
-                  />
-                </JournalEntryDiv>
-                <CalendarDiv>
-                  <Calendar
-                    datePicked={this.state.datePicked}
-                    handleDateClick={this.handleDateClick}
-                  />
-                </CalendarDiv>
-              </JournalContainer>
-            );
-          }}
-        </Query>
-      </div>
-    );
+      return(
+          <JournalContainer>
+            <JournalEntryDiv>
+              <JournalEntry
+                foodEntries={this.state.foodEntry}
+                datePicked={this.state.datePicked}
+                deleteMeal={this.deleteMealEntry}
+                editMeal={this.editMealEntry}
+              />
+            </JournalEntryDiv>
+            <CalendarDiv>
+              <Calendar
+                datePicked={this.state.datePicked}
+                handleDateClick={this.handleDateClick}
+              />
+            </CalendarDiv>
+          </JournalContainer>
+      )
   }
 }
 
