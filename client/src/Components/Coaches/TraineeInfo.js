@@ -11,6 +11,7 @@ import {
 const TraineeInfoContainer = styled.div`
   width: 100%;
   height: 50vh;
+  border: 1px solid green;
 `;
 
 const SelectDay = styled.select`
