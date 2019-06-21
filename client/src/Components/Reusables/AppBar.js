@@ -10,17 +10,19 @@ import { NavLink } from "react-router-dom";
 import { NONAME } from "dns";
 
 import SearchInputComponent from "./../SearchComponent/SearchInputComponent";
+import { getRectCenter } from "@fullcalendar/core";
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    background: "#3685b5"
+    background: "#0CCA98",
   },
   title: {
     flexGrow: 1,
     fontSize: 16,
     textDecoration: "none",
-    color: "#ffffff"
+    color: "#ffffff",
+    // textShadow: "0 0 1px #000000",
   }
 });
 
