@@ -41,7 +41,7 @@ function ButtonAppBar(props) {
           </Button>
 
           <Button className={classes.title}>
-            <NavLink className="navLink" to="/account">
+            <NavLink className="navLink" to="/settings">
               Account
             </NavLink>
           </Button>

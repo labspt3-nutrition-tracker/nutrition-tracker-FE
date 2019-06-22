@@ -13,14 +13,16 @@ import EditIcon from "@material-ui/icons/Edit";
 import { getCurrentUser } from "../util/getCurrentUser";
 import { getCurrentWeight } from "../util/getCurrentweight";
 import UserEditModal from "../Components/UserEditModal";
+import AccountNav from "./AccountNav";
 
 const styles = theme => ({
   root: {
-    margin: "0 10px"
+    margin: "0"
   },
   card: {
+    width: "80%",
     maxWidth: 600,
-    margin: "80px auto",
+    margin: "0 0 80px 550px",
     padding: 10
   },
   media: {
@@ -89,7 +91,9 @@ class Settings extends React.Component {
     const { classes } = this.props;
     const { currentUser, editType } = this.state;
     return (
+      
       <div className={classes.root}>
+        <AccountNav />
         <UserEditModal
           open={this.state.modalOpen}
           handleClose={this.handleClose}
