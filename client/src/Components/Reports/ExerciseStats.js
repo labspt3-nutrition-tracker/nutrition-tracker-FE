@@ -100,7 +100,7 @@ const styles = theme => ({
   },
   header: {
     textAlign: "center",
-    fontSize: "2.8rem",
+    fontSize: "2.5rem",
     marginBottom: "20px",
     color: "#3685B5",
     textTransform: "uppercase",
@@ -108,13 +108,13 @@ const styles = theme => ({
   },
   title: {
     color: "#3685B5",
-    fontSize: "2rem",
+    fontSize: "1.4rem",
     width: "40%",
     fontFamily: "Oxygen"
   },
   value: {
     margin: "10px 0",
-    fontSize: "1.8rem",
+    fontSize: "1.4rem",
     paddingLeft: "10px",
     fontFamily: "Oxygen"
   },

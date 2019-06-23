@@ -60,12 +60,11 @@ table {
 }
 
 html {
-  font-size: 62.5%;
   font-family: Roboto, sans-serif;
 }
 
 body {
-  font-size: 1.6rem;
+  font-size: 62.5%;
 }
 
 
@@ -88,38 +87,6 @@ body {
 	}
 
 }
-
-
-
-/* .tagline {
-  font-size: 2.5rem;
-}
-
-.detail {
-  font-size: 1.8rem;
-}
-
-.feature-box {
-  border: 1px solid black;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-.feature-img {
-  max-width: 100%;
-}
-
-.feature-img img {
-  width: 100%;
-}
-
-.form-field {
-  margin-bottom: 10px;
-  font-size: 1.6rem;
-} */
 
 .fc-today{
 	background: #40A798 !important;

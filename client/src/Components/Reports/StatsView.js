@@ -24,6 +24,7 @@ import {
   GET_WEIGHT_ENTRIES_QUERY,
   GET_EXERCISE_ENTRIES_QUERY
 } from "../../graphql/queries";
+import { CircularProgress } from "@material-ui/core";
 
 class StatsView extends React.Component {
   state = {
@@ -34,7 +35,8 @@ class StatsView extends React.Component {
     data: "caloriesPerServ",
     option: 0,
     initialWeight: 0,
-    currentUser: null
+    currentUser: null,
+    statsLoading: true
   };
 
   componentDidMount = async () => {
@@ -50,15 +52,25 @@ class StatsView extends React.Component {
       const userId = user.data.getCurrentUser.id;
       const initialWeight = user.data.getCurrentUser.weight;
       const variables = { userId };
-      const foodEntries = await client.query({ query: GET_FOOD_ENTRIES_BY_USER_QUERY, variables });
-      const weightEntries = await client.query({ query: GET_WEIGHT_ENTRIES_QUERY, variables });
-      const exerciseEntries = await client.query({ query: GET_EXERCISE_ENTRIES_QUERY, variables });
+      const foodEntries = await client.query({
+        query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+        variables
+      });
+      const weightEntries = await client.query({
+        query: GET_WEIGHT_ENTRIES_QUERY,
+        variables
+      });
+      const exerciseEntries = await client.query({
+        query: GET_EXERCISE_ENTRIES_QUERY,
+        variables
+      });
       this.setState({
         foodEntries: foodEntries.data.getFoodEntriesByUserId,
         weightEntries: weightEntries.data.getWeightEntriesByUserId,
         exerciseEntries: exerciseEntries.data.getExerciseEntriesByUserId,
         initialWeight: initialWeight,
-        currentUser: user.data.getCurrentUser
+        currentUser: user.data.getCurrentUser,
+        statsLoading: false
       });
     } catch (err) {
       console.log(err);
@@ -87,93 +99,102 @@ class StatsView extends React.Component {
     const { classes } = this.props;
     const { option, foodEntries, days, data, exerciseEntries, weightEntries, currentUser, initialWeight } = this.state;
     let tooltipTitle = "";
-    if (currentUser) {
-      if (currentUser.userType === "basic") tooltipTitle = "Please upgrade to access report";
-    }
-    return (
-      <>
+
+    if (this.state.statsLoading) {
+      return (
         <div>
-          <Paper className={classes.root}>
-            <Tabs
-              value={option}
-              onChange={this.handleOptionChange}
-              centered
-              classes={{
-                indicator: classes.indicator
-              }}
-            >
-              <Tab label='Charts' className={classes.tab} />
-              <CloneProps>
-                {tabProps => (
-                  <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
-                    <div>
-                      <Tab
-                        {...tabProps}
-                        className={classes.tab}
-                        disabled={currentUser ? currentUser.userType === "basic" : true}
-                        label={<span>Accomplishments</span>}
-                      />
-                    </div>
-                  </Tooltip>
-                )}
-              </CloneProps>
-              <Tab label='PDF Report' className={classes.tab} />
-            </Tabs>
-            {/* <Link to='/pdfReport'>PDF REPORT</Link> */}
-          </Paper>
-          {option === 0 ? (
-            <>
-              <StatsDashboard
-                chartChange={this.handleChartChange}
-                dataChange={this.handleDataChange}
-                currentUser={currentUser}
-              />
-              {days.length === 1 ? (
-                <OneDayStats foodEntries={foodEntries} days={days} data={data} />
-              ) : (
-                <>
-                  {data === "weight" ? (
-                    <WeightStats weightEntries={weightEntries} days={days} initialWeight={initialWeight} />
-                  ) : (
-                    <>
-                      {data === "exercise" ? (
-                        <ExerciseStats exerciseEntries={exerciseEntries} days={days} />
-                      ) : (
-                        <ManyDaysStats foodEntries={foodEntries} days={days} dataType={data} />
-                      )}
-                    </>
+          <CircularProgress />
+        </div>
+      );
+    } else {
+      if (currentUser) {
+        if (currentUser.userType === "basic") tooltipTitle = "Please upgrade to access report";
+      }
+      return (
+        <>
+          <div>
+            <Paper className={classes.root}>
+              <Tabs
+                value={option}
+                onChange={this.handleOptionChange}
+                centered
+                classes={{
+                  indicator: classes.indicator
+                }}
+              >
+                <Tab label='Charts' className={classes.tab} />
+                <CloneProps>
+                  {tabProps => (
+                    <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
+                      <div>
+                        <Tab
+                          {...tabProps}
+                          className={classes.tab}
+                          disabled={currentUser ? currentUser.userType === "basic" : true}
+                          label={<span>Accomplishments</span>}
+                        />
+                      </div>
+                    </Tooltip>
                   )}
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              {option === 1 ? (
-                <>
-                  {currentUser.userType !== "basic" && (
-                    <Accomplishments
+                </CloneProps>
+                <Tab label='PDF Report' className={classes.tab} />
+              </Tabs>
+              {/* <Link to='/pdfReport'>PDF REPORT</Link> */}
+            </Paper>
+            {option === 0 ? (
+              <>
+                <StatsDashboard
+                  chartChange={this.handleChartChange}
+                  dataChange={this.handleDataChange}
+                  currentUser={currentUser}
+                />
+                {days.length === 1 ? (
+                  <OneDayStats foodEntries={foodEntries} days={days} data={data} />
+                ) : (
+                  <>
+                    {data === "weight" ? (
+                      <WeightStats weightEntries={weightEntries} days={days} initialWeight={initialWeight} />
+                    ) : (
+                      <>
+                        {data === "exercise" ? (
+                          <ExerciseStats exerciseEntries={exerciseEntries} days={days} />
+                        ) : (
+                          <ManyDaysStats foodEntries={foodEntries} days={days} dataType={data} />
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {option === 1 ? (
+                  <>
+                    {currentUser.userType !== "basic" && (
+                      <Accomplishments
+                        currentUser={currentUser}
+                        foodEntries={foodEntries}
+                        weightEntries={weightEntries}
+                        exerciseEntries={exerciseEntries}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <PDFViewer style={PDFstyles.document}>
+                    <PDFReport
                       currentUser={currentUser}
                       foodEntries={foodEntries}
-                      weightEntries={weightEntries}
+                      // weightEntries={weightEntries}
                       exerciseEntries={exerciseEntries}
                     />
-                  )}
-                </>
-              ) : (
-                <PDFViewer style={PDFstyles.document}>
-                  <PDFReport
-                    currentUser={currentUser}
-                    foodEntries={foodEntries}
-                    // weightEntries={weightEntries}
-                    exerciseEntries={exerciseEntries}
-                  />
-                </PDFViewer>
-              )}
-            </>
-          )}
-        </div>
-      </>
-    );
+                  </PDFViewer>
+                )}
+              </>
+            )}
+          </div>
+        </>
+      );
+    }
   }
 }
 
@@ -185,13 +206,13 @@ function CloneProps(props) {
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    fontSize: "2rem",
+    fontSize: "1.5rem",
     padding: "5px",
     boxShadow: "none",
     fontFamily: "Oxygen"
   },
   tab: {
-    fontSize: "2rem",
+    fontSize: "1.6rem",
     color: "#3685B5",
     fontFamily: "Oxygen"
   },
@@ -199,7 +220,7 @@ const styles = theme => ({
     backgroundColor: "#F4B4C3"
   },
   tooltip: {
-    fontSize: "1.8rem",
+    fontSize: "1.4rem",
     // color: "white",
     backgroundColor: "#F4B4C3"
   }

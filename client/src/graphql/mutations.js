@@ -55,8 +55,8 @@ export const ADD_FOOD_ENTRY = gql`
 `;
 
 // export const EDIT_FOOD_ENTRY = gql`
-//   mutation{
-//     updateFoodEntry($id: ID!, input: FoodEntryInput!){
+//    mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
+//      updateFoodEntry(id: $id, input: $input) {
 //       id
 //       date
 //       food_id{
@@ -73,6 +73,22 @@ export const ADD_FOOD_ENTRY = gql`
 //   }
 // `;
 
+export const EDIT_FOOD_ENTRY = gql`
+  mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
+    updateFoodEntry(id: $id, input: $FoodEntry) {
+      id
+      foodName
+      caloriesPerServ
+      fats
+      carbs
+      proteins
+      edamam_id
+      meal_category_id {
+        id
+      }
+    }
+  }
+`;
 
 export const ADD_WEIGHT_ENTRY_MUTATION = gql`
   mutation($input: WeightEntryInput!) {
@@ -107,13 +123,13 @@ export const DELETE_EXERENTRY = gql`
 `;
 
 export const DELETE_FOOD = gql`
-  mutation deleteFood($id: ID!){
+  mutation deleteFood($id: ID!) {
     deleteFood(id: $id)
   }
 `;
 
 export const DELETE_FOOD_ENTRY = gql`
-  mutation deleteFoodEntry($id: ID!){
+  mutation deleteFoodEntry($id: ID!) {
     deleteFoodEntry(id: $id)
   }
 `;
@@ -135,21 +151,7 @@ export const DELETE_FOOD_ENTRY = gql`
 
 export const EDIT_EXER_ENTRY = gql`
   mutation($id: ID!, $input: ExerciseEntryInput!) {
-    updateExerciseEntry(id: $id, input: $ExerciseEntry) {
-      id
-      exerciseEntryDate
-      exerciseName
-      caloriesBurned
-      exercise_entry_user_id {
-        id
-      }
-    }
-  }
-`;
-
-export const EDIT_FOOD_ENTRY = gql`
-  mutation($id: ID!, $input: FoodEntryInput!) {
-    updateFoodEntry(id: $id, input: $FoodEntry) {
+    updateExerciseEntry(id: $id, input: $input) {
       id
       exerciseEntryDate
       exerciseName
@@ -167,6 +169,36 @@ export const ADD_EXERENTRY = gql`
       id
       exerciseName
       caloriesBurned
+    }
+  }
+`;
+
+export const DELETE_MESSAGE_MUTATION = gql`
+  mutation deleteMessage($id: ID!) {
+    deleteMessage(id: $id)
+  }
+`;
+
+export const ADD_MESSAGE_MUTATION = gql`
+  mutation addMessage($input: MessageInput!) {
+    addMessage(input: $input) {
+      id
+      created_at
+      type
+      text
+      read
+      sender {
+        id
+        firstName
+        lastName
+        email
+      }
+      recipient {
+        id
+        firstName
+        lastName
+        email
+      }
     }
   }
 `;

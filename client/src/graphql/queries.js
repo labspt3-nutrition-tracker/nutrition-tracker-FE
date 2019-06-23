@@ -25,7 +25,7 @@ export const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
         mealCategoryName
       }
     }
-}
+  }
 `;
 
 export const GET_CURRENT_USER_QUERY = gql`
@@ -44,8 +44,8 @@ export const GET_CURRENT_USER_QUERY = gql`
 `;
 
 export const SEARCH_USER_BY_EMAIL = gql`
-  query getUserBy($param: String!, $value: String!){
-    getUserBy(param: $param, value: $value){
+  query getUserBy($param: String!, $value: String!) {
+    getUserBy(param: $param, value: $value) {
       username
       email
       id
@@ -53,9 +53,9 @@ export const SEARCH_USER_BY_EMAIL = gql`
       lastName
       calorieGoal
       weight
+    }
   }
-}
-`
+`;
 
 export const GET_WEIGHT_ENTRIES_QUERY = gql`
   query getWeightEntriesByUserId($userId: ID!) {
@@ -96,6 +96,18 @@ export const GET_CURRENT_USERID = gql`
   }
 `;
 
+export const GET_USER_BY_ID = gql`
+  query getUserById($userId: ID!){
+    getUserById(userId: $userId){
+      id
+      weight
+    }
+  }
+`;
+
+
+
+
 export const USER_EXIST_QUERY = gql`
   query getUserBy($param: String!, $value: String!) {
     getUserBy(param: $param, value: $value) {
@@ -111,6 +123,28 @@ export const EXER_QUERY = gql`
       exerciseName
       caloriesBurned
       id
+    }
+  }
+`;
+
+export const GET_MESSAGES_QUERY = gql`
+  query getMessagesBy($param: String!, $value: String!) {
+    getMessagesBy(param: $param, value: $value) {
+      id
+      created_at
+      type
+      text
+      read
+      sender {
+        id
+        firstName
+        lastName
+      }
+      recipient {
+        id
+        firstName
+        lastName
+      }
     }
   }
 `;
