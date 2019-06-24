@@ -8,8 +8,8 @@ import moment from 'moment';
 import AccountNav from '../AccountNav';
 
 const createSubscriptionMutation = gql`
-  mutation createSubscriptionMutation($source: String!, $email: String!, $amount: Int!){
-    createSubscription(source: $source, email: $email, amount: $amount){
+  mutation createSubscriptionMutation($source: String!, $email: String!){
+    createSubscription(source: $source, email: $email){
       id
     }
   }
@@ -41,20 +41,19 @@ class Billing extends React.Component{
     super(props);
     this.state = {
       subscriptionLapse: "",
-      premiumCurrent: false,
-      userType: ""
+      premiumCurrent: false
     }
   }
   componentDidMount(){
     this.getCurrentUser(localStorage.getItem("token"))
   }
-  getCurrentUser = async idToken => {
+  getCurrentUser = idToken => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
-    await client
+    client
       .query({
         query: GET_CURRENT
       })
@@ -64,12 +63,12 @@ class Billing extends React.Component{
       .catch(err => console.log(err));
   };
 
-  getRecentBilling = async id => {
+  getRecentBilling = id => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
-    await client
+    client
       .query({
         query: getRecentBillingQuery,
         variables: {
@@ -97,11 +96,12 @@ class Billing extends React.Component{
         premiumCurrent: !this.state.premiumCurrent
       })
     }
+
   };
 
+
+
   render(){
-    const premium = 700;
-    const coach = 1000;
     return(
       <div style={divStyle}>
             <AccountNav />
@@ -115,49 +115,22 @@ class Billing extends React.Component{
         </div>
         <Mutation mutation={createSubscriptionMutation}>
           {mutation => (
-            <div>
-              <StripeCheckout
-                amount={premium}
-                billingAddress
-                label="Become a Premium User"
-                description="Become a Premium User!"
-                locale="auto"
-                name="NutritionTrkr"
-                stripeKey="pk_test_Pq1dd4riM4hc3cc35SbfPQxk00HJAoDPfA"
-                token={async token => {
-                  const response = await mutation({
-                    variables: {
-                      source: token.id,
-                      email: token.email,
-                      amount: premium
-                    }
-                  });
-                  console.log(response)
-                }}
-                zipcode
-              />
-              <StripeCheckout
-                amount={coach}
-                billingAddress
-                label="Become a Coach"
-                description="Become a Coach!"
-                locale="auto"
-                name="NutritionTrkr"
-                stripeKey="pk_test_Pq1dd4riM4hc3cc35SbfPQxk00HJAoDPfA"
-                props={console.log()}
-                token={async token => {
-                  const response = await mutation({
-                    variables: {
-                      source: token.id,
-                      email: token.email,
-                      amount: coach
-                    }
-                  });
-                  console.log(response)
-                }}
-                zipcode
-              />
-            </div>
+            <StripeCheckout
+              amount={700}
+              billingAddress
+              description="Become a Super User!"
+              locale="auto"
+              name="NutritionTrkr"
+              stripeKey="pk_test_Pq1dd4riM4hc3cc35SbfPQxk00HJAoDPfA"
+              token={async token => {
+                const response = await mutation({
+                  variables: {source: token.id,
+                  email: token.email}
+                });
+                console.log(response)
+              }}
+              zipcode
+            />
           )}
         </Mutation>
         <BillingHistory/>
