@@ -202,3 +202,17 @@ export const ADD_MESSAGE_MUTATION = gql`
     }
   }
 `;
+
+export const ADD_TRAINEE = gql`
+  mutation addTrainees($coach_id: ID!, $trainee_id: ID!) {
+    addTrainees(coach_id: $coach_id, trainee_id: $trainee_id) {
+      id
+      username
+      firstName
+      lastName
+      email
+      calorieGoal
+      weight
+    }
+  }
+` 

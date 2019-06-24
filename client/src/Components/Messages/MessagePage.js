@@ -14,7 +14,7 @@ import MessageList from "./MessageList";
 import NewMessage from "./NewMessage";
 import AlertsList from "./AlertsList";
 import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY, GET_COACHES } from "../../graphql/queries";
-import { DELETE_MESSAGE_MUTATION, ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
+import { DELETE_MESSAGE_MUTATION, ADD_MESSAGE_MUTATION, ADD_TRAINEE } from "../../graphql/mutations";
 
 const styles = theme => ({
   root: {
@@ -84,7 +84,6 @@ class MessagePage extends React.Component {
       const variables = { param: "recipient", value: userId };
       const messages = await client.query({ query: GET_MESSAGES_QUERY, variables: variables });
       const coaches = await client.query({query: GET_COACHES, variables: {trainee_id: userId}});
-      console.log({ coaches });
       this.setState({ messages: messages.data.getMessagesBy, coaches: coaches.data.getCoaches, currentUser: user.data.getCurrentUser });
     } catch (err) {
       console.log(err);
@@ -104,23 +103,19 @@ class MessagePage extends React.Component {
     this.setState({ modalOpen: false });
   };
 
-  handleAccept = async () => {
+  handleAccept = async (senderId) => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
-    /************************************ */
-    //create a link (entry) between the sender and current user
-    //*********************************** */
-
-    //delete the alert message
-    console.log("Deleting message alert: ", this.state.currentMessage.id);
     try {
+      //create a link (entry) between the sender and current user
+      await client.mutate({mutation: ADD_TRAINEE, variables: {coach_id: senderId, trainee_id: this.state.currentUser.id}})
+      //delete the alert message
       const variables = { id: this.state.currentMessage.id };
       const count = await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
-      console.log({ count });
       this.handleClose();
       this.getData();
     } catch (err) {
@@ -216,7 +211,7 @@ class MessagePage extends React.Component {
                 Close
               </Button>
               {currentMessage.type === "alert" ? (
-                <Button onClick={this.handleAccept} className={classes.btn}>
+                <Button onClick={() => this.handleAccept(currentMessage.sender.id)} className={classes.btn}>
                   Accept
                 </Button>
               ) : (
