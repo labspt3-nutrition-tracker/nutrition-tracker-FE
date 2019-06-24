@@ -133,12 +133,7 @@ class CoachPage extends React.Component {
       const variables = {
         input: {
           type: "alert",
-<<<<<<< HEAD
-          text: `This is a request from ${name} to follow your progress.
-          Click ACCEPT to allow access.`,
-=======
           text: `This is a request from ${name} to follow your nutrition.`,
->>>>>>> 8448f27ece0121348ad458ac5ef615a274680cbe
           read: false,
           sender: userId,
           recipient: this.state.traineeSearchResults.id
