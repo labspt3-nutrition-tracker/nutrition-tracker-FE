@@ -172,6 +172,22 @@ class MessagePage extends React.Component {
     }
   };
 
+  deleteMessageHandler = async (event, messageId) => {
+    event.stopPropagation();
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    const variables = { id: messageId };
+    try {
+      await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
+      this.getData();
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
   render() {
     const { messages, coaches, currentMessage, modalOpen } = this.state;
     let { option } = this.state;
@@ -197,7 +213,12 @@ class MessagePage extends React.Component {
           )}
         </Tabs>
         {option === 0 ? (
-          <MessageList messages={messages} coaches={coaches} showMessage={this.showMessage} />
+          <MessageList 
+            messages={messages} 
+            coaches={coaches} 
+            showMessage={this.showMessage} 
+            deleteMessage={this.deleteMessageHandler}
+            />
         ) : option === 1 ? (
           <NewMessage
             coaches={coaches}

@@ -52,7 +52,7 @@ class MessageList extends Component {
 
   render() {
     const { selectedCoach } = this.state;
-    const { messages, coaches, classes, showMessage } = this.props;
+    const { messages, coaches, classes, showMessage, deleteMessage } = this.props;
     return (
       <Paper className={classes.root}>
         <Grid container justify='center' alignItems='center'>
@@ -89,7 +89,11 @@ class MessageList extends Component {
           </Grid>
           <Grid item md={8} xs={12}>
             {messages.length > 0 ? (
-              <MessageInfo messages={messages} sender={coaches[selectedCoach]} showMessage={showMessage} />
+              <MessageInfo 
+                messages={messages} 
+                sender={coaches[selectedCoach]} 
+                showMessage={showMessage}
+                deleteMessage={deleteMessage} />
             ) : (
               <div>You have no messages</div>
             )}
