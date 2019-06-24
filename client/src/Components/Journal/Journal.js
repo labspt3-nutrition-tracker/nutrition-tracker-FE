@@ -221,6 +221,7 @@ class Journal extends React.Component {
         this.setState({
           foodEntry: response.data.getFoodEntriesByUserId
         })
+      })
       .then(response => {
        console.log('response from journal', response)
        console.log(this.props)

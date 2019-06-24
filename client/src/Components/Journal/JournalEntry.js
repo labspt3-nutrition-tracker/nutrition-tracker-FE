@@ -145,6 +145,7 @@ class JournalEntry extends React.Component {
             fats: mealEntry.fats,
           })
         }
+      }
       })
       .catch(err => console.log(err));
 
@@ -993,7 +994,8 @@ class JournalEntry extends React.Component {
                             name: "meal_category_id",
                             id: "meal-simple"
                           }}
-=======
+                          >
+                          <MenuItem>
                             <em>None</em>
                           </MenuItem>
                           <MenuItem value={1}>Breakfast</MenuItem>
@@ -1011,7 +1013,7 @@ class JournalEntry extends React.Component {
                       </Button>
                     </div>
                   </MealModal>
-                  }
+                  )}
 
                   {this.state.mealEntry && this.state.edamamExist &&
                     <MealModal
@@ -1080,7 +1082,7 @@ class JournalEntry extends React.Component {
                         </Button>{" "}
                       </div>{" "}
                     </MealModal>
-                  )}{" "}
+                  }{" "}
                 </div>
               );
             })
