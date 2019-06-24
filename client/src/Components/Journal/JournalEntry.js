@@ -135,7 +135,8 @@ class JournalEntry extends React.Component {
             fats: mealEntry.fats,
           })
         }
-      })
+      }
+      )
       .catch(err => console.log(err))
 
     this.setState( prevState => ({

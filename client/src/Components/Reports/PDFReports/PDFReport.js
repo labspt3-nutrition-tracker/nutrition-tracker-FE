@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as moment from "moment";
-import { Document, Page, Text, View, Font, StyleSheet } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
 import { getLastXDays } from "../../../util/getLastXDays";
 import { filterByDays } from "../../../util/filterByDays";
@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
 
 const PDFReport = props => {
   const { currentUser, foodEntries, exerciseEntries } = props;
-  const [days, setDays] = useState(getLastXDays(7));
-  const [foods, setFoods] = useState(filterByDays(foodEntries, days, "date"));
-  const [totalCal, setTotalCal] = useState(getTotalData(foodEntries, "caloriesPerServ", days));
-  const [exercises, setExercises] = useState(filterByDays(exerciseEntries, days, "exerciseEntryDate"));
-  const [totalExer, setTotalExer] = useState(getExercises(exerciseEntries, days));
+  const [days] = useState(getLastXDays(7));
+  const [foods] = useState(filterByDays(foodEntries, days, "date"));
+  const [totalCal] = useState(getTotalData(foodEntries, "caloriesPerServ", days));
+  const [exercises] = useState(filterByDays(exerciseEntries, days, "exerciseEntryDate"));
+  const [totalExer] = useState(getExercises(exerciseEntries, days));
   return (
     <>
       <Document>

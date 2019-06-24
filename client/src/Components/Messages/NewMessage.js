@@ -63,9 +63,8 @@ class NewMessage extends React.Component {
       if (!this.state.recipient) {
         this.setState({ selectError: true, formErrorText: "Please select a recipient" });
       } else {
-        this.setState({ selectError: false });
-        console.log("Submitting message: ", this.state);
         this.props.sendMessage({ recipient: this.state.recipient, message: this.state.message });
+        this.setState({ selectError: false, recipient: undefined, message: "" });
       }
     }
   };
@@ -92,7 +91,7 @@ class NewMessage extends React.Component {
                   >
                     {coaches.map(coach => (
                       <MenuItem value={coach.id} key={coach.id}>
-                        {coach.name}
+                        {`${coach.firstName} ${coach.lastName}`} 
                       </MenuItem>
                     ))}
                     )

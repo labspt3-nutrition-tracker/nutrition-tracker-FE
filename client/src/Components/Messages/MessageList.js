@@ -52,7 +52,7 @@ class MessageList extends Component {
 
   render() {
     const { selectedCoach } = this.state;
-    const { messages, coaches, classes, showMessage } = this.props;
+    const { messages, coaches, classes, showMessage, deleteMessage } = this.props;
     return (
       <Paper className={classes.root}>
         <Grid container justify='center' alignItems='center'>
@@ -71,7 +71,7 @@ class MessageList extends Component {
                 >
                   {coaches.map((coach, index) => (
                     <Tab
-                      label={coach.name}
+                      label={`${coach.firstName} ${coach.lastName}`}
                       icon={<PersonIcon className={classes.icon} />}
                       className={classes.tab}
                       tabIndex={index}
@@ -84,14 +84,18 @@ class MessageList extends Component {
                 </Tabs>
               </>
             ) : (
-              <div>You have no coaches.</div>
+              <div>You have no coaches</div>
             )}
           </Grid>
           <Grid item md={8} xs={12}>
             {messages.length > 0 ? (
-              <MessageInfo messages={messages} sender={coaches[selectedCoach]} showMessage={showMessage} />
+              <MessageInfo 
+                messages={messages} 
+                sender={coaches[selectedCoach]} 
+                showMessage={showMessage}
+                deleteMessage={deleteMessage} />
             ) : (
-              <div>You have no coaches.</div>
+              <div>You have no messages</div>
             )}
           </Grid>
         </Grid>

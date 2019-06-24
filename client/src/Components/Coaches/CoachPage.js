@@ -133,14 +133,14 @@ class CoachPage extends React.Component {
       const variables = {
         input: {
           type: "alert",
-          text: `This is a request from ${name} to follow your progress.
-          Click ACCEPT to allow access.`,
+          text: `This is a request from ${name} to follow your nutrition.`,
           read: false,
           sender: userId,
           recipient: this.state.traineeSearchResults.id
         }
       };
       await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
+      this.setState({ traineeSearchResults: [] }); //reset after sending request
     } catch (err) {
       console.log(err);
     }

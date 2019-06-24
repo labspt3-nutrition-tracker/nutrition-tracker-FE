@@ -162,3 +162,17 @@ export const GET_TRAINEES = gql`
     }
   }
 `;
+
+export const GET_COACHES = gql`
+  query getCoaches($trainee_id: ID!) {
+    getCoaches(trainee_id: $trainee_id) {
+      id
+      username
+      firstName
+      lastName
+      email
+      calorieGoal
+      weight
+    }
+  }
+`
