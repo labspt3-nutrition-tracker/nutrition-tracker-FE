@@ -13,7 +13,7 @@ import Button from "@material-ui/core/Button";
 import MessageList from "./MessageList";
 import NewMessage from "./NewMessage";
 import AlertsList from "./AlertsList";
-import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
+import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY, GET_COACHES } from "../../graphql/queries";
 import { DELETE_MESSAGE_MUTATION, ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
 
 const styles = theme => ({
@@ -82,24 +82,10 @@ class MessagePage extends React.Component {
       const user = await client.query({ query: GET_CURRENT_USER_QUERY });
       const userId = user.data.getCurrentUser.id;
       const variables = { param: "recipient", value: userId };
-      let messages = await client.query({ query: GET_MESSAGES_QUERY, variables: variables });
-
-      //**** */
-      //get coaches - query not ready yet - doing it manually for now
-      let senders = messages.data.getMessagesBy.map(message => {
-        return {
-          id: message.sender.id,
-          name: `${message.sender.firstName} ${message.sender.lastName}`
-        };
-      });
-      const coaches = [];
-      senders.forEach(s => {
-        if (!coaches.find(u => u.id === s.id)) coaches.push(s);
-      });
+      const messages = await client.query({ query: GET_MESSAGES_QUERY, variables: variables });
+      const coaches = await client.query({query: GET_COACHES, variables: {trainee_id: userId}});
       console.log({ coaches });
-      //*** */
-
-      this.setState({ messages: messages.data.getMessagesBy, coaches: coaches, currentUser: user.data.getCurrentUser });
+      this.setState({ messages: messages.data.getMessagesBy, coaches: coaches.data.getCoaches, currentUser: user.data.getCurrentUser });
     } catch (err) {
       console.log(err);
     }

@@ -92,7 +92,7 @@ class NewMessage extends React.Component {
                   >
                     {coaches.map(coach => (
                       <MenuItem value={coach.id} key={coach.id}>
-                        {coach.name}
+                        {`${coach.firstName} ${coach.lastName}`} 
                       </MenuItem>
                     ))}
                     )

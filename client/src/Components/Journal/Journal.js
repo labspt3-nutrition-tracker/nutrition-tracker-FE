@@ -194,14 +194,6 @@ class Journal extends React.Component {
           }
         });
       })
-<<<<<<< HEAD
-      .then( response => {
-        this.setState({
-          foodEntry: response.data.getFoodEntriesByUserId
-        })
-      })
-=======
->>>>>>> fde720e9736f5e08a18b062bc8e5a6bde8031591
       .then(response => {
        console.log('response from journal', response)
        console.log(this.props)

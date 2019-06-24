@@ -136,7 +136,7 @@ class JournalEntry extends React.Component {
           })
         }
       }
-      })
+      )
       .catch(err => console.log(err))
 
     this.setState( prevState => ({
@@ -871,7 +871,7 @@ class JournalEntry extends React.Component {
                       </Button>
                     </div>
                   </MealModal>
-                  )}
+                  }
 
                   {this.state.mealEntry && this.state.edamamExist &&
                     <MealModal

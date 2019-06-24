@@ -71,7 +71,7 @@ class MessageList extends Component {
                 >
                   {coaches.map((coach, index) => (
                     <Tab
-                      label={coach.name}
+                      label={`${coach.firstName} ${coach.lastName}`}
                       icon={<PersonIcon className={classes.icon} />}
                       className={classes.tab}
                       tabIndex={index}
