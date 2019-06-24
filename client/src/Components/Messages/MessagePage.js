@@ -14,7 +14,7 @@ import MessageList from "./MessageList";
 import NewMessage from "./NewMessage";
 import AlertsList from "./AlertsList";
 import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY, GET_COACHES } from "../../graphql/queries";
-import { DELETE_MESSAGE_MUTATION, ADD_MESSAGE_MUTATION, ADD_TRAINEE } from "../../graphql/mutations";
+import { DELETE_MESSAGE_MUTATION, ADD_MESSAGE_MUTATION, UPDATE_MESSAGE_MUTATION, ADD_TRAINEE } from "../../graphql/mutations";
 
 const styles = theme => ({
   root: {
@@ -70,6 +70,10 @@ class MessagePage extends React.Component {
     this.getData();
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.modalOpen !== this.state.modalOpen && this.state.modalOpen === false) this.getData();
+  }
+
   getData = async () => {
     const idToken = localStorage.getItem("token");
 
@@ -94,7 +98,20 @@ class MessagePage extends React.Component {
     this.setState({ option: newOption });
   };
 
-  showMessage = message => {
+  showMessage = async message => {
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    // Update message to read
+    try {
+      const {text, recipient, sender, type} = message;
+      const variables = {id: Number(message.id), input: {text, recipient: Number(recipient.id), sender: Number(sender.id), type, read: true}};
+      await client.mutate({mutation: UPDATE_MESSAGE_MUTATION, variables: variables})
+    } catch(err) {
+      console.log(err)
+    }
     //Show full message in a modal
     this.setState({ currentMessage: message, modalOpen: true });
   };
@@ -115,7 +132,7 @@ class MessagePage extends React.Component {
       await client.mutate({mutation: ADD_TRAINEE, variables: {coach_id: senderId, trainee_id: this.state.currentUser.id}})
       //delete the alert message
       const variables = { id: this.state.currentMessage.id };
-      const count = await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
+      await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
       this.handleClose();
       this.getData();
     } catch (err) {
@@ -145,11 +162,9 @@ class MessagePage extends React.Component {
       sender: this.state.currentUser.id,
       recipient: recipient
     };
-    console.log("adding message: ", { NewMessage });
     try {
       const variables = { input: NewMessage };
-      const createdMessage = await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
-      console.log({ createdMessage });
+      await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
       this.setState({ option: 0 });
       this.getData();
     } catch (err) {

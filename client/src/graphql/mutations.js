@@ -202,6 +202,30 @@ export const ADD_MESSAGE_MUTATION = gql`
     }
   }
 `;
+export const UPDATE_MESSAGE_MUTATION = gql`
+  mutation updateMessage($id: ID!, $input: MessageInput!) {
+    updateMessage(id: $id, input: $input) {
+      id
+      text
+      type
+      recipient {
+        id
+        username
+        firstName
+        lastName
+        email
+      }
+      sender {
+        id
+        username
+        firstName
+        lastName
+        email
+      }
+      read
+    }
+  }
+`
 
 export const ADD_TRAINEE = gql`
   mutation addTrainees($coach_id: ID!, $trainee_id: ID!) {

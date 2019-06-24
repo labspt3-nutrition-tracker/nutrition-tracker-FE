@@ -84,14 +84,14 @@ class MessageList extends Component {
                 </Tabs>
               </>
             ) : (
-              <div>You have no coaches.</div>
+              <div>You have no coaches</div>
             )}
           </Grid>
           <Grid item md={8} xs={12}>
             {messages.length > 0 ? (
               <MessageInfo messages={messages} sender={coaches[selectedCoach]} showMessage={showMessage} />
             ) : (
-              <div>You have no coaches.</div>
+              <div>You have no messages</div>
             )}
           </Grid>
         </Grid>
