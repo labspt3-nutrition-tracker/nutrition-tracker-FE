@@ -6,7 +6,7 @@ import TraineeList from "./TraineeList";
 import TraineeResult from "./TraineeResult";
 import TraineeSearch from "./TraineeSearch";
 import TraineeInfo from "./TraineeInfo";
-import { SEARCH_USER_BY_EMAIL, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
+import { SEARCH_USER_BY_EMAIL, GET_CURRENT_USER_QUERY, GET_TRAINEES } from "../../graphql/queries";
 import { ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
 
 const CoachPageContainer = styled.div`
@@ -30,9 +30,11 @@ class CoachPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentUser: "",
       traineeSearchInput: "",
       traineeSearchResults: [],
       isSearchModalOpen: false,
+      trainees: [],
       selectedTrainee: [],
       noUserFoundError: ""
     };
@@ -50,6 +52,39 @@ class CoachPage extends React.Component {
     });
     console.log(this.state.selectedTrainee);
   };
+
+  componentDidMount(){
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    client
+      .query({
+        query: GET_CURRENT_USER_QUERY
+      })
+      .then(response => {
+        this.setState({
+          currentUser: response.data.getCurrentUser.id
+        })
+        client
+          .query({
+            query: GET_TRAINEES,
+            variables:{
+              coach_id: this.state.currentUser
+            }
+          })
+          .then(response => {
+            this.setState({
+              trainees: response.data.getTrainees
+            })
+          })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
 
   getUserData = email => {
     email = this.state.traineeSearchInput;
@@ -98,7 +133,7 @@ class CoachPage extends React.Component {
       const variables = {
         input: {
           type: "alert",
-          text: `This is a request from ${name} to follow your progress. 
+          text: `This is a request from ${name} to follow your progress.
           Click ACCEPT to allow access.`,
           read: false,
           sender: userId,
@@ -125,7 +160,8 @@ class CoachPage extends React.Component {
             noUserFoundError={this.state.noUserFoundError}
             request={this.handleRequest}
           />
-          <TraineeList handleChooseUser={this.handleChooseUser} />
+        <TraineeList
+          trainees={this.state.trainees} handleChooseUser={this.handleChooseUser} />
         </TraineeBasic>
         <TraineeDetailed>
           <TraineeInfo traineeID={this.state.selectedTrainee.id} />

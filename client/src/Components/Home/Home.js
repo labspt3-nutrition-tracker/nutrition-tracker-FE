@@ -2,25 +2,32 @@ import React from "react";
 import styled from "styled-components";
 import BillingPlans from "../../Components/Billing/BillingPlans";
 import Typing from "react-typing-animation";
+import Container from "@material-ui/core/Container";
+import { withStyles } from "@material-ui/core/styles";
 
-const Container = styled.div`
+const ContainerHome = styled.div`
   display: flex;
   align-self: center;
   flex-direction: row-reverse;
   width: 100%;
   height: 70vh;
 
-  @media (max-width: 800px){
+  @media (max-width: 800px) {
     flex-direction: column;
     height: 50vh;
   }
 `;
 
 const Main = styled.div`
-  width: 50%;
+  width: 100%;
   padding-left: 10%;
   padding-top: 250px;
-  @media (max-width: 800px){
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  @media (max-width: 800px) {
     padding-top: 160px;
     padding-left: 0;
   }
@@ -28,6 +35,7 @@ const Main = styled.div`
   h1 {
     color: #40a798;
     font-size: 4em;
+    font-size: 40px;
   }
 
   @media (max-width: 800px) {
@@ -42,7 +50,8 @@ const TypingDiv = styled.div`
   padding-top: 20px;
   padding-left: 10px;
   h3 {
-    font-size: 2em;
+    font-size: 2rem;
+    font-size: 20px;
     font-style: italic;
     color: #2c363f;
   }
@@ -53,14 +62,16 @@ const Tagline = styled.div`
   margin: 0 auto;
   text-align: center;
   font-size: 3.5rem;
+  font-size: 35px;
   line-height: 1.2;
   margin-bottom: 30px;
   color: #fcfcfb;
+  font-family: "Oswald", sans-serif;
 `;
 
 const SecondPane = styled.section`
   width: 100%;
-  background: #40a798;
+  background: #5e366a;
   padding: 40px 0;
 `;
 
@@ -113,14 +124,19 @@ const FeatureInfo = styled.div`
     text-align: center;
   }
   h2 {
-    color: #2c363f;
-    font-size: 1.4em;
-    padding: 10px 0;
+    color: #ffffff;
+    font-size: 2rem;
+    font-size: 20px;
+    padding: 10px 0 0;
+    font-family: "Oswald", sans-serif;
   }
-
+  hr {
+    color: #ffffff;
+  }
   p {
     color: #fcfcfb;
-    font-size: 1.2em;
+    font-size: 1.8rem;
+    font-size: 18px;
   }
 `;
 
@@ -129,83 +145,104 @@ const ImgCon = styled.div`
   @media (max-width: 500px) {
     max-width: 100%;
   }
-`
+`;
 
-const Home = () => (
-  <div>
-    <Container className="home">
-      <Main>
-        <h1> My goal is... </h1>
-        <TypingDiv>
-          <Typing loop>
-            <Typing.Speed ms={100} />
-            <h3> ...to lose weight </h3>
-            <Typing.Backspace count={20} />
-            <h3> ...to eat healthier</h3>
-            <Typing.Backspace count={20} />
-            <h3> ...to try the Keto diet </h3>
-            <Typing.Backspace count={30} />
-            <h3> ...to gain muscle</h3>
-            <Typing.Backspace count={30} />
-            <Typing.Reset delay={5} />
-          </Typing>
-        </TypingDiv>
-      </Main>
-    </Container>
+const styles = theme => ({
+  root: {
+    maxWidth: 960,
+    width: "100%"
+  },
+  forms: {
+    display: "flex"
+  }
+});
+
+// const { classes } = props;
+
+const Home = ({ classes }) => (
+  <>
+    <ContainerHome className="home">
+      <Container className={classes.root}>
+        <Main>
+          <h1> My goal is... </h1>
+          <TypingDiv>
+            <Typing loop>
+              <Typing.Speed ms={100} />
+              <h3> ...to lose weight </h3>
+              <Typing.Backspace count={20} />
+              <h3> ...to eat healthier</h3>
+              <Typing.Backspace count={20} />
+              <h3> ...to try the Keto diet </h3>
+              <Typing.Backspace count={30} />
+              <h3> ...to gain muscle</h3>
+              <Typing.Backspace count={30} />
+              <Typing.Reset delay={5} />
+            </Typing>
+          </TypingDiv>
+        </Main>
+      </Container>
+    </ContainerHome>
     <SecondPane>
-      <Tagline>
-        Quick, easy food tracking to help you accomplish your health goals
-      </Tagline>
-      <Features>
-        <Feature>
-          <ImgCon>
-            <FeatureImg
-              alt="photo by Lily Banse - unsplash @lvnatikk"
-              src={require("../../Assets/food_image.jpeg")}
-            />
-          </ImgCon>
-          <FeatureInfo>
-            <h2> Food Database API</h2>
-            <p> Search our integrated food database or create your own. </p>
-          </FeatureInfo>
-        </Feature>
+      <Container className={classes.root}>
+        <Tagline>
+          Quick, easy food tracking to help you accomplish your health goals
+        </Tagline>
+        <Features>
+          <Feature>
+            <ImgCon>
+              <FeatureImg
+                alt="photo by Lily Banse - unsplash @lvnatikk"
+                src={require("../../Assets/food_image.jpeg")}
+              />
+            </ImgCon>
+            <FeatureInfo>
+              <h2> Food Database API</h2>
+              <hr />
+              <p> Search our integrated food database or create your own. </p>
+            </FeatureInfo>
+          </Feature>
 
-        <Feature_Reverse>
-          <ImgCon>
-            <FeatureImg src={require("../../Assets/custom_reports.png")} />
-          </ImgCon>
-          <FeatureInfo>
-            <h2> Custom Reports</h2>
-            <p>
-              See your progress with our customer reports. Whether your goal is
-              to keep track of your nutrients or just a calory count, we have it
-              all for you.
-            </p>
-          </FeatureInfo>
-        </Feature_Reverse>
+          <Feature_Reverse>
+            <ImgCon>
+              <FeatureImg src={require("../../Assets/custom_reports.png")} />
+            </ImgCon>
+            <FeatureInfo>
+              <h2> Custom Reports</h2>
+              <hr />
+              <p>
+                See your progress with our customer reports. Whether your goal
+                is to keep track of your nutrients or just a calory count, we
+                have it all for you.
+              </p>
+            </FeatureInfo>
+          </Feature_Reverse>
 
-        <Feature>
-          <ImgCon>
-            <FeatureImg
-              alt="photo by bruce mars - unsplash @brucemars"
-              src={require("../../Assets/trainer.jpeg")}
-            />
-          </ImgCon>
-          <FeatureInfo>
-            <h2> Trainer functionality (future release)</h2>
-            <p>
-              Have your trainer be included in your journey. Whether it's just
-              to see your progress or keep you accountable, our trainer feature
-              allows you to get that trainer-trainee communication.
-            </p>
-          </FeatureInfo>
-        </Feature>
-      </Features>
+          <Feature>
+            <ImgCon>
+              <FeatureImg
+                alt="photo by bruce mars - unsplash @brucemars"
+                src={require("../../Assets/trainer.jpeg")}
+              />
+            </ImgCon>
+            <FeatureInfo>
+              <h2> Trainer functionality (future release)</h2>
+              <hr />
+              <p>
+                Have your trainer be included in your journey. Whether it's just
+                to see your progress or keep you accountable, our trainer
+                feature allows you to get that trainer-trainee communication.
+              </p>
+            </FeatureInfo>
+          </Feature>
+        </Features>
+      </Container>
     </SecondPane>
     <BillingDiv>
-      <BillingPlans />
+      <Container className={classes.root}>
+        <BillingPlans />
+      </Container>
     </BillingDiv>
-  </div>
+  </>
 );
 
-export default Home;
+export default withStyles(styles)(Home);
