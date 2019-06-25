@@ -148,3 +148,31 @@ export const GET_MESSAGES_QUERY = gql`
     }
   }
 `;
+
+export const GET_TRAINEES = gql`
+  query getTrainees($coach_id: ID!){
+    getTrainees(coach_id: $coach_id){
+      username
+      email
+      id
+      firstName
+      lastName
+      calorieGoal
+      weight
+    }
+  }
+`;
+
+export const GET_COACHES = gql`
+  query getCoaches($trainee_id: ID!) {
+    getCoaches(trainee_id: $trainee_id) {
+      id
+      username
+      firstName
+      lastName
+      email
+      calorieGoal
+      weight
+    }
+  }
+`

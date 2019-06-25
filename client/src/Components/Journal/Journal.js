@@ -99,8 +99,7 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
-      datePicked: "",
-      foodEntry: []
+      datePicked: ""
     };
   }
 
@@ -121,7 +120,7 @@ class Journal extends React.Component {
       }
     }
 
-    this.loadFoodEntries();
+    this.loadFoodEntries()
   };
 
   loadFoodEntries = async () => {

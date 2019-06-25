@@ -7,9 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Zoom from "@material-ui/core/Zoom";
-import { Link } from "react-router-dom";
 import { PDFViewer, StyleSheet } from "@react-pdf/renderer";
-import styled from "styled-components";
 
 import StatsDashboard from "./StatsDashboard";
 import OneDayStats from "./OneDayStats";

@@ -33,9 +33,6 @@ const styles = theme => ({
   root: {
     maxWidth: 960,
     width: "100%"
-  },
-  forms: {
-    display: "flex"
   }
 });
 
@@ -80,7 +77,7 @@ class Dashboard extends Component {
     exerEntry: [],
     foodEntry: [],
     foodIsLoading: true,
-    exerIsLoading: true,
+    exerIsLoading: true
   };
 
   componentDidMount = () => {
@@ -284,8 +281,8 @@ class Dashboard extends Component {
   // }
 
   editFoodEntry = (editId, editEntry, idToken) => {
-    console.log('arg food', editEntry)
-    console.log('props', this.state.foodEntry)
+    console.log("arg food", editEntry);
+    console.log("props", this.state.foodEntry);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
@@ -293,7 +290,7 @@ class Dashboard extends Component {
     client
       .mutate({
         mutation: EDIT_FOOD_ENTRY,
-        variables: {id: editId, input: editEntry}
+        variables: { id: editId, input: editEntry }
       })
       .then(response => {
         client
@@ -304,15 +301,15 @@ class Dashboard extends Component {
             }
           })
           .then(response => {
-            console.log(response)
+            console.log(response);
             this.setState({
               foodEntry: "",
               foodEntries: response.data.getFoodEntriesByUserId
             });
           });
       })
-      .catch(err => console.log('error message edit food', err));
-  }
+      .catch(err => console.log("error message edit food", err));
+  };
 
   editExerEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
@@ -341,7 +338,6 @@ class Dashboard extends Component {
       })
       .catch(err => console.log(err));
   };
-
 
   deleteFoodEntry = (id, idToken) => {
     const client = new ApolloClient({

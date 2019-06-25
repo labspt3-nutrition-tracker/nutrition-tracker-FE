@@ -38,7 +38,7 @@ const PrivateRoute = ({ component: Component, render, ...rest }) => {
             <Component {...props} />
           ) : (
             render(props)
-          )          
+          )
         ) : (
           <Redirect
             to={{
@@ -46,9 +46,7 @@ const PrivateRoute = ({ component: Component, render, ...rest }) => {
               state: { from: props.location }
             }}
           />
-          
         )
-        
       }
     />
   );
@@ -62,12 +60,12 @@ class App extends React.Component {
       searchResults: [],
       noResultError: "",
       showModal: false,
-      resultsLoading: true,
+      resultsLoading: true
     };
   }
 
   updateSearch = e => {
-    console.log(this.state.searchInput)
+    console.log(this.state.searchInput);
     this.setState({
       searchInput: e.target.value
     });
@@ -78,14 +76,14 @@ class App extends React.Component {
   };
 
   closeModal = () => {
-    console.log(this.state.searchInput)
+    console.log(this.state.searchInput);
     this.setState({ showModal: false, searchInput: " " });
   };
 
   getFoodData = food => {
     food = this.state.searchInput;
     let encodedFood = food.replace(" ", "%20");
-    this.setState({showModal: true})
+    this.setState({ showModal: true });
     axios
       .get(
         `https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`
@@ -96,7 +94,7 @@ class App extends React.Component {
           searchInput: "",
           noResultError: "",
           // showModal: true
-          resultsLoading: false,
+          resultsLoading: false
         });
         console.log("search results", this.state.searchResults);
         console.log("search input", this.state.searchInput);
@@ -119,8 +117,13 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className='App'>
-        <Header searchInput={this.state.searchInput}  updateSearch={this.updateSearch} getFoodData={this.getFoodData} closeModal={this.closeModal}/>
+      <div className="App">
+        <Header
+          searchInput={this.state.searchInput}
+          updateSearch={this.updateSearch}
+          getFoodData={this.getFoodData}
+          closeModal={this.closeModal}
+        />
         <AppModal
           isOpen={this.state.showModal}
           openModal={this.openModal}
@@ -132,20 +135,22 @@ class App extends React.Component {
           updateSearch={this.updateSearch}
         />
         <div>
-          <Route exact path='/' component={Home} />
+          <Route exact path="/" component={Home} />
           <PrivateRoute
-            path='/dashboard'
-            render={props => <Dashboard {...props} selectedFood={this.state.selectedFood} />}
+            path="/dashboard"
+            render={props => (
+              <Dashboard {...props} selectedFood={this.state.selectedFood} />
+            )}
           />
-          <PrivateRoute exact path='/billing' render={() => <Billing />} />
-          <PrivateRoute exact path='/reports' render={() => <StatsView />} />
-          <Route exact path='/login' render={() => <Login />} />
-          <PrivateRoute exact path='/settings' render={() => <Settings />} />
-          <PrivateRoute path='/journal' render={() => <Journal />} />
-          <PrivateRoute path='/coach' render={() => <CoachPage />} />
-          <PrivateRoute path='/messages' render={() => <MessagePage/>} />
+          <PrivateRoute exact path="/billing" render={() => <Billing />} />
+          <PrivateRoute exact path="/reports" render={() => <StatsView />} />
+          <Route exact path="/login" render={() => <Login />} />
+          <PrivateRoute exact path="/settings" render={() => <Settings />} />
+          <PrivateRoute path="/journal" render={() => <Journal />} />
+          <PrivateRoute path="/coach" render={() => <CoachPage />} />
+          <PrivateRoute path="/messages" render={() => <MessagePage />} />
         </div>
-        <PrivateRoute path='/account' component={AccountNav} />
+        <PrivateRoute path="/account" component={AccountNav} />
         <Footer />
       </div>
     );

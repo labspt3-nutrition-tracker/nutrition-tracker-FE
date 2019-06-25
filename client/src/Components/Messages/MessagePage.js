@@ -13,8 +13,8 @@ import Button from "@material-ui/core/Button";
 import MessageList from "./MessageList";
 import NewMessage from "./NewMessage";
 import AlertsList from "./AlertsList";
-import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
-import { DELETE_MESSAGE_MUTATION, ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
+import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY, GET_COACHES } from "../../graphql/queries";
+import { DELETE_MESSAGE_MUTATION, ADD_MESSAGE_MUTATION, UPDATE_MESSAGE_MUTATION, ADD_TRAINEE } from "../../graphql/mutations";
 
 const styles = theme => ({
   root: {
@@ -70,6 +70,10 @@ class MessagePage extends React.Component {
     this.getData();
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.modalOpen !== this.state.modalOpen && this.state.modalOpen === false) this.getData();
+  }
+
   getData = async () => {
     const idToken = localStorage.getItem("token");
 
@@ -82,24 +86,9 @@ class MessagePage extends React.Component {
       const user = await client.query({ query: GET_CURRENT_USER_QUERY });
       const userId = user.data.getCurrentUser.id;
       const variables = { param: "recipient", value: userId };
-      let messages = await client.query({ query: GET_MESSAGES_QUERY, variables: variables });
-
-      //**** */
-      //get coaches - query not ready yet - doing it manually for now
-      let senders = messages.data.getMessagesBy.map(message => {
-        return {
-          id: message.sender.id,
-          name: `${message.sender.firstName} ${message.sender.lastName}`
-        };
-      });
-      const coaches = [];
-      senders.forEach(s => {
-        if (!coaches.find(u => u.id === s.id)) coaches.push(s);
-      });
-      console.log({ coaches });
-      //*** */
-
-      this.setState({ messages: messages.data.getMessagesBy, coaches: coaches, currentUser: user.data.getCurrentUser });
+      const messages = await client.query({ query: GET_MESSAGES_QUERY, variables: variables });
+      const coaches = await client.query({query: GET_COACHES, variables: {trainee_id: userId}});
+      this.setState({ messages: messages.data.getMessagesBy, coaches: coaches.data.getCoaches, currentUser: user.data.getCurrentUser });
     } catch (err) {
       console.log(err);
     }
@@ -109,7 +98,20 @@ class MessagePage extends React.Component {
     this.setState({ option: newOption });
   };
 
-  showMessage = message => {
+  showMessage = async message => {
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    // Update message to read
+    try {
+      const {text, recipient, sender, type} = message;
+      const variables = {id: Number(message.id), input: {text, recipient: Number(recipient.id), sender: Number(sender.id), type, read: true}};
+      await client.mutate({mutation: UPDATE_MESSAGE_MUTATION, variables: variables})
+    } catch(err) {
+      console.log(err)
+    }
     //Show full message in a modal
     this.setState({ currentMessage: message, modalOpen: true });
   };
@@ -118,23 +120,19 @@ class MessagePage extends React.Component {
     this.setState({ modalOpen: false });
   };
 
-  handleAccept = async () => {
+  handleAccept = async (senderId) => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
-    /************************************ */
-    //create a link (entry) between the sender and current user
-    //*********************************** */
-
-    //delete the alert message
-    console.log("Deleting message alert: ", this.state.currentMessage.id);
     try {
+      //create a link (entry) between the sender and current user
+      await client.mutate({mutation: ADD_TRAINEE, variables: {coach_id: senderId, trainee_id: this.state.currentUser.id}})
+      //delete the alert message
       const variables = { id: this.state.currentMessage.id };
-      const count = await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
-      console.log({ count });
+      await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
       this.handleClose();
       this.getData();
     } catch (err) {
@@ -164,17 +162,31 @@ class MessagePage extends React.Component {
       sender: this.state.currentUser.id,
       recipient: recipient
     };
-    console.log("adding message: ", { NewMessage });
     try {
       const variables = { input: NewMessage };
-      const createdMessage = await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
-      console.log({ createdMessage });
+      await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
       this.setState({ option: 0 });
       this.getData();
     } catch (err) {
       console.log(err);
     }
   };
+
+  deleteMessageHandler = async (event, messageId) => {
+    event.stopPropagation();
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    const variables = { id: messageId };
+    try {
+      await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
+      this.getData();
+    } catch(err) {
+      console.log(err)
+    }
+  }
 
   render() {
     const { messages, coaches, currentMessage, modalOpen } = this.state;
@@ -201,7 +213,12 @@ class MessagePage extends React.Component {
           )}
         </Tabs>
         {option === 0 ? (
-          <MessageList messages={messages} coaches={coaches} showMessage={this.showMessage} />
+          <MessageList 
+            messages={messages} 
+            coaches={coaches} 
+            showMessage={this.showMessage} 
+            deleteMessage={this.deleteMessageHandler}
+            />
         ) : option === 1 ? (
           <NewMessage
             coaches={coaches}
@@ -230,7 +247,7 @@ class MessagePage extends React.Component {
                 Close
               </Button>
               {currentMessage.type === "alert" ? (
-                <Button onClick={this.handleAccept} className={classes.btn}>
+                <Button onClick={() => this.handleAccept(currentMessage.sender.id)} className={classes.btn}>
                   Accept
                 </Button>
               ) : (

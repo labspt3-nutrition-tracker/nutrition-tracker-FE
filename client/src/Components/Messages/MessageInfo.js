@@ -1,5 +1,6 @@
 import React from "react";
 import UnreadIcon from "@material-ui/icons/MarkunreadMailbox";
+import DeleteIcon from "@material-ui/icons/DeleteForever";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -38,6 +39,9 @@ const MessageInfo = props => {
                 }}
               />
               <ListItemText secondary={message.created_at} />
+              <ListItemIcon className={classes.icon}>
+                <DeleteIcon onClick={(event) => props.deleteMessage(event, message.id)} />
+              </ListItemIcon>
             </ListItem>
           ))}
         </List>
