@@ -23,7 +23,7 @@ const styles = theme => ({
   },
   dataGroup: {
     display: "flex",
-    width: "70%",
+    width: "85%",
     flexDirection: "column"
   },
   label: {
@@ -34,24 +34,24 @@ const styles = theme => ({
     color: "#60B5A9"
   },
   data: {
-    fontSize: "1rem",
+    fontSize: "1.3rem",
     fontFamily: "Oswald"
   },
   textField: {
-    fontSize: "1rem",
-    width: "70%",
+    fontSize: "1.3rem",
+    width: "95%",
     margin: "0 10px",
     fontFamily: "Oswald"
   },
   manyDaysGroup: {
     display: "flex",
     justifyContent: "space-around",
-    width: "85%",
+    width: "100%",
     margin: "auto",
     marginTop: 20
   },
   manyDaysBtn: {
-    fontSize: "0.8rem",
+    fontSize: "1rem",
     color: "#FCFCFB",
     border: "2px solid #5E366A",
     backgroundColor: "#5E366A",
@@ -157,7 +157,7 @@ class StatsDashboard extends React.Component {
               style: { fontSize: "1.3rem", color: "#60B5A9", fontFamily: "Oswald" }
             }}
             inputProps={{
-              style: { fontSize: "0.9rem", lineHeight: "1.5", marginTop: "12px" }
+              style: { fontSize: "1.1rem", lineHeight: "1.5", marginTop: "12px" }
             }}
             margin='normal'
           />
