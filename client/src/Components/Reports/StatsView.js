@@ -137,7 +137,6 @@ class StatsView extends React.Component {
                 </CloneProps>
                 <Tab label='PDF Report' className={classes.tab} />
               </Tabs>
-              {/* <Link to='/pdfReport'>PDF REPORT</Link> */}
             </Paper>
             {option === 0 ? (
               <>
@@ -207,20 +206,20 @@ const styles = theme => ({
     fontSize: "1.5rem",
     padding: "5px",
     boxShadow: "none",
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   tab: {
-    fontSize: "1.6rem",
-    color: "#3685B5",
-    fontFamily: "Oxygen"
+    fontSize: "1.2rem",
+    color: "#545454",
+    fontFamily: "Oswald"
   },
   indicator: {
-    backgroundColor: "#F4B4C3"
+    backgroundColor: "#60B5A9"
   },
   tooltip: {
     fontSize: "1.4rem",
     // color: "white",
-    backgroundColor: "#F4B4C3"
+    backgroundColor: "#60B5A9"
   }
 });
 
