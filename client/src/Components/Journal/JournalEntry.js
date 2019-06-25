@@ -130,7 +130,7 @@ class JournalEntry extends React.Component {
           this.setState({
             edamamExist: false
           });
-        console.log(response)
+        }
         // if(response.data.getFoodById.edamam_id === edamam_id){
           if(response.data.getFoodById.edamam_id !== ""){
           this.setState({
@@ -214,7 +214,7 @@ class JournalEntry extends React.Component {
       meal_category_id: this.state.meal_category_id,
       servingQty: parseInt(this.state.servingQty)
     }
-    
+
     console.log(this.state.edamamExist)
     console.log(foodEntry)
     this.props.editMeal(this.state.mealEntry.id, this.state.mealEntry.food_id.id, foodEntry)
@@ -992,10 +992,8 @@ class JournalEntry extends React.Component {
                           inputProps={{
                             name: "meal_category_id",
                             id: "meal-simple"
-                          }}
-=======
-                            <em>None</em>
-                          </MenuItem>
+                          }}>
+                          <MenuItem> <em>None</em> </MenuItem>
                           <MenuItem value={1}>Breakfast</MenuItem>
                           <MenuItem value={2}>Lunch</MenuItem>
                           <MenuItem value={4}>Dinner</MenuItem>
@@ -1011,7 +1009,7 @@ class JournalEntry extends React.Component {
                       </Button>
                     </div>
                   </MealModal>
-                  }
+                  )}
 
                   {this.state.mealEntry && this.state.edamamExist &&
                     <MealModal
@@ -1080,7 +1078,7 @@ class JournalEntry extends React.Component {
                         </Button>{" "}
                       </div>{" "}
                     </MealModal>
-                  )}{" "}
+                  }{" "}
                 </div>
               );
             })
