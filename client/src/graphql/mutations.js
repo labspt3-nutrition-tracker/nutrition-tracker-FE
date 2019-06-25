@@ -73,10 +73,38 @@ export const ADD_FOOD_ENTRY = gql`
 //   }
 // `;
 
+// export const EDIT_FOOD_ENTRY = gql`
+//   mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
+//     updateFoodEntry(id: $id, input: $FoodEntry) {
+//       id
+//       foodName
+//       caloriesPerServ
+//       fats
+//       carbs
+//       proteins
+//       edamam_id
+//       meal_category_id {
+//         id
+//       }
+//     }
+//   }
+// `;
+
 export const EDIT_FOOD_ENTRY = gql`
   mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
     updateFoodEntry(id: $id, input: $FoodEntry) {
       id
+      food_id{
+        foodName
+        caloriesPerServ
+        fats
+        carbs
+        proteins
+        edamam_id
+        meal_category_id {
+          id
+        }
+      }
       foodName
       caloriesPerServ
       fats

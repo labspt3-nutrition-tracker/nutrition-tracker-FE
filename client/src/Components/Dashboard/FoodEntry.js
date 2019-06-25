@@ -73,15 +73,17 @@ class FoodEntry extends React.Component {
       currentUser: "",
       showModal: false,
       foodEntry: [],
-      newAddFood: {
+      editFoodObj: {
         date: "",
         foodName: "",
-        servingQty: null,
-        caloriesPerServ: null,
-        fats: null,
-        carbs: null,
-        proteins: null,
-        edamam_id: "",
+        servingQty: "",
+        caloriesPerServ: "",
+        proteins: "",
+        carbs: "",
+        fats: "",
+        mealEntry: [],
+        user_id: null,
+        food_id: null,
         meal_category_id: null,
       },
       errorMsg: {
@@ -94,7 +96,8 @@ class FoodEntry extends React.Component {
         errorCategory: "",
         errorDate: "",
         errorQty: ""
-      }
+      },
+      editFoodEntryObj: []
     };
   }
 
@@ -120,13 +123,29 @@ class FoodEntry extends React.Component {
   }
 
   editFood = entry => {
-     this.props.editFoodEntry(entry.id, entry)
+    let editFoodEnt = {
+      id: entry.id,
+      food_id: entry.food_id,
+      date: entry.date,
+      foodName: entry.food_id.foodName,
+      servingQty: entry.servingQty,
+      caloriesPerServ: entry.food_id.caloriesPerServ,
+      fats: entry.food_id.fats,
+      carbs: entry.food_id.carbs,
+      proteins: parseInt(entry.food_id.proteins),
+      edamam_id: entry.food_id.edamam_id,
+      meal_category_id: parseInt(entry.meal_category_id),
+      user_id: entry.user_id
+    }
+    //  this.props.editFoodEntry(entry.id, entry)
+    this.props.editFoodEntry(entry.id, editFoodEnt)
      console.log(entry.food_id.meal_category_id)
-    console.log(entry.food_id.caloriesPerServ)
+    // console.log(entry.food_id.caloriesPerServ)
     this.closeModal();
   }
 
   componentDidUpdate(prevProps) {
+    console.log(this.props)
     if (prevProps.foodEntries !== this.props.foodEntries) {
       this.setState({ foodEntries: this.props.foodEntries, foodEntry: this.props.foodEntry});
     }

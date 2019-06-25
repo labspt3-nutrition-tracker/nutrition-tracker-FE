@@ -14,9 +14,12 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 
 const Form = styled.form`
   display: flex;
+  position: relative;
   flex-direction: column;
   width: 30%;
   padding: 20px;
+  max-height: 100vh;
+  overflow-y: auto;
   @media(max-width: 800px) {
     max-width: 500px;
     width: 100%;

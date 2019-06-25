@@ -51,13 +51,13 @@ export default function  AccountNav() {
         className={classes.root}
         >
         <CssBaseline />
-        <AppBar position="absolute" className={classes.appBar}>
+        {/* <AppBar position="absolute" className={classes.appBar}>
             <Toolbar>
-            <Typography variant="h4" noWrap>
+             <Typography variant="h4" noWrap> 
                 Account
-            </Typography>
+             </Typography>
             </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <Drawer
             className={classes.drawer}
             variant="permanent"
@@ -66,6 +66,8 @@ export default function  AccountNav() {
             }}
         >
             <div className={classes.toolbar} />
+            Account
+            <Divider />
             <List component={Link} to ="/settings">
             {['Settings',].map((text, index) => (
                 
