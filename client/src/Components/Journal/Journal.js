@@ -84,6 +84,7 @@ const FOODENTRYQUERY = gql`
         fats
         proteins
         carbs
+        edamam_id
       }
       meal_category_id {
         id
