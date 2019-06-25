@@ -3,7 +3,6 @@ import moment from "moment";
 import styled from "styled-components";
 import Calendar from "./Calendar";
 import JournalEntry from "./JournalEntry";
-import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 import "@fullcalendar/core/main.css";
@@ -120,6 +119,30 @@ class Journal extends React.Component {
         localStorage.removeItem("token");
       }
     }
+
+    this.loadFoodEntries()
+  };
+
+  loadFoodEntries = async () => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    });
+
+    await client
+      .query({
+        query: FOODENTRYQUERY,
+        variables: {
+          userId: this.state.currentUser
+        }
+      })
+      .then(response => {
+        this.setState({
+          foodEntry: response.data.getFoodEntriesByUserId
+        });
+      })
+      .catch(err => console.log(err))
+
+    console.log(this.state.foodEntry);
   };
 
   deleteMealEntry = id => {
@@ -186,7 +209,6 @@ class Journal extends React.Component {
         });
       })
       .then(response => {
-        console.log(response)
         client.query({
           query: FOODENTRYQUERY,
           variables: {
@@ -195,64 +217,31 @@ class Journal extends React.Component {
         });
       })
       .then(response => {
-       console.log('response from journal', response)
-       console.log(this.props)
+        this.setState({
+          foodEntry: response.data.getFoodEntriesByUserId
+        });
       })
       .catch(err => console.log(err));
   };
 
   render() {
-    const FOODENTRYQUERY = gql`
-      query{
-        getFoodEntriesByUserId(userId: ${this.state.currentUser}){
-          id
-          date
-          servingQty
-          food_id{
-            id
-            foodName
-            caloriesPerServ
-            fats
-            proteins
-            carbs
-          }
-          meal_category_id{
-            id
-            mealCategoryName
-          }
-        }
-      }
-`;
     return (
-      <div>
-        <Query query={FOODENTRYQUERY}>
-          {({ loading, error, data }) => {
-            if (loading) return <div>Fetching Entries</div>;
-            if (error) return <div>Cannot Load</div>;
-
-            const foodEntries = data.getFoodEntriesByUserId;
-
-            return (
-              <JournalContainer>
-                <JournalEntryDiv>
-                  <JournalEntry
-                    foodEntries={foodEntries}
-                    datePicked={this.state.datePicked}
-                    deleteMeal={this.deleteMealEntry}
-                    editMeal={this.editMealEntry}
-                  />
-                </JournalEntryDiv>
-                <CalendarDiv>
-                  <Calendar
-                    datePicked={this.state.datePicked}
-                    handleDateClick={this.handleDateClick}
-                  />
-                </CalendarDiv>
-              </JournalContainer>
-            );
-          }}
-        </Query>
-      </div>
+      <JournalContainer>
+        <JournalEntryDiv>
+          <JournalEntry
+            foodEntries={this.state.foodEntry}
+            datePicked={this.state.datePicked}
+            deleteMeal={this.deleteMealEntry}
+            editMeal={this.editMealEntry}
+          />
+        </JournalEntryDiv>
+        <CalendarDiv>
+          <Calendar
+            datePicked={this.state.datePicked}
+            handleDateClick={this.handleDateClick}
+          />
+        </CalendarDiv>
+      </JournalContainer>
     );
   }
 }
