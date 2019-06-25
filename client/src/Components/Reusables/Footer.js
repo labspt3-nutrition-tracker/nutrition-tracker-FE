@@ -25,6 +25,7 @@ export default function Footer(props) {
     <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
       <div>Lambda School</div>
       <div>Nutrition Tracker App</div>
+      <div>Follow us on <a href="https://github.com/labspt3-nutrition-tracker">Github</a></div>
       <BottomNavigationAction label="Favorites" value="favorites" icon={<FavoriteIcon />} />
       {/* <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOnIcon />} /> */}
       <BottomNavigationAction label="Folder" value="folder" icon={<Icon>folder</Icon>} />

@@ -29,7 +29,7 @@ const styles = theme => ({
     display: "flex",
     flexDirection: "column",
     marginTop: 30,
-    marginBottom: 30
+    marginBottom: 50
   },
   num: {
     fontSize: 20
@@ -227,5 +227,6 @@ class Calories extends React.Component {
     );
   }
 }
+
 
 export default withStyles(styles)(Calories);

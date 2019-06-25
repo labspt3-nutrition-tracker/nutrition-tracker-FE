@@ -112,8 +112,7 @@ function Pricing(props) {
             Pricing
           </Typography>
           <Typography variant="h6" align="center" color="textSecondary" component="p">
-            Welcome to the pricing page of Nutrition Tracker! Take advantage of our
-             popular super user account to get the full benefits of what we have to offer!
+             Take advantage of our popular super user account to get the full experience that we have to offer!
           </Typography>
         </div>
         {/* End hero unit */}
