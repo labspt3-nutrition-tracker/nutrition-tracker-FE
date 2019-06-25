@@ -197,10 +197,6 @@ class JournalEntry extends React.Component {
       meal_category_id: this.state.meal_category_id,
       servingQty: parseInt(this.state.servingQty)
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> development
     console.log(this.state.edamamExist)
     console.log(foodEntry)
     this.props.editMeal(this.state.mealEntry.id, this.state.mealEntry.food_id.id, foodEntry)
@@ -890,7 +886,7 @@ class JournalEntry extends React.Component {
                         </Button>{" "}
                       </div>{" "}
                     </MealModal>
-                  )}
+                  }
                   {this.state.mealEntry && this.state.edamamExist && (
                     <MealModal isOpen={this.state.showModal}>
                       <div>
