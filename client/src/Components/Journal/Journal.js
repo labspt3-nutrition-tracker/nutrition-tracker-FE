@@ -99,7 +99,8 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
-      datePicked: ""
+      datePicked: "",
+      foodEntry: []
     };
   }
 
@@ -228,12 +229,17 @@ class Journal extends React.Component {
     return (
       <JournalContainer>
         <JournalEntryDiv>
+        {this.state.foodEntry.length > 1 ? (
           <JournalEntry
             foodEntries={this.state.foodEntry}
             datePicked={this.state.datePicked}
             deleteMeal={this.deleteMealEntry}
             editMeal={this.editMealEntry}
           />
+        ) : (
+          <div>Loading</div>
+          )}
+
         </JournalEntryDiv>
         <CalendarDiv>
           <Calendar
