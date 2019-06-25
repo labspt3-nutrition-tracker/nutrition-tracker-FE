@@ -1,64 +1,95 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-// import CssBaseline from '@material-ui/core/CssBaseline'
+//import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import Subject from '@material-ui/icons/Subject';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Payment from '@material-ui/icons/Payment';
 // import Button from '@material-ui/core/Button';
 
+const drawerWidth = 250;
 
-const AccountNav = () => {
-    return (
-        <>
-            <DivContainer>
-                {/* <CssBaseline /> */}
-                <ButtonDiv>
-                    <AccountButton>
-                    <Link to={'/billing'}>Billing</Link>
-                    </AccountButton>
-                    <AccountButton>
-                    <Link to={'/settings'}>Settings</Link>
-                    </AccountButton>
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    marginTop: '10%',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+    marginTop: '10%',
+    position: "absolute",
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+  toolbar: theme.mixins.toolbar,
 
-                </ButtonDiv>
-            </DivContainer>
-        </>
-    )
+}));
+
+export default function  AccountNav() {
+  const classes = useStyles();
+
+  return (
+        <div 
+        className={classes.root}
+        >
+        <CssBaseline />
+        <AppBar position="absolute" className={classes.appBar}>
+            <Toolbar>
+            <Typography variant="h4" noWrap>
+                Account
+            </Typography>
+            </Toolbar>
+        </AppBar>
+        <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+            paper: classes.drawerPaper,
+            }}
+        >
+            <div className={classes.toolbar} />
+            <List component={Link} to ="/settings">
+            {['Settings',].map((text, index) => (
+                
+                <ListItem button key={text} >
+                <ListItemIcon >{<Subject />}</ListItemIcon>
+                <ListItemText primary={text} />
+                </ListItem>
+            ))}
+            </List>
+            <Divider />
+            <List component={Link} to ="/billing" >
+            {[ 'Billing'].map((text, index) => (
+                <ListItem  button key={text}>
+                <ListItemIcon >{<Payment /> }</ListItemIcon>
+                <ListItemText primary={text} />
+                </ListItem>
+            ))}
+            </List>
+            <Divider />
+        </Drawer>
+        <main className={classes.content} >
+            <div className={classes.toolbar} />
+        </main>
+        </div>
+    );
+
 }
-
-
-
-export default AccountNav;
-
-const DivContainer = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-width: 100%;
-// max-width: 1000px;
-`
-
-const ButtonDiv = styled.div`
-// margin-top: 2.5%;
-display: flex;
-width: 100%;
-justify-content: center;
-// padding: 2%;
-`;
-
-const AccountButton = styled.button`
-display: flex;
-justify-content: center;
-// background-color:  #f4b4c3;
-color: white;
-width: 100%;
-height: 75vh;
-padding: 3% 0;
-// margin: 2.5%;
-font-size: 5rem;
-font-weight: bold;
-&:focus, &:hover, &:visited, &:link, &:active {
-    text-decoration: none;
-    background-color:  #f4b4c3;
-    opacity: .4;
-}
-`;

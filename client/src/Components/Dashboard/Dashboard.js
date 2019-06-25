@@ -16,7 +16,8 @@ import {
   ADD_FOOD_ENTRY,
   DELETE_EXERENTRY,
   EDIT_EXER_ENTRY,
-  DELETE_FOOD_ENTRY
+  DELETE_FOOD_ENTRY,
+  EDIT_FOOD_ENTRY
 } from "../../graphql/mutations";
 import {
   EXER_QUERY,
@@ -26,6 +27,7 @@ import {
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
+import { CircularProgress } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
@@ -57,6 +59,7 @@ const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
         fats
         proteins
         carbs
+        edamam_id
       }
       meal_category_id {
         id
@@ -75,7 +78,9 @@ class Dashboard extends Component {
     foodEntries: [],
     userType: "",
     exerEntry: [],
-    foodEntry: []
+    foodEntry: [],
+    foodIsLoading: true,
+    exerIsLoading: true,
   };
 
   componentDidMount = () => {
@@ -102,7 +107,8 @@ class Dashboard extends Component {
           })
           .then(response => {
             this.setState({
-              exerEntries: response.data.getExerciseEntriesByUserId
+              exerEntries: response.data.getExerciseEntriesByUserId,
+              exerIsLoading: false
             });
             client
               .query({
@@ -113,7 +119,8 @@ class Dashboard extends Component {
               })
               .then(response => {
                 this.setState({
-                  foodEntries: response.data.getFoodEntriesByUserId
+                  foodEntries: response.data.getFoodEntriesByUserId,
+                  foodIsLoading: false
                 });
               });
           });
@@ -247,21 +254,23 @@ class Dashboard extends Component {
         [e.target.name]:
           e.target.type === "number" ? parseInt(e.target.value) : e.target.value
       }
-    })
-    console.log(this.state.foodEntry.foodName)
-  }
+    });
+    console.log(this.state.foodEntry.foodName);
+  };
 
   onFoodChange = e => {
     this.setState({
-      foodEntry:{
-        food_id:{
+      foodEntry: {
+        food_id: {
           ...this.state.foodEntry.food_id,
           [e.target.name]:
-            e.target.type === "number" ? parseInt(e.target.value) : e.target.value
+            e.target.type === "number"
+              ? parseInt(e.target.value)
+              : e.target.value
         }
       }
-    })
-  }
+    });
+  };
   // onMealChange = e => {
   //   this.setState({
   //     foodEntry:{
@@ -275,11 +284,37 @@ class Dashboard extends Component {
   // }
 
   editFoodEntry = (editId, editEntry, idToken) => {
-    console.log('arg', editEntry)
+    console.log('arg food', editEntry)
     console.log('props', this.state.foodEntry)
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+    client
+      .mutate({
+        mutation: EDIT_FOOD_ENTRY,
+        variables: {id: editId, input: editEntry}
+      })
+      .then(response => {
+        client
+          .query({
+            query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+            variables: {
+              userId: this.state.currentUser
+            }
+          })
+          .then(response => {
+            console.log(response)
+            this.setState({
+              foodEntry: "",
+              foodEntries: response.data.getFoodEntriesByUserId
+            });
+          });
+      })
+      .catch(err => console.log('error message edit food', err));
   }
 
-  editExerEntry = ( editId, editEntry, idToken) => {
+  editExerEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
@@ -287,7 +322,7 @@ class Dashboard extends Component {
     client
       .mutate({
         mutation: EDIT_EXER_ENTRY,
-        variables: {id: editId, input: editEntry}
+        variables: { id: editId, input: editEntry }
       })
       .then(response => {
         client
@@ -305,37 +340,38 @@ class Dashboard extends Component {
           });
       })
       .catch(err => console.log(err));
-  }
+  };
+
 
   deleteFoodEntry = (id, idToken) => {
     const client = new ApolloClient({
-    uri: "https://nutrition-tracker-be.herokuapp.com",
-    headers: { authorization: idToken }
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
     });
     client
       .mutate({
         mutation: DELETE_FOOD_ENTRY,
-        variables: {id}
+        variables: { id }
       })
       .then(response => {
-        console.log(response)
+        console.log(response);
         client
-        .query({
-          query: GET_FOOD_ENTRIES_BY_USER_QUERY,
-          variables:{
-            userId: this.state.currentUser
-          }
-        })
-        .then(response => {
-          console.log(response)
-          this.setState({
-            foodEntry: "",
-            foodEntries: response.data.getFoodEntriesByUserId
-           });
-        })
+          .query({
+            query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+            variables: {
+              userId: this.state.currentUser
+            }
+          })
+          .then(response => {
+            console.log(response);
+            this.setState({
+              foodEntry: "",
+              foodEntries: response.data.getFoodEntriesByUserId
+            });
+          });
       })
-    .catch(err => console.log(err));
-  }
+      .catch(err => console.log(err));
+  };
 
   deleteExerEntry = (id, idToken) => {
     const client = new ApolloClient({
@@ -409,7 +445,6 @@ class Dashboard extends Component {
     });
   };
 
-
   render() {
     const { classes } = this.props;
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
@@ -420,24 +455,32 @@ class Dashboard extends Component {
           <Calories />
           <DashDisplay className="container">
             <Card>
-              <FoodEntry
-              foodEntries={this.state.foodEntries}
-              deleteFoodEntry={this.deleteFoodEntry}
-              foodEntry={this.state.foodEntry}
-              onFoodEntryChange={this.onFoodEntryChange}
-              onFoodChange={this.onFoodChange}
-              onMealChange={this.onMealChange}
-              editFoodEntry={this.editFoodEntry}
-              passFoodData={this.passFoodData}
-              />
-              <ExerciseEntry
-                exerEntries={this.state.exerEntries}
-                deleteExerEntry={this.deleteExerEntry}
-                onInputChange={this.onInputChange}
-                exerEntry={this.state.exerEntry}
-                editExerEntry={this.editExerEntry}
-                passExerData={this.passExerData}
-              />
+              {!this.state.foodIsLoading ? (
+                <FoodEntry
+                  foodEntries={this.state.foodEntries}
+                  deleteFoodEntry={this.deleteFoodEntry}
+                  foodEntry={this.state.foodEntry}
+                  onFoodEntryChange={this.onFoodEntryChange}
+                  onFoodChange={this.onFoodChange}
+                  onMealChange={this.onMealChange}
+                  editFoodEntry={this.editFoodEntry}
+                  passFoodData={this.passFoodData}
+                />
+              ) : (
+                <CircularProgress />
+              )}
+              {!this.state.exerIsLoading ? (
+                <ExerciseEntry
+                  exerEntries={this.state.exerEntries}
+                  deleteExerEntry={this.deleteExerEntry}
+                  onInputChange={this.onInputChange}
+                  exerEntry={this.state.exerEntry}
+                  editExerEntry={this.editExerEntry}
+                  passExerData={this.passExerData}
+                />
+              ) : (
+                <CircularProgress />
+              )}
             </Card>
             <Card className={classes.forms}>
               {this.state.showFoodForm && (

@@ -417,6 +417,7 @@ class ModifiedEntryForm extends Component {
           className="form-field"
           name="meal_category_id"
           type="number"
+          value={this.state.newAddFood.meal_category_id}
           onChange={this.onInputChange}
           aria-describedby="errorCategory-text"
         >

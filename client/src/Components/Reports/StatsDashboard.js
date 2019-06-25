@@ -20,24 +20,24 @@ const styles = theme => ({
     fontFamily: "Oxygen"
   },
   dataGroup: {
-    fontSize: "2rem",
+    fontSize: "1.8rem",
     display: "flex",
     flexDirection: "column"
   },
   label: {
-    fontSize: "1.5rem",
+    fontSize: "1.3rem",
     marginBottom: "10px",
     marginRight: 15,
     fontFamily: "Oxygen",
     color: "#3685B5"
   },
   data: {
-    fontSize: "2rem",
+    fontSize: "1.5rem",
     width: "90%",
     fontFamily: "Oxygen"
   },
   textField: {
-    fontSize: "2rem",
+    fontSize: "1.5rem",
     width: "90%",
     margin: "0 10px",
     fontFamily: "Oxygen"
@@ -48,7 +48,7 @@ const styles = theme => ({
     marginTop: 20
   },
   manyDaysBtn: {
-    fontSize: "1.7rem",
+    fontSize: "1rem",
     color: "#FCFCFB",
     margin: "0 10px",
     border: "2px solid #F4B4C3",
@@ -61,7 +61,7 @@ const styles = theme => ({
     fontFamily: "Oxygen"
   },
   tooltip: {
-    fontSize: "1.8rem",
+    fontSize: "1.6rem",
     // color: "white",
     backgroundColor: "#F4B4C3"
   }
@@ -152,10 +152,10 @@ class StatsDashboard extends React.Component {
             className={classes.textField}
             InputLabelProps={{
               shrink: true,
-              style: { fontSize: "2rem", color: "#3685B5", fontFamily: "Oxygen" }
+              style: { fontSize: "1.6rem", color: "#3685B5", fontFamily: "Oxygen" }
             }}
             inputProps={{
-              style: { fontSize: "2rem", lineHeight: "1.5", marginTop: "12px" }
+              style: { fontSize: "1.5rem", lineHeight: "1.5", marginTop: "12px" }
             }}
             margin='normal'
           />

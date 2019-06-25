@@ -60,7 +60,7 @@ const Tagline = styled.div`
 
 const SecondPane = styled.section`
   width: 100%;
-  background: #f4b4c3;
+  background: #40a798;
   padding: 40px 0;
 `;
 

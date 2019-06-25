@@ -110,6 +110,13 @@ componentDidMount(){
     this.setState({ showModal: false})
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.exerEntries !== this.props.exerEntries) {
+      this.setState({ exerEntries: this.props.exerEntries, exerEntry: this.props.exerEntry});
+    }
+  }
+
+
   render() {
     const dateToday = new Date();
     const month = dateToday.getMonth();

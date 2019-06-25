@@ -5,10 +5,10 @@ import Grid from "@material-ui/core/Grid";
 import { Line } from "react-chartjs-2";
 import * as moment from "moment";
 
-import { getWeights } from "../../util/getWeights";
+import { getExercises } from "../../util/getExercises";
 import { makeRandomColor } from "../../util/makeRandomColor";
 
-class WeightStats extends Component {
+class ExerciseStats extends Component {
   state = {
     entries: [],
     labels: []
@@ -19,56 +19,52 @@ class WeightStats extends Component {
   };
 
   componentDidUpdate = prevProps => {
-    if (prevProps.weightEntries !== this.props.weightEntries || prevProps.days !== this.props.days)
+    if (prevProps.exerciseEntries !== this.props.exerciseEntries || prevProps.days !== this.props.days)
       this.updateEntries();
   };
 
   updateEntries = () => {
-    const { weightEntries, initialWeight } = this.props;
+    const { exerciseEntries } = this.props;
     let { days } = this.props;
     if (days.length > 7 && days.length <= 30) {
       days = days.filter((day, i) => i % 3 === 0);
     } else if (days.length >= 90) {
       days = days.filter((day, i) => i % 30 === 0);
     }
-    const entries = getWeights(weightEntries, days, initialWeight);
+    const entries = getExercises(exerciseEntries, days);
     this.setState({ entries: entries, labels: days });
   };
   render() {
-    defaults.global.defaultFontColor = "#2196F3";
-    const { classes, initialWeight, days } = this.props;
-    const { entries } = this.state;
+    defaults.global.defaultFontColor = "#3685B5";
+    defaults.global.defaultFontFamily = "Oxygen";
+    const { classes, days } = this.props;
     const labels = this.state.labels.map(day => moment(day).format("MM/DD"));
-    if (initialWeight) {
-      labels.unshift("Day 1");
-      entries.unshift(initialWeight);
-    }
     const lineColor = makeRandomColor();
     const data = {
       labels: labels,
       datasets: [
         {
-          label: "Weight",
+          label: "Calories Burnt",
           backgroundColor: lineColor,
           borderColor: lineColor,
           pointRadius: 6,
           fill: "false",
-          data: entries
+          data: this.state.entries
         }
       ]
     };
 
     return (
       <div className={classes.root}>
-        <h2 className={classes.header}>Weight for the last {days.length === 365 ? "Year" : days.length + " days"}</h2>
+        <h2 className={classes.header}>
+          Calories burnt during exercise for the last {days.length === 365 ? "Year" : days.length + " days"}
+        </h2>
         {this.state.entries.length !== 0 ? (
           <Grid container justify='center' alignItems='center'>
             <Grid item xs={3}>
               {this.state.entries.map((entry, i) => (
                 <div key={labels[i]} className={classes.dataInfo}>
-                  <span className={classes.title}>
-                    {labels[i] !== "Day 1" ? moment(new Date(labels[i])).format("MMM Do") : labels[i]}
-                  </span>
+                  <span className={classes.title}>{moment(new Date(labels[i])).format("MMM Do")}</span>
                   <div className={classes.value}>{entry === 0 ? "No Entry" : entry.toFixed(2)}</div>
                 </div>
               ))}
@@ -104,21 +100,21 @@ const styles = theme => ({
   },
   header: {
     textAlign: "center",
-    fontSize: "2.8rem",
+    fontSize: "2.5rem",
     marginBottom: "20px",
     color: "#3685B5",
     textTransform: "uppercase",
     fontFamily: "Oxygen"
   },
   title: {
-    color: "#2196F3",
-    fontSize: "2rem",
+    color: "#3685B5",
+    fontSize: "1.4rem",
     width: "40%",
     fontFamily: "Oxygen"
   },
   value: {
     margin: "10px 0",
-    fontSize: "1.8rem",
+    fontSize: "1.4rem",
     paddingLeft: "10px",
     fontFamily: "Oxygen"
   },
@@ -130,4 +126,4 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(WeightStats);
+export default withStyles(styles)(ExerciseStats);
