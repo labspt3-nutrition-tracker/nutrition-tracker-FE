@@ -39,10 +39,14 @@ const SearchInfo = styled.div`
 const RequestButton = styled.button`
   height: 40px;
   padding: 5px 30px;
-  margin-right: 20px;
+  margin: 0 20px;
   font-size: 1.4em;
   background: #f4b4c3;
   color: #fcfcfb;
+  :disabled {
+    background: grey;
+    cursor: not-allowed;
+  }
 `;
 
 const NoResultDiv = styled.div`
@@ -71,7 +75,14 @@ const TraineeResult = props => {
               </h1>
               <h2> {props.traineeSearchResults.email}</h2>
             </SearchInfo>
-            <RequestButton onClick={props.request}> Request to follow</RequestButton>
+            <RequestButton disabled={props.trainees.length === 1 && props.currentUser.userType !== "coach"} onClick={props.request}> Request to follow</RequestButton>
+            {props.trainees.length === 1 
+              && props.currentUser.userType !== "coach" 
+              && (
+                <> 
+                  <div>Please upgrade to Coach to follow more than one person.</div>
+                  <Link to="/billing">Upgrade</Link>
+                </>)}
           </SearchResultDiv>
         </TraineeSearchResult>
       )}
