@@ -97,7 +97,6 @@ class EntryForm extends Component {
   };
 
   onInputChange = e => {
-    
     this.setState({
       newAddFood: {
         ...this.state.newAddFood,
@@ -371,7 +370,7 @@ class EntryForm extends Component {
       caloriesPerServ =  this.props.selectedFood.nutrients.ENERC_KCAL ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2) : 0;
       fats = this.props.selectedFood.nutrients.FAT ? this.props.selectedFood.nutrients.FAT.toFixed(2) : 0;
       carbs = this.props.selectedFood.nutrients.CHOCDF ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2) : 0;
-      proteins = this.props.selectedFood.nutrients.PROCNT ? this.props.selectedFood.nutrients.PROCNT.toFixed(2) : 0;
+      proteins = this.props.selectedFood.nutrients.PROCNT ? this.props.selectedFood.nutrients.PROCNT.toFixed(2) : 0;;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -427,8 +426,8 @@ class EntryForm extends Component {
           <MenuItem>Select Meal Category</MenuItem>
           <MenuItem value="1">breakfast</MenuItem>
           <MenuItem value="2">lunch</MenuItem>
-          <MenuItem value="3">dinner</MenuItem>
-          <MenuItem value="4">snack</MenuItem>
+          <MenuItem value="4">dinner</MenuItem>
+          <MenuItem value="3">snack</MenuItem>
         </Select>
         <FormHelperText id="errorCategory-text">
           {this.state.errorMsg.errorCategory}
