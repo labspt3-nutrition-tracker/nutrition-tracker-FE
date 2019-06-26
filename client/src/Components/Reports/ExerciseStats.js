@@ -35,8 +35,8 @@ class ExerciseStats extends Component {
     this.setState({ entries: entries, labels: days });
   };
   render() {
-    defaults.global.defaultFontColor = "#3685B5";
-    defaults.global.defaultFontFamily = "Oxygen";
+    defaults.global.defaultFontColor = "#60B5A9";
+    defaults.global.defaultFontFamily = "Oswald";
     const { classes, days } = this.props;
     const labels = this.state.labels.map(day => moment(day).format("MM/DD"));
     const lineColor = makeRandomColor();
@@ -90,39 +90,39 @@ class ExerciseStats extends Component {
 const styles = theme => ({
   root: {
     width: "100%",
-    margin: "50px auto",
+    margin: "30px auto",
     maxWidth: "1200px",
     padding: "20px"
   },
   graph: {
-    border: "3px solid #F4B4C3",
-    padding: "20px"
+    border: "3px solid #5E366A",
+    padding: "20px",
+    marginTop: 10
   },
   header: {
     textAlign: "center",
-    fontSize: "2.5rem",
+    fontSize: "1.8rem",
     marginBottom: "20px",
-    color: "#3685B5",
+    color: "#545454",
     textTransform: "uppercase",
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   title: {
-    color: "#3685B5",
+    color: "#60B5A9",
     fontSize: "1.4rem",
-    width: "40%",
-    fontFamily: "Oxygen"
+    width: "50%",
+    fontFamily: "Oswald"
   },
   value: {
-    margin: "10px 0",
     fontSize: "1.4rem",
     paddingLeft: "10px",
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   dataInfo: {
     display: "flex",
     justifyContent: "flex-start",
-    alignItems: "center"
-    // borderBottom: "1px solid #F4B4C3"
+    alignItems: "center",
+    margin: "15px 0"
   }
 });
 
