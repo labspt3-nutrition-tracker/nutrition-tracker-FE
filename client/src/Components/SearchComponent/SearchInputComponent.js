@@ -36,7 +36,7 @@ class SearchInputComponent extends React.Component {
             onChange={this.props.updateSearch}
             name="searchInput"
             value={this.props.searchInput}/>
-          <SearchButton onClick={this.getFood}>Search</SearchButton>
+          <SearchButton onClick={this.props.getFoodData}>Search</SearchButton>
         </Search>
       )
   }
