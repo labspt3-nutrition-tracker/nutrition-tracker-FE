@@ -29,25 +29,25 @@ const styles = theme => ({
     padding: 20
   },
   listItemText: {
-    fontFamily: "Oxygen",
+    fontFamily: "Roboto",
     fontSize: "1.8rem"
   },
   listItemText2: {
-    fontFamily: "Oxygen",
+    fontFamily: "Roboto",
     fontSize: "1.6rem",
-    color: "#3685B5"
+    color: "#5E366A"
   },
   icon: {
-    color: "#3685B5"
+    color: "#5E366A"
   },
   editIcon: {
-    color: "#F4B4C3",
+    color: "#40A798",
     fontSize: "3.3rem"
   },
   user: {
-    fontFamily: "Oxygen",
+    fontFamily: "Oswald",
     textTransform: "uppercase",
-    color: "#3685B5"
+    color: "#5E366A"
   }
 });
 

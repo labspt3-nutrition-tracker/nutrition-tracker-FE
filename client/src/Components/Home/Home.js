@@ -62,7 +62,6 @@ const Tagline = styled.div`
   margin: 0 auto;
   text-align: center;
   font-size: 3.5rem;
-  font-size: 35px;
   line-height: 1.2;
   margin-bottom: 30px;
   color: #fcfcfb;
@@ -125,8 +124,8 @@ const FeatureInfo = styled.div`
   }
   h2 {
     color: #ffffff;
-    font-size: 2rem;
-    font-size: 20px;
+    /* font-size: 2rem; */
+    font-size: 30px;
     padding: 10px 0 0;
     font-family: "Oswald", sans-serif;
   }
@@ -135,8 +134,8 @@ const FeatureInfo = styled.div`
   }
   p {
     color: #fcfcfb;
-    font-size: 1.8rem;
-    font-size: 18px;
+    /* font-size: 1.2rem; */
+    font-size: 20px;
   }
 `;
 

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import ExerForm from "./ExerForm";
+import Typography from "@material-ui/core/Typography";
+
 
 
 class Exercise extends Component {
@@ -8,7 +10,7 @@ class Exercise extends Component {
     return (
       <ExerciseContainer>
         <div className="container">
-          <ExerTitle>Add Exercise Entry</ExerTitle>
+        <Typography variant="h4">Add exercise entry</Typography>
           <InfoCon>
             <ExerForm
               closeExerEntry={this.props.closeExerEntry}
