@@ -36,7 +36,7 @@ const CalendarDiv = styled.div`
   width: 60%;
   border: 3px solid black;
   margin-right: 5%;
-  z-index: -1;
+  z-index: 0;
 
   @media (max-width: 800px) {
     width: 90%;
