@@ -23,7 +23,7 @@ import {
   EXER_QUERY,
   GET_CURRENT_USERID,
   GET_EXERCISE_ENTRIES_QUERY,
-   GET_FOOD_ENTRIES_BY_USER_QUERY
+  GET_FOOD_ENTRIES_BY_USER_QUERY
 } from "../../graphql/queries";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -34,7 +34,7 @@ const styles = theme => ({
   root: {
     maxWidth: 960,
     width: "100%",
-    marginBottom: "3%",
+    marginBottom: "3%"
   }
 });
 
@@ -310,7 +310,7 @@ class Dashboard extends Component {
         variables: { id: editId, input: editEntry }
       })
       .then(response => {
-        console.log('first part of response', response)
+        console.log("first part of response", response);
         client
           .query({
             query: GET_FOOD_ENTRIES_BY_USER_QUERY,
@@ -330,7 +330,6 @@ class Dashboard extends Component {
   };
 
   editExerEntry = (editId, editEntry, idToken) => {
-   
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
@@ -345,7 +344,7 @@ class Dashboard extends Component {
           .query({
             query: GET_EXERCISE_ENTRIES_QUERY,
             variables: {
-              userId: this.state.currentUser,
+              userId: this.state.currentUser
             }
           })
           .then(response => {
@@ -484,18 +483,6 @@ class Dashboard extends Component {
               ) : (
                 <CircularProgress />
               )}
-              {!this.state.exerIsLoading ? (
-                <ExerciseEntry
-                  exerEntries={this.state.exerEntries}
-                  deleteExerEntry={this.deleteExerEntry}
-                  onInputChange={this.onInputChange}
-                  exerEntry={this.state.exerEntry}
-                  editExerEntry={this.editExerEntry}
-                  passExerData={this.passExerData}
-                />
-              ) : (
-                <CircularProgress />
-              )}
             </Card>
             <Card className={classes.forms}>
               {this.state.showFoodForm && (
@@ -513,13 +500,28 @@ class Dashboard extends Component {
                   revertToNormalForm={this.revertToNormalForm}
                 />
               )}
-
+            </Card>
+            <Card className={classes.forms}>
               {this.state.showExerForm && (
-                <Exercise
-                  editExerEntry={this.editExerEntry}
-                  closeExerEntry={this.closeExerEntry}
-                  addExerEntry={this.addExerEntry}
-                />
+                <>
+                  <Exercise
+                    editExerEntry={this.editExerEntry}
+                    closeExerEntry={this.closeExerEntry}
+                    addExerEntry={this.addExerEntry}
+                  />
+                  {!this.state.exerIsLoading ? (
+                    <ExerciseEntry
+                      exerEntries={this.state.exerEntries}
+                      deleteExerEntry={this.deleteExerEntry}
+                      onInputChange={this.onInputChange}
+                      exerEntry={this.state.exerEntry}
+                      editExerEntry={this.editExerEntry}
+                      passExerData={this.passExerData}
+                    />
+                  ) : (
+                    <CircularProgress />
+                  )}
+                </>
               )}
             </Card>
           </DashDisplay>

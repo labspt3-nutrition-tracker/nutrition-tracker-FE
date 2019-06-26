@@ -17,6 +17,9 @@ const styles = theme => ({
     flexGrow: 1,
     background: "#40A798",
   },
+  toolbar: {
+    justifyContent: "space-evenly"
+  },
   title: {
     flexGrow: 1,
     fontSize: 16,
@@ -32,7 +35,7 @@ function ButtonAppBar(props) {
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.root}>
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton> */}
