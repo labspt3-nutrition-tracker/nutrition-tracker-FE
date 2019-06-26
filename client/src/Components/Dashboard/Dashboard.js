@@ -22,7 +22,8 @@ import {
 import {
   EXER_QUERY,
   GET_CURRENT_USERID,
-  GET_EXERCISE_ENTRIES_QUERY
+  GET_EXERCISE_ENTRIES_QUERY,
+   GET_FOOD_ENTRIES_BY_USER_QUERY
 } from "../../graphql/queries";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -32,39 +33,40 @@ import { CircularProgress } from "@material-ui/core";
 const styles = theme => ({
   root: {
     maxWidth: 960,
-    width: "100%"
+    width: "100%",
+    marginBottom: "3%",
   }
 });
 
-const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
-  query($userId: ID!) {
-    getFoodEntriesByUserId(userId: $userId) {
-      id
-      date
-      servingQty
-      user_id {
-        username
-        firstName
-        lastName
-        email
-        id
-      }
-      food_id {
-        id
-        foodName
-        caloriesPerServ
-        fats
-        proteins
-        carbs
-        edamam_id
-      }
-      meal_category_id {
-        id
-        mealCategoryName
-      }
-    }
-  }
-`;
+// const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
+//   query getFoodEntriesByUserId($userId: ID!) {
+//     getFoodEntriesByUserId(userId: $userId) {
+//       id
+//       date
+//       servingQty
+//       user_id {
+//         username
+//         firstName
+//         lastName
+//         email
+//         id
+//       }
+//       food_id {
+//         id
+//         foodName
+//         caloriesPerServ
+//         fats
+//         proteins
+//         carbs
+//         edamam_id
+//       }
+//       meal_category_id {
+//         id
+//         mealCategoryName
+//       }
+//     }
+//   }
+// `;
 
 class Dashboard extends Component {
   state = {
@@ -116,6 +118,7 @@ class Dashboard extends Component {
               })
               .then(response => {
                 this.setState({
+                  foodEntry: response.data.getFoodEntriesByUserId,
                   foodEntries: response.data.getFoodEntriesByUserId,
                   foodIsLoading: false
                 });
@@ -281,6 +284,20 @@ class Dashboard extends Component {
   // }
 
   editFoodEntry = (editId, editEntry, idToken) => {
+    const foodInput = {
+      foodName: editEntry.foodName,
+      caloriesPerServ: editEntry.caloriesPerServ,
+      fats: editEntry.fats,
+      carbs: editEntry.carbs,
+      proteins: editEntry.proteins,
+      edamam_id: editEntry.edamam_id,
+      date: editEntry.date,
+      food_id: editEntry.food_id,
+      user_id: editEntry.user_id,
+      servingQty: editEntry.servingQty,
+      meal_category_id: parseInt(editEntry.meal_category_id)
+    };
+
     console.log("arg food", editEntry);
     console.log("props", this.state.foodEntry);
     const client = new ApolloClient({
@@ -293,6 +310,7 @@ class Dashboard extends Component {
         variables: { id: editId, input: editEntry }
       })
       .then(response => {
+        console.log('first part of response', response)
         client
           .query({
             query: GET_FOOD_ENTRIES_BY_USER_QUERY,
@@ -303,7 +321,7 @@ class Dashboard extends Component {
           .then(response => {
             console.log(response);
             this.setState({
-              foodEntry: "",
+              foodEntry: this.state.foodEntry,
               foodEntries: response.data.getFoodEntriesByUserId
             });
           });
@@ -312,6 +330,7 @@ class Dashboard extends Component {
   };
 
   editExerEntry = (editId, editEntry, idToken) => {
+   
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
@@ -326,7 +345,7 @@ class Dashboard extends Component {
           .query({
             query: GET_EXERCISE_ENTRIES_QUERY,
             variables: {
-              userId: this.state.currentUser
+              userId: this.state.currentUser,
             }
           })
           .then(response => {
@@ -449,7 +468,7 @@ class Dashboard extends Component {
         <Container className={classes.root}>
           <Typography variant="h3">{currentDate}</Typography>
           <Calories />
-          <DashDisplay className="container">
+          <DashDisplay className="container" marginTop={"5%"}>
             <Card>
               {!this.state.foodIsLoading ? (
                 <FoodEntry
@@ -554,6 +573,8 @@ const InfoCon = styled.div`
 const DashDisplay = styled.div`
   /* width: 100%;
   display: flex;
+  margin-top: 5%;
+  margin-bottom: 4%;
   justify-content: space-around;
   @media (max-width: 800px) {
     flex-direction: column;
