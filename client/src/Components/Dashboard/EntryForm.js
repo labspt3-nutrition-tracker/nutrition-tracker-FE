@@ -10,6 +10,8 @@ import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
 import { GET_ALL_FOOD } from "../../graphql/queries";
 import gql from "graphql-tag";
+import Typography from "@material-ui/core/Typography";
+
 
 export const Form = styled.form`
   display: flex;
@@ -390,7 +392,7 @@ class EntryForm extends Component {
     this.getCurrentUser(localStorage.getItem("token"));
     return (
       <Form>
-        <h1> Add food entry</h1>
+        <Typography variant="h4"> Add food entry</Typography>
         <TextField
           required
           error={this.state.errorMsg.errorFood}
