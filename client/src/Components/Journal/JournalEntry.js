@@ -21,6 +21,7 @@ const GET_FOOD_BY_ID = gql`
 `;
 
 const MealModal = styled(Modal)`
+  position:absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -913,69 +914,6 @@ class JournalEntry extends React.Component {
                           <MenuItem value={2}> Lunch </MenuItem>
                           <MenuItem value={4}> Dinner </MenuItem>
                           <MenuItem value={3}> Snack </MenuItem>
-                        </Select>
-                      </form>
-                      <div>
-                        <Button
-                          onClick={this.deleteMealEntry}
-                          variant="contained"
-                          color="secondary"
-                        >
-                          Delete
-                        </Button>
-                        <Button
-                          onClick={this.editMealEntry}
-                          variant="contained"
-                          color="primary"
-                        >
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
-                  )}
-
-                  {this.state.mealEntry && this.state.edamamExist && (
-                    <MealModal isOpen={this.state.showModal}>
-                      <div>
-                        <Button onClick={this.closeModal}>exit </Button>
-                      </div>
-                      <div> {this.state.mealEntry.food_id.foodName} </div>
-                      <form>
-                        <label htmlFor="date"> Date </label>
-                        <input
-                          className="form-field"
-                          type="date"
-                          name="date"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Serving Quantity"
-                          name="servingQty"
-                          label="Serving Quantity"
-                          placeholder={`${this.state.mealEntry}`}
-                          value={this.state.servingQty}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <InputLabel htmlFor="meal-simple">
-                          MealCategory
-                        </InputLabel>
-                        <Select
-                          value={this.state.meal_category_id}
-                          onChange={this.handleChange}
-                          inputProps={{
-                            name: "meal_category_id",
-                            id: "meal-simple"
-                          }}
-                        >
-                          <MenuItem>
-                            {" "}
-                            <em>None</em>{" "}
-                          </MenuItem>
-                          <MenuItem value={1}>Breakfast</MenuItem>
-                          <MenuItem value={2}>Lunch</MenuItem>
-                          <MenuItem value={4}>Dinner</MenuItem>
-                          <MenuItem value={3}>Snack</MenuItem>
                         </Select>
                       </form>
                       <div>
