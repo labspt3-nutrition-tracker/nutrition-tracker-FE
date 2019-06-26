@@ -114,7 +114,6 @@ section {
 }
 body {
   line-height: 1;
-  font-size: 62.5%;
 }
 ol,
 ul {
@@ -145,8 +144,10 @@ table {
 }
 
 html {
+  font-size: 62.5%;
   font-family: Roboto, sans-serif;
 }
+
 
 .home {
   background: url(./Assets/healthy-food-lg.jpg) no-repeat;
@@ -154,18 +155,6 @@ html {
   background-repeat: no-repeat;
   color: #000;
 }
-
-/* .fc-today {
-  background: #40a798 !important;
-}
-
-.fc-highlight {
-  background: #f4b4c3 !important;
-}
-
-.fc-view-container {
-  z-index: 0;
-} */
 
 .navLink {
   color: #fcfcfb;
@@ -182,8 +171,6 @@ html {
 
 .active {
   color: #545454;
-  /* text-shadow: none; */
-  /* text-decoration: underline; */
 }
 
 /* ------------ MEDIA QUERIES ------------ */
