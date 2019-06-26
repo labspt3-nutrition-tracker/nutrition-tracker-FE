@@ -24,10 +24,9 @@ class SearchInputComponent extends React.Component {
     super(props);
 
     this.state = {
-      
+
     }
   }
-
 
   render(){
     return(
@@ -37,7 +36,7 @@ class SearchInputComponent extends React.Component {
             onChange={this.props.updateSearch}
             name="searchInput"
             value={this.props.searchInput}/>
-          <SearchButton onClick={this.props.getFoodData}>Search</SearchButton>
+          <SearchButton onClick={this.getFood}>Search</SearchButton>
         </Search>
       )
   }
