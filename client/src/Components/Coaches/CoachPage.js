@@ -37,7 +37,9 @@ class CoachPage extends React.Component {
       isSearchModalOpen: false,
       trainees: [],
       selectedTrainee: [],
-      noUserFoundError: ""
+      noUserFoundError: "",
+      errorText: "",
+      error: false,
     };
   }
 
@@ -163,6 +165,8 @@ class CoachPage extends React.Component {
           />
         <TraineeList
           trainees={this.state.trainees} handleChooseUser={this.handleChooseUser} />
+        <SendMessageFromCoach traineeID={this.state.selectedTrainee.id} firstName={this.state.selectedTrainee.firstName} lastName={this.state.selectedTrainee.lastName}
+        currentUser={this.state.currentUser} />
         </TraineeBasic>
         <TraineeDetailed>
           <TraineeInfo traineeID={this.state.selectedTrainee.id} />

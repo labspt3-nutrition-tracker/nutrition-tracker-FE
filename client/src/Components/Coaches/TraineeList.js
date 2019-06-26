@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const TraineeListDiv = styled.div`
   padding: 20px 0px;
   width: 100%;
-  height: 100%;
+  height: 50%;
 
   & h1{
     text-align: center;
