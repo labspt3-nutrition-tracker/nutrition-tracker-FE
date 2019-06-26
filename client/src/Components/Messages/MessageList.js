@@ -42,32 +42,25 @@ class MessageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedPerson: 0
+      option: 0
     };
   }
 
-  handleCoachChange = (event, newPerson) => {
-    this.setState({ selectedPerson: newPerson });
+  handleChange = (event, newOption) => {
+    this.setState({ option: newOption });
   };
 
   render() {
-    const { selectedPerson } = this.state;
+    const { option } = this.state;
     const { messages, coaches, trainees, classes, showMessage, deleteMessage } = this.props;
-    //combine coaches and trainees in one array - no repeats
-    const people = [...coaches]; 
-    trainees.forEach(trainee => {
-      const name = coaches.find(coach => `${coach.firstName} ${coach.lastName}` ===  `${trainee.firstName} ${trainee.lastName}`)
-      if(!name) people.push(trainee)
-    });
+ 
     return (
       <Paper className={classes.root}>
         <Grid container justify='center' alignItems='center'>
           <Grid item md={4} xs={12}>
-            {people.length > 0 ? (
-              <>
                 <Tabs
-                  value={selectedPerson}
-                  onChange={this.handleCoachChange}
+                  value={option}
+                  onChange={this.handleChange}
                   className={classes.tabs}
                   centered
                   classes={{
@@ -75,29 +68,31 @@ class MessageList extends Component {
                     flexContainer: classes.tabs
                   }}
                 >
-                  {people.map((person, index) => (
-                    <Tab
-                      label={`${person.firstName} ${person.lastName}`}
-                      icon={<PersonIcon className={classes.icon} />}
-                      className={classes.tab}
-                      tabIndex={index}
-                      key={person.id}
-                      classes={{
-                        selected: classes.indicator
-                      }}
-                    />
-                  ))}
+                  <Tab
+                    label="Coaches"
+                    icon={<PersonIcon className={classes.icon} />}
+                    className={classes.tab}
+                    classes={{
+                      selected: classes.indicator
+                    }}
+                  />
+                  <Tab
+                    label="Trainees"
+                    icon={<PersonIcon className={classes.icon} />}
+                    className={classes.tab}
+                    classes={{
+                      selected: classes.indicator
+                    }}
+                  />
                 </Tabs>
-              </>
-            ) : (
-              <div>You have no coaches or trainees</div>
-            )}
           </Grid>
           <Grid item md={8} xs={12}>
-            {messages.length > 0 && people.length > 0 ? (
+            {messages.length > 0 ? (
               <MessageInfo 
                 messages={messages} 
-                sender={people[selectedPerson]} 
+                option={option}
+                coaches={coaches}
+                trainees={trainees}
                 showMessage={showMessage}
                 deleteMessage={deleteMessage} />
             ) : (

@@ -18,8 +18,19 @@ const styles = theme => ({
   }
 });
 const MessageInfo = props => {
-  const { sender, messages, classes } = props;
-  const messagesArr = messages.filter(message => message.sender.id === sender.id && message.type === "text");
+  const { messages, classes, option, coaches, trainees } = props;
+  let messagesArr = [];
+  if(option === 0) {
+    coaches.forEach(coach => {
+      const coachMessage = messages.filter(message => message.sender.id === coach.id && message.type === "text");
+      messagesArr = [...messagesArr, ...coachMessage]
+    })
+  } else if(option === 1) {
+    trainees.forEach(trainee => {
+      const traineeMessage = messages.filter(message => message.sender.id === trainee.id && message.type === "text");
+      messagesArr = [...messagesArr, ...traineeMessage]
+    })
+  }
   messagesArr.sort((a, b) => {
     if( moment(new Date(a.created_at)).isSameOrBefore(new Date(b.created_at))) return 1 
     else return -1;
@@ -36,6 +47,12 @@ const MessageInfo = props => {
                   <UnreadIcon />
                 </ListItemIcon>
               )}
+              <ListItemText
+                primary={`${message.sender.firstName} ${message.sender.lastName}`}
+                classes={{
+                  primary: classes.text
+                }}
+              />
               <ListItemText
                 primary={message.text}
                 classes={{
