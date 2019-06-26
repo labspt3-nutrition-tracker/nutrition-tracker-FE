@@ -42,25 +42,31 @@ class MessageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCoach: 0
+      selectedPerson: 0
     };
   }
 
-  handleCoachChange = (event, newCoach) => {
-    this.setState({ selectedCoach: newCoach });
+  handleCoachChange = (event, newPerson) => {
+    this.setState({ selectedPerson: newPerson });
   };
 
   render() {
-    const { selectedCoach } = this.state;
-    const { messages, coaches, classes, showMessage, deleteMessage } = this.props;
+    const { selectedPerson } = this.state;
+    const { messages, coaches, trainees, classes, showMessage, deleteMessage } = this.props;
+    //combine coaches and trainees in one array - no repeats
+    const people = [...coaches]; 
+    trainees.forEach(trainee => {
+      const name = coaches.find(coach => `${coach.firstName} ${coach.lastName}` ===  `${trainee.firstName} ${trainee.lastName}`)
+      if(!name) people.push(trainee)
+    });
     return (
       <Paper className={classes.root}>
         <Grid container justify='center' alignItems='center'>
           <Grid item md={4} xs={12}>
-            {coaches.length > 0 ? (
+            {people.length > 0 ? (
               <>
                 <Tabs
-                  value={selectedCoach}
+                  value={selectedPerson}
                   onChange={this.handleCoachChange}
                   className={classes.tabs}
                   centered
@@ -69,13 +75,13 @@ class MessageList extends Component {
                     flexContainer: classes.tabs
                   }}
                 >
-                  {coaches.map((coach, index) => (
+                  {people.map((person, index) => (
                     <Tab
-                      label={`${coach.firstName} ${coach.lastName}`}
+                      label={`${person.firstName} ${person.lastName}`}
                       icon={<PersonIcon className={classes.icon} />}
                       className={classes.tab}
                       tabIndex={index}
-                      key={coach.id}
+                      key={person.id}
                       classes={{
                         selected: classes.indicator
                       }}
@@ -84,14 +90,14 @@ class MessageList extends Component {
                 </Tabs>
               </>
             ) : (
-              <div>You have no coaches</div>
+              <div>You have no coaches or trainees</div>
             )}
           </Grid>
           <Grid item md={8} xs={12}>
-            {messages.length > 0 && coaches.length > 0 ? (
+            {messages.length > 0 && people.length > 0 ? (
               <MessageInfo 
                 messages={messages} 
-                sender={coaches[selectedCoach]} 
+                sender={people[selectedPerson]} 
                 showMessage={showMessage}
                 deleteMessage={deleteMessage} />
             ) : (
