@@ -13,7 +13,7 @@ import Button from "@material-ui/core/Button";
 import MessageList from "./MessageList";
 import NewMessage from "./NewMessage";
 import AlertsList from "./AlertsList";
-import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY, GET_COACHES } from "../../graphql/queries";
+import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY, GET_COACHES, GET_TRAINEES } from "../../graphql/queries";
 import { DELETE_MESSAGE_MUTATION, ADD_MESSAGE_MUTATION, UPDATE_MESSAGE_MUTATION, ADD_TRAINEE } from "../../graphql/mutations";
 
 const styles = theme => ({
@@ -60,6 +60,7 @@ class MessagePage extends React.Component {
       currentUser: null,
       messages: [],
       coaches: [],
+      trainees: [],
       option: 0,
       currentMessage: null,
       modalOpen: false
@@ -88,7 +89,12 @@ class MessagePage extends React.Component {
       const variables = { param: "recipient", value: userId };
       const messages = await client.query({ query: GET_MESSAGES_QUERY, variables: variables });
       const coaches = await client.query({query: GET_COACHES, variables: {trainee_id: userId}});
-      this.setState({ messages: messages.data.getMessagesBy, coaches: coaches.data.getCoaches, currentUser: user.data.getCurrentUser });
+      const trainees = await client.query({query: GET_TRAINEES, variables: {coach_id: userId}});
+      this.setState({ 
+        messages: messages.data.getMessagesBy, 
+        coaches: coaches.data.getCoaches,
+        trainees: trainees.data.getTrainees, 
+        currentUser: user.data.getCurrentUser });
     } catch (err) {
       console.log(err);
     }
@@ -189,7 +195,7 @@ class MessagePage extends React.Component {
   }
 
   render() {
-    const { messages, coaches, currentMessage, modalOpen } = this.state;
+    const { messages, coaches, trainees, currentMessage, modalOpen } = this.state;
     let { option } = this.state;
     const { classes } = this.props;
 
@@ -216,12 +222,14 @@ class MessagePage extends React.Component {
           <MessageList 
             messages={messages} 
             coaches={coaches} 
+            trainees={trainees}
             showMessage={this.showMessage} 
             deleteMessage={this.deleteMessageHandler}
             />
         ) : option === 1 ? (
           <NewMessage
             coaches={coaches}
+            trainees={trainees}
             recipient={currentMessage && currentMessage.sender.id}
             handleCancel={this.handleCancel}
             sendMessage={this.sendMessage}

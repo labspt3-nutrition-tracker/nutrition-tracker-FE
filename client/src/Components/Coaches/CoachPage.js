@@ -66,13 +66,13 @@ class CoachPage extends React.Component {
       })
       .then(response => {
         this.setState({
-          currentUser: response.data.getCurrentUser.id
+          currentUser: response.data.getCurrentUser
         })
         client
           .query({
             query: GET_TRAINEES,
             variables:{
-              coach_id: this.state.currentUser
+              coach_id: this.state.currentUser.id
             }
           })
           .then(response => {
@@ -120,25 +120,25 @@ class CoachPage extends React.Component {
   };
 
   handleRequest = async () => {
-    //send requet message to traineeSearchResults.id
+    //send request message to traineeSearchResults.id
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
+    //   const user = await client.query({ query: GET_CURRENT_USER_QUERY });
+    const userId = this.state.currentUser.id;
+    const name = `${this.state.currentUser.firstName} ${this.state.currentUser.lastName}`;
+    const variables = {
+      input: {
+        type: "alert",
+        text: `This is a request from ${name} to follow your nutrition.`,
+        read: false,
+        sender: userId,
+        recipient: this.state.traineeSearchResults.id
+      }
+    };
     try {
-      const user = await client.query({ query: GET_CURRENT_USER_QUERY });
-      const userId = user.data.getCurrentUser.id;
-      const name = `${user.data.getCurrentUser.firstName} ${user.data.getCurrentUser.lastName}`;
-      const variables = {
-        input: {
-          type: "alert",
-          text: `This is a request from ${name} to follow your nutrition.`,
-          read: false,
-          sender: userId,
-          recipient: this.state.traineeSearchResults.id
-        }
-      };
       await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
       this.setState({ traineeSearchResults: [] }); //reset after sending request
     } catch (err) {
@@ -159,6 +159,8 @@ class CoachPage extends React.Component {
             traineeSearchResults={this.state.traineeSearchResults}
             noUserFoundError={this.state.noUserFoundError}
             request={this.handleRequest}
+            currentUser={this.state.currentUser}
+            trainees={this.state.trainees}
           />
         <TraineeList
           trainees={this.state.trainees} handleChooseUser={this.handleChooseUser} />
