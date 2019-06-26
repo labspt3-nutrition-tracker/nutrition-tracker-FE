@@ -15,7 +15,7 @@ import { getRectCenter } from "@fullcalendar/core";
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    background: "#0CCA98",
+    background: "#40A798",
   },
   title: {
     flexGrow: 1,

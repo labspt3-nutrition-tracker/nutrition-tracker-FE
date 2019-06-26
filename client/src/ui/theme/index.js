@@ -1,9 +1,15 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
-const palette = {
-  primary: { main: '#2196F3' },
-  secondary: { main: '#FFCDD2' }
-};
-const themeName = 'Dodger Blue Pastel Pink Vole';
+module.exports = {
+  mainTheme
+}
+const mainTheme = createMuiTheme({
+  palette: {
+    primary: '#40A798',
+    secondary: {
+      main: '#5E366A',
+    },
+  },
+});
 
-export default createMuiTheme({ palette, themeName });
+

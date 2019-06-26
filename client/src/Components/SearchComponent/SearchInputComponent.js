@@ -16,7 +16,8 @@ const SearchButton = styled.button`
   background: #F4B4C3;
   margin-bottom: 5px;
   padding: 5px 15px;
-  font-size: .9em;
+  /* font-size: .9em; */
+  font-size: 16px;
 `;
 
 class SearchInputComponent extends React.Component {
