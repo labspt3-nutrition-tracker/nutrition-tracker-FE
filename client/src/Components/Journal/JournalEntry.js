@@ -90,13 +90,13 @@ class JournalEntry extends React.Component {
       foodEntries: foodEntries,
       edamamExist: false,
       journalEntry: {
-        date: "",
-        foodName: "",
-        servingQty: "",
-        caloriesPerServ: "",
-        proteins: "",
-        carbs: "",
-        fats: "",
+        date: null,
+        foodName: null,
+        servingQty: null,
+        caloriesPerServ: null,
+        proteins: null,
+        carbs: null,
+        fats: null,
         mealEntry: [],
         user_id: null,
         food_id: null,
@@ -198,7 +198,6 @@ class JournalEntry extends React.Component {
       [e.target.name]: e.target.value
     });
 
-    console.log(this.state.date);
   };
 
   deleteMealEntry = e => {
@@ -211,19 +210,21 @@ class JournalEntry extends React.Component {
   editMealEntry = e => {
     e.preventDefault();
 
+    console.log(this.state.mealEntry)
+
     const foodEntry = {
       foodName: this.state.mealEntry.food_id.foodName,
-      caloriesPerServ: parseInt(this.state.caloriesPerServ),
-      fats: parseInt(this.state.fats),
-      carbs: parseInt(this.state.carbs),
-      proteins: parseInt(this.state.proteins),
-      date: this.state.date,
+      caloriesPerServ: this.state.caloriesPerServ ? parseInt(this.state.caloriesPerServ) : this.state.mealEntry.food_id.caloriesPerServ,
+      fats: this.state.fats ? parseInt(this.state.fats) : this.state.mealEntry.food_id.fats,
+      carbs: this.state.carbs ? parseInt(this.state.carbs) : this.state.mealEntry.food_id.carbs,
+      proteins: this.state.proteins ? parseInt(this.state.proteins) : this.state.mealEntry.food_id.proteins,
+      date: this.state.date ? this.state.date : this.state.mealEntry.date,
       food_id: this.state.mealEntry.food_id.id,
       user_id: this.state.currentUser,
-      meal_category_id: this.state.meal_category_id,
-      servingQty: parseInt(this.state.servingQty)
+      meal_category_id: this.state.meal_category_id ? this.state.meal_category_id : this.state.mealEntry.meal_category_id.id,
+      servingQty: this.state.servingQty ? parseInt(this.state.servingQty) : this.state.mealEntry.servingQty
     };
-    console.log(this.state.edamamExist);
+
     console.log(foodEntry);
     this.props.editMeal(
       this.state.mealEntry.id,

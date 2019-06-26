@@ -172,7 +172,7 @@ class Journal extends React.Component {
       .catch(err => console.log(err));
   };
 
-  editMealEntry = (entry_id, food_id, foodEntry) => {
+  editMealEntry = async (entry_id, food_id, foodEntry) => {
     const foodInput = {
       foodName: foodEntry.foodName,
       caloriesPerServ: foodEntry.caloriesPerServ,
@@ -193,7 +193,7 @@ class Journal extends React.Component {
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
-    client
+    await client
       .mutate({
         mutation: UPDATE_FOOD,
         variables: {
@@ -216,12 +216,12 @@ class Journal extends React.Component {
           variables: {
             userId: this.state.currentUser
           }
-        });
-      })
-      .then(response => {
-        this.setState({
-          foodEntry: response.data.getFoodEntriesByUserId
-        });
+        })
+        .then(response => {
+          this.setState({
+            foodEntry: response.data.getFoodEntriesByUserId
+          })
+        })
       })
       .catch(err => console.log(err));
   };
