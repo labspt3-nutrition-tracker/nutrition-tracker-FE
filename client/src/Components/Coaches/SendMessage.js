@@ -50,7 +50,7 @@ class SendMessageFromCoach extends React.Component{
       type: "text",
       text: this.state.message,
       read: false,
-      sender: parseInt(this.props.currentUser),
+      sender: parseInt(this.props.currentUser.id),
       recipient: parseInt(this.props.traineeID),
     };
 
@@ -84,6 +84,7 @@ class SendMessageFromCoach extends React.Component{
 
   render(){
     const { traineeID, firstName, lastName } = this.props
+    console.log('message props',this.props)
     return(
       <div>
         {traineeID &&
