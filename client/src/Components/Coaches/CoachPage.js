@@ -6,6 +6,7 @@ import TraineeList from "./TraineeList";
 import TraineeResult from "./TraineeResult";
 import TraineeSearch from "./TraineeSearch";
 import TraineeInfo from "./TraineeInfo";
+import SendMessageFromCoach from "./SendMessage";
 import { SEARCH_USER_BY_EMAIL, GET_CURRENT_USER_QUERY, GET_TRAINEES } from "../../graphql/queries";
 import { ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
 
