@@ -10,6 +10,7 @@ import ApolloClient from "apollo-boost";
 import moment from "moment";
 import gql from "graphql-tag";
 import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 
 import {
   ADD_EXERENTRY,
@@ -42,8 +43,37 @@ const styles = theme => ({
     fontFamily: "Oswald",
     textAlign: "center",
     color: "#545454"
+  },
+  title: {
+    // flexGrow: 1,
+    fontSize: 16,
+    background: "#5E366A",
+    padding: 10,
+    color: "#ffffff"
+  },
+  flexData: {
+    display: "flex",
+    justifyContent: "space-evenly"
+  },
+  flexDataCon: {
+    width: "100%",
+    maxWidth: 300,
+    margin: 0,
+    padding: 0
+  },
+  heading: {
+    fontFamily: "Oswald",
+    fontWeight: 100,
+    fontSize: "2rem"
   }
 });
+
+const Hr = styled.div`
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.2);
+  width: 90%;
+  height: 1px;
+`;
 
 // const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
 //   query getFoodEntriesByUserId($userId: ID!) {
@@ -475,65 +505,91 @@ class Dashboard extends Component {
           <Typography variant="h3" className={classes.date}>
             {currentDate}
           </Typography>
-          <Calories />
-          <DashDisplay className="container" marginTop={"5%"}>
-            <Card>
+          <Card>
+            <CardContent>
+              <Typography className={classes.title}>
+                Today's Summary:
+              </Typography>
+            </CardContent>
+            <CardContent>
+              <Calories />
+            </CardContent>
+            <CardContent className={classes.flexData}>
               {!this.state.foodIsLoading ? (
-                <FoodEntry
-                  foodEntries={this.state.foodEntries}
-                  deleteFoodEntry={this.deleteFoodEntry}
-                  foodEntry={this.state.foodEntry}
-                  onFoodEntryChange={this.onFoodEntryChange}
-                  onFoodChange={this.onFoodChange}
-                  onMealChange={this.onMealChange}
-                  editFoodEntry={this.editFoodEntry}
-                  passFoodData={this.passFoodData}
-                />
+                <Container className={classes.flexDataCon}>
+                  <Typography className={classes.heading}>Meals</Typography>
+                  <hr />
+                  <FoodEntry
+                    foodEntries={this.state.foodEntries}
+                    deleteFoodEntry={this.deleteFoodEntry}
+                    foodEntry={this.state.foodEntry}
+                    onFoodEntryChange={this.onFoodEntryChange}
+                    onFoodChange={this.onFoodChange}
+                    onMealChange={this.onMealChange}
+                    editFoodEntry={this.editFoodEntry}
+                    passFoodData={this.passFoodData}
+                  />
+                </Container>
               ) : (
                 <CircularProgress />
               )}
-            </Card>
-            <Card className={classes.forms}>
-              {this.state.showFoodForm && (
-                <EntryForm
-                  addFoodEntry={this.addFoodEntry}
-                  closeFoodForm={this.closeFoodForm}
-                />
-              )}
+              <Container className={classes.forms}>
+                {this.state.showFoodForm && (
+                  <Container className={classes.flexDataCon}>
+                    <EntryForm
+                      addFoodEntry={this.addFoodEntry}
+                      closeFoodForm={this.closeFoodForm}
+                    />
+                  </Container>
+                )}
 
-              {!this.state.showFoodForm && (
-                <ModifiedEntryForm
-                  addFoodEntry={this.addFoodEntry}
-                  selectedFood={this.props.selectedFood}
-                  handleShowFood={this.handleShowFood}
-                  revertToNormalForm={this.revertToNormalForm}
-                />
-              )}
-            </Card>
-            <Card className={classes.forms}>
+                {!this.state.showFoodForm && (
+                  <Container className={classes.flexDataCon}>
+                    <ModifiedEntryForm
+                      addFoodEntry={this.addFoodEntry}
+                      selectedFood={this.props.selectedFood}
+                      handleShowFood={this.handleShowFood}
+                      revertToNormalForm={this.revertToNormalForm}
+                    />
+                  </Container>
+                )}
+              </Container>
+            </CardContent>
+            <Hr />
+            <CardContent className={classes.forms}>
               {this.state.showExerForm && (
                 <>
-                  {!this.state.exerIsLoading ? (
-                    <ExerciseEntry
-                      exerEntries={this.state.exerEntries}
-                      deleteExerEntry={this.deleteExerEntry}
-                      onInputChange={this.onInputChange}
-                      exerEntry={this.state.exerEntry}
-                      editExerEntry={this.editExerEntry}
-                      passExerData={this.passExerData}
-                    />
-                  ) : (
-                    <CircularProgress />
-                  )}
-                  <Exercise
-                    editExerEntry={this.editExerEntry}
-                    closeExerEntry={this.closeExerEntry}
-                    addExerEntry={this.addExerEntry}
-                  />
+                  <CardContent className={classes.flexData}>
+                    {!this.state.exerIsLoading ? (
+                      <Container className={classes.flexDataCon}>
+                        <Typography className={classes.heading}>
+                          Activity
+                        </Typography>
+                        <hr />
+                        <ExerciseEntry
+                          exerEntries={this.state.exerEntries}
+                          deleteExerEntry={this.deleteExerEntry}
+                          onInputChange={this.onInputChange}
+                          exerEntry={this.state.exerEntry}
+                          editExerEntry={this.editExerEntry}
+                          passExerData={this.passExerData}
+                        />
+                      </Container>
+                    ) : (
+                      <CircularProgress />
+                    )}
+                    <Container className={classes.flexDataCon}>
+                      <Exercise
+                        editExerEntry={this.editExerEntry}
+                        closeExerEntry={this.closeExerEntry}
+                        addExerEntry={this.addExerEntry}
+                      />
+                    </Container>
+                  </CardContent>
                 </>
               )}
-            </Card>
-          </DashDisplay>
+            </CardContent>
+          </Card>
         </Container>
       );
     } else {

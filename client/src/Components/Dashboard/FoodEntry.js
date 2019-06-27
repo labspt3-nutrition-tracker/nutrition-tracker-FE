@@ -63,15 +63,17 @@ const styles = theme => ({
   },
   mealCard: {
     minHeight: 100,
-    width: '25%'
+    // width: '25%'
   },
   mealCon: {
     display: "flex",
+    flexDirection: "column",
     justifyContent: "space-evenly",
     padding: 16,
   },
   mealTitle: {
-    fontFamily: "Oswald"
+    fontFamily: "Oswald",
+    fontSize: "1.8rem"
   }
 });
 
@@ -210,10 +212,7 @@ class FoodEntry extends React.Component {
     return (
       <FoodEntryContainer>
         <div>
-          <CardContent>
-            <Typography className={classes.title}>Today's Meals:</Typography>
-          </CardContent>
-          <Paper className={classes.mealCon}>
+          <CardContent className={classes.mealCon}>
             <CardContent className={classes.mealCard}>
               <Typography className={classes.mealTitle} variant="h4">Breakfast</Typography>
               <hr/>
@@ -425,7 +424,7 @@ class FoodEntry extends React.Component {
                 Delete?
               </ModalButton>
             </FoodModal>
-          </Paper>
+          </CardContent>
         </div>
       </FoodEntryContainer>
     );
