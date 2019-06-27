@@ -4,7 +4,6 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import PersonIcon from "@material-ui/icons/Person";
 
 import MessageInfo from "./MessageInfo";
 

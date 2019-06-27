@@ -45,6 +45,7 @@ const styles = theme => ({
     backgroundColor: "#5E366A",
     color: "white",
     margin: 30,
+    fontSize: "1.4rem",
     "&:hover": {
       border: "1px solid #5E366A",
       backgroundColor: "white",
