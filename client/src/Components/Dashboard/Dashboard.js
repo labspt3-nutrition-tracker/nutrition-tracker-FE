@@ -35,6 +35,13 @@ const styles = theme => ({
     maxWidth: 960,
     width: "100%",
     marginBottom: "3%"
+  },
+  date: {
+    margin: "50px auto 0 auto",
+    padding: 20,
+    fontFamily: "Oswald",
+    textAlign: "center",
+    color: "#545454"
   }
 });
 
@@ -465,7 +472,9 @@ class Dashboard extends Component {
     if (this.state.userType === "Super User") {
       return (
         <Container className={classes.root}>
-          <Typography variant="h3">{currentDate}</Typography>
+          <Typography variant="h3" className={classes.date}>
+            {currentDate}
+          </Typography>
           <Calories />
           <DashDisplay className="container" marginTop={"5%"}>
             <Card>
@@ -504,11 +513,6 @@ class Dashboard extends Component {
             <Card className={classes.forms}>
               {this.state.showExerForm && (
                 <>
-                  <Exercise
-                    editExerEntry={this.editExerEntry}
-                    closeExerEntry={this.closeExerEntry}
-                    addExerEntry={this.addExerEntry}
-                  />
                   {!this.state.exerIsLoading ? (
                     <ExerciseEntry
                       exerEntries={this.state.exerEntries}
@@ -521,6 +525,11 @@ class Dashboard extends Component {
                   ) : (
                     <CircularProgress />
                   )}
+                  <Exercise
+                    editExerEntry={this.editExerEntry}
+                    closeExerEntry={this.closeExerEntry}
+                    addExerEntry={this.addExerEntry}
+                  />
                 </>
               )}
             </Card>
