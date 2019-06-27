@@ -19,27 +19,35 @@ import Payment from '@material-ui/icons/Payment';
 const drawerWidth = 250;
 
 const useStyles = makeStyles(theme => ({
+  container: {
+    display: "flex",
+    height: "100vh",
+    position: "absolute"
+  },
   root: {
     display: 'flex',
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    marginTop: '10%',
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+
   },
   drawerPaper: {
     width: drawerWidth,
-    marginTop: '10%',
+    // position: "relative",
+    background: "#5E366A",
     position: "absolute",
+    height: "65vh"
   },
+  // toolbar: theme.mixins.toolbar
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
   },
-  toolbar: theme.mixins.toolbar,
 
 }));
 
@@ -47,23 +55,22 @@ export default function  AccountNav() {
   const classes = useStyles();
 
   return (
+    <div 
+        className={classes.container}
+        >
         <div 
         className={classes.root}
         >
         <CssBaseline />
-        {/* <AppBar position="absolute" className={classes.appBar}>
-            <Toolbar>
-             <Typography variant="h4" noWrap> 
-                Account
-             </Typography>
-            </Toolbar>
-        </AppBar> */}
+        {/* <AppBar position="relative" className={classes.appBar}>
+      </AppBar> */}
         <Drawer
             className={classes.drawer}
             variant="permanent"
             classes={{
             paper: classes.drawerPaper,
             }}
+            anchor="left"
         >
             <div className={classes.toolbar} />
             Account
@@ -91,7 +98,8 @@ export default function  AccountNav() {
         <main className={classes.content} >
             <div className={classes.toolbar} />
         </main>
-        </div>
+      </div> 
+     </div> 
     );
 
 }
