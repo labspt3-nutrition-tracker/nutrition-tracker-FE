@@ -20,7 +20,10 @@ const styles = theme => ({
     fontSize: 16,
     background: "#5E366A",
     padding: 10,
-    color: "#ffffff"
+    color: "#ffffff",
+  },
+  calTitle: {
+    fontFamily: "Oswald"
   },
   card: {
     width: "100%",
@@ -142,7 +145,7 @@ class Calories extends React.Component {
                         </CardContent>
                         <Container className={classes.calCon}>
                           <CardContent>
-                            <Typography variant="h4">
+                            <Typography className={classes.calTitle} variant="h4">
                               Current Calories
                             </Typography>
                             <hr />
@@ -152,7 +155,7 @@ class Calories extends React.Component {
                           </CardContent>
 
                           <CardContent>
-                            <Typography variant="h4">
+                            <Typography className={classes.calTitle} variant="h4">
                               Remaining Calories
                             </Typography>
                             <hr />
@@ -162,7 +165,7 @@ class Calories extends React.Component {
                           </CardContent>
 
                           <CardContent>
-                            <Typography variant="h4">
+                            <Typography className={classes.calTitle} variant="h4">
                               Daily Calorie Goal
                             </Typography>
                             <hr />
@@ -230,6 +233,5 @@ class Calories extends React.Component {
     );
   }
 }
-
 
 export default withStyles(styles)(Calories);

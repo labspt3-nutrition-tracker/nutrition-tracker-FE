@@ -30,7 +30,6 @@ const FoodEntryContainer = styled.div`
 `;
 
 const Meal = styled.div`
-  padding: 10px;
 `;
 
 const ModalButton = styled.button`
@@ -70,6 +69,9 @@ const styles = theme => ({
     display: "flex",
     justifyContent: "space-evenly",
     padding: 16,
+  },
+  mealTitle: {
+    fontFamily: "Oswald"
   }
 });
 
@@ -213,7 +215,7 @@ class FoodEntry extends React.Component {
           </CardContent>
           <Paper className={classes.mealCon}>
             <CardContent className={classes.mealCard}>
-              <Typography variant="h4">Breakfast</Typography>
+              <Typography className={classes.mealTitle} variant="h4">Breakfast</Typography>
               <hr/>
               {Breakfast.map(entry => (
                 <div
@@ -226,7 +228,7 @@ class FoodEntry extends React.Component {
             </CardContent>
 
             <CardContent className={classes.mealCard}>
-              <Typography variant="h4">Lunch</Typography>
+              <Typography className={classes.mealTitle} variant="h4">Lunch</Typography>
               <hr/>
               {Lunch.map(entry => (
                 <div onClick={this.openModal}>
@@ -240,7 +242,7 @@ class FoodEntry extends React.Component {
               ))}
             </CardContent>
             <CardContent className={classes.mealCard}>
-              <Typography variant="h4">Dinner</Typography>
+              <Typography className={classes.mealTitle} variant="h4">Dinner</Typography>
               <hr/>
               {Dinner.map(entry => (
                 <div key={entry.id} onClick={this.openModal}>
@@ -254,7 +256,7 @@ class FoodEntry extends React.Component {
               ))}
             </CardContent>
             <CardContent className={classes.mealCard}>
-              <Typography variant="h4">Snack</Typography>
+              <Typography className={classes.mealTitle} variant="h4">Snack</Typography>
               <hr/>
               {Snack.map(entry => (
                 <div key={entry.id} onClick={this.openModal}>

@@ -9,8 +9,11 @@ import TextField from "@material-ui/core/TextField";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
+import Paper from "@material-ui/core/Paper";
 import CardContent from "@material-ui/core/CardContent";
+import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
+import { flexbox } from "@material-ui/system";
 
 const styles = theme => ({
   title: {
@@ -21,17 +24,29 @@ const styles = theme => ({
   },
   mealCard: {
     minHeight: 100,
-    width: '25%'
+    width: "25%"
   },
   mealCon: {
     display: "flex",
     justifyContent: "space-evenly",
+    padding: 16
+  },
+  exerCon: {
     padding: 16,
-  }
+    display: "flex",
+    justifyContent: "center"
+  },
+  actTitle: {
+    fontFamily: "Oswald",
+    fontSize: 20,
+    textTransform: "capitalize"
+  },
 });
 
 const ExerciseActivity = styled.div`
   padding: 10px;
+  width: 100%;
+  max-width: 200px;
 `;
 
 const ExerciseEntry = styled.div``;
@@ -150,99 +165,110 @@ class ExerEntry extends React.Component {
       return entryMonth === month && entryDay === day && entryYear === year;
     });
     if (exerEntries.length === 0) {
-      return <div>No exercise entered today.</div>;
+      return (
+        <div>
+          <CardContent>
+            <Typography className={classes.title}>Today's Activity:</Typography>
+          </CardContent>
+          <Paper className={classes.exerCon}>
+            <p>No exercise entered today.</p>
+          </Paper>
+        </div>
+      );
     } else {
       return (
         <Card>
           <CardContent>
-            <Typography className={classes.title}>Today's Calories:</Typography>
+            <Typography className={classes.title}>Today's Activity:</Typography>
           </CardContent>
-          <div>Today's exercises: </div>
-          {exerEntries.map(entry => (
-            <div onClick={() => this.passExerciseData(entry)}>
-              <div>
+          <Paper className={classes.exerCon}>
+            {exerEntries.map(entry => (
+              <div onClick={() => this.passExerciseData(entry)}>
                 <ExerciseActivity key={entry.id} entry={entry}>
-                  <div>Activity: {entry.exerciseName}</div>
+                  <Typography className={classes.actTitle}>
+                    {entry.exerciseName}
+                  </Typography>
+                  <hr />
                   <div>Calories burned: {entry.caloriesBurned}</div>
                 </ExerciseActivity>
               </div>
-            </div>
-          ))}
-          <ExerciseModal isOpen={this.state.showModal}>
-            {this.props.exerEntry && (
-              <Form>
-                <TextField
-                  required
-                  error={this.state.errorMsg.errorName}
-                  autoFocus
-                  margin="dense"
-                  label="Name of Exercise"
-                  className="form-field"
-                  type="text"
-                  placeholder="Add exercise here..."
-                  onChange={this.props.onInputChange}
-                  name="exerciseName"
-                  value={this.props.exerEntry.exerciseName}
-                  aria-describedby="errorName-text"
-                />
-                <FormHelperText id="errorName-text">
-                  {this.state.errorMsg.errorName}
-                </FormHelperText>
+            ))}
+            <ExerciseModal isOpen={this.state.showModal}>
+              {this.props.exerEntry && (
+                <Form>
+                  <TextField
+                    required
+                    error={this.state.errorMsg.errorName}
+                    autoFocus
+                    margin="dense"
+                    label="Name of Exercise"
+                    className="form-field"
+                    type="text"
+                    placeholder="Add exercise here..."
+                    onChange={this.props.onInputChange}
+                    name="exerciseName"
+                    value={this.props.exerEntry.exerciseName}
+                    aria-describedby="errorName-text"
+                  />
+                  <FormHelperText id="errorName-text">
+                    {this.state.errorMsg.errorName}
+                  </FormHelperText>
 
-                <TextField
-                  label="Date"
-                  className="form-field"
-                  type="date"
-                  name="exerciseEntryDate"
-                  error={this.state.errorMsg.errorDate}
-                  onChange={this.props.onInputChange}
-                  required
-                  aria-describedby="errorDate-text"
-                  // defaultValue={this.state.exerEntry.exerciseEntryDate}
-                  value={moment(this.props.exerEntry.exerciseEntryDate).format(
-                    "YYYY-MM-DD"
-                  )}
-                />
-                <FormHelperText id="errorDate-text">
-                  {this.state.errorMsg.errorDate}
-                </FormHelperText>
+                  <TextField
+                    label="Date"
+                    className="form-field"
+                    type="date"
+                    name="exerciseEntryDate"
+                    error={this.state.errorMsg.errorDate}
+                    onChange={this.props.onInputChange}
+                    required
+                    aria-describedby="errorDate-text"
+                    // defaultValue={this.state.exerEntry.exerciseEntryDate}
+                    value={moment(
+                      this.props.exerEntry.exerciseEntryDate
+                    ).format("YYYY-MM-DD")}
+                  />
+                  <FormHelperText id="errorDate-text">
+                    {this.state.errorMsg.errorDate}
+                  </FormHelperText>
 
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  error={this.state.errorMsg.errorCal}
-                  label="Calories Burned"
-                  className="form-field"
-                  type="number"
-                  name="caloriesBurned"
-                  onChange={this.props.onInputChange}
-                  value={this.props.exerEntry.caloriesBurned}
-                  required
-                  step="1"
-                  aria-describedby="errorCal-text"
-                />
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    error={this.state.errorMsg.errorCal}
+                    label="Calories Burned"
+                    className="form-field"
+                    type="number"
+                    name="caloriesBurned"
+                    onChange={this.props.onInputChange}
+                    value={this.props.exerEntry.caloriesBurned}
+                    required
+                    step="1"
+                    aria-describedby="errorCal-text"
+                  />
 
-                <FormHelperText id="errorCal-text">
-                  {this.state.errorMsg.errorCal}
-                </FormHelperText>
+                  <FormHelperText id="errorCal-text">
+                    {this.state.errorMsg.errorCal}
+                  </FormHelperText>
 
-                <Button
-                  className="form-field"
-                  type="submit"
-                  onClick={() => this.editExerciseEntry(this.props.exerEntry)}
-                >
-                  Edit Entry
-                </Button>
-              </Form>
-            )}
+                  <Button
+                    className="form-field"
+                    type="submit"
+                    onClick={() => this.editExerciseEntry(this.props.exerEntry)}
+                  >
+                    Edit Entry
+                  </Button>
+                </Form>
+              )}
 
-            <ModalButton onClick={this.closeModal}>No?</ModalButton>
-            <ModalButton
-              onClick={() => this.deleteExercise(this.props.exerEntry.id)}
-            >
-              Delete?
-            </ModalButton>
-          </ExerciseModal>
+              <ModalButton onClick={this.closeModal}>No?</ModalButton>
+              <ModalButton
+                onClick={() => this.deleteExercise(this.props.exerEntry.id)}
+              >
+                Delete?
+              </ModalButton>
+            </ExerciseModal>
+          </Paper>
         </Card>
       );
     }

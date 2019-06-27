@@ -26,7 +26,7 @@ const LogInOutContainer = styled.div`
   padding-right: 24px;
   display: flex;
   p {
-    font-size: 1.3em;
+    font-size: 1.6rem;
     margin: 0 10px;
   }
 `;
