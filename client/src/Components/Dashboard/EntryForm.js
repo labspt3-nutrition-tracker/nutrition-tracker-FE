@@ -11,15 +11,19 @@ import { ADD_FOOD } from "../../graphql/mutations";
 import { GET_ALL_FOOD } from "../../graphql/queries";
 import gql from "graphql-tag";
 import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 
+
 export const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-  h1 {
+
+  /* display: flex;
+  flex-direction: column; */
+  /* max-width: 500px; */
+  /* margin: 0 auto; */
+  /* padding: 20px; */
+  /* width: 100%; */
+  /* h1 {
     font-size: 1.5em;
     font-weight: bold;
     padding-bottom: 30px;
@@ -28,8 +32,7 @@ export const Form = styled.form`
   }
   @media (max-width: 800px) {
     max-width: 500px;
-    width: 100%;
-  }
+  } */
 `;
 
 const styles = theme => ({
@@ -37,7 +40,8 @@ const styles = theme => ({
     fontFamily: "Oswald"
   },
   input: {
-    fontSize: 16
+    fontSize: 16,
+    width: '100%',
   }
 });
 
@@ -417,7 +421,7 @@ class EntryForm extends Component {
     const { classes } = this.props;
     this.getCurrentUser(localStorage.getItem("token"));
     return (
-      <Form>
+      <Container>
         <Typography className={classes.formTitle} variant="h4">
           Add food entry
         </Typography>
@@ -613,7 +617,7 @@ class EntryForm extends Component {
           Add Entry
         </Button>
         <Button onClick={this.props.closeFoodForm}> Close</Button>
-      </Form>
+      </Container>
     );
   }
 }
