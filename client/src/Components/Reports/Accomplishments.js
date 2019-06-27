@@ -46,6 +46,8 @@ class Accomplishments extends Component {
     weights = weights
       .filter(weight => weight !== undefined)
       .map(entry => entry.weight);
+    if (weights.length <= 1 && currentUser.weight !== 0)
+      weights.unshift(currentUser.weight);
     const totalExerciseCalories = await getTotalExerCalories(
       exerciseEntries,
       days
@@ -76,7 +78,8 @@ class Accomplishments extends Component {
       .map((goal, i) => (goal === 0 ? days[i] : goal))
       .filter(day => day !== -1 && day !== 1);
     const weightDiff =
-      weights.length > 0 ? weights[0] - weights[weights.length - 1] : 0;
+      // weights.length > 0 ? weights[0] - weights[weights.length - 1] : 0;
+      weights.length > 0 && weights[0] - weights[weights.length - 1];
     const initialWeightDiff = currentUser.weight
       ? currentUser.weight - weights[weights.length - 1]
       : null;
@@ -154,7 +157,10 @@ class Accomplishments extends Component {
                       component="p"
                     >
                       You have lost {weightDiff} pounds in the last 7 days.
-                      (from {weights[0]} to {weights[weights.length - 1]}).
+                      {weights.length > 0 &&
+                        `(from ${weights[0]} to ${
+                          weights[weights.length - 1]
+                        }).`}
                     </Typography>
                     {initialWeightDiff > 0 && (
                       <Typography
