@@ -15,7 +15,7 @@ import AccountNav from "./Components/AccountNav";
 import AppModal from "./Components/Reusables/AppModal";
 import CoachPage from "./Components/Coaches/CoachPage";
 import MessagePage from "./Components/Messages/MessagePage";
-import Footer from "./Components/Reusables/Footer";
+import HomeFooter from "./Components/Reusables/HomeFooter";
 import { getCurrentUser } from "./util/getCurrentUser";
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
@@ -151,7 +151,7 @@ class App extends React.Component {
           <PrivateRoute path="/messages" render={() => <MessagePage />} />
         </div>
         <PrivateRoute path="/account" component={AccountNav} />
-        <Footer />
+        <HomeFooter />
       </div>
     );
   }
