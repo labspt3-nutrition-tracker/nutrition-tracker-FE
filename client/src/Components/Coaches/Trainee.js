@@ -13,7 +13,6 @@ const TraineeDiv = styled.div`
   width: 80%;
   height: 80px;
   background: #5E366A;
-  border: 1px solid black;
   -webkit-box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
   -moz-box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
   box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
