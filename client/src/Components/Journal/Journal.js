@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Calendar from "./Calendar";
 import JournalEntry from "./JournalEntry";
 import gql from "graphql-tag";
-
 import "@fullcalendar/core/main.css";
 
 import { getCurrentUser } from "../../util/getCurrentUser";

@@ -6,6 +6,7 @@ import BillingHistory from './BillingHistory';
 import ApolloClient from "apollo-boost";
 import moment from 'moment';
 import AccountNav from '../AccountNav';
+import { makeStyles } from '@material-ui/core/styles';
 
 const createSubscriptionMutation = gql`
   mutation createSubscriptionMutation($source: String!, $email: String!, $amount: Int!){
@@ -33,10 +34,21 @@ const GET_CURRENT = gql`
 `;
 
 let divStyle = {
-  marginLeft: "25%"
+  display: 'flex',
+  height: '80vh'
+  // marginLeft: "25%"
 }
 
-class Billing extends React.Component{
+// const useStyles = makeStyles(theme => ({
+  
+//   root: {
+//     display: 'flex',
+//   }
+
+// }));
+// const classes = useStyles();
+
+ class Billing extends React.Component{
   constructor(props){
     super(props);
     this.state = {
@@ -45,6 +57,7 @@ class Billing extends React.Component{
       userType: ""
     }
   }
+
   componentDidMount(){
     this.getCurrentUser(localStorage.getItem("token"))
   }
@@ -103,6 +116,10 @@ class Billing extends React.Component{
     const premium = 700;
     const coach = 1000;
     return(
+
+      // <div 
+      // className={classes.root}
+      // >
       <div style={divStyle}>
             <AccountNav />
         <div>
@@ -161,9 +178,10 @@ class Billing extends React.Component{
           )}
         </Mutation>
         <BillingHistory/>
-      </div>
+      {/* </div> */}
+    </div>
     )
   }
 }
 
-export default Billing;
+ export default Billing;

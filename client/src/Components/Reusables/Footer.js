@@ -72,7 +72,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function Footer(props) {
+export default function HomeFooter(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState('recents');
 
