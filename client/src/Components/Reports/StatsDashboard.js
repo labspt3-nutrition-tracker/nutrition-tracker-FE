@@ -27,14 +27,14 @@ const styles = theme => ({
     flexDirection: "column"
   },
   label: {
-    fontSize: "1.1rem",
+    fontSize: "1.3rem",
     marginBottom: "10px",
     marginRight: 15,
     fontFamily: "Oswald",
     color: "#60B5A9"
   },
   data: {
-    fontSize: "1.3rem",
+    fontSize: "1.6rem",
     fontFamily: "Oswald"
   },
   textField: {
@@ -51,7 +51,7 @@ const styles = theme => ({
     marginTop: 20
   },
   manyDaysBtn: {
-    fontSize: "1rem",
+    fontSize: "1.4rem",
     color: "#FCFCFB",
     border: "2px solid #5E366A",
     backgroundColor: "#5E366A",
@@ -100,19 +100,26 @@ class StatsDashboard extends React.Component {
     const userType = currentUser ? currentUser.userType : "basic";
     let tooltipTitle = "";
     if (currentUser) {
-      if (currentUser.userType === "basic") tooltipTitle = "Please upgrade to access report";
+      if (currentUser.userType === "basic")
+        tooltipTitle = "Please upgrade to access report";
     }
     return (
-      <Grid container justify='center' alignItems='center' className={classes.root}>
+      <Grid
+        container
+        justify="center"
+        alignItems="center"
+        className={classes.root}
+      >
         <Grid item md={4} xs={6}>
           <div className={classes.dataGroup}>
-            <InputLabel className={classes.label} htmlFor='data'>
+            <InputLabel className={classes.label} htmlFor="data">
               Stats
             </InputLabel>
             <Select
               className={classes.data}
               value={
-                manyDays === 1 && (selectValue === "weight" || selectValue === "exercise")
+                manyDays === 1 &&
+                (selectValue === "weight" || selectValue === "exercise")
                   ? "caloriesPerServ"
                   : selectValue
               }
@@ -147,19 +154,27 @@ class StatsDashboard extends React.Component {
         <Grid item md={4} xs={6}>
           <TextField
             onChange={this.handleDayChange}
-            id='date'
-            label='Pick a day'
-            type='date'
+            id="date"
+            label="Pick a day"
+            type="date"
             value={dayValue}
             className={classes.textField}
             InputLabelProps={{
               shrink: true,
-              style: { fontSize: "1.3rem", color: "#60B5A9", fontFamily: "Oswald" }
+              style: {
+                fontSize: "1.7rem",
+                color: "#60B5A9",
+                fontFamily: "Oswald"
+              }
             }}
             inputProps={{
-              style: { fontSize: "1.1rem", lineHeight: "1.5", marginTop: "12px" }
+              style: {
+                fontSize: "1.5rem",
+                lineHeight: "1.5",
+                marginTop: "12px"
+              }
             }}
-            margin='normal'
+            margin="normal"
           />
         </Grid>
         <Grid item md={4} xs={12}>
@@ -173,10 +188,16 @@ class StatsDashboard extends React.Component {
             </Button>
             <CloneProps>
               {tabProps => (
-                <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
+                <Tooltip
+                  TransitionComponent={Zoom}
+                  title={tooltipTitle}
+                  classes={{ tooltip: classes.tooltip }}
+                >
                   <div>
                     <Button
-                      disabled={userType === "basic" || this.state.manyDays === 30}
+                      disabled={
+                        userType === "basic" || this.state.manyDays === 30
+                      }
                       className={classes.manyDaysBtn}
                       onClick={() => this.handleManyDaysChange(30)}
                     >
@@ -188,10 +209,16 @@ class StatsDashboard extends React.Component {
             </CloneProps>
             <CloneProps>
               {tabProps => (
-                <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
+                <Tooltip
+                  TransitionComponent={Zoom}
+                  title={tooltipTitle}
+                  classes={{ tooltip: classes.tooltip }}
+                >
                   <div>
                     <Button
-                      disabled={userType === "basic" || this.state.manyDays === 365}
+                      disabled={
+                        userType === "basic" || this.state.manyDays === 365
+                      }
                       className={classes.manyDaysBtn}
                       onClick={() => this.handleManyDaysChange(365)}
                     >
