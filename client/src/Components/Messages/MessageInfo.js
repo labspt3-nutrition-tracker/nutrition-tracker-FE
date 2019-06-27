@@ -12,11 +12,29 @@ import * as moment from "moment";
 
 const styles = theme => ({
   text: {
-    fontSize: "1.4rem",
-    wordWrap: "break-word"
+    fontSize: "1.3rem",
+    wordWrap: "break-word",
+
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "1.5rem",
+      flexGrow: 2
+    },
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.7rem"
+    }
+  },
+  secondaryText: {
+    fontSize: "1rem",
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "1.5rem"
+    }
   },
   textRoot: {
-    width: "30%"
+    margin: "0 5px",
+    width: "30%",
+    [theme.breakpoints.up("md")]: {
+      width: "45%"
+    }
   },
   icon: {
     color: "#5E366A",
@@ -87,7 +105,13 @@ const MessageInfo = props => {
                   root: classes.textRoot
                 }}
               />
-              <ListItemText primary={message.created_at} />
+              <ListItemText
+                secondary={message.created_at}
+                classes={{
+                  secondary: classes.secondaryText,
+                  root: classes.textRoot
+                }}
+              />
               <ListItemIcon className={classes.icon}>
                 <DeleteIcon
                   onClick={event => props.deleteMessage(event, message.id)}

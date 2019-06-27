@@ -16,13 +16,21 @@ const styles = theme => ({
     fontFamily: "Oswald",
     height: "100vh"
   },
+  flex: {
+    justifyContent: "space-evenly"
+  },
   tab: {
     fontSize: "1.6rem",
     color: "#5E366A",
     fontFamily: "Oswald",
-    margin: 10,
+    margin: "20px 0",
     padding: "1px 6px",
-    width: "100px"
+    width: "100px",
+    border: "1px solid #5E366A",
+    "&:hover": {
+      backgroundColor: "#5E366A",
+      color: "white"
+    }
   },
   indicator: {
     backgroundColor: "#5E366A",
@@ -63,9 +71,9 @@ class MessageList extends Component {
             <Tabs
               value={option}
               onChange={this.handleChange}
-              centered
               classes={{
-                indicator: classes.noIndicator
+                indicator: classes.noIndicator,
+                flexContainer: classes.flex
               }}
             >
               <Tab

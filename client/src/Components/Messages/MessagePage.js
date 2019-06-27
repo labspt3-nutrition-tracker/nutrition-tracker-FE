@@ -25,7 +25,8 @@ import {
 
 const styles = theme => ({
   root: {
-    display: "flex"
+    display: "flex",
+    justifyContent: "space-evenly"
   },
   tab: {
     fontSize: "1.6rem",
@@ -37,6 +38,9 @@ const styles = theme => ({
   },
   indicator: {
     backgroundColor: "#60B5A9"
+  },
+  flex: {
+    justifyContent: "space-evenly"
   },
   icon: {
     fontSize: "1.5rem"
@@ -52,13 +56,19 @@ const styles = theme => ({
     outline: "none"
   },
   btn: {
-    backgroundColor: "#F4B4C3",
+    backgroundColor: "#5E366A",
     color: "white",
-    margin: 10
+    margin: 10,
+    "&:hover": {
+      border: "1px solid #5E366A",
+      backgroundColor: "white",
+      color: "#5E366A"
+    }
   },
   text: {
-    fontSize: "1.5rem",
-    wordWrap: "break-word"
+    fontSize: "1.6rem",
+    wordWrap: "break-word",
+    margin: 10
   }
 });
 
@@ -251,9 +261,9 @@ class MessagePage extends React.Component {
           value={option}
           onChange={this.handleChange}
           className={classes.tabs}
-          centered
           classes={{
-            indicator: classes.indicator
+            indicator: classes.indicator,
+            flexContainer: classes.flex
           }}
         >
           <Tab label="Inbox" className={classes.tab} />
@@ -287,12 +297,12 @@ class MessagePage extends React.Component {
             onClose={this.handleClose}
           >
             <div className={classes.modal}>
-              <Typography variant="h6" id="modal-title">
-                Sender: {currentMessage.sender.firstName}{" "}
+              <Typography variant="h4" id="modal-title">
+                {currentMessage.sender.firstName}{" "}
                 {currentMessage.sender.lastName}
               </Typography>
               <Typography
-                variant="subtitle1"
+                variant="h4"
                 id="simple-modal-description"
                 className={classes.text}
               >
