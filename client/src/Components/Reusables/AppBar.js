@@ -15,7 +15,10 @@ import { getRectCenter } from "@fullcalendar/core";
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    background: "#0CCA98",
+    background: "#40A798",
+  },
+  toolbar: {
+    justifyContent: "space-evenly"
   },
   title: {
     flexGrow: 1,
@@ -32,7 +35,7 @@ function ButtonAppBar(props) {
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.root}>
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton> */}

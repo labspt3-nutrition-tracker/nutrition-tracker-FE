@@ -35,6 +35,7 @@ const CalendarDiv = styled.div`
   width: 60%;
   border: 3px solid black;
   margin-right: 5%;
+  z-index: 0;
 
   @media (max-width: 800px) {
     width: 90%;
@@ -98,7 +99,8 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
-      datePicked: ""
+      datePicked: "",
+      foodEntry: []
     };
   }
 
@@ -169,7 +171,7 @@ class Journal extends React.Component {
       .catch(err => console.log(err));
   };
 
-  editMealEntry = (entry_id, food_id, foodEntry) => {
+  editMealEntry = async (entry_id, food_id, foodEntry) => {
     const foodInput = {
       foodName: foodEntry.foodName,
       caloriesPerServ: foodEntry.caloriesPerServ,
@@ -190,7 +192,7 @@ class Journal extends React.Component {
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
-    client
+    await client
       .mutate({
         mutation: UPDATE_FOOD,
         variables: {
@@ -213,12 +215,12 @@ class Journal extends React.Component {
           variables: {
             userId: this.state.currentUser
           }
-        });
-      })
-      .then(response => {
-        this.setState({
-          foodEntry: response.data.getFoodEntriesByUserId
-        });
+        })
+        .then(response => {
+          this.setState({
+            foodEntry: response.data.getFoodEntriesByUserId
+          })
+        })
       })
       .catch(err => console.log(err));
   };
@@ -227,12 +229,17 @@ class Journal extends React.Component {
     return (
       <JournalContainer>
         <JournalEntryDiv>
+        {this.state.foodEntry.length > 1 ? (
           <JournalEntry
             foodEntries={this.state.foodEntry}
             datePicked={this.state.datePicked}
             deleteMeal={this.deleteMealEntry}
             editMeal={this.editMealEntry}
           />
+        ) : (
+          <div>Loading</div>
+          )}
+
         </JournalEntryDiv>
         <CalendarDiv>
           <Calendar

@@ -14,28 +14,28 @@ import { updateUserData } from "../util/updateUserData";
 
 const styles = theme => ({
   title: {
-    fontFamily: "Oxygen",
-    fontSize: "2rem",
-    color: "#3685B5"
+    fontFamily: "Oswald",
+    fontSize: "3rem",
+    color: "#5E366A"
   },
   message: {
-    fontFamily: "Oxygen",
+    fontFamily: "Roboto",
     fontSize: "1.7rem",
     color: "black"
   },
   formTextLabel: {
-    fontFamily: "Oxygen",
+    fontFamily: "Roboto",
     fontSize: "1.5rem",
-    color: "#3685B5"
+    color: "#5E366A"
   },
   formTextInput: {
-    fontFamily: "Oxygen",
+    fontFamily: "Roboto",
     fontSize: "1.5rem"
   },
   btn: {
-    fontFamily: "Oxygen",
+    fontFamily: "Roboto",
     fontSize: "1.6rem",
-    color: "#3685B5"
+    color: "#5E366A"
   },
   errors: {
     fontSize: "1.5rem"

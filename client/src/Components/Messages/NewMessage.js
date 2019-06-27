@@ -41,13 +41,17 @@ class NewMessage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      recipient: this.props.recipient ? this.props.recipient : undefined,
+      recipient: null,
       message: "",
       errorText: "",
       error: false,
       selectError: false,
       formErrorText: ""
     };
+  }
+
+  componentDidMount = () => {
+    if(this.props.recipient) this.setState({recipient:this.props.recipient});
   }
 
   handleChange = event => {
@@ -70,11 +74,17 @@ class NewMessage extends React.Component {
   };
 
   render() {
-    const { classes, coaches } = this.props;
+    const { classes, coaches, trainees } = this.props;
     const { recipient, message } = this.state;
+    //combine coaches and trainees in one array - no repeats
+    const people = [...coaches]; 
+    trainees.forEach(trainee => {
+      const name = coaches.find(coach => `${coach.firstName} ${coach.lastName}` ===  `${trainee.firstName} ${trainee.lastName}`)
+      if(!name) people.push(trainee)
+    });
     return (
       <Paper className={classes.root}>
-        {coaches.length > 0 ? (
+        {coaches.length > 0 || trainees.length > 0 ? (
           <div className={classes.formWrapper}>
             <Grid container justify='center' alignItems='center'>
               <Grid item xs={12}>
@@ -89,12 +99,11 @@ class NewMessage extends React.Component {
                       id: "recipient"
                     }}
                   >
-                    {coaches.map(coach => (
-                      <MenuItem value={coach.id} key={coach.id}>
-                        {`${coach.firstName} ${coach.lastName}`} 
+                    {people.map(user => (
+                      <MenuItem value={user.id} key={user.id}>
+                        {`${user.firstName} ${user.lastName}`} 
                       </MenuItem>
                     ))}
-                    )
                   </Select>
                   <FormHelperText>{this.state.formErrorText}</FormHelperText>
                 </FormControl>

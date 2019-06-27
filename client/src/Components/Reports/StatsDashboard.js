@@ -15,55 +15,57 @@ import { getLastXDays } from "../../util/getLastXDays";
 
 const styles = theme => ({
   root: {
+    margin: "auto",
     marginTop: 20,
     padding: 15,
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald",
+    maxWidth: "1200px"
   },
   dataGroup: {
-    fontSize: "1.8rem",
     display: "flex",
+    width: "85%",
     flexDirection: "column"
   },
   label: {
-    fontSize: "1.3rem",
+    fontSize: "1.1rem",
     marginBottom: "10px",
     marginRight: 15,
-    fontFamily: "Oxygen",
-    color: "#3685B5"
+    fontFamily: "Oswald",
+    color: "#60B5A9"
   },
   data: {
-    fontSize: "1.5rem",
-    width: "90%",
-    fontFamily: "Oxygen"
+    fontSize: "1.3rem",
+    fontFamily: "Oswald"
   },
   textField: {
-    fontSize: "1.5rem",
-    width: "90%",
+    fontSize: "1.3rem",
+    width: "95%",
     margin: "0 10px",
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   manyDaysGroup: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-around",
+    width: "100%",
+    margin: "auto",
     marginTop: 20
   },
   manyDaysBtn: {
     fontSize: "1rem",
     color: "#FCFCFB",
-    margin: "0 10px",
-    border: "2px solid #F4B4C3",
-    backgroundColor: "#F4B4C3",
+    border: "2px solid #5E366A",
+    backgroundColor: "#5E366A",
     padding: "5px 8px",
     "&:hover": {
-      backgroundColor: "#2196F3",
-      borderColor: "#2196F3"
+      backgroundColor: "white",
+      color: "#545454"
     },
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   tooltip: {
-    fontSize: "1.6rem",
+    fontSize: "1.4rem",
     // color: "white",
-    backgroundColor: "#F4B4C3"
+    backgroundColor: "#60B5A9"
   }
 });
 
@@ -152,10 +154,10 @@ class StatsDashboard extends React.Component {
             className={classes.textField}
             InputLabelProps={{
               shrink: true,
-              style: { fontSize: "1.6rem", color: "#3685B5", fontFamily: "Oxygen" }
+              style: { fontSize: "1.3rem", color: "#60B5A9", fontFamily: "Oswald" }
             }}
             inputProps={{
-              style: { fontSize: "1.5rem", lineHeight: "1.5", marginTop: "12px" }
+              style: { fontSize: "1.1rem", lineHeight: "1.5", marginTop: "12px" }
             }}
             margin='normal'
           />

@@ -11,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Typography from "@material-ui/core/Typography";
 
 const Form = styled.form`
   display: flex;
@@ -405,7 +406,7 @@ class ModifiedEntryForm extends Component {
     this.getCurrentUser(localStorage.getItem("token"));
     return (
       <Form>
-        <h1>Modified Food Entry</h1>
+        <Typography variant="h4">Add food entry</Typography>
         <label htmlFor="foodName">Food</label>
 
         <h3>{this.state.newAddFood.foodName}</h3>

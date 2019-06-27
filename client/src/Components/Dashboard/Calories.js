@@ -13,14 +13,17 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    background: "#3685b5"
+    background: "#5E366A"
   },
   title: {
     // flexGrow: 1,
     fontSize: 16,
-    background: "#2C363F",
+    background: "#5E366A",
     padding: 10,
-    color: "#ffffff"
+    color: "#ffffff",
+  },
+  calTitle: {
+    fontFamily: "Oswald"
   },
   card: {
     width: "100%",
@@ -137,32 +140,35 @@ class Calories extends React.Component {
                       <Card className={classes.card}>
                         <CardContent>
                           <Typography className={classes.title}>
-                            Today's Summary:
+                            Today's Calories:
                           </Typography>
                         </CardContent>
                         <Container className={classes.calCon}>
                           <CardContent>
-                            <Typography variant="h4">
+                            <Typography className={classes.calTitle} variant="h4">
                               Current Calories
                             </Typography>
+                            <hr />
                             <Typography className={classes.num}>
                               {mealCal}
                             </Typography>
                           </CardContent>
 
                           <CardContent>
-                            <Typography variant="h4">
+                            <Typography className={classes.calTitle} variant="h4">
                               Remaining Calories
                             </Typography>
+                            <hr />
                             <Typography className={classes.num}>
                               {remainCal}
                             </Typography>
                           </CardContent>
 
                           <CardContent>
-                            <Typography variant="h4">
+                            <Typography className={classes.calTitle} variant="h4">
                               Daily Calorie Goal
                             </Typography>
+                            <hr />
                             <Typography className={classes.num}>
                               {calGoal}
                             </Typography>
@@ -227,6 +233,5 @@ class Calories extends React.Component {
     );
   }
 }
-
 
 export default withStyles(styles)(Calories);
