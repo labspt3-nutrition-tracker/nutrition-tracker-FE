@@ -246,7 +246,7 @@ const styles = theme => ({
   },
   tab: {
     fontSize: "1.7rem",
-    color: "#545454",
+    color: "#5E366A",
     fontFamily: "Oswald"
   },
   indicator: {
