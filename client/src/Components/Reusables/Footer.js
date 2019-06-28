@@ -20,13 +20,15 @@ const useStyles = makeStyles({
     width: "100%",
     height: "50vh",
     background: "#40A798",
+    position: 'absolute',
     color: "#FFFFFF",
     display: "flex",
     justifyContent: "space-around",
     flexDirection: "column",
     alignContent: "center",
     alignItems: "center",
-    textDecoration: "none"
+    textDecoration: "none",
+    zIndex:2
   },
 
   heading: {

@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
     background: "lavender"
   },
   root: {
+    zIndex: 0,
     display: 'flex',
     color: "white",
     height: "relative",
@@ -36,7 +37,12 @@ const useStyles = makeStyles(theme => ({
     textDecoration: "none",
     color: "#FFFFFF",
     border: 0,
-    fontSize: "1.5rem"
+    fontSize: "1.5rem",
+
+  },
+title2: {
+  height: "80vh"
+    // paddingBottom: 315.1,
   },
   symbol: {
     textDecoration: "none",
@@ -81,10 +87,10 @@ export default function  AccountNav() {
   const classes = useStyles();
 
   return (
-    // <div 
+    // <div
     // className={classes.container}
     // >
-        <div 
+        <div
         className={classes.root}
         >
         <CssBaseline />
@@ -101,24 +107,25 @@ export default function  AccountNav() {
             {/* <div className={classes.toolbar} /> */}
             <Divider />
             <List component={Link} to ="/settings" >
-            {['',].map((text, index) => (
+            {[''].map((text, index) => (
                 <ListItem button key={text}>
                 <ListItemIcon >{<div className={classes.symbol}><Subject /></div>}</ListItemIcon>
-                <div className={classes.title}>  Settings    </div> 
+                <div className={classes.title}>  Settings    </div>
                 <ListItemText primary={text} />
                 </ListItem>
             ))}
-           
+
             </List>
             <Divider />
             <List component={Link} to ="/billing" >
-            {[ ''].map((text, index) => (
+            {[''].map((text, index) => (
+              <div className={classes.title2}>
                   <ListItem button key={text}>
                   <ListItemIcon >{<div className={classes.symbol}><Payment /></div> }</ListItemIcon>
                   <div className={classes.title}>Billing </div>
                   <ListItemText primary={text} />
                   </ListItem>
-     
+               </div>
             ))}
             </List>
             <Divider />
@@ -126,8 +133,8 @@ export default function  AccountNav() {
         <main className={classes.content} >
             <div className={classes.toolbar} />
         </main>
-      </div> 
-    // </div> 
+      </div>
+    // </div>
     );
 
 }
