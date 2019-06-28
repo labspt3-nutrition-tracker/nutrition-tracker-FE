@@ -36,7 +36,7 @@ const GET_CURRENT = gql`
 let divStyle = {
   display: 'flex',
   height: '80vh',
-  background: "yellow"
+  justifyContent: 'space-between'
   // marginLeft: "25%"
 }
 

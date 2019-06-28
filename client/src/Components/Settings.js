@@ -26,7 +26,7 @@ const styles = theme => ({
   card: {
     width: "100%",
     maxWidth: 440,
-    margin: "25px 0 20px 550px",
+    margin: "25px 0 20px 650px",
     padding: 10,
     position: "relative"
   },

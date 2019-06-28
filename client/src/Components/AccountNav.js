@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     // position: "relative",
     background: "#5E366A",
     position: "relative",
-    height: "50vh"
+    // height: "50vh"
   },
   // toolbar: theme.mixins.toolbar,
   content: {
