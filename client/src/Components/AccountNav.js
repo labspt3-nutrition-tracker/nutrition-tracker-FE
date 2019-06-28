@@ -18,19 +18,45 @@ import Payment from '@material-ui/icons/Payment';
 
 const drawerWidth = 250;
 
+
 const useStyles = makeStyles(theme => ({
   container: {
     display: "flex",
-    height: "100vh",
-    position: "absolute"
+    // height: "100vh",
+    background: "lavender"
   },
   root: {
     display: 'flex',
+    color: "white",
+    height: "relative",
+    alignItems: "center",
+    position: "absolute",
+  },
+  title: {
+    textDecoration: "none",
+    color: "#FFFFFF",
+    border: 0,
+    fontSize: "1.5rem"
+  },
+  symbol: {
+    textDecoration: "none",
+    color: "#FFFFFF"
   },
   appBar: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
   },
+  // navHeader: {
+  //   display: 'flex',
+  //   color: "#FFFFFF",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   fontSize: "2rem",
+  //   margin: "-47px 30px 0 18px",
+  //   marginRight: "157px",
+  //   paddingBottom: 20,
+  //   // borderBottom: "1px solid #FFFFFF"
+  // },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -40,10 +66,10 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     // position: "relative",
     background: "#5E366A",
-    position: "absolute",
-    height: "65vh"
+    position: "relative",
+    height: "50vh"
   },
-  // toolbar: theme.mixins.toolbar
+  // toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
@@ -55,9 +81,9 @@ export default function  AccountNav() {
   const classes = useStyles();
 
   return (
-    <div 
-        className={classes.container}
-        >
+    // <div 
+    // className={classes.container}
+    // >
         <div 
         className={classes.root}
         >
@@ -72,25 +98,27 @@ export default function  AccountNav() {
             }}
             anchor="left"
         >
-            <div className={classes.toolbar} />
-            Account
+            {/* <div className={classes.toolbar} /> */}
             <Divider />
-            <List component={Link} to ="/settings">
-            {['Settings',].map((text, index) => (
-                
-                <ListItem button key={text} >
-                <ListItemIcon >{<Subject />}</ListItemIcon>
+            <List component={Link} to ="/settings" >
+            {['',].map((text, index) => (
+                <ListItem button key={text}>
+                <ListItemIcon >{<div className={classes.symbol}><Subject /></div>}</ListItemIcon>
+                <div className={classes.title}>  Settings    </div> 
                 <ListItemText primary={text} />
                 </ListItem>
             ))}
+           
             </List>
             <Divider />
             <List component={Link} to ="/billing" >
-            {[ 'Billing'].map((text, index) => (
-                <ListItem  button key={text}>
-                <ListItemIcon >{<Payment /> }</ListItemIcon>
-                <ListItemText primary={text} />
-                </ListItem>
+            {[ ''].map((text, index) => (
+                  <ListItem button key={text}>
+                  <ListItemIcon >{<div className={classes.symbol}><Payment /></div> }</ListItemIcon>
+                  <div className={classes.title}>Billing </div>
+                  <ListItemText primary={text} />
+                  </ListItem>
+     
             ))}
             </List>
             <Divider />
@@ -99,7 +127,7 @@ export default function  AccountNav() {
             <div className={classes.toolbar} />
         </main>
       </div> 
-     </div> 
+    // </div> 
     );
 
 }
