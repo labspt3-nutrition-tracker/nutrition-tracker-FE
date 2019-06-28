@@ -80,7 +80,6 @@ class App extends React.Component {
   };
 
   getFoodData = food => {
-    console.log("getting food data", food);
     food = this.state.searchInput;
     let encodedFood = food.replace(" ", "%20");
     this.setState({ showModal: true });
@@ -156,7 +155,6 @@ class App extends React.Component {
                 updateSearch={this.updateSearch}
               />
             )}
-            // component={Home}
           />
           <PrivateRoute
             path="/dashboard"

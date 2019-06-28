@@ -150,6 +150,12 @@ const FeatureInfo = styled.div`
   }
 `;
 
+const SearchBarSec = styled.section`
+  background: url(${searchBarBg}) no-repeat center;
+  background-size: cover;
+  width: 100%;
+`;
+
 const ImgCon = styled.div`
   max-width: 50%;
   @media (max-width: 500px) {
@@ -165,10 +171,11 @@ const styles = theme => ({
   forms: {
     display: "flex"
   },
-  searchBar: {
-    background: `url(${searchBarBg}) no-repeat center`,
-    backgroundSize: "cover"
-  },
+  // searchBar: {
+  //   background: `url(${searchBarBg}) no-repeat center`,
+  //   backgroundSize: "cover",
+  //   width: "100%"
+  // },
   searchBarCon: {
     padding: "200px 100px",
     fontSize: 16,
@@ -178,14 +185,16 @@ const styles = theme => ({
     alignItems: "center"
   },
   secTitle: {
-    color: " #545454",
+    color: " #ffffff",
     fontSize: 30,
     padding: "10px 0 0",
-    fontFamily: "Oswald"
+    fontFamily: "Oswald",
+    paddingBottom: 10
   },
   secP: {
-    color: "#545454",
-    fontSize: 20
+    color: "#ffffff",
+    fontSize: 20,
+    paddingBottom: 20
   }
 });
 
@@ -221,54 +230,6 @@ function Home(props) {
           <Tagline>
             Quick, easy food tracking to help you accomplish your health goals
           </Tagline>
-          {/* <Features>
-          <Feature>
-            <ImgCon>
-              <FeatureImg
-                alt="photo by Lily Banse - unsplash @lvnatikk"
-                src={require("../../Assets/food_image.jpeg")}
-              />
-            </ImgCon>
-            <FeatureInfo>
-              <h2> Food Database API</h2>
-              <hr />
-              <p> Search our integrated food database or create your own. </p>
-            </FeatureInfo>
-          </Feature>
-
-          <Feature_Reverse>
-            <ImgCon>
-              <FeatureImg src={require("../../Assets/custom_reports.png")} />
-            </ImgCon>
-            <FeatureInfo>
-              <h2> Custom Reports</h2>
-              <hr />
-              <p>
-                See your progress with our customer reports. Whether your goal
-                is to keep track of your nutrients or just a calory count, we
-                have it all for you.
-              </p>
-            </FeatureInfo>
-          </Feature_Reverse>
-
-          <Feature>
-            <ImgCon>
-              <FeatureImg
-                alt="photo by bruce mars - unsplash @brucemars"
-                src={require("../../Assets/trainer.jpeg")}
-              />
-            </ImgCon>
-            <FeatureInfo>
-              <h2> Trainer functionality (future release)</h2>
-              <hr />
-              <p>
-                Have your trainer be included in your journey. Whether it's just
-                to see your progress or keep you accountable, our trainer
-                feature allows you to get that trainer-trainee communication.
-              </p>
-            </FeatureInfo>
-          </Feature>
-        </Features> */}
           <Features>
             <Feature>
               <ImgCon>
@@ -328,7 +289,7 @@ function Home(props) {
           </Features>
         </Container>
       </SecondPane>
-      <Container className={classes.searchBar}>
+      <SearchBarSec>
         <Container className={classes.searchBarCon}>
           <Typography className={classes.secTitle}>Give it a shot.</Typography>
           <Typography className={classes.secP}>
@@ -342,7 +303,7 @@ function Home(props) {
             />
           </SearchFeature>
         </Container>
-      </Container>
+      </SearchBarSec>
       <BillingDiv>
         <Container className={classes.root}>
           <BillingPlans />
