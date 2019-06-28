@@ -34,6 +34,7 @@ const styles = theme => ({
   exerCon: {
     padding: 16,
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center"
   },
   actTitle: {
@@ -167,21 +168,16 @@ class ExerEntry extends React.Component {
     if (exerEntries.length === 0) {
       return (
         <div>
-          <CardContent>
-            <Typography className={classes.title}>Today's Activity:</Typography>
-          </CardContent>
-          <Paper className={classes.exerCon}>
+          <hr />
+          <CardContent className={classes.exerCon}>
             <p>No exercise entered today.</p>
-          </Paper>
+          </CardContent>
         </div>
       );
     } else {
       return (
-        <Card>
-          <CardContent>
-            <Typography className={classes.title}>Today's Activity:</Typography>
-          </CardContent>
-          <Paper className={classes.exerCon}>
+        <CardContent>
+          <CardContent className={classes.exerCon}>
             {exerEntries.map(entry => (
               <div onClick={() => this.passExerciseData(entry)}>
                 <ExerciseActivity key={entry.id} entry={entry}>
@@ -268,8 +264,8 @@ class ExerEntry extends React.Component {
                 Delete?
               </ModalButton>
             </ExerciseModal>
-          </Paper>
-        </Card>
+          </CardContent>
+        </CardContent>
       );
     }
   }
