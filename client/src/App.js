@@ -65,9 +65,8 @@ class App extends React.Component {
   }
 
   updateSearch = e => {
-    console.log(this.state.searchInput);
     this.setState({
-      searchInput: e.target.value
+      [e.target.name]: e.target.value
     });
   };
 
@@ -89,11 +88,11 @@ class App extends React.Component {
         `https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`
       )
       .then(response => {
+        console.log(this.state.searchInput)
         this.setState({
           searchResults: response.data.hints,
           searchInput: "",
           noResultError: "",
-          // showModal: true
           resultsLoading: false
         });
         console.log("search results", this.state.searchResults);
@@ -119,6 +118,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header
+          resetSearch={this.resetSearch}
           searchInput={this.state.searchInput}
           updateSearch={this.updateSearch}
           getFoodData={this.getFoodData}

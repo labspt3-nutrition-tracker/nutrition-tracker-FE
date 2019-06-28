@@ -52,6 +52,7 @@ class Header extends React.Component {
     this.getCurrentUser(localStorage.getItem("token"));
   }
 
+
   getCurrentUser = idToken => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
