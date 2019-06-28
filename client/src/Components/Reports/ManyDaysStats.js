@@ -62,16 +62,20 @@ class ManyDaysStats extends Component {
     return (
       <div className={classes.root}>
         <h2 className={classes.header}>
-          Total {dataType === "caloriesPerServ" ? "Calories" : dataType} for the last{" "}
-          {days.length === 365 ? "Year" : days.length + " days"}
+          Total {dataType === "caloriesPerServ" ? "Calories" : dataType} for the
+          last {days.length === 365 ? "Year" : days.length + " days"}
         </h2>
         {this.state.entries.length !== 0 ? (
-          <Grid container justify='center' alignItems='center'>
+          <Grid container justify="center" alignItems="center">
             <Grid item md={3} xs={12}>
               {this.state.entries.map((entry, i) => (
                 <div key={labels[i]} className={classes.dataInfo}>
-                  <span className={classes.title}>{moment(new Date(labels[i])).format("MMM Do")}</span>
-                  <div className={classes.value}>{entry === 0 ? "No Entry" : entry.toFixed(2)}</div>
+                  <span className={classes.title}>
+                    {moment(new Date(labels[i])).format("MMM Do")}
+                  </span>
+                  <div className={classes.value}>
+                    {entry === 0 ? "No Entry" : entry.toFixed(2)}
+                  </div>
                 </div>
               ))}
             </Grid>
@@ -107,7 +111,7 @@ const styles = theme => ({
   },
   header: {
     textAlign: "center",
-    fontSize: "1.8rem",
+    fontSize: "2.5rem",
     marginBottom: "20px",
     color: "#545454",
     textTransform: "uppercase",
@@ -115,12 +119,12 @@ const styles = theme => ({
   },
   title: {
     color: "#60B5A9",
-    fontSize: "1.4rem",
+    fontSize: "1.8rem",
     width: "50%",
     fontFamily: "Oswald"
   },
   value: {
-    fontSize: "1.4rem",
+    fontSize: "1.8rem",
     paddingLeft: "10px",
     fontFamily: "Oswald"
   },

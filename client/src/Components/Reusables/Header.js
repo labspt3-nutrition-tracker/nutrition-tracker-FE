@@ -6,7 +6,6 @@ import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
 import { NavLink } from "react-router-dom";
 
-
 const LogoContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -26,11 +25,9 @@ const Logo = styled.div`
 const LogInOutContainer = styled.div`
   padding-right: 24px;
   display: flex;
-
-  p{
-    font-size: 1.3em;
+  p {
+    font-size: 1.6rem;
     margin: 0 10px;
-    padding-bottom: 30px;
   }
 `;
 
@@ -43,18 +40,16 @@ const GET_CURRENT = gql`
   }
 `;
 
-
-
-class Header extends React.Component{
-  constructor(props){
+class Header extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       loggedOut: false
-    }
+    };
   }
 
-  componentDidMount(){
-    this.getCurrentUser(localStorage.getItem("token"))
+  componentDidMount() {
+    this.getCurrentUser(localStorage.getItem("token"));
   }
 
 
@@ -69,10 +64,10 @@ class Header extends React.Component{
         query: GET_CURRENT
       })
       .then(response => {
-        if(response.data.getCurrentUser){
+        if (response.data.getCurrentUser) {
           this.setState({
             loggedOut: true
-          })
+          });
         }
       })
       .catch(err => console.log(err));
@@ -81,21 +76,21 @@ class Header extends React.Component{
   logIn = () => {
     this.setState({
       loggedOut: !this.state.loggedOut
-    })
-  }
+    });
+  };
   logOut = () => {
-    console.log(localStorage.getItem("token"))
-    if (this.state.loggedOut){
-      localStorage.removeItem("token")
+    console.log(localStorage.getItem("token"));
+    if (this.state.loggedOut) {
+      localStorage.removeItem("token");
       this.setState({
         loggedOut: !this.state.loggedOut
-      })
+      });
     }
-  }
+  };
 
-  render(){
-    const loggedOut = this.state.loggedOut
-    return(
+  render() {
+    const loggedOut = this.state.loggedOut;
+    return (
       <div>
         <LogoContainer>
           <Logo>
@@ -103,21 +98,24 @@ class Header extends React.Component{
           </Logo>
           <LogInOutContainer>
             {loggedOut ? (
-                <NavLink to="/" onClick={() => this.logOut()}>
-                  <p>Logout</p>
-                </NavLink>
-              ) : (
-                <NavLink to="/login" onClick={() => this.logIn()}>
-                  <p>Login</p>
-                </NavLink>
-              )}
+              <NavLink to="/" onClick={() => this.logOut()}>
+                <p>Logout</p>
+              </NavLink>
+            ) : (
+              <NavLink to="/login" onClick={() => this.logIn()}>
+                <p>Login</p>
+              </NavLink>
+            )}
           </LogInOutContainer>
-
         </LogoContainer>
 
-        <AppBar updateSearch={this.props.updateSearch}  searchInput={this.props.inputSearch} getFoodData={this.props.getFoodData}/>
+        <AppBar
+          updateSearch={this.props.updateSearch}
+          searchInput={this.props.inputSearch}
+          getFoodData={this.props.getFoodData}
+        />
       </div>
-    )
+    );
   }
 }
 

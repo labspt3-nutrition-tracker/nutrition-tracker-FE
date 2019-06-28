@@ -72,9 +72,7 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 const AppModal = props => {
-  console.log(props)
   if (props.resultsLoading) {
-    console.log("loading results")
     return (
       <Modal style={customStyles} isOpen={props.isOpen}>
         <CircularProgress />

@@ -18,28 +18,68 @@ import Payment from '@material-ui/icons/Payment';
 
 const drawerWidth = 250;
 
+
 const useStyles = makeStyles(theme => ({
+  container: {
+    display: "flex",
+    // height: "100vh",
+    background: "lavender"
+  },
   root: {
+    zIndex: 0,
     display: 'flex',
+    color: "white",
+    height: "relative",
+    alignItems: "center",
+    position: "absolute",
+  },
+  title: {
+    textDecoration: "none",
+    color: "#FFFFFF",
+    border: 0,
+    fontSize: "1.5rem",
+
+  },
+title2: {
+  height: "80vh"
+    // paddingBottom: 315.1,
+  },
+  symbol: {
+    textDecoration: "none",
+    color: "#FFFFFF"
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    marginTop: '10%',
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
   },
+  // navHeader: {
+  //   display: 'flex',
+  //   color: "#FFFFFF",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   fontSize: "2rem",
+  //   margin: "-47px 30px 0 18px",
+  //   marginRight: "157px",
+  //   paddingBottom: 20,
+  //   // borderBottom: "1px solid #FFFFFF"
+  // },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+
   },
   drawerPaper: {
     width: drawerWidth,
-    marginTop: '10%',
-    position: "absolute",
+    // position: "relative",
+    background: "#5E366A",
+    position: "relative",
+    // height: "50vh"
   },
+  // toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
   },
-  toolbar: theme.mixins.toolbar,
 
 }));
 
@@ -47,43 +87,45 @@ export default function  AccountNav() {
   const classes = useStyles();
 
   return (
-        <div 
+    // <div
+    // className={classes.container}
+    // >
+        <div
         className={classes.root}
         >
         <CssBaseline />
-        {/* <AppBar position="absolute" className={classes.appBar}>
-            <Toolbar>
-             <Typography variant="h4" noWrap> 
-                Account
-             </Typography>
-            </Toolbar>
-        </AppBar> */}
+        {/* <AppBar position="relative" className={classes.appBar}>
+      </AppBar> */}
         <Drawer
             className={classes.drawer}
             variant="permanent"
             classes={{
             paper: classes.drawerPaper,
             }}
+            anchor="left"
         >
-            <div className={classes.toolbar} />
-            Account
+            {/* <div className={classes.toolbar} /> */}
             <Divider />
-            <List component={Link} to ="/settings">
-            {['Settings',].map((text, index) => (
-                
-                <ListItem button key={text} >
-                <ListItemIcon >{<Subject />}</ListItemIcon>
+            <List component={Link} to ="/settings" >
+            {[''].map((text, index) => (
+                <ListItem button key={text}>
+                <ListItemIcon >{<div className={classes.symbol}><Subject /></div>}</ListItemIcon>
+                <div className={classes.title}>  Settings    </div>
                 <ListItemText primary={text} />
                 </ListItem>
             ))}
+
             </List>
             <Divider />
             <List component={Link} to ="/billing" >
-            {[ 'Billing'].map((text, index) => (
-                <ListItem  button key={text}>
-                <ListItemIcon >{<Payment /> }</ListItemIcon>
-                <ListItemText primary={text} />
-                </ListItem>
+            {[''].map((text, index) => (
+              <div className={classes.title2}>
+                  <ListItem button key={text}>
+                  <ListItemIcon >{<div className={classes.symbol}><Payment /></div> }</ListItemIcon>
+                  <div className={classes.title}>Billing </div>
+                  <ListItemText primary={text} />
+                  </ListItem>
+               </div>
             ))}
             </List>
             <Divider />
@@ -91,7 +133,8 @@ export default function  AccountNav() {
         <main className={classes.content} >
             <div className={classes.toolbar} />
         </main>
-        </div>
+      </div>
+    // </div>
     );
 
 }
