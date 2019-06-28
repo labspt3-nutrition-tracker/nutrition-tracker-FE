@@ -13,6 +13,10 @@ const styles = theme => ({
   }
 })
 
+const messageContainer = styled.div`
+  background: #40A798;
+`;
+
 class SendMessageFromCoach extends React.Component{
   constructor(props){
     super(props)
@@ -86,12 +90,13 @@ class SendMessageFromCoach extends React.Component{
     const { traineeID, firstName, lastName } = this.props
     console.log('message props',this.props)
     return(
-      <div>
+      <div style={{width:"80%", marginLeft:"10%", borderRadius:"10px", boxShadow: "6px 6px 15px -5px rgba(0,0,0,0.75)"}}>
         {traineeID &&
-          <div>
+          <div style={{padding: 10}}>
             Send Message to: {firstName} {lastName}
             <TextField
               label="message"
+              style={{background: "#fff"}}
               rows="10"
               error={this.state.error}
               helperText={this.state.errorText}
@@ -105,12 +110,11 @@ class SendMessageFromCoach extends React.Component{
                 name: "message"
               }}
             />
-          <Button onClick={this.handleSubmit}>
-            Send
-          </Button>
-
-          </div>}
-
+            <Button onClick={this.handleSubmit} style={{background: "#40A798"}}>
+              Send
+            </Button>
+          </div>
+        }
       </div>
     )
   }
