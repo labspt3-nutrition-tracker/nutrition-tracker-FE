@@ -184,6 +184,10 @@ button {
   color: #545454;
 }
 
+.searchBarHome {
+  width: 100%;
+  max-width: 400px;
+}
 /* ------------ MEDIA QUERIES ------------ */
 
 @media (max-width: 800px) {
