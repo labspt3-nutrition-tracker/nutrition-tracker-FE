@@ -13,31 +13,50 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    background: "#3685b5"
+    background: "#5E366A"
   },
   title: {
     // flexGrow: 1,
     fontSize: 16,
-    background: "#2C363F",
+    background: "#5E366A",
     padding: 10,
-    color: "#ffffff"
+    color: "#ffffff",
+  },
+  calTitle: {
+    fontFamily: "Oswald",
+    // fontFamily: "Roboto Condensed",
+    fontSize: 18
   },
   card: {
     width: "100%",
     maxWidth: 960,
     margin: "0 auto",
     display: "flex",
-    flexDirection: "column",
-    marginTop: 30,
-    marginBottom: 50
+    flexDirection: "column"
+    // marginTop: 30,
+    // marginBottom: 50
   },
   num: {
-    fontSize: 20
+    fontSize: 20,
+    fontWeight: "bold",
+    // letterSpacing: 1.2,
+    fontFamily:"Oswald"
+  },
+  centerNum: {
+    fontSize: 40,
+    fontWeight: "bold",
+    // letterSpacing: 1.2,
+    fontFamily:"Oswald"
   },
   calCon: {
     display: "flex",
     textAlign: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: "flex-end",
+    color: "#545454"
+  },
+  calConWrap: {
+    paddingBottom: 0
   },
   progress: {
     margin: theme.spacing(2)
@@ -134,41 +153,45 @@ class Calories extends React.Component {
                     const mealCal = 0;
                     const remainCal = calGoal - mealCal;
                     return (
-                      <Card className={classes.card}>
-                        <CardContent>
-                          <Typography className={classes.title}>
-                            Today's Summary:
-                          </Typography>
-                        </CardContent>
+                      <CardContent className={classes.card}>
                         <Container className={classes.calCon}>
-                          <CardContent>
-                            <Typography variant="h4">
-                              Current Calories
-                            </Typography>
+                          <CardContent className={classes.calConWrap}>
                             <Typography className={classes.num}>
                               {mealCal}
                             </Typography>
+                            <Typography
+                              className={classes.calTitle}
+                              variant="h4"
+                            >
+                              Calorie Intake
+                            </Typography>
                           </CardContent>
 
-                          <CardContent>
-                            <Typography variant="h4">
-                              Remaining Calories
-                            </Typography>
-                            <Typography className={classes.num}>
+                          <CardContent className={classes.calConWrap}>
+                            <Typography className={classes.centerNum}>
                               {remainCal}
                             </Typography>
+                            <Typography
+                              className={classes.calTitle}
+                              variant="h4"
+                            >
+                              Remaining Calories
+                            </Typography>
                           </CardContent>
 
-                          <CardContent>
-                            <Typography variant="h4">
-                              Daily Calorie Goal
-                            </Typography>
+                          <CardContent className={classes.calConWrap}>
                             <Typography className={classes.num}>
                               {calGoal}
                             </Typography>
+                            <Typography
+                              className={classes.calTitle}
+                              variant="h4"
+                            >
+                              Daily Calorie Goal
+                            </Typography>
                           </CardContent>
                         </Container>
-                      </Card>
+                      </CardContent>
                     );
                   } else {
                     foodEntries.map(entry =>
@@ -181,41 +204,36 @@ class Calories extends React.Component {
                     });
                     const remainCal = calGoal - mealCal;
                     return (
-                      <Card className={classes.card}>
-                        <CardContent>
-                          <Typography className={classes.title}>
-                            Today's Summary:
-                          </Typography>
-                        </CardContent>
+                      <CardContent className={classes.card}>
                         <Container className={classes.calCon}>
-                          <CardContent>
-                            <Typography variant="h4">
-                              Current Calories
-                            </Typography>
+                          <Container className={classes.calConWrap}>
                             <Typography className={classes.num}>
                               {mealCal}
                             </Typography>
-                          </CardContent>
-
-                          <CardContent>
-                            <Typography variant="h4">
-                              Remaining Calories
+                            <Typography className={classes.calTitle} variant="h4">
+                              Calorie Intake
                             </Typography>
-                            <Typography className={classes.num}>
+                          </Container>
+
+                          <Container className={classes.calConWrap}>
+                            <Typography className={classes.centerNum}>
                               {remainCal}
                             </Typography>
-                          </CardContent>
-
-                          <CardContent>
-                            <Typography variant="h4">
-                              Daily Calorie Goal
+                            <Typography className={classes.calTitle} variant="h4">
+                              Remaining Calories
                             </Typography>
+                          </Container>
+
+                          <Container className={classes.calConWrap}>
                             <Typography className={classes.num}>
                               {calGoal}
                             </Typography>
-                          </CardContent>
+                            <Typography className={classes.calTitle} variant="h4">
+                              Daily Calorie Goal
+                            </Typography>
+                          </Container>
                         </Container>
-                      </Card>
+                      </CardContent>
                     );
                   }
                 }}
@@ -227,6 +245,5 @@ class Calories extends React.Component {
     );
   }
 }
-
 
 export default withStyles(styles)(Calories);

@@ -80,7 +80,10 @@ class StatsView extends React.Component {
   };
 
   handleChartChange = days => {
-    if (days.length === 1 && (this.state.data === "weight" || this.state.data === "exercise"))
+    if (
+      days.length === 1 &&
+      (this.state.data === "weight" || this.state.data === "exercise")
+    )
       this.setState({ data: "caloriesPerServ" });
     this.setState({ days: days });
   };
@@ -95,7 +98,16 @@ class StatsView extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { option, foodEntries, days, data, exerciseEntries, weightEntries, currentUser, initialWeight } = this.state;
+    const {
+      option,
+      foodEntries,
+      days,
+      data,
+      exerciseEntries,
+      weightEntries,
+      currentUser,
+      initialWeight
+    } = this.state;
     let tooltipTitle = "";
 
     if (this.state.statsLoading) {
@@ -106,7 +118,8 @@ class StatsView extends React.Component {
       );
     } else {
       if (currentUser) {
-        if (currentUser.userType === "basic") tooltipTitle = "Please upgrade to access report";
+        if (currentUser.userType === "basic")
+          tooltipTitle = "Please upgrade to access report";
       }
       return (
         <>
@@ -120,22 +133,30 @@ class StatsView extends React.Component {
                   indicator: classes.indicator
                 }}
               >
-                <Tab label='Charts' className={classes.tab} />
+                <Tab label="Charts" className={classes.tab} />
                 <CloneProps>
                   {tabProps => (
-                    <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
+                    <Tooltip
+                      TransitionComponent={Zoom}
+                      title={tooltipTitle}
+                      classes={{ tooltip: classes.tooltip }}
+                    >
                       <div>
                         <Tab
                           {...tabProps}
                           className={classes.tab}
-                          disabled={currentUser ? currentUser.userType === "basic" : true}
+                          disabled={
+                            currentUser
+                              ? currentUser.userType === "basic"
+                              : true
+                          }
                           label={<span>Accomplishments</span>}
                         />
                       </div>
                     </Tooltip>
                   )}
                 </CloneProps>
-                <Tab label='PDF Report' className={classes.tab} />
+                <Tab label="PDF Report" className={classes.tab} />
               </Tabs>
             </Paper>
             {option === 0 ? (
@@ -146,17 +167,32 @@ class StatsView extends React.Component {
                   currentUser={currentUser}
                 />
                 {days.length === 1 ? (
-                  <OneDayStats foodEntries={foodEntries} days={days} data={data} />
+                  <OneDayStats
+                    foodEntries={foodEntries}
+                    days={days}
+                    data={data}
+                  />
                 ) : (
                   <>
                     {data === "weight" ? (
-                      <WeightStats weightEntries={weightEntries} days={days} initialWeight={initialWeight} />
+                      <WeightStats
+                        weightEntries={weightEntries}
+                        days={days}
+                        initialWeight={initialWeight}
+                      />
                     ) : (
                       <>
                         {data === "exercise" ? (
-                          <ExerciseStats exerciseEntries={exerciseEntries} days={days} />
+                          <ExerciseStats
+                            exerciseEntries={exerciseEntries}
+                            days={days}
+                          />
                         ) : (
-                          <ManyDaysStats foodEntries={foodEntries} days={days} dataType={data} />
+                          <ManyDaysStats
+                            foodEntries={foodEntries}
+                            days={days}
+                            dataType={data}
+                          />
                         )}
                       </>
                     )}
@@ -209,8 +245,8 @@ const styles = theme => ({
     fontFamily: "Oswald"
   },
   tab: {
-    fontSize: "1.2rem",
-    color: "#545454",
+    fontSize: "1.7rem",
+    color: "#5E366A",
     fontFamily: "Oswald"
   },
   indicator: {

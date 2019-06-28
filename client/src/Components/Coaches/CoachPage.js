@@ -6,6 +6,7 @@ import TraineeList from "./TraineeList";
 import TraineeResult from "./TraineeResult";
 import TraineeSearch from "./TraineeSearch";
 import TraineeInfo from "./TraineeInfo";
+import SendMessageFromCoach from "./SendMessage";
 import { SEARCH_USER_BY_EMAIL, GET_CURRENT_USER_QUERY, GET_TRAINEES } from "../../graphql/queries";
 import { ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
 
@@ -36,7 +37,9 @@ class CoachPage extends React.Component {
       isSearchModalOpen: false,
       trainees: [],
       selectedTrainee: [],
-      noUserFoundError: ""
+      noUserFoundError: "",
+      errorText: "",
+      error: false,
     };
   }
 
@@ -164,6 +167,8 @@ class CoachPage extends React.Component {
           />
         <TraineeList
           trainees={this.state.trainees} handleChooseUser={this.handleChooseUser} />
+        <SendMessageFromCoach traineeID={this.state.selectedTrainee.id} firstName={this.state.selectedTrainee.firstName} lastName={this.state.selectedTrainee.lastName}
+        currentUser={this.state.currentUser} />
         </TraineeBasic>
         <TraineeDetailed>
           <TraineeInfo traineeID={this.state.selectedTrainee.id} />

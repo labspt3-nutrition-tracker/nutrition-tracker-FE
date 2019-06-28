@@ -114,7 +114,6 @@ section {
 }
 body {
   line-height: 1;
-  font-size: 62.5%;
 }
 ol,
 ul {
@@ -139,13 +138,26 @@ table {
 
 /* BEGIN CUSTOM STYLES  */
 @import url("https://fonts.googleapis.com/css?family=Oswald&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap');
 
 * {
   box-sizing: border-box;
 }
 
 html {
+  font-size: 62.5%;
   font-family: Roboto, sans-serif;
+}
+
+body {
+  font-size: 1.6rem;
+  color: #545454;
+}
+
+button {
+  border: none;
+  outline: none;
+  transition: 0.3s all ease-out;
 }
 
 .home {
@@ -154,18 +166,6 @@ html {
   background-repeat: no-repeat;
   color: #000;
 }
-
-/* .fc-today {
-  background: #40a798 !important;
-}
-
-.fc-highlight {
-  background: #f4b4c3 !important;
-}
-
-.fc-view-container {
-  z-index: 0;
-} */
 
 .navLink {
   color: #fcfcfb;
@@ -182,8 +182,6 @@ html {
 
 .active {
   color: #545454;
-  /* text-shadow: none; */
-  /* text-decoration: underline; */
 }
 
 /* ------------ MEDIA QUERIES ------------ */
