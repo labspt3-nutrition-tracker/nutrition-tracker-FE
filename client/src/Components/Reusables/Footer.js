@@ -2,18 +2,18 @@ import React, { useEffect } from 'react';
 // import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
-// import ApolloClient from "apollo-boost";
-// import { gql } from "apollo-boost";
+import ApolloClient from "apollo-boost";
+import { gql } from "apollo-boost";
 import { getCurrentUser } from "../../util/getCurrentUser";
 
-// const GET_CURRENT = gql`
-//   query getCurrentUser {
-//     getCurrentUser {
-//       id
-//       email
-//     }
-//   }
-// `;
+const GET_CURRENT = gql`
+  query getCurrentUser {
+    getCurrentUser {
+      id
+      email
+    }
+  }
+`;
 
 const useStyles = makeStyles({
   root: {
@@ -83,51 +83,54 @@ const useStyles = makeStyles({
 export default function HomeFooter(props) {
   const classes = useStyles();
   // const [value, setValue] = React.useState('recents');
-  const [value, setValue, loggedOut] = React.useState(false);
+  const [loggedOut, setValue] = React.useState(false);
 
-// const getCurrentUser = idToken => {
-//   const client = new ApolloClient({
-//     uri: "https://nutrition-tracker-be.herokuapp.com",
-//     headers: { authorization: idToken }
-//   });
+const getCurrentUser = idToken => {
+  const client = new ApolloClient({
+    uri: "https://nutrition-tracker-be.herokuapp.com",
+    headers: { authorization: idToken }
+  });
 
-//   client
-//     .query({
-//       query: GET_CURRENT
-//     })
-//     .then(response => {
-//       if (response.data.getCurrentUser) {
-//         // this.setState({
-//         //   loggedOut: true
-//         // });
-//         setValue({
-//           loggedOut: true
-//         })
-//       }
-//     })
-//     .catch(err => console.log(err));
-// };
+  client
+    .query({
+      query: GET_CURRENT
+    })
+    .then(response => {
+      if (response.data.getCurrentUser) {
+        // this.setState({
+        //   loggedOut: true
+        // });
+        console.log("user exis")
+      }
+    })
+    .catch(err => console.log(err));
+};
 
-React.useEffect(  loggedOut  => {
+// React.useEffect(  loggedOut  => {
+//   const token = localStorage.getItem("token");
+//   getCurrentUser(token)
+//     .then()
+//     .catch(err => {
+//       console.log(err);
+//       localStorage.removeItem("token"); //If token expired or not valid, remove it
+//     });
+//   })
+React.useEffect(() => {
   const token = localStorage.getItem("token");
   getCurrentUser(token)
-    .then()
-    .catch(err => {
-      console.log(err);
-      localStorage.removeItem("token"); //If token expired or not valid, remove it
-    });
-  })
-// React.useEffect(() => {
-//   const token = localStorage.getItem("token");
-//     getCurrentUser(token)
-//     // console.log(token);
-// })
+  // console.log(token)
+  if (token) {
+    setValue(true)
+  } else {
+    setValue(false)
+  }
+})
 
 
 // const logIn = event => setValue({loggedOut: !loggedOut})
 
 
-// const logOut = event => { 
+// const logOut = event => {
 //   if (loggedOut) {
 //   localStorage.removeItem("token")
 //   setValue({loggedOut: !loggedOut})
@@ -136,33 +139,17 @@ React.useEffect(  loggedOut  => {
 // }
 
 
-  function handleChange(event, newValue) {
-    setValue(newValue);
-  }
+  // function handleChange(event, newValue) {
+  //   setValue(newValue);
+  // }
 
   return (
+    console.log(loggedOut),
 <>
-  {  !loggedOut ? (
-    <BottomNavigation value={value}  onChange={handleChange} className={classes.root}
-    loggedOut={loggedOut}
-    >
+  {loggedOut ? (
 
-      <div className={classes.heading}>What are you waiting for? Let's get started.</div>
-          <button className={classes.button}>Sign Up</button> 
-      <div className={classes.lowerDiv}>
-        <div className={classes.contactDiv}>
-          <div className={classes.lDiv}>About Us</div>
-          <div className={classes.lDiv}>|</div>
-          <div className={classes.lDiv}>Contact</div>
-          <div className={classes.lDiv}>|</div>
-          <div className={classes.lDiv}><a className={classes.href} href="https://github.com/labspt3-nutrition-tracker">Github</a> </div>
-        </div>
-      </div>
-      <div className={classes.copyright}>Copyright 2019 Lambda School</div>
-      </BottomNavigation>
-          ) : (
-            <BottomNavigation value={value}  onChange={handleChange} className={classes.root}>
-            <div className={classes.heading}>Nutrition Tracker</div> 
+            <BottomNavigation  className={classes.root}>
+            <div className={classes.heading}>Nutrition Tracker</div>
         <div className={classes.lowerDiv}>
           <div className={classes.contactDiv}>
             <div className={classes.lDiv}>About Us</div>
@@ -174,6 +161,21 @@ React.useEffect(  loggedOut  => {
         </div>
         <div className={classes.copyright}>Copyright 2019 Lambda School</div>
         </BottomNavigation>
+          ) : (
+            <BottomNavigation  className={classes.root}>                                                                                                                                                                     >
+              <div className={classes.heading}>What are you waiting for? Let's get started.</div>
+                  <button className={classes.button}>Sign Up</button>
+              <div className={classes.lowerDiv}>
+                <div className={classes.contactDiv}>
+                  <div className={classes.lDiv}>About Us</div>
+                  <div className={classes.lDiv}>|</div>
+                  <div className={classes.lDiv}>Contact</div>
+                  <div className={classes.lDiv}>|</div>
+                  <div className={classes.lDiv}><a className={classes.href} href="https://github.com/labspt3-nutrition-tracker">Github</a> </div>
+                </div>
+              </div>
+              <div className={classes.copyright}>Copyright 2019 Lambda School</div>
+            </BottomNavigation>
           )}
   </>
   );

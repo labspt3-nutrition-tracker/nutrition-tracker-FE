@@ -41,7 +41,7 @@ let divStyle = {
 }
 
 // const useStyles = makeStyles(theme => ({
-  
+
 //   root: {
 //     display: 'flex',
 //   }
@@ -118,7 +118,7 @@ let divStyle = {
     const coach = 1000;
     return(
 
-      // <div 
+      // <div
       // className={classes.root}
       // >
       <div style={divStyle}>

@@ -17,7 +17,7 @@ import {
   DELETE_EXERENTRY,
   EDIT_EXER_ENTRY,
   DELETE_FOOD_ENTRY,
-  EDIT_FOOD_ENTRY
+  EDIT_FOOD_ENTRY,
 } from "../../graphql/mutations";
 import {
   EXER_QUERY,
@@ -44,6 +44,51 @@ const styles = theme => ({
     color: "#545454"
   }
 });
+
+const UPDATE_FOOD_ENTRY = gql`
+  mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
+    updateFoodEntry(id: $id, input: $input) {
+      id
+    }
+  }
+`;
+
+const UPDATE_FOOD = gql`
+  mutation updateFood($id: ID!, $input: FoodInput!) {
+    updateFood(id: $id, input: $input) {
+      id
+      foodName
+      caloriesPerServ
+      fats
+      carbs
+      proteins
+      edamam_id
+    }
+  }
+`;
+
+const FOODENTRYQUERY = gql`
+  query getFoodEntry($userId: ID!) {
+    getFoodEntriesByUserId(userId: $userId) {
+      id
+      date
+      servingQty
+      food_id {
+        id
+        foodName
+        caloriesPerServ
+        fats
+        proteins
+        carbs
+        edamam_id
+      }
+      meal_category_id {
+        id
+        mealCategoryName
+      }
+    }
+  }
+`;
 
 // const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
 //   query getFoodEntriesByUserId($userId: ID!) {
@@ -289,8 +334,7 @@ class Dashboard extends Component {
   //     }
   //   })
   // }
-
-  editFoodEntry = (editId, editEntry, idToken) => {
+editFoodEntry = (editId, editEntry, idToken) => {
     const foodInput = {
       foodName: editEntry.foodName,
       caloriesPerServ: editEntry.caloriesPerServ,
@@ -298,11 +342,6 @@ class Dashboard extends Component {
       carbs: editEntry.carbs,
       proteins: editEntry.proteins,
       edamam_id: editEntry.edamam_id,
-      date: editEntry.date,
-      food_id: editEntry.food_id,
-      user_id: editEntry.user_id,
-      servingQty: editEntry.servingQty,
-      meal_category_id: parseInt(editEntry.meal_category_id)
     };
 
     console.log("arg food", editEntry);
@@ -335,6 +374,64 @@ class Dashboard extends Component {
       })
       .catch(err => console.log("error message edit food", err));
   };
+
+  // editFoodEntry = (entry_id, food_id, foodEntry, idToken) => {
+  //   const foodInput = {
+  //     foodName: foodEntry.foodName,
+  //     caloriesPerServ: foodEntry.caloriesPerServ,
+  //     fats: foodEntry.fats,
+  //     carbs: foodEntry.carbs,
+  //     proteins: foodEntry.proteins,
+  //     edamam_id: foodEntry.edamam_id
+  //   };
+
+  //   const foodEntryInput = {
+  //     date: foodEntry.date,
+  //     food_id: food_id,
+  //     user_id: foodEntry.user_id,
+  //     servingQty: foodEntry.servingQty,
+  //     meal_category_id: parseInt(foodEntry.meal_category_id)
+  //   }
+
+  //   console.log("arg food", foodEntry);
+  //   console.log("props", this.state.foodEntry);
+  //   const client = new ApolloClient({
+  //     uri: "https://nutrition-tracker-be.herokuapp.com",
+  //     headers: { authorization: idToken }
+  //   });
+  //   client
+  //     .mutate({
+  //       mutation: UPDATE_FOOD,
+  //       variables: { id: food_id, input: foodInput }
+  //     })
+  //     .then(response => {
+  //       client.mutate({
+  //         mutation: UPDATE_FOOD_ENTRY,
+  //         variables: {
+  //           id: entry_id,
+  //           input: foodEntryInput
+  //         }
+  //       })
+  //     })
+  //     .then(response => {
+  //       console.log("first part of response", response);
+  //       client
+  //         .query({
+  //           query: FOODENTRYQUERY,
+  //           variables: {
+  //             userId: this.state.currentUser
+  //           }
+  //         })
+  //         .then(response => {
+  //           console.log(response);
+  //           this.setState({
+  //             foodEntry: "",
+  //             foodEntries: response.data.getFoodEntriesByUserId
+  //           });
+  //         });
+  //     })
+  //     .catch(err => console.log("error message edit food", err));
+  // };
 
   editExerEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
