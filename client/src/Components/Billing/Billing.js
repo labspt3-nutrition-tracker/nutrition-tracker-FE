@@ -9,7 +9,7 @@ import AccountNav from '../AccountNav';
 import { makeStyles } from '@material-ui/core/styles';
 
 const createSubscriptionMutation = gql`
-  mutation createSubscriptionMutation($source: String!, $email: String!, $amount: Int!){
+  mutation createSubscription($source: String!, $email: String!, $amount: Int!){
     createSubscription(source: $source, email: $email, amount: $amount){
       id
     }
@@ -29,6 +29,7 @@ const GET_CURRENT = gql`
     getCurrentUser {
       id
       email
+      userType
     }
   }
 `;
@@ -73,6 +74,9 @@ let divStyle = {
       })
       .then(response => {
         this.getRecentBilling(response.data.getCurrentUser.id)
+        this.setState({
+          userType: response.data.getCurrentUser.userType
+        })
       })
       .catch(err => console.log(err));
   };
@@ -123,14 +127,14 @@ let divStyle = {
       <div style={divStyle}>
             <AccountNav />
         <div>
-          <p>{this.state.premiumCurrent ? "Premium":"Basic"} User</p>
+          <p>Type: {this.state.userType.toUpperCase()}</p>
           {
             this.state.subscriptionLapse.length > 1 ? (
               <p>Current Until: {this.state.subscriptionLapse}</p>
             ) : (null)
           }
         </div>
-        <Mutation mutation={createSubscriptionMutation}>
+        <Mutation mutation={createSubscriptionMutation} onError={err => {console.log(err)}}>
           {mutation => (
             <div>
               <StripeCheckout
@@ -140,8 +144,9 @@ let divStyle = {
                 description="Become a Premium User!"
                 locale="auto"
                 name="NutritionTrkr"
-                stripeKey="pk_test_Pq1dd4riM4hc3cc35SbfPQxk00HJAoDPfA"
+                stripeKey={process.env.REACT_APP_STRIPE_KEY}
                 token={async token => {
+                  console.log(token.id,token.email, premium)
                   const response = await mutation({
                     variables: {
                       source: token.id,
@@ -160,9 +165,9 @@ let divStyle = {
                 description="Become a Coach!"
                 locale="auto"
                 name="NutritionTrkr"
-                stripeKey="pk_test_Pq1dd4riM4hc3cc35SbfPQxk00HJAoDPfA"
-                props={console.log()}
+                stripeKey={process.env.REACT_APP_STRIPE_KEY}
                 token={async token => {
+                  console.log(token)
                   const response = await mutation({
                     variables: {
                       source: token.id,
