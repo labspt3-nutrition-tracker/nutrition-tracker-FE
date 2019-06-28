@@ -7,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import SearchInputComponent from "../SearchComponent/SearchInputComponent";
 import searchBarBg from "../../Assets/search-bar-bg.png";
+import coachBg from "../../Assets/coach-bg.png";
+import support from "../../Assets/support.png";
 
 const ContainerHome = styled.div`
   display: flex;
@@ -156,11 +158,37 @@ const SearchBarSec = styled.section`
   width: 100%;
 `;
 
+const CoachSec = styled.section`
+  background: url(${coachBg}) no-repeat center;
+  background-size: cover;
+  width: 100%;
+  width: 95%;
+  margin: 3% auto;
+`;
+
 const ImgCon = styled.div`
   max-width: 50%;
   @media (max-width: 500px) {
     max-width: 100%;
   }
+`;
+const ImgConCoach = styled.div`
+  max-width: 300px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 100px 0;
+  img {
+    width: 100%;
+  }
+  @media (max-width: 500px) {
+    max-width: 100%;
+  }
+`;
+
+const Hr = styled.div`
+  width: 90%;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.4);
 `;
 
 const styles = theme => ({
@@ -171,14 +199,15 @@ const styles = theme => ({
   forms: {
     display: "flex"
   },
-  // searchBar: {
-  //   background: `url(${searchBarBg}) no-repeat center`,
-  //   backgroundSize: "cover",
-  //   width: "100%"
-  // },
   searchBarCon: {
     padding: "200px 100px",
     fontSize: 16,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  coachCon: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -195,6 +224,13 @@ const styles = theme => ({
     color: "#ffffff",
     fontSize: 20,
     paddingBottom: 20
+  },
+  secPcoach: {
+    color: "#ffffff",
+    fontSize: 20,
+    paddingBottom: 75,
+    paddingTop: 20,
+    textAlign: "center"
   }
 });
 
@@ -289,6 +325,22 @@ function Home(props) {
           </Features>
         </Container>
       </SecondPane>
+      <CoachSec>
+        <Container className={classes.coachCon}>
+          <ImgConCoach>
+            <img src={support} alt="coach icon" />
+          </ImgConCoach>
+          <Typography className={classes.secTitle}>
+            Accomplishing goals is easier when you have accountability
+          </Typography>
+          <Hr />
+          <Typography className={classes.secPcoach}>
+            Whether you want a coach or a buddy to see your progress or simply
+            keep you accountable, our coach feature allows you to communicate
+            easily
+          </Typography>
+        </Container>
+      </CoachSec>
       <SearchBarSec>
         <Container className={classes.searchBarCon}>
           <Typography className={classes.secTitle}>Give it a shot.</Typography>
