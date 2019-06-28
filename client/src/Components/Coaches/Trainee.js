@@ -6,7 +6,7 @@ const TraineeDiv = styled.div`
   justify-content:center;
   font-family: Oswald;
   color: #ffffff;
-  font-size: 1rem;
+  font-size: 2rem;
   flex-wrap:wrap;
   margin: auto;
   margin-top:10px;
