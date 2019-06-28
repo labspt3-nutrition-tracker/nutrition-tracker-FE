@@ -328,13 +328,15 @@ class Dashboard extends Component {
       carbs: editEntry.carbs,
       proteins: editEntry.proteins,
       edamam_id: editEntry.edamam_id,
+    };
+
+    const foodEntryInput = {
       date: editEntry.date,
       food_id: editEntry.food_id,
       user_id: editEntry.user_id,
       servingQty: editEntry.servingQty,
       meal_category_id: parseInt(editEntry.meal_category_id)
-    };
-
+    }
     console.log("arg food", editEntry);
     console.log("props", this.state.foodEntry);
     const client = new ApolloClient({
@@ -542,7 +544,6 @@ class Dashboard extends Component {
                     />
                   </Container>
                 )}
-
                 {!this.state.showFoodForm && (
                   <Container className={classes.flexDataCon}>
                     <ModifiedEntryForm
@@ -601,14 +602,12 @@ class Dashboard extends Component {
             <InfoCon>
               <FoodEntry foodEntries={this.state.foodEntries} />
             </InfoCon>
-
             {this.state.showFoodForm && (
               <EntryForm
                 addFoodEntry={this.addFoodEntry}
                 closeFoodForm={this.closeFoodForm}
               />
             )}
-
             {!this.state.showFoodForm && (
               <ModifiedEntryForm
                 addFoodEntry={this.addFoodEntry}
@@ -623,12 +622,10 @@ class Dashboard extends Component {
     }
   }
 }
-
 const DashTitle = styled.div`
   /* font-size: 3rem;
   text-align: center; */
 `;
-
 const InfoCon = styled.div`
   /* display: flex;
   width: 40%;
@@ -636,7 +633,6 @@ const InfoCon = styled.div`
     width: 100%; */
   /* } */
 `;
-
 const DashDisplay = styled.div`
   /* width: 100%;
   display: flex;
@@ -648,5 +644,4 @@ const DashDisplay = styled.div`
     align-items: center;
   } */
 `;
-
 export default withStyles(styles)(Dashboard);

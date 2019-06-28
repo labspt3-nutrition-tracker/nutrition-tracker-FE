@@ -36,12 +36,13 @@ const GET_CURRENT = gql`
 
 let divStyle = {
   display: 'flex',
-  height: '80vh'
+  height: '80vh',
+  justifyContent: 'space-between'
   // marginLeft: "25%"
 }
 
 // const useStyles = makeStyles(theme => ({
-  
+
 //   root: {
 //     display: 'flex',
 //   }
@@ -121,7 +122,7 @@ let divStyle = {
     const coach = 1000;
     return(
 
-      // <div 
+      // <div
       // className={classes.root}
       // >
       <div style={divStyle}>

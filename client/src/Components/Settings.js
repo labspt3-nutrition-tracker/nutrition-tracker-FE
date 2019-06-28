@@ -17,7 +17,11 @@ import AccountNav from "./AccountNav";
 
 const styles = theme => ({
   root: {
-    margin: "0"
+    display: 'flex',
+    flexDirection: "column",
+    flexGrow: 1,
+    margin: "0",
+    position: "relative"
   },
   card: {
     width: "50%",
