@@ -6,14 +6,13 @@ const TraineeDiv = styled.div`
   justify-content:center;
   font-family: Oswald;
   color: #ffffff;
-  font-size: 1rem;
+  font-size: 2rem;
   flex-wrap:wrap;
   margin: auto;
   margin-top:10px;
   width: 80%;
   height: 80px;
   background: #5E366A;
-  border: 1px solid black;
   -webkit-box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
   -moz-box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
   box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);

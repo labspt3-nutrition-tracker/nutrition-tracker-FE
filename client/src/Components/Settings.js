@@ -14,11 +14,13 @@ import { getCurrentUser } from "../util/getCurrentUser";
 import { getCurrentWeight } from "../util/getCurrentweight";
 import UserEditModal from "../Components/UserEditModal";
 import AccountNav from "./AccountNav";
+import { wrap } from "module";
 
 const styles = theme => ({
   root: {
     display: 'flex',
-    flexDirection: "column",
+    flexWrap: 'wrap',
+    flexDirection: "row",
     flexGrow: 1,
     margin: "0",
     position: "relative"
@@ -26,7 +28,8 @@ const styles = theme => ({
   card: {
     width: "50%",
     maxWidth: 500,
-    margin: "30px 300px",
+    height: "500px",
+    margin: "30px 200px",
     padding: 10
   },
   media: {

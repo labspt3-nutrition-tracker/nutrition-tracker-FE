@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     color: "white",
     height: "relative",
     alignItems: "center",
-    position: "absolute",
+    position: "relative",
   },
   title: {
     textDecoration: "none",

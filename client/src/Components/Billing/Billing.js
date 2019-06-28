@@ -5,8 +5,10 @@ import StripeCheckout from 'react-stripe-checkout';
 import BillingHistory from './BillingHistory';
 import ApolloClient from "apollo-boost";
 import moment from 'moment';
+import styled from "styled-components";
 import AccountNav from '../AccountNav';
 import { makeStyles } from '@material-ui/core/styles';
+import { wrap } from "module";
 
 const createSubscriptionMutation = gql`
   mutation createSubscription($source: String!, $email: String!, $amount: Int!){
@@ -33,11 +35,20 @@ const GET_CURRENT = gql`
     }
   }
 `;
+const BillingContainer = styled.div`
+  padding-top:50px;
+  display:flex;
+  flex-direction:column;
+  align-content:center;
+  flex-wrap:wrap;
+  width:60%;
+`;
 
 let divStyle = {
   display: 'flex',
+  flexWrap: 'wrap',
   height: '80vh',
-  justifyContent: 'space-between'
+  justifyContent: 'flex-start'
   // marginLeft: "25%"
 }
 
@@ -127,65 +138,64 @@ let divStyle = {
       // >
       <div style={divStyle}>
             <AccountNav />
-        <div>
+        <BillingContainer>
           <p>Type: {this.state.userType.toUpperCase()}</p>
           {
             this.state.subscriptionLapse.length > 1 ? (
               <p>Current Until: {this.state.subscriptionLapse}</p>
             ) : (null)
           }
-        </div>
-        <Mutation mutation={createSubscriptionMutation} onError={err => {console.log(err)}}>
-          {mutation => (
-            <div>
-              <StripeCheckout
-                amount={premium}
-                billingAddress
-                label="Become a Premium User"
-                description="Become a Premium User!"
-                locale="auto"
-                name="NutritionTrkr"
-                stripeKey={process.env.REACT_APP_STRIPE_KEY}
-                token={async token => {
-                  console.log(token.id,token.email, premium)
-                  const response = await mutation({
-                    variables: {
-                      source: token.id,
-                      email: token.email,
-                      amount: premium
-                    }
-                  });
-                  console.log(response)
-                }}
-                zipcode
-              />
-              <StripeCheckout
-                amount={coach}
-                billingAddress
-                label="Become a Coach"
-                description="Become a Coach!"
-                locale="auto"
-                name="NutritionTrkr"
-                stripeKey={process.env.REACT_APP_STRIPE_KEY}
-                token={async token => {
-                  console.log(token)
-                  const response = await mutation({
-                    variables: {
-                      source: token.id,
-                      email: token.email,
-                      amount: coach
-                    }
-                  });
-                  console.log(response)
-                }}
-                zipcode
-              />
-            </div>
-          )}
-        </Mutation>
-        <BillingHistory/>
-      {/* </div> */}
-    </div>
+          <Mutation mutation={createSubscriptionMutation} onError={err => {console.log(err)}}>
+            {mutation => (
+              <div>
+                <StripeCheckout
+                  amount={premium}
+                  billingAddress
+                  label="Become a Premium User"
+                  description="Become a Premium User!"
+                  locale="auto"
+                  name="NutritionTrkr"
+                  stripeKey={process.env.REACT_APP_STRIPE_KEY}
+                  token={async token => {
+                    console.log(token.id,token.email, premium)
+                    const response = await mutation({
+                      variables: {
+                        source: token.id,
+                        email: token.email,
+                        amount: premium
+                      }
+                    });
+                    console.log(response)
+                  }}
+                  zipcode
+                />
+                <StripeCheckout
+                  amount={coach}
+                  billingAddress
+                  label="Become a Coach"
+                  description="Become a Coach!"
+                  locale="auto"
+                  name="NutritionTrkr"
+                  stripeKey={process.env.REACT_APP_STRIPE_KEY}
+                  token={async token => {
+                    console.log(token)
+                    const response = await mutation({
+                      variables: {
+                        source: token.id,
+                        email: token.email,
+                        amount: coach
+                      }
+                    });
+                    console.log(response)
+                  }}
+                  zipcode
+                />
+              </div>
+            )}
+          </Mutation>
+          <BillingHistory/>
+        </BillingContainer>
+      </div>
     )
   }
 }

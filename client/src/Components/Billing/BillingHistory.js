@@ -63,6 +63,7 @@ class BillingHistory extends React.Component{
                         if (error) return <div>Error</div>;
                         return (
                             <div>
+                                <h2>Previous Payments:</h2>
                                 {data.getBillingHistory.map(bills => (
                                     <BillingHistoryCard key={bills.id} date={bills.date} amountPaid={bills.amount_paid}/>
                                 ))}

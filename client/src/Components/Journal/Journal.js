@@ -237,7 +237,7 @@ class Journal extends React.Component {
             editMeal={this.editMealEntry}
           />
         ) : (
-          <div>Loading</div>
+          <div>Loading...</div>
           )}
 
         </JournalEntryDiv>
