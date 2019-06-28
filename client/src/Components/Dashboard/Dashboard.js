@@ -18,7 +18,8 @@ import {
   DELETE_EXERENTRY,
   EDIT_EXER_ENTRY,
   DELETE_FOOD_ENTRY,
-  EDIT_FOOD_ENTRY
+  EDIT_FOOD_ENTRY,
+  EDIT_FOOD
 } from "../../graphql/mutations";
 import {
   EXER_QUERY,
@@ -321,52 +322,114 @@ class Dashboard extends Component {
   // }
 
   editFoodEntry = (editId, editEntry, idToken) => {
-    const foodInput = {
-      foodName: editEntry.foodName,
-      caloriesPerServ: editEntry.caloriesPerServ,
-      fats: editEntry.fats,
-      carbs: editEntry.carbs,
-      proteins: editEntry.proteins,
-      edamam_id: editEntry.edamam_id,
-    };
-
-    const foodEntryInput = {
-      date: editEntry.date,
-      food_id: editEntry.food_id,
-      user_id: editEntry.user_id,
-      servingQty: editEntry.servingQty,
-      meal_category_id: parseInt(editEntry.meal_category_id)
-    }
-    console.log("arg food", editEntry);
-    console.log("props", this.state.foodEntry);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
+
+    const edamam_id = editEntry.food_id.edamam_id ? editEntry.food_id.edamam_id : null
+    const foodId = parseInt(editEntry.food_id.id);
+    const mealCategoryId = parseInt(editEntry.meal_category_id.id)
+
+    const foodInput = {
+      foodName: editEntry.food_id.foodName,
+      caloriesPerServ: parseInt(editEntry.food_id.caloriesPerServ),
+      fats: parseFloat(editEntry.food_id.fats),
+      carbs: parseFloat(editEntry.food_id.carbs),
+      proteins: parseFloat(editEntry.food_id.proteins),
+      edamam_id: edamam_id,
+    };
+
+    const foodEntryInput = {
+      date: editEntry.date,
+      food_id: parseInt(foodId),
+      user_id: parseInt(this.state.currentUser),
+      servingQty: parseInt(editEntry.servingQty),
+      meal_category_id: parseInt(mealCategoryId)
+    }
+
     client
       .mutate({
-        mutation: EDIT_FOOD_ENTRY,
-        variables: { id: editId, input: editEntry }
-      })
-      .then(response => {
-        console.log("first part of response", response);
-        client
-          .query({
-            query: GET_FOOD_ENTRIES_BY_USER_QUERY,
-            variables: {
-              userId: this.state.currentUser
-            }
-          })
-          .then(response => {
-            console.log(response);
-            this.setState({
-              foodEntry: this.state.foodEntry,
-              foodEntries: response.data.getFoodEntriesByUserId
+        mutation: EDIT_FOOD,
+        variables: {
+        id: foodId,
+        input: foodInput
+      }
+    })
+    .then(response => {
+      client
+        .mutate({
+          mutation: EDIT_FOOD_ENTRY,
+          variables: {
+            id: editId,
+            variables: foodEntryInput
+          }
+        })
+        .then(response => {
+          client
+            .query({
+              query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+              variables: {
+                userId: this.state.currentUser
+              }
+            })
+            .then(response => {
+              this.setState({
+                foodEntries: response.data.getFoodEntriesByUserId
+              });
             });
-          });
-      })
-      .catch(err => console.log("error message edit food", err));
-  };
+        })
+        .catch(err => console.log(err));
+    })
+  }
+
+  // editFoodEntry = (editId, editEntry, idToken) => {
+  //   const foodInput = {
+  //     foodName: editEntry.foodName,
+  //     caloriesPerServ: editEntry.caloriesPerServ,
+  //     fats: editEntry.fats,
+  //     carbs: editEntry.carbs,
+  //     proteins: editEntry.proteins,
+  //     edamam_id: editEntry.edamam_id,
+  //   };
+  //
+  //   const foodEntryInput = {
+  //     date: editEntry.date,
+  //     food_id: editEntry.food_id,
+  //     user_id: editEntry.user_id,
+  //     servingQty: editEntry.servingQty,
+  //     meal_category_id: parseInt(editEntry.meal_category_id)
+  //   }
+  //   console.log("arg food", editEntry);
+  //   console.log("props", this.state.foodEntry);
+  //   const client = new ApolloClient({
+  //     uri: "https://nutrition-tracker-be.herokuapp.com",
+  //     headers: { authorization: idToken }
+  //   });
+  //   client
+  //     .mutate({
+  //       mutation: EDIT_FOOD_ENTRY,
+  //       variables: { id: editId, input: editEntry }
+  //     })
+  //     .then(response => {
+  //       console.log("first part of response", response);
+  //       client
+  //         .query({
+  //           query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+  //           variables: {
+  //             userId: this.state.currentUser
+  //           }
+  //         })
+  //         .then(response => {
+  //           console.log(response);
+  //           this.setState({
+  //             foodEntry: this.state.foodEntry,
+  //             foodEntries: response.data.getFoodEntriesByUserId
+  //           });
+  //         });
+  //     })
+  //     .catch(err => console.log("error message edit food", err));
+  // };
 
   editExerEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
