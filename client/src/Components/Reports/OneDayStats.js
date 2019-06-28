@@ -58,28 +58,42 @@ class WeekFoodLogStats extends Component {
     return (
       <div className={classes.root}>
         <h2 className={classes.header}>
-          {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data} for{" "}
-          {moment(this.props.days[0]).format("MMMM Do YYYY")}
+          {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data}{" "}
+          for {moment(this.props.days[0]).format("MMMM Do YYYY")}
         </h2>
         {this.state.entries.length !== 0 ? (
-          <Grid container justify='center' alignItems='center'>
+          <Grid container justify="center" alignItems="center">
             <Grid item md={3} xs={12}>
               {this.state.entries.map((entry, i) => (
                 <div key={this.state.labels[i]} className={classes.dataInfo}>
                   <span className={classes.title}>{this.state.labels[i]}</span>
-                  <div className={classes.value}>{entry === 0 ? "No Entry" : entry.toFixed(2)}</div>
+                  <div className={classes.value}>
+                    {entry === 0 ? "No Entry" : entry.toFixed(2)}
+                  </div>
                 </div>
               ))}
               <div className={classes.dataInfo}>
                 <span className={classes.title}>
-                  Total {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data}
+                  Total{" "}
+                  {this.props.data === "caloriesPerServ"
+                    ? "Calories"
+                    : this.props.data}
                 </span>
-                <div className={classes.value}>{this.state.entries.reduce((total, d) => total + d, 0).toFixed(2)}</div>
+                <div className={classes.value}>
+                  {this.state.entries
+                    .reduce((total, d) => total + d, 0)
+                    .toFixed(2)}
+                </div>
               </div>
             </Grid>
             <Grid item md={9} xs={12} className={classes.graph}>
-              <h2>{this.props.data === "caloriesPerServ" ? "Calories" : this.props.data} / Meal Category</h2>
-              <Line ref='chart' data={data} />
+              <h2>
+                {this.props.data === "caloriesPerServ"
+                  ? "Calories"
+                  : this.props.data}{" "}
+                / Meal Category
+              </h2>
+              <Line ref="chart" data={data} />
             </Grid>
           </Grid>
         ) : (
@@ -100,7 +114,7 @@ const styles = theme => ({
 
   header: {
     textAlign: "center",
-    fontSize: "1.8rem",
+    fontSize: "2.5rem",
     marginBottom: "20px",
     color: "#545454",
     textTransform: "uppercase",
@@ -113,12 +127,12 @@ const styles = theme => ({
   },
   title: {
     color: "#60B5A9",
-    fontSize: "1.4rem",
+    fontSize: "1.8rem",
     width: "50%",
     fontFamily: "Oswald"
   },
   value: {
-    fontSize: "1.4rem",
+    fontSize: "1.8rem",
     paddingLeft: "10px",
     fontFamily: "Oswald"
   },
