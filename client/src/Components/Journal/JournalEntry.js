@@ -7,9 +7,30 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
+import { withStyles } from "@material-ui/core/styles";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Collapse from "@material-ui/core/Collapse";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+
 import { GET_CURRENT_USERID } from "../../graphql/queries";
 import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
+
+const styles = theme => ({
+  header: {
+    textAlign: "center",
+    fontSize: "2.5rem",
+    marginBottom: "20px",
+    color: "#5E366A",
+    textTransform: "uppercase",
+    fontFamily: "Oswald",
+    margin: "3% 0"
+  }
+});
 
 const GET_FOOD_BY_ID = gql`
   query getFoodById($foodId: ID!) {
@@ -21,7 +42,7 @@ const GET_FOOD_BY_ID = gql`
 `;
 
 const MealModal = styled(Modal)`
-  position:absolute;
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -102,7 +123,11 @@ class JournalEntry extends React.Component {
         food_id: null,
         meal_category_id: null,
         showModal: false,
-        currentUser: 0
+        currentUser: 0,
+        openBreakfast: false,
+        openLunch: false,
+        openDinner: false,
+        openSnack: false
       }
     };
   }
@@ -122,8 +147,6 @@ class JournalEntry extends React.Component {
         this.setState({ currentUser: response.data.getCurrentUser.id });
       })
       .catch(err => console.log(err));
-
-    console.log("Journal Entry", this.props.foodEntries);
   }
 
   componentDidUpdate(prevProps) {
@@ -133,7 +156,6 @@ class JournalEntry extends React.Component {
   }
 
   passMealData = mealEntry => {
-    console.log(mealEntry);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
@@ -197,7 +219,6 @@ class JournalEntry extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
-
   };
 
   deleteMealEntry = e => {
@@ -210,22 +231,31 @@ class JournalEntry extends React.Component {
   editMealEntry = e => {
     e.preventDefault();
 
-    console.log(this.state.mealEntry)
-
     const foodEntry = {
       foodName: this.state.mealEntry.food_id.foodName,
-      caloriesPerServ: this.state.caloriesPerServ ? parseInt(this.state.caloriesPerServ) : this.state.mealEntry.food_id.caloriesPerServ,
-      fats: this.state.fats ? parseInt(this.state.fats) : this.state.mealEntry.food_id.fats,
-      carbs: this.state.carbs ? parseInt(this.state.carbs) : this.state.mealEntry.food_id.carbs,
-      proteins: this.state.proteins ? parseInt(this.state.proteins) : this.state.mealEntry.food_id.proteins,
+      caloriesPerServ: this.state.caloriesPerServ
+        ? parseInt(this.state.caloriesPerServ)
+        : this.state.mealEntry.food_id.caloriesPerServ,
+      fats: this.state.fats
+        ? parseInt(this.state.fats)
+        : this.state.mealEntry.food_id.fats,
+      carbs: this.state.carbs
+        ? parseInt(this.state.carbs)
+        : this.state.mealEntry.food_id.carbs,
+      proteins: this.state.proteins
+        ? parseInt(this.state.proteins)
+        : this.state.mealEntry.food_id.proteins,
       date: this.state.date ? this.state.date : this.state.mealEntry.date,
       food_id: this.state.mealEntry.food_id.id,
       user_id: this.state.currentUser,
-      meal_category_id: this.state.meal_category_id ? this.state.meal_category_id : this.state.mealEntry.meal_category_id.id,
-      servingQty: this.state.servingQty ? parseInt(this.state.servingQty) : this.state.mealEntry.servingQty
+      meal_category_id: this.state.meal_category_id
+        ? this.state.meal_category_id
+        : this.state.mealEntry.meal_category_id.id,
+      servingQty: this.state.servingQty
+        ? parseInt(this.state.servingQty)
+        : this.state.mealEntry.servingQty
     };
 
-    console.log(foodEntry);
     this.props.editMeal(
       this.state.mealEntry.id,
       this.state.mealEntry.food_id.id,
@@ -235,7 +265,32 @@ class JournalEntry extends React.Component {
     this.closeModal();
   };
 
+  handleClickBreakfast = () => {
+    this.setState(prevState => {
+      return { openBreakfast: !prevState.openBreakfast };
+    });
+  };
+
+  handleClickLunch = () => {
+    this.setState(prevState => {
+      return { openLunch: !prevState.openLunch };
+    });
+  };
+
+  handleClickDinner = () => {
+    this.setState(prevState => {
+      return { openDinner: !prevState.openDinner };
+    });
+  };
+
+  handleClickSnack = () => {
+    this.setState(prevState => {
+      return { openSnack: !prevState.openSnack };
+    });
+  };
+
   render() {
+    const { classes } = this.props;
     const datePicked = this.props.datePicked;
     const ModifiedEntry = this.state.foodEntries.filter(function(entry) {
       //  return entry.date === datePicked;
@@ -263,563 +318,796 @@ class JournalEntry extends React.Component {
 
     return (
       <div>
-        <JournalDateTitle>{this.props.datePicked}</JournalDateTitle>
+        <h2 className={classes.header}>{this.props.datePicked}</h2>
+        <List component="nav" className={classes.root}>
+          <ListItem button onClick={this.handleClickBreakfast}>
+            <ListItemText primary="Breakfast" />
+            {this.state.openBreakfast ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse in={this.state.openBreakfast} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {Breakfast.length > 0 ? (
+                Breakfast.map(breakfast => {
+                  return (
+                    <>
+                      <ListItem
+                        key={breakfast.id}
+                        button
+                        onClick={() => this.passMealData(breakfast)}
+                      >
+                        <ListItemText primary={breakfast.food_id.foodName} />
+                      </ListItem>
+                      {this.state.mealEntry && !this.state.edamamExist && (
+                        <MealModal isOpen={this.state.showModal}>
+                          <div>
+                            <Button onClick={this.closeModal}>exit</Button>
+                          </div>
+                          <div>{this.state.mealEntry.food_id.foodName}</div>
+                          <form>
+                            <label htmlFor="date">Date</label>
+                            <input
+                              className="form-field"
+                              type="date"
+                              name="date"
+                              onChange={this.handleChange}
+                            />
 
-        <CategoryTitle> Breakfast</CategoryTitle>
-        <div>
-          {Breakfast.length > 0 ? (
-            [...Breakfast].map(breakfast => {
-              console.log(breakfast);
-              return (
-                <div key={breakfast.id}>
-                  <div onClick={() => this.passMealData(breakfast)}>
-                    <EntryItems>{breakfast.food_id.foodName}</EntryItems>
-                  </div>
-                  {this.state.mealEntry && !this.state.edamamExist && (
-                    <MealModal isOpen={this.state.showModal}>
-                      <div>
-                        <Button onClick={this.closeModal}>exit</Button>
-                      </div>
-                      <div>{this.state.mealEntry.food_id.foodName}</div>
-                      <form>
-                        <label htmlFor="date">Date</label>
-                        <input
-                          className="form-field"
-                          type="date"
-                          name="date"
-                          onChange={this.handleChange}
-                        />
+                            <TextField
+                              id="Serving Quantity"
+                              name="servingQty"
+                              label="Serving Quantity"
+                              placeholder={`${this.state.mealEntry.servingQty}`}
+                              value={this.state.servingQty}
+                              margin="dense"
+                              onChange={this.handleChange}
+                            />
+                            <TextField
+                              id="Calories Per Serving"
+                              name="caloriesPerServ"
+                              label="Calories Per Serving"
+                              placeholder={`${
+                                this.state.mealEntry.food_id.caloriesPerServ
+                              }`}
+                              value={this.state.caloriesPerServ}
+                              margin="dense"
+                              onChange={this.handleChange}
+                            />
+                            <TextField
+                              id="Protein"
+                              name="proteins"
+                              label="Protein"
+                              placeholder={`${
+                                this.state.mealEntry.food_id.proteins
+                              }`}
+                              value={this.state.proteins}
+                              margin="dense"
+                              onChange={this.handleChange}
+                            />
+                            <TextField
+                              id="Carbs"
+                              name="carbs"
+                              label="Carbs"
+                              placeholder={`${
+                                this.state.mealEntry.food_id.carbs
+                              }`}
+                              value={this.state.carbs}
+                              margin="dense"
+                              onChange={this.handleChange}
+                            />
+                            <TextField
+                              id="Fats"
+                              name="fats"
+                              label="Fats"
+                              placeholder={`${
+                                this.state.mealEntry.food_id.fats
+                              }`}
+                              value={this.state.fats}
+                              margin="dense"
+                              onChange={this.handleChange}
+                            />
+                            <InputLabel htmlFor="meal-simple">
+                              MealCategory
+                            </InputLabel>
+                            <Select
+                              value={this.state.meal_category_id}
+                              onChange={this.handleChange}
+                              inputProps={{
+                                name: "meal_category_id",
+                                id: "meal-simple"
+                              }}
+                            >
+                              <MenuItem value={null}>
+                                <em>None</em>
+                              </MenuItem>
+                              <MenuItem value={1}>Breakfast</MenuItem>
+                              <MenuItem value={2}>Lunch</MenuItem>
+                              <MenuItem value={4}>Dinner</MenuItem>
+                              <MenuItem value={3}>Snack</MenuItem>
+                            </Select>
+                          </form>
+                          <div>
+                            <Button
+                              onClick={this.deleteMealEntry}
+                              variant="contained"
+                              color="secondary"
+                            >
+                              Delete
+                            </Button>
+                            <Button
+                              onClick={this.editMealEntry}
+                              variant="contained"
+                              color="primary"
+                            >
+                              Edit
+                            </Button>
+                          </div>
+                        </MealModal>
+                      )}
 
-                        <TextField
-                          id="Serving Quantity"
-                          name="servingQty"
-                          label="Serving Quantity"
-                          placeholder={`${this.state.mealEntry.servingQty}`}
-                          value={this.state.servingQty}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Calories Per Serving"
-                          name="caloriesPerServ"
-                          label="Calories Per Serving"
-                          placeholder={`${
-                            this.state.mealEntry.food_id.caloriesPerServ
-                          }`}
-                          value={this.state.caloriesPerServ}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Protein"
-                          name="proteins"
-                          label="Protein"
-                          placeholder={`${
-                            this.state.mealEntry.food_id.proteins
-                          }`}
-                          value={this.state.proteins}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Carbs"
-                          name="carbs"
-                          label="Carbs"
-                          placeholder={`${this.state.mealEntry.food_id.carbs}`}
-                          value={this.state.carbs}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Fats"
-                          name="fats"
-                          label="Fats"
-                          placeholder={`${this.state.mealEntry.food_id.fats}`}
-                          value={this.state.fats}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <InputLabel htmlFor="meal-simple">
-                          MealCategory
-                        </InputLabel>
-                        <Select
-                          value={this.state.meal_category_id}
-                          onChange={this.handleChange}
-                          inputProps={{
-                            name: "meal_category_id",
-                            id: "meal-simple"
-                          }}
-                        >
-                          <MenuItem value={null}>
-                            <em>None</em>
-                          </MenuItem>
-                          <MenuItem value={1}>Breakfast</MenuItem>
-                          <MenuItem value={2}>Lunch</MenuItem>
-                          <MenuItem value={4}>Dinner</MenuItem>
-                          <MenuItem value={3}>Snack</MenuItem>
-                        </Select>
-                      </form>
-                      <div>
-                        <Button
-                          onClick={this.deleteMealEntry}
-                          variant="contained"
-                          color="secondary"
-                        >
-                          Delete
-                        </Button>
-                        <Button
-                          onClick={this.editMealEntry}
-                          variant="contained"
-                          color="primary"
-                        >
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
-                  )}
+                      {this.state.mealEntry && this.state.edamamExist && (
+                        <MealModal isOpen={this.state.showModal}>
+                          <div>
+                            <Button onClick={this.closeModal}>exit</Button>
+                          </div>
+                          <div>{this.state.mealEntry.food_id.foodName}</div>
+                          <form>
+                            <label htmlFor="date">Date</label>
+                            <input
+                              className="form-field"
+                              type="date"
+                              name="date"
+                              onChange={this.handleChange}
+                            />
 
-                  {this.state.mealEntry && this.state.edamamExist && (
-                    <MealModal isOpen={this.state.showModal}>
-                      <div>
-                        <Button onClick={this.closeModal}>exit</Button>
-                      </div>
-                      <div>{this.state.mealEntry.food_id.foodName}</div>
-                      <form>
-                        <label htmlFor="date">Date</label>
-                        <input
-                          className="form-field"
-                          type="date"
-                          name="date"
-                          onChange={this.handleChange}
-                        />
+                            <TextField
+                              id="Serving Quantity"
+                              name="servingQty"
+                              label="Serving Quantity"
+                              placeholder={`${this.state.mealEntry.servingQty}`}
+                              value={this.state.servingQty}
+                              margin="dense"
+                              onChange={this.handleChange}
+                            />
 
-                        <TextField
-                          id="Serving Quantity"
-                          name="servingQty"
-                          label="Serving Quantity"
-                          placeholder={`${this.state.mealEntry.servingQty}`}
-                          value={this.state.servingQty}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
+                            <InputLabel htmlFor="meal-simple">
+                              MealCategory
+                            </InputLabel>
+                            <Select
+                              value={this.state.meal_category_id}
+                              onChange={this.handleChange}
+                              inputProps={{
+                                name: "meal_category_id",
+                                id: "meal-simple"
+                              }}
+                            >
+                              <MenuItem value={null}>
+                                <em>None</em>
+                              </MenuItem>
+                              <MenuItem value={1}>Breakfast</MenuItem>
+                              <MenuItem value={2}>Lunch</MenuItem>
+                              <MenuItem value={4}>Dinner</MenuItem>
+                              <MenuItem value={3}>Snack</MenuItem>
+                            </Select>
+                          </form>
+                          <div>
+                            <Button
+                              onClick={this.deleteMealEntry}
+                              variant="contained"
+                              color="secondary"
+                            >
+                              Delete
+                            </Button>
+                            <Button
+                              onClick={this.editMealEntry}
+                              variant="contained"
+                              color="primary"
+                            >
+                              Edit
+                            </Button>
+                          </div>
+                        </MealModal>
+                      )}
+                    </>
+                  );
+                })
+              ) : (
+                <ListItem button className={classes.nested}>
+                  <ListItemText primary="No Breakfast entries have been added" />
+                </ListItem>
+              )}
+            </List>
+          </Collapse>
+        </List>
 
-                        <InputLabel htmlFor="meal-simple">
-                          MealCategory
-                        </InputLabel>
-                        <Select
-                          value={this.state.meal_category_id}
-                          onChange={this.handleChange}
-                          inputProps={{
-                            name: "meal_category_id",
-                            id: "meal-simple"
-                          }}
-                        >
-                          <MenuItem value={null}>
-                            <em>None</em>
-                          </MenuItem>
-                          <MenuItem value={1}>Breakfast</MenuItem>
-                          <MenuItem value={2}>Lunch</MenuItem>
-                          <MenuItem value={4}>Dinner</MenuItem>
-                          <MenuItem value={3}>Snack</MenuItem>
-                        </Select>
-                      </form>
-                      <div>
-                        <Button
-                          onClick={this.deleteMealEntry}
-                          variant="contained"
-                          color="secondary"
-                        >
-                          Delete
-                        </Button>
-                        <Button
-                          onClick={this.editMealEntry}
-                          variant="contained"
-                          color="primary"
-                        >
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
-                  )}
-                </div>
-              );
-            })
-          ) : (
-            <EntryItems>No Breakfast entries have been added</EntryItems>
-          )}
-        </div>
-        <CategoryTitle> Lunch</CategoryTitle>
-        <div>
-          {Lunch.length > 0 ? (
-            [...Lunch].map(lunch => {
-              return (
-                <div key={lunch.id}>
-                  <EntryItems onClick={() => this.passMealData(lunch)}>
-                    {lunch.food_id.foodName}
-                  </EntryItems>
+        <ListItem button onClick={this.handleClickLunch}>
+          <ListItemText primary="Lunch" />
+          {this.state.openLunch ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={this.state.openLunch} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {Lunch.length > 0 ? (
+              Lunch.map(lunch => {
+                return (
+                  <>
+                    <ListItem
+                      key={lunch.id}
+                      button
+                      onClick={() => this.passMealData(lunch)}
+                    >
+                      <ListItemText primary={lunch.food_id.foodName} />
+                    </ListItem>
+                    {this.state.mealEntry && !this.state.edamamExist && (
+                      <MealModal isOpen={this.state.showModal}>
+                        <div>
+                          <Button onClick={this.closeModal}>exit</Button>
+                        </div>
+                        <div>{this.state.mealEntry.food_id.foodName}</div>
+                        <form>
+                          <label htmlFor="date">Date</label>
+                          <input
+                            className="form-field"
+                            type="date"
+                            name="date"
+                            onChange={this.handleChange}
+                          />
 
-                  {this.state.mealEntry && !this.state.edamamExist && (
-                    <MealModal isOpen={this.state.showModal}>
-                      <div>
-                        <Button onClick={this.closeModal}>exit</Button>
-                      </div>
-                      <div>{this.state.mealEntry.food_id.foodName}</div>
-                      <form>
-                        <label htmlFor="date">Date</label>
-                        <input
-                          className="form-field"
-                          type="date"
-                          name="date"
-                          onChange={this.handleChange}
-                        />
+                          <TextField
+                            id="Serving Quantity"
+                            name="servingQty"
+                            label="Serving Quantity"
+                            placeholder={`${this.state.mealEntry.servingQty}`}
+                            value={this.state.servingQty}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Calories Per Serving"
+                            name="caloriesPerServ"
+                            label="Calories Per Serving"
+                            placeholder={`${
+                              this.state.mealEntry.food_id.caloriesPerServ
+                            }`}
+                            value={this.state.caloriesPerServ}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Protein"
+                            name="proteins"
+                            label="Protein"
+                            placeholder={`${
+                              this.state.mealEntry.food_id.proteins
+                            }`}
+                            value={this.state.proteins}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Carbs"
+                            name="carbs"
+                            label="Carbs"
+                            placeholder={`${
+                              this.state.mealEntry.food_id.carbs
+                            }`}
+                            value={this.state.carbs}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Fats"
+                            name="fats"
+                            label="Fats"
+                            placeholder={`${this.state.mealEntry.food_id.fats}`}
+                            value={this.state.fats}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <InputLabel htmlFor="meal-simple">
+                            MealCategory
+                          </InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: "meal_category_id",
+                              id: "meal-simple"
+                            }}
+                          >
+                            <MenuItem value={null}>
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={1}>Breakfast</MenuItem>
+                            <MenuItem value={2}>Lunch</MenuItem>
+                            <MenuItem value={4}>Dinner</MenuItem>
+                            <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
+                        </form>
+                        <div>
+                          <Button
+                            onClick={this.deleteMealEntry}
+                            variant="contained"
+                            color="secondary"
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            onClick={this.editMealEntry}
+                            variant="contained"
+                            color="primary"
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                      </MealModal>
+                    )}
 
-                        <TextField
-                          id="Serving Quantity"
-                          name="servingQty"
-                          label="Serving Quantity"
-                          placeholder={`${this.state.mealEntry.servingQty}`}
-                          value={this.state.servingQty}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Calories Per Serving"
-                          name="caloriesPerServ"
-                          label="Calories Per Serving"
-                          placeholder={`${
-                            this.state.mealEntry.food_id.caloriesPerServ
-                          }`}
-                          value={this.state.caloriesPerServ}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Protein"
-                          name="proteins"
-                          label="Protein"
-                          placeholder={`${
-                            this.state.mealEntry.food_id.proteins
-                          }`}
-                          value={this.state.proteins}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Carbs"
-                          name="carbs"
-                          label="Carbs"
-                          placeholder={`${this.state.mealEntry.food_id.carbs}`}
-                          value={this.state.carbs}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Fats"
-                          name="fats"
-                          label="Fats"
-                          placeholder={`${this.state.mealEntry.food_id.fats}`}
-                          value={this.state.fats}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <InputLabel htmlFor="meal-simple">
-                          MealCategory
-                        </InputLabel>
+                    {this.state.mealEntry && this.state.edamamExist && (
+                      <MealModal isOpen={this.state.showModal}>
+                        <div>
+                          <Button onClick={this.closeModal}>exit</Button>
+                        </div>
+                        <div>{this.state.mealEntry.food_id.foodName}</div>
+                        <form>
+                          <label htmlFor="date">Date</label>
+                          <input
+                            className="form-field"
+                            type="date"
+                            name="date"
+                            onChange={this.handleChange}
+                          />
 
-                        <Select
-                          value={this.state.meal_category_id}
-                          onChange={this.handleChange}
-                          inputProps={{
-                            name: "meal_category_id",
-                            id: "meal-simple"
-                          }}
-                        >
-                          <MenuItem value={""}>
-                            <em>Choose Meal Category</em>
-                          </MenuItem>
-                          <MenuItem value="1">Breakfast</MenuItem>
-                          <MenuItem value="2">Lunch</MenuItem>
-                          <MenuItem value="3">Dinner</MenuItem>
-                          <MenuItem value="4">Snack</MenuItem>
-                        </Select>
-                      </form>
-                      <div>
-                        <Button
-                          onClick={this.deleteMealEntry}
-                          variant="contained"
-                          color="secondary"
-                        >
-                          Delete
-                        </Button>
-                        <Button
-                          onClick={this.editMealEntry}
-                          variant="contained"
-                          color="primary"
-                        >
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
-                  )}
+                          <TextField
+                            id="Serving Quantity"
+                            name="servingQty"
+                            label="Serving Quantity"
+                            placeholder={`${this.state.mealEntry.servingQty}`}
+                            value={this.state.servingQty}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
 
-                  {this.state.mealEntry && this.state.edamamExist && (
-                    <MealModal isOpen={this.state.showModal}>
-                      <div>
-                        <Button onClick={this.closeModal}>exit</Button>
-                      </div>
-                      <div>{this.state.mealEntry.food_id.foodName}</div>
-                      <form>
-                        <label htmlFor="date">Date</label>
-                        <input
-                          className="form-field"
-                          type="date"
-                          name="date"
-                          onChange={this.handleChange}
-                        />
+                          <InputLabel htmlFor="meal-simple">
+                            MealCategory
+                          </InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: "meal_category_id",
+                              id: "meal-simple"
+                            }}
+                          >
+                            <MenuItem value={null}>
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={1}>Breakfast</MenuItem>
+                            <MenuItem value={2}>Lunch</MenuItem>
+                            <MenuItem value={4}>Dinner</MenuItem>
+                            <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
+                        </form>
+                        <div>
+                          <Button
+                            onClick={this.deleteMealEntry}
+                            variant="contained"
+                            color="secondary"
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            onClick={this.editMealEntry}
+                            variant="contained"
+                            color="primary"
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                      </MealModal>
+                    )}
+                  </>
+                );
+              })
+            ) : (
+              <ListItem button className={classes.nested}>
+                <ListItemText primary="No Lunch entries have been added" />
+              </ListItem>
+            )}
+          </List>
+        </Collapse>
+        {/* <CategoryTitle>Dinner</CategoryTitle> */}
+        <ListItem button onClick={this.handleClickDinner}>
+          <ListItemText primary="Dinner" />
+          {this.state.openDinner ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={this.state.openDinner} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {Dinner.length > 0 ? (
+              Dinner.map(dinner => {
+                return (
+                  <>
+                    <ListItem
+                      key={dinner.id}
+                      button
+                      onClick={() => this.passMealData(dinner)}
+                    >
+                      <ListItemText primary={dinner.food_id.foodName} />
+                    </ListItem>
+                    {this.state.mealEntry && !this.state.edamamExist && (
+                      <MealModal isOpen={this.state.showModal}>
+                        <div>
+                          <Button onClick={this.closeModal}>exit</Button>
+                        </div>
+                        <div>{this.state.mealEntry.food_id.foodName}</div>
+                        <form>
+                          <label htmlFor="date">Date</label>
+                          <input
+                            className="form-field"
+                            type="date"
+                            name="date"
+                            onChange={this.handleChange}
+                          />
 
-                        <TextField
-                          id="Serving Quantity"
-                          name="servingQty"
-                          label="Serving Quantity"
-                          placeholder={`${
-                            this.state.mealEntry.food_id.servingQty
-                          }`}
-                          value={this.state.servingQty}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
+                          <TextField
+                            id="Serving Quantity"
+                            name="servingQty"
+                            label="Serving Quantity"
+                            placeholder={`${this.state.mealEntry.servingQty}`}
+                            value={this.state.servingQty}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Calories Per Serving"
+                            name="caloriesPerServ"
+                            label="Calories Per Serving"
+                            placeholder={`${
+                              this.state.mealEntry.food_id.caloriesPerServ
+                            }`}
+                            value={this.state.caloriesPerServ}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Protein"
+                            name="proteins"
+                            label="Protein"
+                            placeholder={`${
+                              this.state.mealEntry.food_id.proteins
+                            }`}
+                            value={this.state.proteins}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Carbs"
+                            name="carbs"
+                            label="Carbs"
+                            placeholder={`${
+                              this.state.mealEntry.food_id.carbs
+                            }`}
+                            value={this.state.carbs}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Fats"
+                            name="fats"
+                            label="Fats"
+                            placeholder={`${this.state.mealEntry.food_id.fats}`}
+                            value={this.state.fats}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <InputLabel htmlFor="meal-simple">
+                            MealCategory
+                          </InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: "meal_category_id",
+                              id: "meal-simple"
+                            }}
+                          >
+                            <MenuItem value={null}>
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={1}>Breakfast</MenuItem>
+                            <MenuItem value={2}>Lunch</MenuItem>
+                            <MenuItem value={4}>Dinner</MenuItem>
+                            <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
+                        </form>
+                        <div>
+                          <Button
+                            onClick={this.deleteMealEntry}
+                            variant="contained"
+                            color="secondary"
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            onClick={this.editMealEntry}
+                            variant="contained"
+                            color="primary"
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                      </MealModal>
+                    )}
 
-                        <InputLabel htmlFor="meal-simple">
-                          MealCategory
-                        </InputLabel>
-                        <Select
-                          value={this.state.meal_category_id}
-                          onChange={this.handleChange}
-                          inputProps={{
-                            name: "meal_category_id",
-                            id: "meal-simple"
-                          }}
-                        >
-                          <MenuItem value={null}>
-                            <em>None</em>
-                          </MenuItem>
-                          <MenuItem value={1}>Breakfast</MenuItem>
-                          <MenuItem value={2}>Lunch</MenuItem>
-                          <MenuItem value={4}>Dinner</MenuItem>
-                          <MenuItem value={3}>Snack</MenuItem>
-                        </Select>
-                      </form>
-                      <div>
-                        <Button
-                          onClick={this.deleteMealEntry}
-                          variant="contained"
-                          color="secondary"
-                        >
-                          Delete
-                        </Button>
-                        <Button
-                          onClick={this.editMealEntry}
-                          variant="contained"
-                          color="primary"
-                        >
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
-                  )}
-                </div>
-              );
-            })
-          ) : (
-            <EntryItems> No Lunch entries have been added</EntryItems>
-          )}
-        </div>
-        <CategoryTitle>Dinner</CategoryTitle>
-        <div>
-          {Dinner.length > 0 ? (
-            [...Dinner].map(dinner => {
-              return (
-                <div key={dinner.id}>
-                  <EntryItems onClick={() => this.passMealData(dinner)}>
-                    {dinner.food_id.foodName}
-                  </EntryItems>
+                    {this.state.mealEntry && this.state.edamamExist && (
+                      <MealModal isOpen={this.state.showModal}>
+                        <div>
+                          <Button onClick={this.closeModal}>exit</Button>
+                        </div>
+                        <div>{this.state.mealEntry.food_id.foodName}</div>
+                        <form>
+                          <label htmlFor="date">Date</label>
+                          <input
+                            className="form-field"
+                            type="date"
+                            name="date"
+                            onChange={this.handleChange}
+                          />
 
-                  {this.state.mealEntry && !this.state.edamamExist && (
-                    <MealModal isOpen={this.state.showModal}>
-                      <div>
-                        <Button onClick={this.closeModal}>exit</Button>
-                      </div>
-                      <div>{this.state.mealEntry.food_id.foodName}</div>
-                      <form>
-                        <label htmlFor="date">Date</label>
-                        <input
-                          className="form-field"
-                          type="date"
-                          name="date"
-                          onChange={this.handleChange}
-                        />
+                          <TextField
+                            id="Serving Quantity"
+                            name="servingQty"
+                            label="Serving Quantity"
+                            placeholder={`${this.state.mealEntry.servingQty}`}
+                            value={this.state.servingQty}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
 
-                        <TextField
-                          id="Serving Quantity"
-                          name="servingQty"
-                          label="Serving Quantity"
-                          placeholder={`${this.state.mealEntry.servingQty}`}
-                          value={this.state.servingQty}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Calories Per Serving"
-                          name="caloriesPerServ"
-                          label="Calories Per Serving"
-                          placeholder={`${
-                            this.state.mealEntry.food_id.caloriesPerServ
-                          }`}
-                          value={this.state.caloriesPerServ}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Protein"
-                          name="proteins"
-                          label="Protein"
-                          placeholder={`${
-                            this.state.mealEntry.food_id.proteins
-                          }`}
-                          value={this.state.proteins}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Carbs"
-                          name="carbs"
-                          label="Carbs"
-                          placeholder={`${this.state.mealEntry.food_id.carbs}`}
-                          value={this.state.carbs}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <TextField
-                          id="Fats"
-                          name="fats"
-                          label="Fats"
-                          placeholder={`${this.state.mealEntry.food_id.fats}`}
-                          value={this.state.fats}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
-                        <InputLabel htmlFor="meal-simple">
-                          MealCategory
-                        </InputLabel>
-                        <Select
-                          value={this.state.meal_category_id}
-                          onChange={this.handleChange}
-                          inputProps={{
-                            name: "meal_category_id",
-                            id: "meal-simple"
-                          }}
-                        >
-                          <MenuItem value={null}>
-                            <em>None</em>
-                          </MenuItem>
-                          <MenuItem value={1}>Breakfast</MenuItem>
-                          <MenuItem value={2}>Lunch</MenuItem>
-                          <MenuItem value={4}>Dinner</MenuItem>
-                          <MenuItem value={3}>Snack</MenuItem>
-                        </Select>
-                      </form>
-                      <div>
-                        <Button
-                          onClick={this.deleteMealEntry}
-                          variant="contained"
-                          color="secondary"
-                        >
-                          Delete
-                        </Button>
-                        <Button
-                          onClick={this.editMealEntry}
-                          variant="contained"
-                          color="primary"
-                        >
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
-                  )}
+                          <InputLabel htmlFor="meal-simple">
+                            MealCategory
+                          </InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: "meal_category_id",
+                              id: "meal-simple"
+                            }}
+                          >
+                            <MenuItem value={null}>
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={1}>Breakfast</MenuItem>
+                            <MenuItem value={2}>Lunch</MenuItem>
+                            <MenuItem value={4}>Dinner</MenuItem>
+                            <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
+                        </form>
+                        <div>
+                          <Button
+                            onClick={this.deleteMealEntry}
+                            variant="contained"
+                            color="secondary"
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            onClick={this.editMealEntry}
+                            variant="contained"
+                            color="primary"
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                      </MealModal>
+                    )}
+                  </>
+                );
+              })
+            ) : (
+              <ListItem button className={classes.nested}>
+                <ListItemText primary="No Dinner entries have been added" />
+              </ListItem>
+            )}
+          </List>
+        </Collapse>
 
-                  {this.state.mealEntry && this.state.edamamExist && (
-                    <MealModal isOpen={this.state.showModal}>
-                      <div>
-                        <Button onClick={this.closeModal}>exit</Button>
-                      </div>
-                      <div>{this.state.mealEntry.food_id.foodName}</div>
-                      <form>
-                        <label htmlFor="date">Date</label>
-                        <input
-                          className="form-field"
-                          type="date"
-                          name="date"
-                          onChange={this.handleChange}
-                        />
+        {/* <CategoryTitle>Snacks</CategoryTitle> */}
+        <ListItem button onClick={this.handleClickSnack}>
+          <ListItemText primary="Snack" />
+          {this.state.openSnack ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={this.state.openSnack} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {Snack.length > 0 ? (
+              Snack.map(snack => {
+                return (
+                  <>
+                    <ListItem
+                      key={snack.id}
+                      button
+                      onClick={() => this.passMealData(snack)}
+                    >
+                      <ListItemText primary={snack.food_id.foodName} />
+                    </ListItem>
+                    {this.state.mealEntry && !this.state.edamamExist && (
+                      <MealModal isOpen={this.state.showModal}>
+                        <div>
+                          <Button onClick={this.closeModal}>exit</Button>
+                        </div>
+                        <div>{this.state.mealEntry.food_id.foodName}</div>
+                        <form>
+                          <label htmlFor="date">Date</label>
+                          <input
+                            className="form-field"
+                            type="date"
+                            name="date"
+                            onChange={this.handleChange}
+                          />
 
-                        <TextField
-                          id="Serving Quantity"
-                          name="servingQty"
-                          label="Serving Quantity"
-                          placeholder={`${this.state.mealEntry.servingQty}`}
-                          value={this.state.servingQty}
-                          margin="dense"
-                          onChange={this.handleChange}
-                        />
+                          <TextField
+                            id="Serving Quantity"
+                            name="servingQty"
+                            label="Serving Quantity"
+                            placeholder={`${this.state.mealEntry.servingQty}`}
+                            value={this.state.servingQty}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Calories Per Serving"
+                            name="caloriesPerServ"
+                            label="Calories Per Serving"
+                            placeholder={`${
+                              this.state.mealEntry.food_id.caloriesPerServ
+                            }`}
+                            value={this.state.caloriesPerServ}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Protein"
+                            name="proteins"
+                            label="Protein"
+                            placeholder={`${
+                              this.state.mealEntry.food_id.proteins
+                            }`}
+                            value={this.state.proteins}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Carbs"
+                            name="carbs"
+                            label="Carbs"
+                            placeholder={`${
+                              this.state.mealEntry.food_id.carbs
+                            }`}
+                            value={this.state.carbs}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <TextField
+                            id="Fats"
+                            name="fats"
+                            label="Fats"
+                            placeholder={`${this.state.mealEntry.food_id.fats}`}
+                            value={this.state.fats}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+                          <InputLabel htmlFor="meal-simple">
+                            MealCategory
+                          </InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: "meal_category_id",
+                              id: "meal-simple"
+                            }}
+                          >
+                            <MenuItem value={null}>
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={1}>Breakfast</MenuItem>
+                            <MenuItem value={2}>Lunch</MenuItem>
+                            <MenuItem value={4}>Dinner</MenuItem>
+                            <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
+                        </form>
+                        <div>
+                          <Button
+                            onClick={this.deleteMealEntry}
+                            variant="contained"
+                            color="secondary"
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            onClick={this.editMealEntry}
+                            variant="contained"
+                            color="primary"
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                      </MealModal>
+                    )}
 
-                        <InputLabel htmlFor="meal-simple">
-                          MealCategory
-                        </InputLabel>
-                        <Select
-                          value={this.state.meal_category_id}
-                          onChange={this.handleChange}
-                          inputProps={{
-                            name: "meal_category_id",
-                            id: "meal-simple"
-                          }}
-                        >
-                          <MenuItem value={null}>
-                            <em>None</em>
-                          </MenuItem>
-                          <MenuItem value={1}>Breakfast</MenuItem>
-                          <MenuItem value={2}>Lunch</MenuItem>
-                          <MenuItem value={4}>Dinner</MenuItem>
-                          <MenuItem value={3}>Snack</MenuItem>
-                        </Select>
-                      </form>
-                      <div>
-                        <Button
-                          onClick={this.deleteMealEntry}
-                          variant="contained"
-                          color="secondary"
-                        >
-                          Delete
-                        </Button>
-                        <Button
-                          onClick={this.editMealEntry}
-                          variant="contained"
-                          color="primary"
-                        >
-                          Edit
-                        </Button>
-                      </div>
-                    </MealModal>
-                  )}
-                </div>
-              );
-            })
-          ) : (
-            <EntryItems>No Dinner entries have been added</EntryItems>
-          )}
-        </div>
+                    {this.state.mealEntry && this.state.edamamExist && (
+                      <MealModal isOpen={this.state.showModal}>
+                        <div>
+                          <Button onClick={this.closeModal}>exit</Button>
+                        </div>
+                        <div>{this.state.mealEntry.food_id.foodName}</div>
+                        <form>
+                          <label htmlFor="date">Date</label>
+                          <input
+                            className="form-field"
+                            type="date"
+                            name="date"
+                            onChange={this.handleChange}
+                          />
 
-        <CategoryTitle>Snacks</CategoryTitle>
-        <div>
+                          <TextField
+                            id="Serving Quantity"
+                            name="servingQty"
+                            label="Serving Quantity"
+                            placeholder={`${this.state.mealEntry.servingQty}`}
+                            value={this.state.servingQty}
+                            margin="dense"
+                            onChange={this.handleChange}
+                          />
+
+                          <InputLabel htmlFor="meal-simple">
+                            MealCategory
+                          </InputLabel>
+                          <Select
+                            value={this.state.meal_category_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: "meal_category_id",
+                              id: "meal-simple"
+                            }}
+                          >
+                            <MenuItem value={null}>
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={1}>Breakfast</MenuItem>
+                            <MenuItem value={2}>Lunch</MenuItem>
+                            <MenuItem value={4}>Dinner</MenuItem>
+                            <MenuItem value={3}>Snack</MenuItem>
+                          </Select>
+                        </form>
+                        <div>
+                          <Button
+                            onClick={this.deleteMealEntry}
+                            variant="contained"
+                            color="secondary"
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            onClick={this.editMealEntry}
+                            variant="contained"
+                            color="primary"
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                      </MealModal>
+                    )}
+                  </>
+                );
+              })
+            ) : (
+              <ListItem button className={classes.nested}>
+                <ListItemText primary="No snack entries have been added" />
+              </ListItem>
+            )}
+          </List>
+        </Collapse>
+        {/* <div>
           {Snack.length > 0 ? (
             [...Snack].map(snack => {
               return (
@@ -1005,10 +1293,10 @@ class JournalEntry extends React.Component {
           ) : (
             <EntryItems>No Snack entries have been added</EntryItems>
           )}
-        </div>
+        </div> */}
       </div>
     );
   }
 }
 
-export default JournalEntry;
+export default withStyles(styles)(JournalEntry);
