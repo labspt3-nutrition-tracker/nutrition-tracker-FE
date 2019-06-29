@@ -20,19 +20,6 @@ export const ADD_FOOD = gql`
 //   }
 // `;
 
-// export const EDIT_FOOD = gql`
-//   mutation{
-//     updateFood($id: ID!, $input: FoodInput!){
-//       id
-//       foodName
-//       caloriesPerServ
-//       fats
-//       carbs
-//       proteins
-//     }
-//   }
-// `;
-
 export const ADD_FOOD_ENTRY = gql`
   mutation addFoodEntry($input: FoodEntryInput!) {
     addFoodEntry(input: $input) {
@@ -89,10 +76,23 @@ export const ADD_FOOD_ENTRY = gql`
 //     }
 //   }
 // `;
+export const EDIT_FOOD = gql`
+  mutation updateFood($id: ID!, $input: FoodInput!){
+    updateFood(id: $id, input: $input){
+      id
+      foodName
+      caloriesPerServ
+      fats
+      carbs
+      proteins
+    }
+  }
+`;
+
 
 export const EDIT_FOOD_ENTRY = gql`
   mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
-    updateFoodEntry(id: $id, input: $FoodEntry) {
+    updateFoodEntry(id: $id, input: $input) {
       id
       food_id{
         foodName
@@ -267,4 +267,4 @@ export const ADD_TRAINEE = gql`
       weight
     }
   }
-` 
+`

@@ -133,22 +133,22 @@ class FoodEntry extends React.Component {
   };
 
   editFood = entry => {
-    let editFoodEnt = {
-      id: entry.id,
-      food_id: entry.food_id,
-      date: entry.date,
-      foodName: entry.food_id.foodName,
-      servingQty: entry.servingQty,
-      caloriesPerServ: entry.food_id.caloriesPerServ,
-      fats: entry.food_id.fats,
-      carbs: entry.food_id.carbs,
-      proteins: parseInt(entry.food_id.proteins),
-      edamam_id: entry.food_id.edamam_id,
-      meal_category_id: parseInt(entry.meal_category_id),
-      user_id: entry.user_id
-    };
-    //  this.props.editFoodEntry(entry.id, entry)
-    this.props.editFoodEntry(entry.id, editFoodEnt);
+    // let editFoodEnt = {
+    //   id: entry.id,
+    //   food_id: entry.food_id,
+    //   date: entry.date,
+    //   foodName: entry.food_id.foodName,
+    //   servingQty: entry.servingQty,
+    //   caloriesPerServ: entry.food_id.caloriesPerServ,
+    //   fats: entry.food_id.fats,
+    //   carbs: entry.food_id.carbs,
+    //   proteins: parseInt(entry.food_id.proteins),
+    //   edamam_id: entry.food_id.edamam_id,
+    //   meal_category_id: parseInt(entry.meal_category_id),
+    //   user_id: entry.user_id
+    // };
+      this.props.editFoodEntry(entry.id, entry)
+    // this.props.editFoodEntry(entry.id, editFoodEnt);
     console.log(entry.food_id.meal_category_id);
     // console.log(entry.food_id.caloriesPerServ)
     this.closeModal();
@@ -246,7 +246,7 @@ class FoodEntry extends React.Component {
               {Dinner.map(entry => (
                 <div key={entry.id} onClick={this.openModal}>
                   <div
-                    
+
                     onClick={() => this.passFoodEntryData(entry)}
                   >
                     <div><span className="bullet">&#8226;</span> {entry.food_id.foodName}</div>
@@ -260,7 +260,7 @@ class FoodEntry extends React.Component {
               {Snack.map(entry => (
                 <div key={entry.id} onClick={this.openModal}>
                   <div
-                    
+
                     onClick={() => this.passFoodEntryData(entry)}
                   >
                     <div><span className="bullet">&#8226;</span> {entry.food_id.foodName}</div>

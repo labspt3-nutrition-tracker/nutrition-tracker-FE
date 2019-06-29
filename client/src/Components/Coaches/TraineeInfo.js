@@ -37,7 +37,10 @@ const SelectDay = styled.select`
 `;
 
 const ViewData = styled.div`
-
+  -webkit-box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
+  -moz-box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
+  box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
+  border-radius:10px;
 `;
 
 class TraineeInfo extends React.Component{
@@ -136,7 +139,7 @@ class TraineeInfo extends React.Component{
     return(
       <TraineeInfoContainer>
         {this.props.traineeID &&
-          <div>
+          <ViewData>
             <StatsDashboard
               chartChange={this.handleChartChange}
               dataChange={this.handleDataChange}
@@ -160,7 +163,7 @@ class TraineeInfo extends React.Component{
                 )}
               </div>
             )}
-          </div>
+          </ViewData>
       }
 
 

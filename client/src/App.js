@@ -66,7 +66,7 @@ class App extends React.Component {
 
   updateSearch = e => {
     this.setState({
-      searchInput: e.target.value
+      [e.target.name]: e.target.value
     });
   };
 
@@ -88,11 +88,11 @@ class App extends React.Component {
         `https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`
       )
       .then(response => {
+        console.log(this.state.searchInput);
         this.setState({
           searchResults: response.data.hints,
           searchInput: "",
           noResultError: "",
-          // showModal: true
           resultsLoading: false
         });
         console.log("search results", this.state.searchResults);
@@ -118,6 +118,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header
+          resetSearch={this.resetSearch}
           searchInput={this.state.searchInput}
           updateSearch={this.updateSearch}
           getFoodData={this.getFoodData}
@@ -134,7 +135,27 @@ class App extends React.Component {
           updateSearch={this.updateSearch}
         />
         <div>
-          <Route exact path="/" component={Home} />
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <Home
+                resetSearch={this.resetSearch}
+                searchInput={this.state.searchInput}
+                updateSearch={this.updateSearch}
+                getFoodData={this.getFoodData}
+                closeModal={this.closeModal}
+                isOpen={this.state.showModal}
+                openModal={this.openModal}
+                closeModal={this.closeModal}
+                noResultError={this.state.noResultError}
+                handleFoodSubmit={this.handleFoodSubmit}
+                searchResults={this.state.searchResults}
+                resultsLoading={this.state.resultsLoading}
+                updateSearch={this.updateSearch}
+              />
+            )}
+          />
           <PrivateRoute
             path="/dashboard"
             render={props => (

@@ -14,6 +14,7 @@ export const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
         id
       }
       food_id {
+        id
         foodName
         caloriesPerServ
         fats
@@ -22,6 +23,7 @@ export const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
         edamam_id
       }
       meal_category_id {
+        id
         mealCategoryName
       }
     }
