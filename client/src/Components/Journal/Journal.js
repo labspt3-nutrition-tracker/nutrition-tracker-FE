@@ -202,7 +202,7 @@ class Journal extends React.Component {
         alignItems="center"
         classes={{ root: classes.gridContainer }}
       >
-        <Grid item md={4} xs={6}>
+        <Grid item md={4} xs={12}>
           {this.state.foodEntry.length > 1 ? (
             <JournalEntry
               foodEntries={this.state.foodEntry}
