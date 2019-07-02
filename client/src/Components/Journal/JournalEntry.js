@@ -32,13 +32,18 @@ const styles = theme => ({
   mealCategory: {
     color: "#60B5A9",
     fontSize: "1.8rem",
-    fontFamily: "Oswald",
-    width: "40%"
+    fontFamily: "Oswald"
   },
   foodEntry: {
     fontSize: "1.8rem",
     paddingLeft: "10px",
     fontFamily: "Oswald"
+  },
+  list: {
+    width: "70%"
+  },
+  categoryList: {
+    alignItems: "flex-start"
   }
 });
 
@@ -255,12 +260,17 @@ class JournalEntry extends React.Component {
       <div className={classes.root}>
         <h2 className={classes.header}>{this.props.datePicked}</h2>
         <List className={classes.root} disablePadding dense>
-          <ListItem>
+          <ListItem classes={{ root: classes.categoryList }}>
             <ListItemText
               primary="Breakfast"
               classes={{ primary: classes.mealCategory }}
             />
-            <List component="div" disablePadding dense>
+            <List
+              component="div"
+              disablePadding
+              dense
+              classes={{ root: classes.list }}
+            >
               {Breakfast.length > 0 ? (
                 Breakfast.map(breakfast => {
                   return (
@@ -458,12 +468,17 @@ class JournalEntry extends React.Component {
               )}
             </List>
           </ListItem>
-          <ListItem>
+          <ListItem classes={{ root: classes.categoryList }}>
             <ListItemText
               primary="Lunch"
               classes={{ primary: classes.mealCategory }}
             />
-            <List component="div" disablePadding dense>
+            <List
+              component="div"
+              disablePadding
+              dense
+              classes={{ root: classes.list }}
+            >
               {Lunch.length > 0 ? (
                 Lunch.map(lunch => {
                   return (
@@ -661,12 +676,17 @@ class JournalEntry extends React.Component {
               )}
             </List>
           </ListItem>
-          <ListItem>
+          <ListItem classes={{ root: classes.categoryList }}>
             <ListItemText
               primary="Dinner"
               classes={{ primary: classes.mealCategory }}
             />
-            <List component="div" disablePadding dense>
+            <List
+              component="div"
+              disablePadding
+              dense
+              classes={{ root: classes.list }}
+            >
               {Dinner.length > 0 ? (
                 Dinner.map(dinner => {
                   return (
@@ -865,12 +885,17 @@ class JournalEntry extends React.Component {
             </List>
           </ListItem>
 
-          <ListItem>
+          <ListItem classes={{ root: classes.categoryList }}>
             <ListItemText
               primary="Snack"
               classes={{ primary: classes.mealCategory }}
             />
-            <List component="div" disablePadding dense>
+            <List
+              component="div"
+              disablePadding
+              dense
+              classes={{ root: classes.list }}
+            >
               {Snack.length > 0 ? (
                 Snack.map(snack => {
                   return (
