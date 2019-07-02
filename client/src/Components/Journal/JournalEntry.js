@@ -454,7 +454,7 @@ class JournalEntry extends React.Component {
           aria-labelledby="form-dialog-title"
           PaperProps={{
             style: {
-              minWidth: "40vw"
+              minWidth: "300px"
             }
           }}
         >
