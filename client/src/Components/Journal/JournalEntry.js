@@ -14,10 +14,11 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import * as moment from "moment";
-
-import { GET_CURRENT_USERID } from "../../graphql/queries";
 import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
+
+import { GET_CURRENT_USERID } from "../../graphql/queries";
+import MealFoods from "./MealFoods";
 
 const styles = theme => ({
   root: {
@@ -31,22 +32,6 @@ const styles = theme => ({
     textTransform: "uppercase",
     fontFamily: "Oswald",
     margin: "3% 0"
-  },
-  mealCategory: {
-    color: "#60B5A9",
-    fontSize: "1.8rem",
-    fontFamily: "Oswald"
-  },
-  foodEntry: {
-    fontSize: "1.8rem",
-    paddingLeft: "10px",
-    fontFamily: "Oswald"
-  },
-  list: {
-    width: "70%"
-  },
-  categoryList: {
-    alignItems: "flex-start"
   },
   dialogBox: {
     display: "flex",
@@ -289,163 +274,27 @@ class JournalEntry extends React.Component {
       return entry.meal_category_id.mealCategoryName === "Snack";
     });
 
+    const mealCategories = [
+      { cat: "Breakfast", foods: Breakfast },
+      { cat: "Lunch", foods: Lunch },
+      { cat: "Dinner", foods: Dinner },
+      { cat: "Snack", foods: Snack }
+    ];
+
     return (
       <div className={classes.root}>
         <h2 className={classes.header}>{this.props.datePicked}</h2>
         <List className={classes.root} disablePadding dense>
-          <ListItem classes={{ root: classes.categoryList }}>
-            <ListItemText
-              primary="Breakfast"
-              classes={{ primary: classes.mealCategory }}
-            />
-            <List
-              component="div"
-              disablePadding
-              dense
-              classes={{ root: classes.list }}
-            >
-              {Breakfast.length > 0 ? (
-                Breakfast.map(breakfast => {
-                  return (
-                    <>
-                      <ListItem
-                        key={breakfast.id}
-                        button
-                        onClick={() => this.passMealData(breakfast)}
-                      >
-                        <ListItemText
-                          primary={breakfast.food_id.foodName}
-                          classes={{ primary: classes.foodEntry }}
-                        />
-                      </ListItem>
-                    </>
-                  );
-                })
-              ) : (
-                <ListItem>
-                  <ListItemText
-                    primary="No Breakfast entries"
-                    classes={{ primary: classes.foodEntry }}
-                  />
-                </ListItem>
-              )}
-            </List>
-          </ListItem>
-          <ListItem classes={{ root: classes.categoryList }}>
-            <ListItemText
-              primary="Lunch"
-              classes={{ primary: classes.mealCategory }}
-            />
-            <List
-              component="div"
-              disablePadding
-              dense
-              classes={{ root: classes.list }}
-            >
-              {Lunch.length > 0 ? (
-                Lunch.map(lunch => {
-                  return (
-                    <>
-                      <ListItem
-                        key={lunch.id}
-                        button
-                        onClick={() => this.passMealData(lunch)}
-                      >
-                        <ListItemText
-                          primary={lunch.food_id.foodName}
-                          classes={{ primary: classes.foodEntry }}
-                        />
-                      </ListItem>
-                    </>
-                  );
-                })
-              ) : (
-                <ListItem>
-                  <ListItemText
-                    primary="No Lunch entries"
-                    classes={{ primary: classes.foodEntry }}
-                  />
-                </ListItem>
-              )}
-            </List>
-          </ListItem>
-          <ListItem classes={{ root: classes.categoryList }}>
-            <ListItemText
-              primary="Dinner"
-              classes={{ primary: classes.mealCategory }}
-            />
-            <List
-              component="div"
-              disablePadding
-              dense
-              classes={{ root: classes.list }}
-            >
-              {Dinner.length > 0 ? (
-                Dinner.map(dinner => {
-                  return (
-                    <>
-                      <ListItem
-                        key={dinner.id}
-                        button
-                        onClick={() => this.passMealData(dinner)}
-                      >
-                        <ListItemText
-                          primary={dinner.food_id.foodName}
-                          classes={{ primary: classes.foodEntry }}
-                        />
-                      </ListItem>
-                    </>
-                  );
-                })
-              ) : (
-                <ListItem>
-                  <ListItemText
-                    primary="No Dinner entries"
-                    classes={{ primary: classes.foodEntry }}
-                  />
-                </ListItem>
-              )}
-            </List>
-          </ListItem>
-
-          <ListItem classes={{ root: classes.categoryList }}>
-            <ListItemText
-              primary="Snack"
-              classes={{ primary: classes.mealCategory }}
-            />
-            <List
-              component="div"
-              disablePadding
-              dense
-              classes={{ root: classes.list }}
-            >
-              {Snack.length > 0 ? (
-                Snack.map(snack => {
-                  return (
-                    <>
-                      <ListItem
-                        key={snack.id}
-                        button
-                        onClick={() => this.passMealData(snack)}
-                      >
-                        <ListItemText
-                          primary={snack.food_id.foodName}
-                          classes={{ primary: classes.foodEntry }}
-                        />
-                      </ListItem>
-                    </>
-                  );
-                })
-              ) : (
-                <ListItem>
-                  <ListItemText
-                    primary="No snack entries"
-                    classes={{ primary: classes.foodEntry }}
-                  />
-                </ListItem>
-              )}
-            </List>
-          </ListItem>
+          {mealCategories.map((mealCategory, i) => {
+            return (
+              <MealFoods
+                key={i}
+                category={mealCategory.cat}
+                foods={mealCategory.foods}
+                passMealData={this.passMealData}
+              />
+            );
+          })}
         </List>
 
         <Dialog
