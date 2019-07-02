@@ -112,29 +112,30 @@ class Journal extends React.Component {
       .catch(err => console.log(err));
   };
 
-  deleteMealEntry = id => {
+  deleteMealEntry = async id => {
     console.log(id);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
-    client
-      .mutate({
+    try {
+      await client.mutate({
         mutation: DELETE_MEAL,
         variables: { id }
-      })
-      .then(response => {
-        console.log(response);
-      })
-      .then(response => {
-        client.query({
-          query: FOODENTRYQUERY,
-          variables: {
-            userId: this.state.currentUser
-          }
-        });
-      })
-      .catch(err => console.log(err));
+      });
+
+      const response = await client.query({
+        query: FOODENTRYQUERY,
+        variables: {
+          userId: this.state.currentUser
+        }
+      });
+      this.setState({
+        foodEntry: response.data.getFoodEntriesByUserId
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   editMealEntry = async (entry_id, food_id, foodEntry) => {
@@ -158,39 +159,36 @@ class Journal extends React.Component {
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
-    await client
-      .mutate({
+    try {
+      await client.mutate({
         mutation: UPDATE_FOOD,
         variables: {
           id: food_id,
           input: foodInput
         }
-      })
-      .then(response => {
-        client.mutate({
-          mutation: UPDATE_FOOD_ENTRY,
-          variables: {
-            id: entry_id,
-            input: foodEntryInput
-          }
-        });
-      })
-      .then(response => {
-        client
-          .query({
-            query: FOODENTRYQUERY,
-            variables: {
-              userId: this.state.currentUser
-            }
-          })
-          .then(response => {
-            console.log("**** ", response.data.getFoodEntriesByUserId);
-            this.setState({
-              foodEntry: response.data.getFoodEntriesByUserId
-            });
-          });
-      })
-      .catch(err => console.log(err));
+      });
+
+      await client.mutate({
+        mutation: UPDATE_FOOD_ENTRY,
+        variables: {
+          id: entry_id,
+          input: foodEntryInput
+        }
+      });
+
+      const response = await client.query({
+        query: FOODENTRYQUERY,
+        variables: {
+          userId: this.state.currentUser
+        }
+      });
+
+      this.setState({
+        foodEntry: response.data.getFoodEntriesByUserId
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   render() {
