@@ -383,53 +383,6 @@ class Dashboard extends Component {
     })
   }
 
-  // editFoodEntry = (editId, editEntry, idToken) => {
-  //   const foodInput = {
-  //     foodName: editEntry.foodName,
-  //     caloriesPerServ: editEntry.caloriesPerServ,
-  //     fats: editEntry.fats,
-  //     carbs: editEntry.carbs,
-  //     proteins: editEntry.proteins,
-  //     edamam_id: editEntry.edamam_id,
-  //   };
-  //
-  //   const foodEntryInput = {
-  //     date: editEntry.date,
-  //     food_id: editEntry.food_id,
-  //     user_id: editEntry.user_id,
-  //     servingQty: editEntry.servingQty,
-  //     meal_category_id: parseInt(editEntry.meal_category_id)
-  //   }
-  //   console.log("arg food", editEntry);
-  //   console.log("props", this.state.foodEntry);
-  //   const client = new ApolloClient({
-  //     uri: "https://nutrition-tracker-be.herokuapp.com",
-  //     headers: { authorization: idToken }
-  //   });
-  //   client
-  //     .mutate({
-  //       mutation: EDIT_FOOD_ENTRY,
-  //       variables: { id: editId, input: editEntry }
-  //     })
-  //     .then(response => {
-  //       console.log("first part of response", response);
-  //       client
-  //         .query({
-  //           query: GET_FOOD_ENTRIES_BY_USER_QUERY,
-  //           variables: {
-  //             userId: this.state.currentUser
-  //           }
-  //         })
-  //         .then(response => {
-  //           console.log(response);
-  //           this.setState({
-  //             foodEntry: this.state.foodEntry,
-  //             foodEntries: response.data.getFoodEntriesByUserId
-  //           });
-  //         });
-  //     })
-  //     .catch(err => console.log("error message edit food", err));
-  // };
 
   editExerEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
