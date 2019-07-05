@@ -75,6 +75,6 @@ Or to use our live project to get started:
 
 ## License
 
-> You can check the full license [here](https://github.com/labspt3-nutrition-tracker/nutrition-tracker-BE/blob/master/LICENSE)
+> You can check the full license [here](https://github.com/labspt3-nutrition-tracker/nutrition-tracker-FE/blob/master/LICENSE)
 
 This project is licensed under the terms of the MIT license
