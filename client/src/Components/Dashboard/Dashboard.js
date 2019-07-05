@@ -520,7 +520,7 @@ class Dashboard extends Component {
   };
 
   render() {
-    console.log('is selectedfood rendering', this.props.selectedFood)
+
     const { classes } = this.props;
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     if (this.state.userType === "Super User") {
@@ -563,6 +563,7 @@ class Dashboard extends Component {
                     <EntryForm
                       addFoodEntry={this.addFoodEntry}
                       closeFoodForm={this.closeFoodForm}
+                      searchedFood={this.props.selectedFood}
                     />
                   </Container>
                 )}
@@ -628,6 +629,7 @@ class Dashboard extends Component {
               <EntryForm
                 addFoodEntry={this.addFoodEntry}
                 closeFoodForm={this.closeFoodForm}
+                searchedFood={this.props.selectedFood}
               />
             )}
             {!this.state.showFoodForm && (

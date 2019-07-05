@@ -418,6 +418,7 @@ class EntryForm extends Component {
   }
 
   render() {
+    console.log('is selectedfood rendering', this.props.selectedFood)
     const { classes } = this.props;
     this.getCurrentUser(localStorage.getItem("token"));
     return (
@@ -616,7 +617,7 @@ class EntryForm extends Component {
         >
           Add Entry
         </Button>
-        <Button onClick={this.props.closeFoodForm}> Close</Button>
+        {this.props.searchedFood && <Button onClick={this.props.closeFoodForm}> Add searched Item</Button>}
       </Container>
     );
   }
