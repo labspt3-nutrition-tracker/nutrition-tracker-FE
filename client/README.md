@@ -14,8 +14,7 @@ DEMO: https://nutrition-tracker-lambda.netlify.com/
 * [Technologies](#Technologies)
 * [Setup](#Setup)
 * [Authors](#Authors)
-
-
+* [License](#License)
 
 ## [Lambda Perpetual Access Fund](https://lambdapaf.org/)
 
@@ -73,3 +72,9 @@ Or to use our live project to get started:
 * [Leila Berrouayel](https://github.com/leila100)
 * [David Chua](https://github.com/david-chua)
 * [Jamar Torres](https://github.com/jrizza88)
+
+## License
+
+> You can check the full license [here](https://github.com/labspt3-nutrition-tracker/nutrition-tracker-BE/blob/master/LICENSE)
+
+This project is licensed under the terms of the MIT license
