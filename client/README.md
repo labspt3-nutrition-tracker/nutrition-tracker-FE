@@ -1,3 +1,48 @@
+# HelloMelon - Nutrition Tracking app
+
+A nutrition tracking application that provides a visualization of eating patterns and nutritional data to empower people to take control of their health.
+
+DEMO: https://nutrition-tracker-lambda.netlify.com/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
