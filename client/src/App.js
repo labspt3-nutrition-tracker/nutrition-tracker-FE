@@ -76,7 +76,7 @@ class App extends React.Component {
 
   closeModal = () => {
     console.log(this.state.searchInput);
-    this.setState({ showModal: false, searchInput: " " });
+    this.setState({ showModal: false, searchInput: "" });
   };
 
   getFoodData = food => {
@@ -88,7 +88,7 @@ class App extends React.Component {
         `https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`
       )
       .then(response => {
-        console.log(this.state.searchInput);
+        console.log('pre-reset', this.state.searchInput);
         this.setState({
           searchResults: response.data.hints,
           searchInput: "",
@@ -114,11 +114,16 @@ class App extends React.Component {
     this.closeModal();
   };
 
+  resetSearch = () => {
+    this.setState({
+      searchInput: ""
+    })
+  }
+
   render() {
     return (
       <div className="App">
         <Header
-          resetSearch={this.resetSearch}
           searchInput={this.state.searchInput}
           updateSearch={this.updateSearch}
           getFoodData={this.getFoodData}
@@ -140,7 +145,6 @@ class App extends React.Component {
             path="/"
             render={() => (
               <Home
-                resetSearch={this.resetSearch}
                 searchInput={this.state.searchInput}
                 updateSearch={this.updateSearch}
                 getFoodData={this.getFoodData}

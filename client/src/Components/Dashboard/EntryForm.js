@@ -418,7 +418,6 @@ class EntryForm extends Component {
   }
 
   render() {
-    console.log('is selectedfood rendering', this.props.selectedFood)
     const { classes } = this.props;
     this.getCurrentUser(localStorage.getItem("token"));
     return (
