@@ -82,7 +82,7 @@ class App extends React.Component {
   getFoodData = food => {
     food = this.state.searchInput;
     let encodedFood = food.replace(" ", "%20");
-    this.setState({ showModal: true });
+    this.setState({ showModal: true, searchInput: "" });
     axios
       .get(
         `https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`
@@ -109,7 +109,7 @@ class App extends React.Component {
       });
   };
 
-  handleFoodSubmit = food => {
+  handleFoodSubmit = (food) => {
     this.setState({ selectedFood: food });
     this.closeModal();
   };
@@ -124,6 +124,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header
+          resetSearch={this.resetSearch}
           searchInput={this.state.searchInput}
           updateSearch={this.updateSearch}
           getFoodData={this.getFoodData}
@@ -138,6 +139,7 @@ class App extends React.Component {
           searchResults={this.state.searchResults}
           resultsLoading={this.state.resultsLoading}
           updateSearch={this.updateSearch}
+          searchInput={this.state.searchInput}
         />
         <div>
           <Route
@@ -145,10 +147,8 @@ class App extends React.Component {
             path="/"
             render={() => (
               <Home
-                searchInput={this.state.searchInput}
                 updateSearch={this.updateSearch}
                 getFoodData={this.getFoodData}
-                closeModal={this.closeModal}
                 isOpen={this.state.showModal}
                 openModal={this.openModal}
                 closeModal={this.closeModal}
@@ -163,7 +163,7 @@ class App extends React.Component {
           <PrivateRoute
             path="/dashboard"
             render={props => (
-              <Dashboard {...props} selectedFood={this.state.selectedFood} />
+              <Dashboard {...props} selectedFood={this.state.selectedFood}/>
             )}
           />
           <PrivateRoute exact path="/billing" render={() => <Billing />} />
