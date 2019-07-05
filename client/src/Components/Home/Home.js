@@ -311,13 +311,11 @@ function Home(props) {
                 />
               </ImgCon>
               <FeatureInfo>
-                <h2> Trainer Functionality</h2>
+                <h2> Coach Functionality</h2>
                 <hr />
                 <p>
-                  (future release)
-                  <br />
-                  Whether you want your trainer to see your progress or keep you
-                  accountable, our trainer feature allows you to communicate
+                  Whether you want a friend or your personal trainer to see your progress or keep you
+                  accountable, our coach feature allows you to communicate your progress
                   easily.
                 </p>
               </FeatureInfo>

@@ -60,10 +60,10 @@ const styles = theme => ({
 
 const tiers = [
   {
-    title: 'Free User',
+    title: 'Basic (Free)',
     price: '0',
     description: [
-        'Calorie entry',
+        'Food entry',
          'One week food diary options',
          'Help center access',
           'Email support'
@@ -72,26 +72,26 @@ const tiers = [
     buttonVariant: 'outlined',
   },
   {
-    title: 'Super User',
+    title: 'Premium',
     subheader: 'Most popular',
     price: '7',
     description: [
-      'calorie entry',
+      'All basic features',
       'Access to all report types',
       'Food Analysis',
-      'Priority for future releases, such as connecting with a personal trainer!',
+      'Access to view one friend\'s progress!',
     ],
     buttonText: 'Get started',
     buttonVariant: 'contained',
   },
   {
-    title: 'Trainer (for future release)',
+    title: 'Coach',
     price: '10',
     description: [
-      'Have access to your client\'s profiles!',
+      'All basic & premium features',
+      'Have access to your client\'s nutrition profile',
       'Give advice to clients',
-      'Help center access',
-      'Phone & email support',
+      'Access to all future coach features'
     ],
     buttonText: 'Login with User Account',
     buttonVariant: 'outlined',
@@ -112,7 +112,7 @@ function Pricing(props) {
             Pricing
           </Typography>
           <Typography variant="h6" align="center" color="textSecondary" component="p">
-             Take advantage of our popular super user account to get the full experience that we have to offer!
+             Take advantage of our popular premium account to get the full experience that we have to offer!
           </Typography>
         </div>
         {/* End hero unit */}
