@@ -1,8 +1,13 @@
 # HelloMelon - Nutrition Tracking app
 
-A nutrition tracking application that provides a visualization of eating patterns and nutritional data to empower people to take control of their health.
+<p align="center">
+  <img alt="HelloMelon homepage" src="https://github.com/labspt3-nutrition-tracker/nutrition-tracker-FE/blob/david-chua/client/readme_images/helloMelon_home.png">
+</p>
 
+A nutrition tracking application that provides a visualization of eating patterns and nutritional data to empower people to take control of their health.
 DEMO: https://nutrition-tracker-lambda.netlify.com/
+
+## Table of Contents
 
 
 
