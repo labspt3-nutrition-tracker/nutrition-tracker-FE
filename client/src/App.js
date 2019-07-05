@@ -76,13 +76,13 @@ class App extends React.Component {
 
   closeModal = () => {
     console.log(this.state.searchInput);
-    this.setState({ showModal: false, searchInput: "" });
+    this.setState({ showModal: false });
   };
 
   getFoodData = food => {
     food = this.state.searchInput;
     let encodedFood = food.replace(" ", "%20");
-    this.setState({ showModal: true, searchInput: "" });
+    this.setState({ showModal: true});
     axios
       .get(
         `https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`
