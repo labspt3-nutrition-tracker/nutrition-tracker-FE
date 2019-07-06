@@ -89,22 +89,14 @@ const tiers = [
     buttonVariant: 'outlined',
   },
   {
-<<<<<<< HEAD
-    title: 'Premium User',
-=======
     title: 'Premium',
->>>>>>> development
     subheader: 'Most popular',
     price: '7',
     description: [
       'All basic features',
       'Access to all report types',
       'Food Analysis',
-<<<<<<< HEAD
-      'Priority for future releases',
-=======
       'Access to view one friend\'s progress!',
->>>>>>> development
     ],
     buttonText: 'Get started',
     buttonVariant: 'contained',
