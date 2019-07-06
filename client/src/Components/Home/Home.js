@@ -93,6 +93,9 @@ const Features = styled.div`
   justify-content: center;
   width: 100%;
   max-width: 1000px;
+  @media(max-width: 700px) {
+    flex-direction: column;
+  }
 `;
 
 const Feature = styled.div`
@@ -103,6 +106,9 @@ const Feature = styled.div`
   padding-bottom: 50px;
   align-items: center;
   text-align: center;
+  @media(max-width: 700px) {
+    width: 100%;
+  }
   @media (max-width: 500px) {
     flex-direction: column;
   }

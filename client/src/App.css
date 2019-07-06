@@ -188,6 +188,10 @@ button {
   width: 100%;
   max-width: 400px;
 }
+
+.form-container > div{
+  width: 100%;
+}
 /* ------------ MEDIA QUERIES ------------ */
 
 @media (max-width: 800px) {

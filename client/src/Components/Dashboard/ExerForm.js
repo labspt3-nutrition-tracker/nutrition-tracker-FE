@@ -14,7 +14,9 @@ import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
   formTitle: {
-    fontFamily: "Oswald"
+    fontFamily: "Oswald",
+    fontWeight: 100,
+    fontSize: "2.5rem",
   },
   input: {
     fontSize: 16
@@ -27,7 +29,10 @@ const Form = styled.form`
   max-width: 500px;
   width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 32px;
+  @media (max-width: 600px) {
+    padding: 0 20px;
+  }
 `;
 
 class ExerForm extends Component {

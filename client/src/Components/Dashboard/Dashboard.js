@@ -36,7 +36,7 @@ const styles = theme => ({
   root: {
     maxWidth: 960,
     width: "100%",
-    marginBottom: "3%"
+    marginBottom: "3%",
   },
   date: {
     margin: "50px auto 0 auto",
@@ -54,18 +54,35 @@ const styles = theme => ({
   },
   flexData: {
     display: "flex",
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: "column",
+    }
   },
   flexDataCon: {
     width: "100%",
+    // maxWidth: 300,
+    margin: 0,
+    padding: 0,
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+    }
+  },
+  flexDataConFirst: {
+    width: "100%",
     maxWidth: 300,
     margin: 0,
-    padding: 0
+    padding: "0 0 0 32",
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+      maxWidth: "100%"
+    }
   },
   heading: {
     fontFamily: "Oswald",
     fontWeight: 100,
-    fontSize: "2rem"
+    fontSize: "2.5rem",
+    // textTransform: "uppercase"
   }
 });
 
@@ -581,7 +598,7 @@ class Dashboard extends Component {
             </CardContent>
             <CardContent className={classes.flexData}>
               {!this.state.foodIsLoading ? (
-                <Container className={classes.flexDataCon}>
+                <Container className={classes.flexDataConFirst}>
                   <Typography className={classes.heading}>Meals</Typography>
                   <hr />
                   <FoodEntry
@@ -625,11 +642,10 @@ class Dashboard extends Component {
                 <>
                   <CardContent className={classes.flexData}>
                     {!this.state.exerIsLoading ? (
-                      <Container className={classes.flexDataCon}>
+                      <Container className={classes.flexDataConFirst}>
                         <Typography className={classes.heading}>
                           Activity
                         </Typography>
-                        <hr />
                         <ExerciseEntry
                           exerEntries={this.state.exerEntries}
                           deleteExerEntry={this.deleteExerEntry}
