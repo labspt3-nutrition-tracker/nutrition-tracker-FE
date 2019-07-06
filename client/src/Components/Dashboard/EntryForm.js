@@ -620,7 +620,7 @@ class EntryForm extends Component {
         >
           Add Entry
         </Button>
-        <Button onClick={this.props.closeFoodForm}> Close</Button>
+        {this.props.searchedFood && <Button onClick={this.props.closeFoodForm}> Add searched Item</Button>}
       </Container>
     );
   }

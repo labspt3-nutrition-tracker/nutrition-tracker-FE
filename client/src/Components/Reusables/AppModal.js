@@ -43,7 +43,7 @@ const ModalButton = styled.button`
   padding: 5px 30px;
   margin-right: 20px;
   font-size: 1.4em;
-  background: #f4b4c3;
+  background: #5E366A;
   color: #fcfcfb;
   display: block;
   right: 0;

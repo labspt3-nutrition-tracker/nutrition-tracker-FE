@@ -77,10 +77,10 @@ secSub: {
 
 const tiers = [
   {
-    title: 'Free User',
+    title: 'Basic (Free)',
     price: '0',
     description: [
-        'Calorie entry',
+        'Food entry',
          'One week food diary options',
          'Help center access',
           'Email support'
@@ -89,14 +89,22 @@ const tiers = [
     buttonVariant: 'outlined',
   },
   {
+<<<<<<< HEAD
     title: 'Premium User',
+=======
+    title: 'Premium',
+>>>>>>> development
     subheader: 'Most popular',
     price: '7',
     description: [
-      'calorie entry',
+      'All basic features',
       'Access to all report types',
       'Food Analysis',
+<<<<<<< HEAD
       'Priority for future releases',
+=======
+      'Access to view one friend\'s progress!',
+>>>>>>> development
     ],
     buttonText: 'Get started',
     buttonVariant: 'contained',
@@ -105,10 +113,10 @@ const tiers = [
     title: 'Coach',
     price: '10',
     description: [
-      'Have access to your client\'s profiles!',
+      'All basic & premium features',
+      'Have access to your client\'s nutrition profile',
       'Give advice to clients',
-      'Help center access',
-      'Phone & email support',
+      'Access to all future coach features'
     ],
     buttonText: 'Login with User Account',
     buttonVariant: 'outlined',
@@ -128,8 +136,8 @@ function Pricing(props) {
           <Typography component="h1" variant="h2" align="center" className={classes.secTitle} gutterBottom>
             Pricing
           </Typography>
-          <Typography className={classes.secSub} variant="h6" align="center" component="p">
-             Take advantage of our popular super user account to get the full experience that we have to offer!
+          <Typography variant="h6" align="center" color="textSecondary" component="p">
+             Take advantage of our popular premium account to get the full experience that we have to offer!
           </Typography>
         </div>
         {/* End hero unit */}

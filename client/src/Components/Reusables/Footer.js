@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import logo from "../../Assets/logo-black.png";
 // import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -32,6 +33,11 @@ const useStyles = makeStyles({
   },
 
   heading: {
+    fontSize: "2rem",
+    marginTop: "4.5%"
+  },
+
+  heading2: {
     fontSize: "2rem",
     margin: "2.5% 0"
   },
@@ -151,7 +157,9 @@ React.useEffect(() => {
   {loggedOut ? (
 
             <BottomNavigation  className={classes.root}>
-            <div className={classes.heading}>Nutrition Tracker</div>
+            <div className={classes.heading}>
+              <img src={logo} alt="Created my free logo at LogoMakr.com" />
+            </div>
         <div className={classes.lowerDiv}>
           <div className={classes.contactDiv}>
             <div className={classes.lDiv}>About Us</div>
@@ -165,7 +173,7 @@ React.useEffect(() => {
         </BottomNavigation>
           ) : (
             <BottomNavigation  className={classes.root}>                                                                                                                                                                     >
-              <div className={classes.heading}>What are you waiting for? Let's get started.</div>
+              <div className={classes.heading2}>What are you waiting for? Let's get started.</div>
                   <button className={classes.button}>Sign Up</button>
               <div className={classes.lowerDiv}>
                 <div className={classes.contactDiv}>
