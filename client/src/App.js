@@ -76,19 +76,19 @@ class App extends React.Component {
 
   closeModal = () => {
     console.log(this.state.searchInput);
-    this.setState({ showModal: false, searchInput: " " });
+    this.setState({ showModal: false });
   };
 
   getFoodData = food => {
     food = this.state.searchInput;
     let encodedFood = food.replace(" ", "%20");
-    this.setState({ showModal: true });
+    this.setState({ showModal: true});
     axios
       .get(
         `https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`
       )
       .then(response => {
-        console.log(this.state.searchInput);
+        console.log('pre-reset', this.state.searchInput);
         this.setState({
           searchResults: response.data.hints,
           searchInput: "",
@@ -109,10 +109,16 @@ class App extends React.Component {
       });
   };
 
-  handleFoodSubmit = food => {
+  handleFoodSubmit = (food) => {
     this.setState({ selectedFood: food });
     this.closeModal();
   };
+
+  resetSearch = () => {
+    this.setState({
+      searchInput: ""
+    })
+  }
 
   render() {
     return (
@@ -133,6 +139,7 @@ class App extends React.Component {
           searchResults={this.state.searchResults}
           resultsLoading={this.state.resultsLoading}
           updateSearch={this.updateSearch}
+          searchInput={this.state.searchInput}
         />
         <div>
           <Route
@@ -140,11 +147,8 @@ class App extends React.Component {
             path="/"
             render={() => (
               <Home
-                resetSearch={this.resetSearch}
-                searchInput={this.state.searchInput}
                 updateSearch={this.updateSearch}
                 getFoodData={this.getFoodData}
-                closeModal={this.closeModal}
                 isOpen={this.state.showModal}
                 openModal={this.openModal}
                 closeModal={this.closeModal}
@@ -159,7 +163,7 @@ class App extends React.Component {
           <PrivateRoute
             path="/dashboard"
             render={props => (
-              <Dashboard {...props} selectedFood={this.state.selectedFood} />
+              <Dashboard {...props} selectedFood={this.state.selectedFood}/>
             )}
           />
           <PrivateRoute exact path="/billing" render={() => <Billing />} />

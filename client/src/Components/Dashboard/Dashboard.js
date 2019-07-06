@@ -121,6 +121,11 @@ class Dashboard extends Component {
   };
 
   componentDidMount = () => {
+    if (this.props.selectedFood ){
+      this.setState({
+        showFoodForm: false
+      })
+    }
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
@@ -515,6 +520,7 @@ class Dashboard extends Component {
   };
 
   render() {
+
     const { classes } = this.props;
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     if (this.state.userType === "Super User") {
@@ -557,6 +563,7 @@ class Dashboard extends Component {
                     <EntryForm
                       addFoodEntry={this.addFoodEntry}
                       closeFoodForm={this.closeFoodForm}
+                      searchedFood={this.props.selectedFood}
                     />
                   </Container>
                 )}
@@ -622,6 +629,7 @@ class Dashboard extends Component {
               <EntryForm
                 addFoodEntry={this.addFoodEntry}
                 closeFoodForm={this.closeFoodForm}
+                searchedFood={this.props.selectedFood}
               />
             )}
             {!this.state.showFoodForm && (
