@@ -37,6 +37,7 @@ const styles = theme => ({
     maxWidth: 960,
     width: "100%",
     marginBottom: "3%",
+    color: "#545454"
   },
   date: {
     margin: "50px auto 0 auto",
@@ -47,17 +48,22 @@ const styles = theme => ({
   },
   title: {
     // flexGrow: 1,
-    fontSize: 16,
+    fontSize: 20,
     background: "#5E366A",
     padding: 10,
-    color: "#ffffff"
+    color: "#ffffff",
+    textTransform: "uppercase",
+    textAlign: "center",
+    letterSpacing: "1.3px",
+
   },
   flexData: {
     display: "flex",
     justifyContent: "space-evenly",
     [theme.breakpoints.down('sm')]: {
       flexDirection: "column",
-    }
+    },
+    color: "#545454"
   },
   flexDataCon: {
     width: "100%",
@@ -66,7 +72,8 @@ const styles = theme => ({
     padding: 0,
     [theme.breakpoints.down('sm')]: {
       width: "100%",
-    }
+    },
+    
   },
   flexDataConFirst: {
     width: "100%",

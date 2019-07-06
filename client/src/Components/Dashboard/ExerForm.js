@@ -17,6 +17,7 @@ const styles = theme => ({
     fontFamily: "Oswald",
     fontWeight: 100,
     fontSize: "2.5rem",
+    color: "#545454"
   },
   input: {
     fontSize: 16
