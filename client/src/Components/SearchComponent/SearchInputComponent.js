@@ -42,6 +42,7 @@ class SearchInputComponent extends React.Component {
   }
 
   render() {
+    const inputVal = this.props.searchInput;
     return (
       <Search>
         <SearchInput
