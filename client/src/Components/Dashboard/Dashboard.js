@@ -32,6 +32,14 @@ import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 
+
+const LoadingDiv = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+min-height: 500px;
+`
 const styles = theme => ({
   root: {
     maxWidth: 960,
@@ -579,7 +587,9 @@ class Dashboard extends Component {
                   />
                 </Container>
               ) : (
-                <CircularProgress />
+                <LoadingDiv>
+                  <CircularProgress />
+                </LoadingDiv>
               )}
               <Container className={classes.forms}>
                 {this.state.showFoodForm && (

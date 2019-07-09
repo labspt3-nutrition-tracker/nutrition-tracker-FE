@@ -9,7 +9,15 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import styled from 'styled-components';
 
+const LoadingDiv = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+min-height: 500px;
+`
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -20,7 +28,7 @@ const styles = theme => ({
     fontSize: 16,
     background: "#5E366A",
     padding: 10,
-    color: "#ffffff",
+    color: "#ffffff"
   },
   calTitle: {
     fontFamily: "Oswald",
@@ -40,13 +48,13 @@ const styles = theme => ({
     fontSize: 20,
     fontWeight: "bold",
     // letterSpacing: 1.2,
-    fontFamily:"Oswald"
+    fontFamily: "Oswald"
   },
   centerNum: {
     fontSize: 40,
     fontWeight: "bold",
     // letterSpacing: 1.2,
-    fontFamily:"Oswald"
+    fontFamily: "Oswald"
   },
   calCon: {
     display: "flex",
@@ -124,9 +132,11 @@ class Calories extends React.Component {
                 {({ loading, error, data }) => {
                   if (loading)
                     return (
-                      <Card className={classes.card}>
-                        <CircularProgress className={classes.progress} />
-                      </Card>
+                      <LoadingDiv>
+                        <Card className={classes.card}>
+                          <CircularProgress className={classes.progress} />
+                        </Card>
+                      </LoadingDiv>
                     );
                   if (error) return <div>Error</div>;
                   const dateToday = new Date();
@@ -210,7 +220,10 @@ class Calories extends React.Component {
                             <Typography className={classes.num}>
                               {mealCal}
                             </Typography>
-                            <Typography className={classes.calTitle} variant="h4">
+                            <Typography
+                              className={classes.calTitle}
+                              variant="h4"
+                            >
                               Calorie Intake
                             </Typography>
                           </Container>
@@ -219,7 +232,10 @@ class Calories extends React.Component {
                             <Typography className={classes.centerNum}>
                               {remainCal}
                             </Typography>
-                            <Typography className={classes.calTitle} variant="h4">
+                            <Typography
+                              className={classes.calTitle}
+                              variant="h4"
+                            >
                               Remaining Calories
                             </Typography>
                           </Container>
@@ -228,7 +244,10 @@ class Calories extends React.Component {
                             <Typography className={classes.num}>
                               {calGoal}
                             </Typography>
-                            <Typography className={classes.calTitle} variant="h4">
+                            <Typography
+                              className={classes.calTitle}
+                              variant="h4"
+                            >
                               Daily Calorie Goal
                             </Typography>
                           </Container>

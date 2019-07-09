@@ -37,6 +37,10 @@ const Main = styled.div`
     padding-left: 0;
   }
 
+  @media (max-width: 500px) {
+    align-items: center;
+  }
+
   h1 {
     color: #40a798;
     font-size: 4em;
@@ -93,7 +97,7 @@ const Features = styled.div`
   justify-content: center;
   width: 100%;
   max-width: 1000px;
-  @media(max-width: 700px) {
+  @media (max-width: 700px) {
     flex-direction: column;
   }
 `;
@@ -106,7 +110,7 @@ const Feature = styled.div`
   padding-bottom: 50px;
   align-items: center;
   text-align: center;
-  @media(max-width: 700px) {
+  @media (max-width: 700px) {
     width: 100%;
   }
   @media (max-width: 500px) {
@@ -175,11 +179,11 @@ const CoachSec = styled.section`
 const ImgCon = styled.div`
   max-width: 50%;
   @media (max-width: 500px) {
-    max-width: 100%;
+    max-width: 200px;
   }
 `;
 const ImgConCoach = styled.div`
-  max-width: 300px;
+  max-width: 250px;
   width: 100%;
   margin: 0 auto;
   padding: 100px 0;
@@ -224,12 +228,14 @@ const styles = theme => ({
     fontSize: 30,
     padding: "10px 0 0",
     fontFamily: "Oswald",
-    paddingBottom: 10
+    paddingBottom: 10,
+    textAlign: "center"
   },
   secP: {
     color: "#ffffff",
     fontSize: 20,
-    paddingBottom: 20
+    paddingBottom: 20,
+    textAlign: "center"
   },
   secPcoach: {
     color: "#ffffff",
@@ -320,9 +326,9 @@ function Home(props) {
                 <h2> Coach Functionality</h2>
                 <hr />
                 <p>
-                  Whether you want a friend or your personal trainer to see your progress or keep you
-                  accountable, our coach feature allows you to communicate your progress
-                  easily.
+                  Whether you want a friend or your personal trainer to see your
+                  progress or keep you accountable, our coach feature allows you
+                  to communicate your progress easily.
                 </p>
               </FeatureInfo>
             </Feature>

@@ -23,6 +23,15 @@ import {
   GET_EXERCISE_ENTRIES_QUERY
 } from "../../graphql/queries";
 import { CircularProgress } from "@material-ui/core";
+import styled from 'styled-components';
+
+const LoadingDiv = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+min-height: 500px;
+`
 
 class StatsView extends React.Component {
   state = {
@@ -112,9 +121,9 @@ class StatsView extends React.Component {
 
     if (this.state.statsLoading) {
       return (
-        <div>
+        <LoadingDiv>
           <CircularProgress />
-        </div>
+        </LoadingDiv>
       );
     } else {
       if (currentUser) {
