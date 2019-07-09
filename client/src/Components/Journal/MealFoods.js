@@ -43,9 +43,6 @@ const MealFoods = props => {
       >
         {foods.length > 0 ? (
           foods.map(food => {
-            {
-              /* console.log({ food }); */
-            }
             return (
               <Fragment key={food.id}>
                 <ListItem button onClick={() => passMealData(food)}>
