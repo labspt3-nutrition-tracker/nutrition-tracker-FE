@@ -11,12 +11,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Typography from "@material-ui/core/Typography";
 
 const Form = styled.form`
   display: flex;
+  position: relative;
   flex-direction: column;
   width: 30%;
   padding: 20px;
+  max-height: 100vh;
+  overflow-y: auto;
   @media(max-width: 800px) {
     max-width: 500px;
     width: 100%;
@@ -402,7 +406,7 @@ class ModifiedEntryForm extends Component {
     this.getCurrentUser(localStorage.getItem("token"));
     return (
       <Form>
-        <h1>Modified Food Entry</h1>
+        <Typography variant="h4">Add food entry</Typography>
         <label htmlFor="foodName">Food</label>
 
         <h3>{this.state.newAddFood.foodName}</h3>
@@ -417,6 +421,7 @@ class ModifiedEntryForm extends Component {
           className="form-field"
           name="meal_category_id"
           type="number"
+          value={this.state.newAddFood.meal_category_id}
           onChange={this.onInputChange}
           aria-describedby="errorCategory-text"
         >

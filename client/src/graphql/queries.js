@@ -14,18 +14,20 @@ export const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
         id
       }
       food_id {
+        id
         foodName
         caloriesPerServ
         fats
         proteins
         carbs
+        edamam_id
       }
       meal_category_id {
+        id
         mealCategoryName
       }
     }
-  
-}  
+  }
 `;
 
 export const GET_CURRENT_USER_QUERY = gql`
@@ -37,6 +39,20 @@ export const GET_CURRENT_USER_QUERY = gql`
       lastName
       email
       userType
+      calorieGoal
+      weight
+    }
+  }
+`;
+
+export const SEARCH_USER_BY_EMAIL = gql`
+  query getUserBy($param: String!, $value: String!) {
+    getUserBy(param: $param, value: $value) {
+      username
+      email
+      id
+      firstName
+      lastName
       calorieGoal
       weight
     }
@@ -82,6 +98,18 @@ export const GET_CURRENT_USERID = gql`
   }
 `;
 
+export const GET_USER_BY_ID = gql`
+  query getUserById($userId: ID!){
+    getUserById(userId: $userId){
+      id
+      weight
+    }
+  }
+`;
+
+
+
+
 export const USER_EXIST_QUERY = gql`
   query getUserBy($param: String!, $value: String!) {
     getUserBy(param: $param, value: $value) {
@@ -100,3 +128,53 @@ export const EXER_QUERY = gql`
     }
   }
 `;
+
+export const GET_MESSAGES_QUERY = gql`
+  query getMessagesBy($param: String!, $value: String!) {
+    getMessagesBy(param: $param, value: $value) {
+      id
+      created_at
+      type
+      text
+      read
+      sender {
+        id
+        firstName
+        lastName
+      }
+      recipient {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
+export const GET_TRAINEES = gql`
+  query getTrainees($coach_id: ID!){
+    getTrainees(coach_id: $coach_id){
+      username
+      email
+      id
+      firstName
+      lastName
+      calorieGoal
+      weight
+    }
+  }
+`;
+
+export const GET_COACHES = gql`
+  query getCoaches($trainee_id: ID!) {
+    getCoaches(trainee_id: $trainee_id) {
+      id
+      username
+      firstName
+      lastName
+      email
+      calorieGoal
+      weight
+    }
+  }
+`

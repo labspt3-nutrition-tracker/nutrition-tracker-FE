@@ -5,10 +5,14 @@ import StripeCheckout from 'react-stripe-checkout';
 import BillingHistory from './BillingHistory';
 import ApolloClient from "apollo-boost";
 import moment from 'moment';
+import styled from "styled-components";
+import AccountNav from '../AccountNav';
+import { makeStyles } from '@material-ui/core/styles';
+import { wrap } from "module";
 
 const createSubscriptionMutation = gql`
-  mutation createSubscriptionMutation($source: String!, $email: String!){
-    createSubscription(source: $source, email: $email){
+  mutation createSubscription($source: String!, $email: String!, $amount: Int!){
+    createSubscription(source: $source, email: $email, amount: $amount){
       id
     }
   }
@@ -27,43 +31,74 @@ const GET_CURRENT = gql`
     getCurrentUser {
       id
       email
+      userType
     }
   }
 `;
+const BillingContainer = styled.div`
+  padding-top:50px;
+  display:flex;
+  flex-direction:column;
+  align-content:center;
+  flex-wrap:wrap;
+  width:60%;
+`;
 
-class Billing extends React.Component{
+let divStyle = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  height: '80vh',
+  justifyContent: 'flex-start'
+  // marginLeft: "25%"
+}
+
+// const useStyles = makeStyles(theme => ({
+
+//   root: {
+//     display: 'flex',
+//   }
+
+// }));
+// const classes = useStyles();
+
+ class Billing extends React.Component{
   constructor(props){
     super(props);
     this.state = {
       subscriptionLapse: "",
-      premiumCurrent: false
+      premiumCurrent: false,
+      userType: ""
     }
   }
+
   componentDidMount(){
     this.getCurrentUser(localStorage.getItem("token"))
   }
-  getCurrentUser = idToken => {
+  getCurrentUser = async idToken => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
-    client
+    await client
       .query({
         query: GET_CURRENT
       })
       .then(response => {
         this.getRecentBilling(response.data.getCurrentUser.id)
+        this.setState({
+          userType: response.data.getCurrentUser.userType
+        })
       })
       .catch(err => console.log(err));
   };
 
-  getRecentBilling = id => {
+  getRecentBilling = async id => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
-    client
+    await client
       .query({
         query: getRecentBillingQuery,
         variables: {
@@ -91,46 +126,78 @@ class Billing extends React.Component{
         premiumCurrent: !this.state.premiumCurrent
       })
     }
-
   };
 
-
-
   render(){
+    const premium = 700;
+    const coach = 1000;
     return(
-      <div>
-        <div>
-          <p>{this.state.premiumCurrent ? "Premium":"Basic"} User</p>
+
+      // <div
+      // className={classes.root}
+      // >
+      <div style={divStyle}>
+            <AccountNav />
+        <BillingContainer>
+          <p>Type: {this.state.userType.toUpperCase()}</p>
           {
             this.state.subscriptionLapse.length > 1 ? (
               <p>Current Until: {this.state.subscriptionLapse}</p>
             ) : (null)
           }
-        </div>
-        <Mutation mutation={createSubscriptionMutation}>
-          {mutation => (
-            <StripeCheckout
-              amount={700}
-              billingAddress
-              description="Become a Super User!"
-              locale="auto"
-              name="NutritionTrkr"
-              stripeKey="pk_test_Pq1dd4riM4hc3cc35SbfPQxk00HJAoDPfA"
-              token={async token => {
-                const response = await mutation({
-                  variables: {source: token.id,
-                  email: token.email}
-                });
-                console.log(response)
-              }}
-              zipcode
-            />
-          )}
-        </Mutation>
-        <BillingHistory/>
+          <Mutation mutation={createSubscriptionMutation} onError={err => {console.log(err)}}>
+            {mutation => (
+              <div>
+                <StripeCheckout
+                  amount={premium}
+                  billingAddress
+                  label="Become a Premium User"
+                  description="Become a Premium User!"
+                  locale="auto"
+                  name="NutritionTrkr"
+                  stripeKey={process.env.REACT_APP_STRIPE_KEY}
+                  token={async token => {
+                    console.log(token.id,token.email, premium)
+                    const response = await mutation({
+                      variables: {
+                        source: token.id,
+                        email: token.email,
+                        amount: premium
+                      }
+                    });
+                    console.log(response)
+                  }}
+                  zipcode
+                />
+                <StripeCheckout
+                  amount={coach}
+                  billingAddress
+                  label="Become a Coach"
+                  description="Become a Coach!"
+                  locale="auto"
+                  name="NutritionTrkr"
+                  stripeKey={process.env.REACT_APP_STRIPE_KEY}
+                  token={async token => {
+                    console.log(token)
+                    const response = await mutation({
+                      variables: {
+                        source: token.id,
+                        email: token.email,
+                        amount: coach
+                      }
+                    });
+                    console.log(response)
+                  }}
+                  zipcode
+                />
+              </div>
+            )}
+          </Mutation>
+          <BillingHistory/>
+        </BillingContainer>
       </div>
     )
   }
 }
 
-export default Billing;
+ export default Billing;

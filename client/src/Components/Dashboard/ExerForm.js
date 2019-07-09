@@ -9,12 +9,31 @@ import TextField from "@material-ui/core/TextField";
 // import Select from "@material-ui/core/Select";
 // import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+
+const styles = theme => ({
+  formTitle: {
+    fontFamily: "Oswald",
+    fontWeight: 100,
+    fontSize: "2.5rem",
+    color: "#545454"
+  },
+  input: {
+    fontSize: 16
+  }
+});
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  max-width: 500px;
   width: 100%;
-  padding: 20px;
+  margin: 0 auto;
+  padding: 0 32px;
+  @media (max-width: 600px) {
+    padding: 0 20px;
+  }
 `;
 
 class ExerForm extends Component {
@@ -96,9 +115,9 @@ class ExerForm extends Component {
   onSubmit = e => {
     e.preventDefault();
     this.validate();
-    const currentUser = this.state.newExerEntry.exercise_entry_user_id
+    const currentUser = this.state.newExerEntry.exercise_entry_user_id;
     const currentDate = moment(new Date()).format("YYYY-MM-DD");
-    console.log(this.state.newExerEntry)
+    console.log(this.state.newExerEntry);
     if (!this.state.errorMsg.error) {
       this.props.addExerEntry(this.state.newExerEntry);
       this.setState({
@@ -116,8 +135,12 @@ class ExerForm extends Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <Form>
+        <Typography className={classes.formTitle} variant="h4">
+          Add exercise entry
+        </Typography>
         <TextField
           required
           error={this.state.errorMsg.errorName}
@@ -131,6 +154,11 @@ class ExerForm extends Component {
           name="exerciseName"
           value={this.state.newExerEntry.exerciseName}
           aria-describedby="errorName-text"
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
         />
         <FormHelperText id="errorName-text">
           {this.state.errorMsg.errorName}
@@ -146,6 +174,11 @@ class ExerForm extends Component {
           required
           aria-describedby="errorDate-text"
           value={this.state.newExerEntry.exerciseEntryDate}
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
         />
         <FormHelperText id="errorDate-text">
           {this.state.errorMsg.errorDate}
@@ -164,6 +197,11 @@ class ExerForm extends Component {
           required
           step="1"
           aria-describedby="errorCal-text"
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
         />
         <FormHelperText id="errorCal-text">
           {this.state.errorMsg.errorCal}
@@ -178,4 +216,4 @@ class ExerForm extends Component {
   }
 }
 
-export default ExerForm;
+export default withStyles(styles)(ExerForm);

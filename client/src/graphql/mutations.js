@@ -20,19 +20,6 @@ export const ADD_FOOD = gql`
 //   }
 // `;
 
-// export const EDIT_FOOD = gql`
-//   mutation{
-//     updateFood($id: ID!, $input: FoodInput!){
-//       id
-//       foodName
-//       caloriesPerServ
-//       fats
-//       carbs
-//       proteins
-//     }
-//   }
-// `;
-
 export const ADD_FOOD_ENTRY = gql`
   mutation addFoodEntry($input: FoodEntryInput!) {
     addFoodEntry(input: $input) {
@@ -55,8 +42,8 @@ export const ADD_FOOD_ENTRY = gql`
 `;
 
 // export const EDIT_FOOD_ENTRY = gql`
-//   mutation{
-//     updateFoodEntry($id: ID!, input: FoodEntryInput!){
+//    mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
+//      updateFoodEntry(id: $id, input: $input) {
 //       id
 //       date
 //       food_id{
@@ -73,11 +60,63 @@ export const ADD_FOOD_ENTRY = gql`
 //   }
 // `;
 
-// export const DELETE_FOOD_ENTRY = gql`
-//   mutation{
-//     deleteFoodentry($id: ID!)
+// export const EDIT_FOOD_ENTRY = gql`
+//   mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
+//     updateFoodEntry(id: $id, input: $FoodEntry) {
+//       id
+//       foodName
+//       caloriesPerServ
+//       fats
+//       carbs
+//       proteins
+//       edamam_id
+//       meal_category_id {
+//         id
+//       }
+//     }
 //   }
 // `;
+export const EDIT_FOOD = gql`
+  mutation updateFood($id: ID!, $input: FoodInput!){
+    updateFood(id: $id, input: $input){
+      id
+      foodName
+      caloriesPerServ
+      fats
+      carbs
+      proteins
+    }
+  }
+`;
+
+
+export const EDIT_FOOD_ENTRY = gql`
+  mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
+    updateFoodEntry(id: $id, input: $input) {
+      id
+      food_id{
+        foodName
+        caloriesPerServ
+        fats
+        carbs
+        proteins
+        edamam_id
+        meal_category_id {
+          id
+        }
+      }
+      foodName
+      caloriesPerServ
+      fats
+      carbs
+      proteins
+      edamam_id
+      meal_category_id {
+        id
+      }
+    }
+  }
+`;
 
 export const ADD_WEIGHT_ENTRY_MUTATION = gql`
   mutation($input: WeightEntryInput!) {
@@ -139,7 +178,7 @@ export const DELETE_FOOD_ENTRY = gql`
 // `;
 
 export const EDIT_EXER_ENTRY = gql`
-  mutation updateExerciseEntry($id: ID!, $input: ExerciseEntryInput!) {
+  mutation($id: ID!, $input: ExerciseEntryInput!) {
     updateExerciseEntry(id: $id, input: $input) {
       id
       exerciseEntryDate
@@ -161,3 +200,71 @@ export const ADD_EXERENTRY = gql`
     }
   }
 `;
+
+export const DELETE_MESSAGE_MUTATION = gql`
+  mutation deleteMessage($id: ID!) {
+    deleteMessage(id: $id)
+  }
+`;
+
+export const ADD_MESSAGE_MUTATION = gql`
+  mutation addMessage($input: MessageInput!) {
+    addMessage(input: $input) {
+      id
+      created_at
+      type
+      text
+      read
+      sender {
+        id
+        firstName
+        lastName
+        email
+      }
+      recipient {
+        id
+        firstName
+        lastName
+        email
+      }
+    }
+  }
+`;
+export const UPDATE_MESSAGE_MUTATION = gql`
+  mutation updateMessage($id: ID!, $input: MessageInput!) {
+    updateMessage(id: $id, input: $input) {
+      id
+      text
+      type
+      recipient {
+        id
+        username
+        firstName
+        lastName
+        email
+      }
+      sender {
+        id
+        username
+        firstName
+        lastName
+        email
+      }
+      read
+    }
+  }
+`
+
+export const ADD_TRAINEE = gql`
+  mutation addTrainees($coach_id: ID!, $trainee_id: ID!) {
+    addTrainees(coach_id: $coach_id, trainee_id: $trainee_id) {
+      id
+      username
+      firstName
+      lastName
+      email
+      calorieGoal
+      weight
+    }
+  }
+`

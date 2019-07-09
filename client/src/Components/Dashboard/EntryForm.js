@@ -10,25 +10,44 @@ import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
 import { GET_ALL_FOOD } from "../../graphql/queries";
 import gql from "graphql-tag";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { withStyles } from "@material-ui/core/styles";
+
 
 export const Form = styled.form`
-  display: flex;
-  flex-direction: column;
 
-  width: 30%;
-  padding: 20px;
-  h1 {
+  /* display: flex;
+  flex-direction: column; */
+  /* max-width: 500px; */
+  /* margin: 0 auto; */
+  /* padding: 20px; */
+  /* width: 100%; */
+  /* h1 {
     font-size: 1.5em;
     font-weight: bold;
     padding-bottom: 30px;
     text-align: center;
     color: blue;
   }
-  @media(max-width: 800px) {
+  @media (max-width: 800px) {
     max-width: 500px;
-    width: 100%;
-  }
+  } */
 `;
+
+const styles = theme => ({
+  formTitle: {
+    fontFamily: "Oswald",
+    fontWeight: 100,
+    fontSize: "2.5rem",
+    // textTransform: "uppercase"
+  },
+  input: {
+    fontSize: 16,
+    width: '100%',
+    minWidth: '100%'
+  }
+});
 
 const Error = styled.div`
   color: red;
@@ -338,10 +357,18 @@ class EntryForm extends Component {
 
     if (this.props.selectedFood) {
       foodName = this.props.selectedFood.label;
-      caloriesPerServ =  this.props.selectedFood.nutrients.ENERC_KCAL ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2) : 0;
-      fats = this.props.selectedFood.nutrients.FAT ? this.props.selectedFood.nutrients.FAT.toFixed(2) : 0;
-      carbs = this.props.selectedFood.nutrients.CHOCDF ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2) : 0;
-      proteins = this.props.selectedFood.nutrients.PROCNT? this.props.selectedFood.nutrients.PROCNT.toFixed(2) : 0;
+      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL
+        ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2)
+        : 0;
+      fats = this.props.selectedFood.nutrients.FAT
+        ? this.props.selectedFood.nutrients.FAT.toFixed(2)
+        : 0;
+      carbs = this.props.selectedFood.nutrients.CHOCDF
+        ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2)
+        : 0;
+      proteins = this.props.selectedFood.nutrients.PROCNT
+        ? this.props.selectedFood.nutrients.PROCNT.toFixed(2)
+        : 0;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -367,10 +394,18 @@ class EntryForm extends Component {
 
     if (prevProps.selectedFood !== this.props.selectedFood) {
       foodName = this.props.selectedFood.label;
-      caloriesPerServ =  this.props.selectedFood.nutrients.ENERC_KCAL ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2) : 0;
-      fats = this.props.selectedFood.nutrients.FAT ? this.props.selectedFood.nutrients.FAT.toFixed(2) : 0;
-      carbs = this.props.selectedFood.nutrients.CHOCDF ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2) : 0;
-      proteins = this.props.selectedFood.nutrients.PROCNT ? this.props.selectedFood.nutrients.PROCNT.toFixed(2) : 0;;
+      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL
+        ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2)
+        : 0;
+      fats = this.props.selectedFood.nutrients.FAT
+        ? this.props.selectedFood.nutrients.FAT.toFixed(2)
+        : 0;
+      carbs = this.props.selectedFood.nutrients.CHOCDF
+        ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2)
+        : 0;
+      proteins = this.props.selectedFood.nutrients.PROCNT
+        ? this.props.selectedFood.nutrients.PROCNT.toFixed(2)
+        : 0;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -387,11 +422,15 @@ class EntryForm extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     this.getCurrentUser(localStorage.getItem("token"));
     return (
-      <Form>
-        <h1> Add food entry</h1>
+      <Container className="form-container">
+        <Typography className={classes.formTitle} variant="h4">
+          Add food entry
+        </Typography>
         <TextField
+          className={classes.input}
           required
           error={this.state.errorMsg.errorFood}
           autoFocus
@@ -404,12 +443,19 @@ class EntryForm extends Component {
           name="foodName"
           value={this.state.newAddFood.foodName}
           aria-describedby="errorFood-text"
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
         />
         <FormHelperText id="errorFood-text">
           {this.state.errorMsg.errorFood}
         </FormHelperText>
 
-        <InputLabel htmlFor="meal_category_id">Meal Category</InputLabel>
+        <InputLabel className={classes.label} htmlFor="meal_category_id">
+          Meal Category
+        </InputLabel>
         <Select
           autoFocus
           margin="dense"
@@ -442,7 +488,16 @@ class EntryForm extends Component {
           type="number"
           name="servingQty"
           onChange={this.onInputChange}
-          value={this.state.newAddFood.servingQty ? this.state.newAddFood.servingQty : ""}
+          value={
+            this.state.newAddFood.servingQty
+              ? this.state.newAddFood.servingQty
+              : ""
+          }
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
           required
           aria-describedby="errorQty-text"
         />
@@ -463,6 +518,11 @@ class EntryForm extends Component {
               ? this.state.newAddFood.caloriesPerServ
               : ""
           }
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
           required
           aria-describedby="errorCal-text"
         />
@@ -482,6 +542,11 @@ class EntryForm extends Component {
           value={
             this.state.newAddFood.proteins ? this.state.newAddFood.proteins : ""
           }
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
           required
           aria-describedby="errorProteins-text"
         />
@@ -499,6 +564,11 @@ class EntryForm extends Component {
           value={this.state.newAddFood.carbs ? this.state.newAddFood.carbs : ""}
           required
           aria-describedby="errorCarbs-text"
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
         />
         <FormHelperText id="errorCarbs-text">
           {this.state.errorMsg.errorCarbs}
@@ -514,6 +584,11 @@ class EntryForm extends Component {
           value={this.state.newAddFood.fats ? this.state.newAddFood.fats : ""}
           required
           aria-describedby="errorFats-text"
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
         />
         <FormHelperText id="errorFats-text">
           {this.state.errorMsg.errorFats}
@@ -529,7 +604,11 @@ class EntryForm extends Component {
           required
           aria-describedby="errorDate-text"
           value={this.state.newAddFood.date ? this.state.newAddFood.date : ""}
-
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
         />
         <FormHelperText id="errorDate-text">
           {this.state.errorMsg.errorDate}
@@ -541,10 +620,10 @@ class EntryForm extends Component {
         >
           Add Entry
         </Button>
-        <Button onClick={this.props.closeFoodForm}> Close</Button>
-      </Form>
+        {this.props.searchedFood && <Button onClick={this.props.closeFoodForm}> Add searched Item</Button>}
+      </Container>
     );
   }
 }
 
-export default EntryForm;
+export default withStyles(styles)(EntryForm);
