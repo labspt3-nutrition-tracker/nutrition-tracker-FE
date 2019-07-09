@@ -14,12 +14,6 @@ export const ADD_FOOD = gql`
   }
 `;
 
-// export const DELETE_FOOD = gql`
-//   mutation{
-//     deleteFood($id: ID! )
-//   }
-// `;
-
 export const ADD_FOOD_ENTRY = gql`
   mutation addFoodEntry($input: FoodEntryInput!) {
     addFoodEntry(input: $input) {
@@ -162,21 +156,6 @@ export const DELETE_FOOD_ENTRY = gql`
   }
 `;
 
-// export const EDIT_EXER_ENTRY = gql`
-//   mutation($id: ID!, $input: ExerciseEntryInput!){
-//     updateExerciseEntry(id: $id, input: $input)
-//     {
-//       id
-//       exerciseEntryDate
-//       exerciseName
-//       caloriesBurned
-//       exercise_entry_user_id{
-//         id
-//       }
-//     }
-//   }
-// `;
-
 export const EDIT_EXER_ENTRY = gql`
   mutation($id: ID!, $input: ExerciseEntryInput!) {
     updateExerciseEntry(id: $id, input: $input) {
@@ -230,6 +209,7 @@ export const ADD_MESSAGE_MUTATION = gql`
     }
   }
 `;
+
 export const UPDATE_MESSAGE_MUTATION = gql`
   mutation updateMessage($id: ID!, $input: MessageInput!) {
     updateMessage(id: $id, input: $input) {
@@ -266,5 +246,11 @@ export const ADD_TRAINEE = gql`
       calorieGoal
       weight
     }
+  }
+`
+
+export const DELETE_TRAINEE = gql`
+  mutation deleteTrainees($coach_id: ID!, $trainee_id: ID!){
+    deleteTrainees(coach_id: $coach_id, trainee_id: $trainee_id)
   }
 `
