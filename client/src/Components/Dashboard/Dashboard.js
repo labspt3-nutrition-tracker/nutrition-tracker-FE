@@ -36,7 +36,8 @@ const styles = theme => ({
   root: {
     maxWidth: 960,
     width: "100%",
-    marginBottom: "3%"
+    marginBottom: "3%",
+    color: "#545454"
   },
   date: {
     margin: "50px auto 0 auto",
@@ -47,25 +48,48 @@ const styles = theme => ({
   },
   title: {
     // flexGrow: 1,
-    fontSize: 16,
+    fontSize: 20,
     background: "#5E366A",
     padding: 10,
-    color: "#ffffff"
+    color: "#ffffff",
+    textTransform: "uppercase",
+    textAlign: "center",
+    letterSpacing: "1.3px",
+
   },
   flexData: {
     display: "flex",
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: "column",
+    },
+    color: "#545454"
   },
   flexDataCon: {
     width: "100%",
+    // maxWidth: 300,
+    margin: 0,
+    padding: 0,
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+    },
+    
+  },
+  flexDataConFirst: {
+    width: "100%",
     maxWidth: 300,
     margin: 0,
-    padding: 0
+    padding: "0 0 0 32",
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+      maxWidth: "100%"
+    }
   },
   heading: {
     fontFamily: "Oswald",
     fontWeight: 100,
-    fontSize: "2rem"
+    fontSize: "2.5rem",
+    // textTransform: "uppercase"
   }
 });
 
@@ -121,6 +145,11 @@ class Dashboard extends Component {
   };
 
   componentDidMount = () => {
+    if (this.props.selectedFood ){
+      this.setState({
+        showFoodForm: false
+      })
+    }
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
@@ -515,6 +544,7 @@ class Dashboard extends Component {
   };
 
   render() {
+
     const { classes } = this.props;
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     if (this.state.userType === "Super User") {
@@ -534,7 +564,7 @@ class Dashboard extends Component {
             </CardContent>
             <CardContent className={classes.flexData}>
               {!this.state.foodIsLoading ? (
-                <Container className={classes.flexDataCon}>
+                <Container className={classes.flexDataConFirst}>
                   <Typography className={classes.heading}>Meals</Typography>
                   <hr />
                   <FoodEntry
@@ -557,6 +587,7 @@ class Dashboard extends Component {
                     <EntryForm
                       addFoodEntry={this.addFoodEntry}
                       closeFoodForm={this.closeFoodForm}
+                      searchedFood={this.props.selectedFood}
                     />
                   </Container>
                 )}
@@ -578,11 +609,10 @@ class Dashboard extends Component {
                 <>
                   <CardContent className={classes.flexData}>
                     {!this.state.exerIsLoading ? (
-                      <Container className={classes.flexDataCon}>
+                      <Container className={classes.flexDataConFirst}>
                         <Typography className={classes.heading}>
                           Activity
                         </Typography>
-                        <hr />
                         <ExerciseEntry
                           exerEntries={this.state.exerEntries}
                           deleteExerEntry={this.deleteExerEntry}
@@ -622,6 +652,7 @@ class Dashboard extends Component {
               <EntryForm
                 addFoodEntry={this.addFoodEntry}
                 closeFoodForm={this.closeFoodForm}
+                searchedFood={this.props.selectedFood}
               />
             )}
             {!this.state.showFoodForm && (
