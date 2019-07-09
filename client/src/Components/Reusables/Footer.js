@@ -174,7 +174,7 @@ React.useEffect(() => {
           ) : (
             <BottomNavigation  className={classes.root}>                                                                                                                                                                     >
               <div className={classes.heading2}>What are you waiting for? Let's get started.</div>
-                  <button className={classes.button}>Sign Up</button>
+                  <button className={classes.button}><a className={classes.href} href="https://nutrition-tracker-lambda.netlify.com/login">Sign Up</a></button>
               <div className={classes.lowerDiv}>
                 <div className={classes.contactDiv}>
                   <div className={classes.lDiv}>About Us</div>
