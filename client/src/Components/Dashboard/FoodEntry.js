@@ -59,11 +59,12 @@ const styles = theme => ({
     fontSize: 16,
     background: "#5E366A",
     padding: 10,
-    color: "#ffffff"
+    color: "#ffffff",
   },
   mealCard: {
     minHeight: 100,
-    // width: '25%'
+    // width: '25%',
+    padding: 0
   },
   mealCon: {
     display: "flex",

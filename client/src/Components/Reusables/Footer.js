@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import logo from "../../Assets/logo-black.png";
+import logo from "../../Assets/logo-white.png";
 // import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';

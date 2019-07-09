@@ -37,11 +37,15 @@ export const Form = styled.form`
 
 const styles = theme => ({
   formTitle: {
-    fontFamily: "Oswald"
+    fontFamily: "Oswald",
+    fontWeight: 100,
+    fontSize: "2.5rem",
+    // textTransform: "uppercase"
   },
   input: {
     fontSize: 16,
     width: '100%',
+    minWidth: '100%'
   }
 });
 
@@ -421,7 +425,7 @@ class EntryForm extends Component {
     const { classes } = this.props;
     this.getCurrentUser(localStorage.getItem("token"));
     return (
-      <Container>
+      <Container className="form-container">
         <Typography className={classes.formTitle} variant="h4">
           Add food entry
         </Typography>

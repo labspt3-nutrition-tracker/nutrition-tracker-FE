@@ -29,8 +29,8 @@ const styles = theme => ({
   },
   layout: {
     width: 'auto',
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
     [theme.breakpoints.up(900 + theme.spacing.unit * 3 * 2)]: {
       width: 900,
       marginLeft: 'auto',
@@ -38,9 +38,13 @@ const styles = theme => ({
     },
   },
   heroContent: {
-    maxWidth: 600,
+    maxWidth: 1200,
+    width: "100%",
     margin: '0 auto',
-    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
+    padding: `${theme.spacing(8)}px 0 ${theme.spacing(6)}px`,
+  },
+  cardCon: {
+    // margin: "0 10px"
   },
   cardHeader: {
     backgroundColor: theme.palette.grey[200],
@@ -49,13 +53,26 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'baseline',
-    marginBottom: theme.spacing.unit * 2,
+    marginBottom: theme.spacing(2),
   },
   cardActions: {
     [theme.breakpoints.up('sm')]: {
-      paddingBottom: theme.spacing.unit * 2,
+      paddingBottom: theme.spacing(2),
     },
-  }
+  },
+  button: {
+    background: "#40A798",
+    fontSize: 16,
+    color: "#ffffff"
+  },
+  secTitle: {
+    fontFamily: "Oswald",
+    fontSize: "3.5rem"
+  },
+secSub: {
+  fontSize: "1.6rem",
+  fontWeight: 300
+}
 });
 
 const tiers = [
@@ -108,7 +125,7 @@ function Pricing(props) {
       <main className={classes.layout}>
         {/* Hero unit */}
         <div className={classes.heroContent}>
-          <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+          <Typography component="h1" variant="h2" align="center" className={classes.secTitle} gutterBottom>
             Pricing
           </Typography>
           <Typography variant="h6" align="center" color="textSecondary" component="p">
@@ -116,11 +133,11 @@ function Pricing(props) {
           </Typography>
         </div>
         {/* End hero unit */}
-        <Grid container spacing={40} alignItems="flex-end" justify="center">
+        <Grid container alignItems="flex-end" justify="center">
           {tiers.map(tier => (
             // Enterprise card is full width at sm breakpoint
-            <Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
-              <Card>
+            <Grid className={classes.cardCon} item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
+              <Card className={classes.cardCon}>
                 <CardHeader
                   title={tier.title}
                   subheader={tier.subheader}
@@ -146,8 +163,8 @@ function Pricing(props) {
                 </CardContent>
                 <CardActions className={classes.cardActions}
               >
-              {tier.title === 'Super User' ? <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/login" >   {tier.buttonText}
-                </Button>  : <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/login" >   {tier.buttonText}
+              {tier.title === 'Super User' ? <Button fullWidth variant={tier.buttonVariant} className={classes.button} component={Link} to ="/login" >   {tier.buttonText}
+                </Button>  : <Button fullWidth variant={tier.buttonVariant} className={classes.button} component={Link} to ="/login" >   {tier.buttonText}
                 </Button> }
                   {/* <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing"   >
                     {tier.buttonText}
