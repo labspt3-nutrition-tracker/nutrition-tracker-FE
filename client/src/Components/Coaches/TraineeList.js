@@ -40,8 +40,8 @@ class TraineeList extends React.Component{
 
   constructor(props){
     super(props)
-    this.state = {}
   };
+
 
   render(){
     console.log(this.props)
@@ -50,7 +50,7 @@ class TraineeList extends React.Component{
       <TraineeListDiv>
         <h1> Trainee List </h1>
         { trainees && trainees.map(data => {
-          return <Trainee key={data.id} handleChooseUser={this.props.handleChooseUser} data={data}/>
+          return <Trainee key={data.id} deleteTrainee={this.props.deleteTrainee} handleChooseUser={this.props.handleChooseUser} data={data}/>
         })}
       </TraineeListDiv>
   )

@@ -8,7 +8,7 @@ import TraineeSearch from "./TraineeSearch";
 import TraineeInfo from "./TraineeInfo";
 import SendMessageFromCoach from "./SendMessage";
 import { SEARCH_USER_BY_EMAIL, GET_CURRENT_USER_QUERY, GET_TRAINEES } from "../../graphql/queries";
-import { ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
+import { ADD_MESSAGE_MUTATION, DELETE_TRAINEE } from "../../graphql/mutations";
 
 const CoachPageContainer = styled.div`
   padding: 2% 4%;
@@ -122,6 +122,28 @@ class CoachPage extends React.Component {
       });
   };
 
+  deleteTrainee = async (traineeId) => {
+    const idToken = localStorage.getItem("token");
+    const userId = this.state.currentUser.id;
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    try {
+      await client.mutate({ mutation: DELETE_TRAINEE,         variables: {coach_id: userId, trainee_id: traineeId} });
+      const trainees = await client.query({
+        query: GET_TRAINEES,
+        variables: {
+          coach_id: userId
+        }
+      });
+      this.setState({ trainees: trainees.data.getTrainees }); //reset after sending request
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   handleRequest = async () => {
     //send request message to traineeSearchResults.id
     const idToken = localStorage.getItem("token");
@@ -166,7 +188,9 @@ class CoachPage extends React.Component {
             trainees={this.state.trainees}
           />
         <TraineeList
-          trainees={this.state.trainees} handleChooseUser={this.handleChooseUser} />
+          trainees={this.state.trainees}
+          deleteTrainee={this.deleteTrainee}
+          handleChooseUser={this.handleChooseUser} />
         <SendMessageFromCoach traineeID={this.state.selectedTrainee.id} firstName={this.state.selectedTrainee.firstName} lastName={this.state.selectedTrainee.lastName}
         currentUser={this.state.currentUser} />
         </TraineeBasic>
