@@ -82,13 +82,13 @@ class App extends React.Component {
   getFoodData = food => {
     food = this.state.searchInput;
     let encodedFood = food.replace(" ", "%20");
-    this.setState({ showModal: true});
+    this.setState({ showModal: true });
     axios
       .get(
         `https://api.edamam.com/api/food-database/parser?ingr=${encodedFood}&app_id=${EDAMAM_API_ID}&app_key=${EDAMAM_API_KEY}`
       )
       .then(response => {
-        console.log('pre-reset', this.state.searchInput);
+        console.log("pre-reset", this.state.searchInput);
         this.setState({
           searchResults: response.data.hints,
           searchInput: "",
@@ -109,7 +109,7 @@ class App extends React.Component {
       });
   };
 
-  handleFoodSubmit = (food) => {
+  handleFoodSubmit = food => {
     this.setState({ selectedFood: food });
     this.closeModal();
   };
@@ -117,8 +117,8 @@ class App extends React.Component {
   resetSearch = () => {
     this.setState({
       searchInput: ""
-    })
-  }
+    });
+  };
 
   render() {
     return (
@@ -163,7 +163,7 @@ class App extends React.Component {
           <PrivateRoute
             path="/dashboard"
             render={props => (
-              <Dashboard {...props} selectedFood={this.state.selectedFood}/>
+              <Dashboard {...props} selectedFood={this.state.selectedFood} />
             )}
           />
           <PrivateRoute exact path="/billing" render={() => <Billing />} />

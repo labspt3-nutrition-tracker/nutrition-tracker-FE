@@ -14,12 +14,11 @@ import { getCurrentUser } from "../util/getCurrentUser";
 import { getCurrentWeight } from "../util/getCurrentweight";
 import UserEditModal from "../Components/UserEditModal";
 import AccountNav from "./AccountNav";
-import { wrap } from "module";
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
     flexDirection: "row",
     flexGrow: 1,
     margin: "0",
