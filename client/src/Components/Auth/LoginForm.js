@@ -91,7 +91,7 @@ class LoginForm extends React.Component {
       <div>
         {this.props.addUser ? (
           <div className={classes.root}>
-            <div className={classes.title}>Sign Up</div>
+            <div className={classes.title}><a className={classes.href} href="https://nutrition-tracker-lambda.netlify.com/login">Sign Up</a></div>
             <form onSubmit={this.bundleUserInfo}>
               <Grid container justify='flex-start' alignItems='flex-start'>
                 <Grid item xs={12} className={classes.input}>
