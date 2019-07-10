@@ -11,29 +11,17 @@ import * as moment from "moment";
 
 const styles = theme => ({
   text: {
-    fontSize: "1.3rem",
-    wordWrap: "break-word",
-
-    [theme.breakpoints.up("sm")]: {
-      fontSize: "1.5rem",
-      flexGrow: 2
-    },
-    [theme.breakpoints.up("md")]: {
-      fontSize: "1.7rem"
-    }
+    fontSize: "1.5rem"
   },
   secondaryText: {
-    fontSize: "1rem",
-    [theme.breakpoints.up("sm")]: {
-      fontSize: "1.5rem"
-    }
+    fontSize: "1.5rem"
   },
   textRoot: {
     margin: "0 5px",
     width: "30%",
-    [theme.breakpoints.up("md")]: {
-      width: "45%"
-    }
+    fontSize: "1.6rem",
+    color: "#5E366A",
+    fontFamily: "Oswald"
   },
   icon: {
     color: "#5E366A",
@@ -42,6 +30,39 @@ const styles = theme => ({
   },
   delete: {
     fontSize: "2rem"
+  },
+  flexName: {
+    display: "flex",
+    alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      marginBottom: 10
+    },
+    [theme.breakpoints.between("sm", "lg")]: {
+      marginRight: 10,
+      width: "30%"
+    }
+  },
+  flexText: {
+    display: "flex",
+    alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      width: "95%",
+      marginBottom: 20
+    },
+    [theme.breakpoints.between("sm", "lg")]: {
+      width: "75%"
+    }
+  },
+  message: {
+    justifyContent: "space-between",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "center"
+    },
+    [theme.breakpoints.between("sm", "lg")]: {
+      flexDirection: "row"
+    }
   }
 });
 const MessageInfo = props => {
@@ -95,58 +116,62 @@ const MessageInfo = props => {
                 onClick={() => props.showMessage(message)}
                 classes={{ root: classes.message }}
               >
-                {!message.read ? (
-                  <ListItemIcon className={classes.icon}>
-                    <UnreadIcon />
-                  </ListItemIcon>
-                ) : (
-                  <ListItemIcon className={classes.icon}>
-                    <MailOutlinedIcon />
-                  </ListItemIcon>
-                )}
-                {type === "inbox" ? (
+                <div className={classes.flexName}>
+                  {!message.read ? (
+                    <ListItemIcon className={classes.icon}>
+                      <UnreadIcon />
+                    </ListItemIcon>
+                  ) : (
+                    <ListItemIcon className={classes.icon}>
+                      <MailOutlinedIcon />
+                    </ListItemIcon>
+                  )}
+                  {type === "inbox" ? (
+                    <ListItemText
+                      primary={`${message.sender.firstName} ${
+                        message.sender.lastName
+                      }`}
+                      classes={{
+                        primary: classes.textRoot
+                        // root: classes.textRoot
+                      }}
+                    />
+                  ) : (
+                    type === "sent" && (
+                      <ListItemText
+                        primary={`${message.recipient.firstName} ${
+                          message.recipient.lastName
+                        }`}
+                        classes={{
+                          primary: classes.textRoot
+                          // root: classes.textRoot
+                        }}
+                      />
+                    )
+                  )}
+                </div>
+                <div className={classes.flexText}>
                   <ListItemText
-                    primary={`${message.sender.firstName} ${
-                      message.sender.lastName
-                    }`}
+                    primary={message.text.substring(0, 20) + "..."}
                     classes={{
                       primary: classes.text,
                       root: classes.textRoot
                     }}
                   />
-                ) : (
-                  type === "sent" && (
-                    <ListItemText
-                      primary={`${message.recipient.firstName} ${
-                        message.recipient.lastName
-                      }`}
-                      classes={{
-                        primary: classes.text,
-                        root: classes.textRoot
-                      }}
-                    />
-                  )
-                )}
-                <ListItemText
-                  primary={message.text.substring(0, 20) + "..."}
-                  classes={{
-                    primary: classes.text,
-                    root: classes.textRoot
-                  }}
-                />
-                <ListItemText
-                  secondary={message.created_at}
-                  classes={{
-                    secondary: classes.secondaryText,
-                    root: classes.textRoot
-                  }}
-                />
-                <ListItemIcon className={classes.icon}>
-                  <DeleteIcon
-                    onClick={event => props.deleteMessage(event, message.id)}
-                    classes={{ root: classes.delete }}
+                  <ListItemText
+                    secondary={message.created_at}
+                    classes={{
+                      secondary: classes.secondaryText,
+                      root: classes.textRoot
+                    }}
                   />
-                </ListItemIcon>
+                  <ListItemIcon className={classes.icon}>
+                    <DeleteIcon
+                      onClick={event => props.deleteMessage(event, message.id)}
+                      classes={{ root: classes.delete }}
+                    />
+                  </ListItemIcon>
+                </div>
               </ListItem>
             </React.Fragment>
           ))}
