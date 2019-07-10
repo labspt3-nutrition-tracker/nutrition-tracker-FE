@@ -67,13 +67,25 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
+      premiumUser: true,
       datePicked: "",
       foodEntry: []
     };
   }
 
-  handleDateClick = date => {
-    this.setState({ datePicked: date });
+  handleDateClick = (date, premium) => {
+    console.log(premium)
+    if(premium){
+      this.setState({
+        datePicked: date,
+        premiumUser: premium
+      });
+    }else{
+      this.setState({
+        datePicked: date,
+        premiumUser: premium
+      });
+    }
   };
 
   componentDidMount = async () => {
@@ -191,6 +203,21 @@ class Journal extends React.Component {
     }
   };
 
+  premiumCheck = () => {
+    if(!this.state.premiumUser){
+      return(
+        <div>
+          <h2>In order to see meal entries you must upgrade to premium!</h2>
+        </div>)
+    }else{
+      return(
+        <div>
+          Loading...
+        </div>
+      )
+    }
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -201,15 +228,16 @@ class Journal extends React.Component {
         classes={{ root: classes.gridContainer }}
       >
         <Grid item md={4} xs={12}>
-          {this.state.foodEntry.length > 1 ? (
+          {this.state.foodEntry.length > 1 && this.state.premiumUser ? (
             <JournalEntry
               foodEntries={this.state.foodEntry}
               datePicked={this.state.datePicked}
               deleteMeal={this.deleteMealEntry}
               editMeal={this.editMealEntry}
+
             />
           ) : (
-            <div>Loading...</div>
+            this.premiumCheck()
           )}
         </Grid>
         <Grid item md={8} xs={12}>
