@@ -18,23 +18,54 @@ const styles = theme => ({
   text: {
     fontSize: "1.5rem"
   },
-  textRoot: {
-    margin: "0 5px"
-    // width: "30%"
-    // [theme.breakpoints.up("md")]: {
-    //   width: "45%"
-    // }
-  },
+
   secondaryText: {
     fontSize: "1.5rem"
-    // [theme.breakpoints.up("sm")]: {
-    //   fontSize: "1.5rem"
-    // }
   },
   icon: {
     color: "#5E366A",
     fontSize: "2rem",
     minWidth: "30px"
+  },
+  flexName: {
+    display: "flex",
+    alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      marginBottom: 10
+    },
+    [theme.breakpoints.between("sm", "lg")]: {
+      marginRight: 10,
+      width: "30%"
+    }
+  },
+  flexText: {
+    display: "flex",
+    alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      width: "95%",
+      marginBottom: 20
+    },
+    [theme.breakpoints.between("sm", "lg")]: {
+      width: "75%"
+    }
+  },
+  message: {
+    justifyContent: "space-between",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "center"
+    },
+    [theme.breakpoints.between("sm", "lg")]: {
+      flexDirection: "row"
+    }
+  },
+  textRoot: {
+    margin: "0 5px",
+    width: "30%",
+    fontSize: "1.6rem",
+    color: "#5E366A",
+    fontFamily: "Oswald"
   }
 });
 
@@ -49,33 +80,37 @@ const AlertsList = props => {
               key={alert.id}
               button
               onClick={() => props.showMessage(alert)}
+              classes={{ root: classes.message }}
             >
-              {!alert.read && (
-                <ListItemIcon>
-                  <NotificationIcon classes={{ root: classes.icon }} />
-                </ListItemIcon>
-              )}
-              <ListItemText
-                primary={`${alert.sender.firstName} ${alert.sender.lastName}`}
-                classes={{
-                  primary: classes.text,
-                  root: classes.textRoot
-                }}
-              />
-              <ListItemText
-                primary={alert.text}
-                classes={{
-                  primary: classes.text,
-                  root: classes.textRoot
-                }}
-              />
-              <ListItemText
-                secondary={alert.created_at}
-                classes={{
-                  secondary: classes.secondaryText,
-                  root: classes.textRoot
-                }}
-              />
+              <div className={classes.flexName}>
+                {!alert.read && (
+                  <ListItemIcon>
+                    <NotificationIcon classes={{ root: classes.icon }} />
+                  </ListItemIcon>
+                )}
+                <ListItemText
+                  primary={`${alert.sender.firstName} ${alert.sender.lastName}`}
+                  classes={{
+                    primary: classes.textRoot
+                  }}
+                />
+              </div>
+              <div className={classes.flexText}>
+                <ListItemText
+                  primary={alert.text}
+                  classes={{
+                    primary: classes.text,
+                    root: classes.textRoot
+                  }}
+                />
+                <ListItemText
+                  secondary={alert.created_at}
+                  classes={{
+                    secondary: classes.secondaryText,
+                    root: classes.textRoot
+                  }}
+                />
+              </div>
             </ListItem>
           ))}
         </List>
