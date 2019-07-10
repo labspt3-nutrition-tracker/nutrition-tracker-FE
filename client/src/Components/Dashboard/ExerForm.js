@@ -21,6 +21,9 @@ const styles = theme => ({
   },
   input: {
     fontSize: 16
+  },
+  formButton: {
+    fontSize: 16
   }
 });
 
@@ -207,10 +210,10 @@ class ExerForm extends Component {
           {this.state.errorMsg.errorCal}
         </FormHelperText>
 
-        <Button className="form-field" type="submit" onClick={this.onSubmit}>
+        <Button className={classes.formButton} type="submit" onClick={this.onSubmit}>
           Add Entry
         </Button>
-        <Button onClick={this.props.closeExerEntry}>Close </Button>
+        <Button className={classes.formButton} onClick={this.props.closeExerEntry}>Close </Button>
       </Form>
     );
   }

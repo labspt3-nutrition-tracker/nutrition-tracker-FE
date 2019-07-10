@@ -12,6 +12,7 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
 
 const Form = styled.form`
   display: flex;
@@ -53,6 +54,12 @@ const GET_CURRENT = gql`
     }
   }
 `;
+
+const styles = theme => ({
+  formButton: {
+    fontSize: 16
+  }
+});
 
 class ModifiedEntryForm extends Component {
   constructor(props) {
@@ -403,6 +410,7 @@ class ModifiedEntryForm extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     this.getCurrentUser(localStorage.getItem("token"));
     return (
       <Form>
@@ -488,13 +496,13 @@ class ModifiedEntryForm extends Component {
         </FormHelperText>
 
         <Button
-          className="form-field"
+          className={classes.formButton}
           type="submit"
           onClick={this.onEntrySubmit}
         >
           Add Entry
         </Button>
-        <Button onClick={this.props.handleShowFood}>
+        <Button className={classes.formButton} onClick={this.props.handleShowFood}>
           I'll add my own entry
         </Button>
       </Form>
@@ -502,4 +510,4 @@ class ModifiedEntryForm extends Component {
   }
 }
 
-export default ModifiedEntryForm;
+export default withStyles(styles)(ModifiedEntryForm);
