@@ -84,7 +84,6 @@ const styles = theme => ({
   }
 });
 
-
 class JournalEntry extends React.Component {
   constructor(props) {
     super(props);
@@ -165,7 +164,6 @@ class JournalEntry extends React.Component {
         }
       })
       .catch(err => console.log(err));
-
     this.setState({
       mealEntry: mealEntry
     });
@@ -202,7 +200,6 @@ class JournalEntry extends React.Component {
 
   editMealEntry = e => {
     e.preventDefault();
-
     const foodEntry = {
       foodName: this.state.mealEntry.food_id.foodName,
       caloriesPerServ: this.state.caloriesPerServ
@@ -378,27 +375,21 @@ class JournalEntry extends React.Component {
                   disabled
                   id="standard-disabled"
                   label="Proteins"
-                  defaultValue={`${
-                    this.state.mealEntry.food_id.proteins
-                  }`}
+                  defaultValue={`${this.state.mealEntry.food_id.proteins}`}
                   margin="dense"
                 />
                 <TextField
                   disabled
                   id="standard-disabled"
                   label="Carbs"
-                  defaultValue={`${
-                    this.state.mealEntry.food_id.carbs
-                  }`}
+                  defaultValue={`${this.state.mealEntry.food_id.carbs}`}
                   margin="dense"
                 />
                 <TextField
                   disabled
                   id="standard-disabled"
                   label="Fats"
-                  defaultValue={`${
-                    this.state.mealEntry.food_id.fats
-                  }`}
+                  defaultValue={`${this.state.mealEntry.food_id.fats}`}
                   margin="dense"
                 />
               </>

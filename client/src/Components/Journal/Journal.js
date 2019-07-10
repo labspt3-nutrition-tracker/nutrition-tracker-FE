@@ -8,8 +8,12 @@ import { withStyles } from "@material-ui/core/styles";
 import Calendar from "./Calendar";
 import JournalEntry from "./JournalEntry";
 import { getCurrentUser } from "../../util/getCurrentUser";
-import {FOOD_ENTRY_QUERY} from "../../graphql/queries";
-import {DELETE_FOOD_ENTRY, EDIT_FOOD_ENTRY, EDIT_FOOD} from "../../graphql/mutations";
+import { FOOD_ENTRY_QUERY } from "../../graphql/queries";
+import {
+  DELETE_FOOD_ENTRY,
+  EDIT_FOOD_ENTRY,
+  EDIT_FOOD
+} from "../../graphql/mutations";
 
 class Journal extends React.Component {
   constructor(props) {
@@ -23,13 +27,13 @@ class Journal extends React.Component {
   }
 
   handleDateClick = (date, premium) => {
-    console.log(premium)
-    if(premium){
+    console.log(premium);
+    if (premium) {
       this.setState({
         datePicked: date,
         premiumUser: premium
       });
-    }else{
+    } else {
       this.setState({
         datePicked: date,
         premiumUser: premium
@@ -143,7 +147,6 @@ class Journal extends React.Component {
           userId: this.state.currentUser
         }
       });
-
       this.setState({
         foodEntry: response.data.getFoodEntriesByUserId
       });
@@ -153,19 +156,16 @@ class Journal extends React.Component {
   };
 
   premiumCheck = () => {
-    if(!this.state.premiumUser){
-      return(
+    if (!this.state.premiumUser) {
+      return (
         <div>
           <h2>In order to see meal entries you must upgrade to premium!</h2>
-        </div>)
-    }else{
-      return(
-        <div>
-          Loading...
         </div>
-      )
+      );
+    } else {
+      return <div>Loading...</div>;
     }
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -183,7 +183,6 @@ class Journal extends React.Component {
               datePicked={this.state.datePicked}
               deleteMeal={this.deleteMealEntry}
               editMeal={this.editMealEntry}
-
             />
           ) : (
             this.premiumCheck()
