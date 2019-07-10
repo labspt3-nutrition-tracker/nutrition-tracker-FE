@@ -34,13 +34,19 @@ const styles = theme => ({
     fontFamily: "Oswald",
     margin: 10,
     padding: "1px 6px",
-    width: "150px"
+    width: "150px",
+    [theme.breakpoints.down("sm")]: {
+      width: "inherit"
+    }
   },
   indicator: {
     backgroundColor: "#60B5A9"
   },
   flex: {
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
+    [theme.breakpoints.down("sm")]: {
+      flexWrap: "wrap"
+    }
   },
   icon: {
     fontSize: "1.5rem"
@@ -48,8 +54,8 @@ const styles = theme => ({
   modal: {
     position: "absolute",
     top: "30%",
-    left: "30%",
-    width: 400,
+    left: "5%",
+    width: 300,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(4),

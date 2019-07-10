@@ -18,9 +18,23 @@ const styles = theme => ({
   text: {
     fontSize: "1.5rem"
   },
+  textRoot: {
+    margin: "0 5px"
+    // width: "30%"
+    // [theme.breakpoints.up("md")]: {
+    //   width: "45%"
+    // }
+  },
+  secondaryText: {
+    fontSize: "1.5rem"
+    // [theme.breakpoints.up("sm")]: {
+    //   fontSize: "1.5rem"
+    // }
+  },
   icon: {
-    color: "#F4B4C3",
-    fontSize: "2.2rem"
+    color: "#5E366A",
+    fontSize: "2rem",
+    minWidth: "30px"
   }
 });
 
@@ -31,20 +45,37 @@ const AlertsList = props => {
       {alerts.length > 0 ? (
         <List>
           {alerts.map(alert => (
-            <ListItem key={alert.id} button onClick={() => props.showMessage(alert)}>
+            <ListItem
+              key={alert.id}
+              button
+              onClick={() => props.showMessage(alert)}
+            >
               {!alert.read && (
-                <ListItemIcon className={classes.icon}>
-                  <NotificationIcon />
+                <ListItemIcon>
+                  <NotificationIcon classes={{ root: classes.icon }} />
                 </ListItemIcon>
               )}
-              <ListItemText secondary={`${alert.sender.firstName} ${alert.sender.lastName}`} />
+              <ListItemText
+                primary={`${alert.sender.firstName} ${alert.sender.lastName}`}
+                classes={{
+                  primary: classes.text,
+                  root: classes.textRoot
+                }}
+              />
               <ListItemText
                 primary={alert.text}
                 classes={{
-                  primary: classes.text
+                  primary: classes.text,
+                  root: classes.textRoot
                 }}
               />
-              <ListItemText secondary={alert.created_at} />
+              <ListItemText
+                secondary={alert.created_at}
+                classes={{
+                  secondary: classes.secondaryText,
+                  root: classes.textRoot
+                }}
+              />
             </ListItem>
           ))}
         </List>
