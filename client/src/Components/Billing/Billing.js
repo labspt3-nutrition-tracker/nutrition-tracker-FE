@@ -1,5 +1,4 @@
 import React from "react";
-import { gql } from "apollo-boost";
 import { Mutation } from "react-apollo";
 import StripeCheckout from 'react-stripe-checkout';
 import BillingHistory from './BillingHistory';
@@ -7,8 +6,6 @@ import ApolloClient from "apollo-boost";
 import moment from 'moment';
 import styled from "styled-components";
 import AccountNav from '../AccountNav';
-import { makeStyles } from '@material-ui/core/styles';
-import { wrap } from "module";
 import {GET_CURRENT_USER_QUERY, GET_RECENT_BILLING} from "../../graphql/queries";
 import {CREATE_SUBSCRIPTION} from "../../graphql/mutations";
 
@@ -130,18 +127,18 @@ let divStyle = {
       <div style={divStyle}>
             <AccountNav />
         <BillingContainer>
-          <p>Type: {this.state.userType.toUpperCase()}</p>
-          {
+          <BillingTop>
+          <p style={{fontSize:"2rem"}}>Type:{this.state.userType.toUpperCase()}</p>
+          <p style={{fontSize:"2rem"}}>{
             this.state.subscriptionLapse.length > 1 ? (
-              <p>Current Until: {this.state.subscriptionLapse}</p>
+              <p>Subscription Until: {this.state.subscriptionLapse}</p>
             ) : (null)
-          }
+          }</p>
           <Mutation mutation={CREATE_SUBSCRIPTION} onError={err => {console.log(err)}}>
             {mutation => (
               <div>
                 <StripeCheckout
                   amount={premium}
-                  billingAddress
                   label="Become a Premium User"
                   description="Become a Premium User!"
                   locale="auto"
@@ -163,7 +160,6 @@ let divStyle = {
                 />
                 <StripeCheckout
                   amount={coach}
-                  billingAddress
                   label="Become a Coach"
                   description="Become a Coach!"
                   locale="auto"
@@ -186,6 +182,7 @@ let divStyle = {
               </div>
             )}
           </Mutation>
+        </BillingTop>
           <BillingHistory/>
         </BillingContainer>
       </div>
