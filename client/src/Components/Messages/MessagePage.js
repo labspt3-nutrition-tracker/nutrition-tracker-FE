@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -6,6 +7,7 @@ import ApolloClient from "apollo-boost";
 import Modal from "@material-ui/core/Modal";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import { CircularProgress } from "@material-ui/core";
 
 import MessageList from "./MessageList";
 import NewMessage from "./NewMessage";
@@ -22,6 +24,14 @@ import {
   UPDATE_MESSAGE_MUTATION,
   ADD_TRAINEE
 } from "../../graphql/mutations";
+
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 500px;
+`;
 
 const styles = theme => ({
   root: {
@@ -90,7 +100,8 @@ class MessagePage extends React.Component {
       trainees: [],
       option: 0,
       currentMessage: null,
-      modalOpen: false
+      modalOpen: false,
+      loading: false
     };
   }
 
@@ -107,6 +118,7 @@ class MessagePage extends React.Component {
   }
 
   getData = async () => {
+    this.setState({ loading: true });
     const idToken = localStorage.getItem("token");
 
     const client = new ApolloClient({
@@ -140,7 +152,8 @@ class MessagePage extends React.Component {
         sentMessages: sentMessages.data.getMessagesBy,
         coaches: coaches.data.getCoaches,
         trainees: trainees.data.getTrainees,
-        currentUser: user.data.getCurrentUser
+        currentUser: user.data.getCurrentUser,
+        loading: false
       });
     } catch (err) {
       console.log(err);
@@ -286,6 +299,11 @@ class MessagePage extends React.Component {
           <Tab label="New Message" className={classes.tab} />
           {alerts.length > 0 && <Tab label="Alerts" className={classes.tab} />}
         </Tabs>
+        {this.state.loading && (
+          <LoadingDiv>
+            <CircularProgress />
+          </LoadingDiv>
+        )}
         {option === 0 ? (
           <MessageList
             type="inbox"
