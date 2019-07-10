@@ -134,22 +134,7 @@ class EntryForm extends Component {
       errorMsg.errorFood = "Please provide name of food.";
       errorMsg.error = true;
     }
-    if (!this.state.newAddFood.caloriesPerServ) {
-      errorMsg.errorCal = "Please provide calories per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.fats) {
-      errorMsg.errorFats = "Please provide grams of fat per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.carbs) {
-      errorMsg.errorCarbs = "Please provide grams of carbs per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.proteins) {
-      errorMsg.errorProteins = "Please provide grams of protein per serving.";
-      errorMsg.error = true;
-    }
+
     if (!this.state.newAddFood.meal_category_id) {
       errorMsg.errorCategory = "Please provide meal category.";
       errorMsg.error = true;
@@ -479,7 +464,7 @@ class EntryForm extends Component {
             this.state.newAddFood.servingQty
               ? this.state.newAddFood.servingQty
               : ""
-          }
+        }
           InputProps={{
             classes: {
               input: classes.input
@@ -500,11 +485,7 @@ class EntryForm extends Component {
           type="number"
           name="caloriesPerServ"
           onChange={this.onInputChange}
-          value={
-            this.state.newAddFood.caloriesPerServ
-              ? this.state.newAddFood.caloriesPerServ
-              : ""
-          }
+          value={this.state.newAddFood.caloriesPerServ}
           InputProps={{
             classes: {
               input: classes.input
@@ -526,9 +507,7 @@ class EntryForm extends Component {
           name="proteins"
           error={this.state.errorMsg.errorProteins}
           onChange={this.onInputChange}
-          value={
-            this.state.newAddFood.proteins ? this.state.newAddFood.proteins : ""
-          }
+          value={this.state.newAddFood.proteins}
           InputProps={{
             classes: {
               input: classes.input
@@ -548,7 +527,7 @@ class EntryForm extends Component {
           name="carbs"
           error={this.state.errorMsg.errorCarbs}
           onChange={this.onInputChange}
-          value={this.state.newAddFood.carbs ? this.state.newAddFood.carbs : ""}
+          value={this.state.newAddFood.carbs}
           required
           aria-describedby="errorCarbs-text"
           InputProps={{
@@ -568,7 +547,7 @@ class EntryForm extends Component {
           name="fats"
           error={this.state.errorMsg.errorFats}
           onChange={this.onInputChange}
-          value={this.state.newAddFood.fats ? this.state.newAddFood.fats : ""}
+          value={this.state.newAddFood.fats}
           required
           aria-describedby="errorFats-text"
           InputProps={{
