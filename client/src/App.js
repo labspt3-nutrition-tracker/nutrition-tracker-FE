@@ -156,7 +156,6 @@ class App extends React.Component {
                 handleFoodSubmit={this.handleFoodSubmit}
                 searchResults={this.state.searchResults}
                 resultsLoading={this.state.resultsLoading}
-                updateSearch={this.updateSearch}
               />
             )}
           />

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import moment from "moment";
-import { GET_CURRENT_USERID } from "../../graphql/queries";
+import { GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 // import MenuItem from "@material-ui/core/MenuItem";
@@ -68,7 +68,7 @@ class ExerForm extends Component {
 
     client
       .query({
-        query: GET_CURRENT_USERID
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response =>
         this.setState({

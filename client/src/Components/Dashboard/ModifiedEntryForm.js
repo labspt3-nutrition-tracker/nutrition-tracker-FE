@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-// import { Query } from "react-apollo";
 import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
-import { GET_ALL_FOOD } from "../../graphql/queries";
-import gql from "graphql-tag";
+import { GET_ALL_FOOD, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -14,47 +12,6 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-
-// const Form = styled.form`
-//   display: flex;
-//   position: relative;
-//   flex-direction: column;
-//   width: 30%;
-//   padding: 20px;
-//   max-height: 100vh;
-//   overflow-y: auto;
-//   @media(max-width: 800px) {
-//     max-width: 500px;
-//     width: 100%;
-//   }
-
-//   h1 {
-//     font-size: 1.5em;
-//     font-weight: bold;
-//     padding-bottom: 30px;
-//     text-align: center;
-//     color: blue;
-//   }
-
-//   h3 {
-//     color: blue;
-//   }
-// `;
-
-const Error = styled.div`
-  color: red;
-  font-weight: bold;
-  font-size: 2rem;
-`;
-
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-    }
-  }
-`;
 
 const styles = theme => ({
   formButton: {
@@ -118,7 +75,7 @@ class ModifiedEntryForm extends Component {
 
     client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response =>
         this.setState({

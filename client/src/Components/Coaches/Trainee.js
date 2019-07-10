@@ -52,13 +52,9 @@ const DeleteButton= styled.button`
 `;
 
 class Trainee extends React.Component{
-  constructor(props){
-    super(props)
-  }
 
   render(){
     const data = this.props.data;
-    console.log('data', data)
     return(
       <TraineeDiv>
         <TraineeContent  onClick={() => {this.props.handleChooseUser(this.props.data)}}>

@@ -2,7 +2,7 @@ import React from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import ApolloClient from "apollo-boost";
-import { GET_CURRENT_USERID } from "../../graphql/queries";
+import { GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -100,7 +100,7 @@ class Calories extends React.Component {
 
     client
       .query({
-        query: GET_CURRENT_USERID
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
         this.setState({
@@ -113,25 +113,6 @@ class Calories extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const CAL_QUERY = gql`
-    query {
-      getFoodEntriesByUserId(userId: ${this.state.currentUser}) {
-        date
-        servingQty
-        food_id {
-          caloriesPerServ
-        }
-      }
-    }
-    `;
-    const CURRENT_USERID = gql`
-      query getCurrentUser {
-        getCurrentUser {
-          id
-        }
-      }
-    `;
-
     const dateToday = new Date();
     const month = dateToday.getMonth();
     const day = dateToday.getDate();

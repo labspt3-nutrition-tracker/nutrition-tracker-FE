@@ -8,7 +8,6 @@ import ExerciseEntry from "./ExerEntry";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import moment from "moment";
-import gql from "graphql-tag";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 
@@ -23,7 +22,7 @@ import {
 } from "../../graphql/mutations";
 import {
   EXER_QUERY,
-  GET_CURRENT_USERID,
+  GET_CURRENT_USER_QUERY,
   GET_EXERCISE_ENTRIES_QUERY,
   GET_FOOD_ENTRIES_BY_USER_QUERY
 } from "../../graphql/queries";
@@ -105,36 +104,6 @@ const Hr = styled.div`
   height: 1px;
 `;
 
-// const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
-//   query getFoodEntriesByUserId($userId: ID!) {
-//     getFoodEntriesByUserId(userId: $userId) {
-//       id
-//       date
-//       servingQty
-//       user_id {
-//         username
-//         firstName
-//         lastName
-//         email
-//         id
-//       }
-//       food_id {
-//         id
-//         foodName
-//         caloriesPerServ
-//         fats
-//         proteins
-//         carbs
-//         edamam_id
-//       }
-//       meal_category_id {
-//         id
-//         mealCategoryName
-//       }
-//     }
-//   }
-// `;
-
 class Dashboard extends Component {
   state = {
     showFoodForm: true,
@@ -162,7 +131,7 @@ class Dashboard extends Component {
     });
     client
       .query({
-        query: GET_CURRENT_USERID
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
         this.setState({
@@ -210,7 +179,7 @@ class Dashboard extends Component {
       });
       client
         .query({
-          query: GET_CURRENT_USERID
+          query: GET_CURRENT_USER_QUERY
         })
         .then(response => {
           this.setState({ currentUser: response.data.getCurrentUser.id });
@@ -311,7 +280,6 @@ class Dashboard extends Component {
           e.target.type === "number" ? parseInt(e.target.value) : e.target.value
       }
     });
-    console.log("exerentry change", this.state.exerEntry);
   };
 
   onFoodEntryChange = e => {
@@ -327,7 +295,6 @@ class Dashboard extends Component {
           e.target.type === "number" ? parseInt(e.target.value) : e.target.value
       }
     });
-    console.log(this.state.foodEntry.foodName);
   };
 
   onFoodChange = e => {
@@ -343,17 +310,6 @@ class Dashboard extends Component {
       }
     });
   };
-  // onMealChange = e => {
-  //   this.setState({
-  //     foodEntry:{
-  //       meal_category_id:{
-  //         ...this.state.foodEntry.meal_category_id,
-  //         [e.target.name]:
-  //           e.target.type === "number" ? parseInt(e.target.value) : e.target.value
-  //       }
-  //     }
-  //   })
-  // }
 
   editFoodEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
@@ -508,7 +464,7 @@ class Dashboard extends Component {
   handleShowFood = () => {
     this.setState({
       showFoodForm: true,
-      selectedFood: {}
+      selectedFood: []
     });
   };
 
