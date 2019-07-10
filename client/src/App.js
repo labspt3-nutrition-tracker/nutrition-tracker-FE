@@ -17,6 +17,7 @@ import CoachPage from "./Components/Coaches/CoachPage";
 import MessagePage from "./Components/Messages/MessagePage";
 import Footer from "./Components/Reusables/Footer";
 import { getCurrentUser } from "./util/getCurrentUser";
+import About from "./Components/About";
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
 const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
@@ -168,6 +169,7 @@ class App extends React.Component {
           <PrivateRoute exact path="/billing" render={() => <Billing />} />
           <PrivateRoute exact path="/reports" render={() => <StatsView />} />
           <Route exact path="/login" render={() => <Login />} />
+          <Route exact path="/about" render={() => <About />} />
           <PrivateRoute exact path="/settings" render={() => <Settings />} />
           <PrivateRoute path="/journal" render={() => <Journal />} />
           <PrivateRoute path="/coach" render={() => <CoachPage />} />
