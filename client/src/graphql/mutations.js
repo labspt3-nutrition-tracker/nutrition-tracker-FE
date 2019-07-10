@@ -1,5 +1,23 @@
 import { gql } from "apollo-boost";
 
+//Users
+export const ADD_USER_MUTATION = gql`
+  mutation addUser($input: UserInput!) {
+    addUser(input: $input) {
+      id
+    }
+  }
+`;
+
+export const UPDATE_USER_MUTATION = gql`
+  mutation($id: ID!, $input: UserInput!) {
+    updateUser(id: $id, input: $input) {
+      id
+    }
+  }
+`;
+
+//Food
 export const ADD_FOOD = gql`
   mutation addFood($input: FoodInput!) {
     addFood(input: $input) {
@@ -14,6 +32,27 @@ export const ADD_FOOD = gql`
   }
 `;
 
+export const EDIT_FOOD = gql`
+  mutation updateFood($id: ID!, $input: FoodInput!){
+    updateFood(id: $id, input: $input){
+      id
+      foodName
+      caloriesPerServ
+      fats
+      carbs
+      proteins
+      edamam_id
+    }
+  }
+`;
+
+export const DELETE_FOOD = gql`
+  mutation deleteFood($id: ID!) {
+    deleteFood(id: $id)
+  }
+`;
+
+//Food Entry
 export const ADD_FOOD_ENTRY = gql`
   mutation addFoodEntry($input: FoodEntryInput!) {
     addFoodEntry(input: $input) {
@@ -34,55 +73,6 @@ export const ADD_FOOD_ENTRY = gql`
     }
   }
 `;
-
-// export const EDIT_FOOD_ENTRY = gql`
-//    mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
-//      updateFoodEntry(id: $id, input: $input) {
-//       id
-//       date
-//       food_id{
-//         id
-//       }
-//       user_id{
-//         id
-//       }
-//       servingQty
-//       meal_category_id{
-//         id
-//       }
-//     }
-//   }
-// `;
-
-// export const EDIT_FOOD_ENTRY = gql`
-//   mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
-//     updateFoodEntry(id: $id, input: $FoodEntry) {
-//       id
-//       foodName
-//       caloriesPerServ
-//       fats
-//       carbs
-//       proteins
-//       edamam_id
-//       meal_category_id {
-//         id
-//       }
-//     }
-//   }
-// `;
-export const EDIT_FOOD = gql`
-  mutation updateFood($id: ID!, $input: FoodInput!){
-    updateFood(id: $id, input: $input){
-      id
-      foodName
-      caloriesPerServ
-      fats
-      carbs
-      proteins
-    }
-  }
-`;
-
 
 export const EDIT_FOOD_ENTRY = gql`
   mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
@@ -112,6 +102,13 @@ export const EDIT_FOOD_ENTRY = gql`
   }
 `;
 
+export const DELETE_FOOD_ENTRY = gql`
+  mutation deleteFoodEntry($id: ID!) {
+    deleteFoodEntry(id: $id)
+  }
+`;
+
+// Weight
 export const ADD_WEIGHT_ENTRY_MUTATION = gql`
   mutation($input: WeightEntryInput!) {
     addWeightEntry(input: $input) {
@@ -122,37 +119,10 @@ export const ADD_WEIGHT_ENTRY_MUTATION = gql`
   }
 `;
 
-export const ADD_USER_MUTATION = gql`
-  mutation addUser($input: UserInput!) {
-    addUser(input: $input) {
-      id
-    }
-  }
-`;
-
-export const UPDATE_USER_MUTATION = gql`
-  mutation($id: ID!, $input: UserInput!) {
-    updateUser(id: $id, input: $input) {
-      id
-    }
-  }
-`;
-
+// Exercise entry
 export const DELETE_EXERENTRY = gql`
   mutation deleteExerciseEntry($id: ID!) {
     deleteExerciseEntry(id: $id)
-  }
-`;
-
-export const DELETE_FOOD = gql`
-  mutation deleteFood($id: ID!) {
-    deleteFood(id: $id)
-  }
-`;
-
-export const DELETE_FOOD_ENTRY = gql`
-  mutation deleteFoodEntry($id: ID!) {
-    deleteFoodEntry(id: $id)
   }
 `;
 
@@ -180,6 +150,7 @@ export const ADD_EXERENTRY = gql`
   }
 `;
 
+//Messages
 export const DELETE_MESSAGE_MUTATION = gql`
   mutation deleteMessage($id: ID!) {
     deleteMessage(id: $id)
@@ -235,6 +206,7 @@ export const UPDATE_MESSAGE_MUTATION = gql`
   }
 `
 
+//Coaches
 export const ADD_TRAINEE = gql`
   mutation addTrainees($coach_id: ID!, $trainee_id: ID!) {
     addTrainees(coach_id: $coach_id, trainee_id: $trainee_id) {
@@ -254,3 +226,12 @@ export const DELETE_TRAINEE = gql`
     deleteTrainees(coach_id: $coach_id, trainee_id: $trainee_id)
   }
 `
+
+//Subscriptions
+export const CREATE_SUBSCRIPTION = gql`
+  mutation createSubscription($source: String!, $email: String!, $amount: Int!){
+    createSubscription(source: $source, email: $email, amount: $amount){
+      id
+    }
+  }
+`;

@@ -1,27 +1,9 @@
 import React from "react";
 import { Query } from 'react-apollo';
-import { gql } from 'apollo-boost';
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import BillingHistoryCard from './BillingHistoryCard';
-
-const GET_BILLING_HISTORY = gql`
-query getBillingHistory($id: ID!){
-    getBillingHistory(id: $id){
-        id
-        date
-        amount_paid
-    }
-  }
-`;
-
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-    }
-  }
-`;
+import {GET_CURRENT_USER_QUERY, GET_BILLING_HISTORY} from "../../graphql/queries";
 
 const PaymentHistory = styled.div`
     display:flex;
@@ -53,7 +35,7 @@ class BillingHistory extends React.Component{
 
         client
         .query({
-            query: GET_CURRENT
+            query: GET_CURRENT_USER_QUERY
         })
         .then(response => {
             this.setState({

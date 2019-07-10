@@ -13,38 +13,9 @@ const TraineeListDiv = styled.div`
   }
 `;
 
-const data = {
-    "getUsers": [
-      {
-        "id": "10",
-        "username": "amazingMax",
-        "email": "maxdoe@gmail.com",
-        "firstName": "Max",
-        "lastName": "Doe",
-        "calorieGoal": 2400,
-        "weight": 200
-      },
-      {
-        "id": "2",
-        "username": "JaneForGains",
-        "email": "janedoe@gmail.com",
-        "firstName": "Jane",
-        "lastName": "Doe",
-        "calorieGoal": 2000,
-        "weight": 115
-      }
-    ]
-}
-
 class TraineeList extends React.Component{
 
-  constructor(props){
-    super(props)
-  };
-
-
   render(){
-    console.log(this.props)
     const { trainees } = this.props;
     return(
       <TraineeListDiv>
@@ -53,7 +24,7 @@ class TraineeList extends React.Component{
           return <Trainee key={data.id} deleteTrainee={this.props.deleteTrainee} handleChooseUser={this.props.handleChooseUser} data={data}/>
         })}
       </TraineeListDiv>
-  )
+    ) 
   }
 };
 

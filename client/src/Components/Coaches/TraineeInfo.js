@@ -7,9 +7,6 @@ import StatsDashboard from './../Reports/StatsDashboard';
 import ManyDaysStats from "./../Reports/ManyDaysStats";
 import WeightStats from "./../Reports/WeightStats";
 import ExerciseStats from "./../Reports/ExerciseStats";
-import Accomplishments from "./../Reports/Accomplishments";
-import PDFReport from "./../Reports/PDFReports/PDFReport";
-import { getLastXDays }  from '../../util/getLastXDays.js';
 import {
   GET_FOOD_ENTRIES_BY_USER_QUERY,
   GET_WEIGHT_ENTRIES_QUERY,
@@ -21,19 +18,6 @@ import {
 const TraineeInfoContainer = styled.div`
   width: 100%;
   height: 50vh;
-`;
-
-const SelectDay = styled.select`
-  padding-left: 5px;
-  display: block;
-  width: 30%;
-  height: 35px;
-  color: #40A798;
-  background: #FCFCFB;
-  font-size: 1.4em;
-  margin: 0 auto;
-  margin-top: 15px;
-  border: 1px solid #40A798;
 `;
 
 const ViewData = styled.div`
@@ -134,8 +118,7 @@ class TraineeInfo extends React.Component{
   }
 
   render(){
-    const { foodEntries, weightEntries, exerciseEntries, days, data, option, initialWeight } = this.state;
-    console.log('this.state', this.state)
+    const { foodEntries, weightEntries, exerciseEntries, days, data, initialWeight } = this.state;
     return(
       <TraineeInfoContainer>
         {this.props.traineeID &&
@@ -165,8 +148,6 @@ class TraineeInfo extends React.Component{
             )}
           </ViewData>
       }
-
-
       </TraineeInfoContainer>
     )
   }

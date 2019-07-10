@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import moment from "moment";
-import { GET_CURRENT_USERID } from "../../graphql/queries";
+import { GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 // import MenuItem from "@material-ui/core/MenuItem";
@@ -20,6 +20,9 @@ const styles = theme => ({
     color: "#545454"
   },
   input: {
+    fontSize: 16
+  },
+  formButton: {
     fontSize: 16
   }
 });
@@ -65,7 +68,7 @@ class ExerForm extends Component {
 
     client
       .query({
-        query: GET_CURRENT_USERID
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response =>
         this.setState({
@@ -207,10 +210,10 @@ class ExerForm extends Component {
           {this.state.errorMsg.errorCal}
         </FormHelperText>
 
-        <Button className="form-field" type="submit" onClick={this.onSubmit}>
+        <Button className={classes.formButton} type="submit" onClick={this.onSubmit}>
           Add Entry
         </Button>
-        <Button onClick={this.props.closeExerEntry}>Close </Button>
+        <Button className={classes.formButton} onClick={this.props.closeExerEntry}>Close </Button>
       </Form>
     );
   }

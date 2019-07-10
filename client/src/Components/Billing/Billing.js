@@ -8,34 +8,10 @@ import moment from 'moment';
 import styled from "styled-components";
 import AccountNav from '../AccountNav';
 import { makeStyles } from '@material-ui/core/styles';
+import { wrap } from "module";
+import {GET_CURRENT_USER_QUERY, GET_RECENT_BILLING} from "../../graphql/queries";
+import {CREATE_SUBSCRIPTION} from "../../graphql/mutations";
 
-
-const createSubscriptionMutation = gql`
-  mutation createSubscription($source: String!, $email: String!, $amount: Int!){
-    createSubscription(source: $source, email: $email, amount: $amount){
-      id
-    }
-  }
-`;
-
-const getRecentBillingQuery  = gql`
-  query getRecentBilling($id: ID!){
-    getRecentBilling(id: $id){
-      date
-    }
-  }
-`;
-
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-      firstName
-      userType
-    }
-  }
-`;
 const BillingContainer = styled.div`
   margin-top:30px;
   padding-top:50px;
@@ -99,7 +75,7 @@ let divStyle = {
 
     await client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
         this.getRecentBilling(response.data.getCurrentUser.id)
@@ -119,7 +95,7 @@ let divStyle = {
 
     await client
       .query({
-        query: getRecentBillingQuery,
+        query: GET_RECENT_BILLING,
         variables: {
           id: id
         }
@@ -151,69 +127,65 @@ let divStyle = {
     const premium = 700;
     const coach = 1000;
     return(
-
-      // <div
-      // className={classes.root}
-      // >
       <div style={divStyle}>
             <AccountNav />
         <BillingContainer>
-          <BillingTop>
-            <p style={{fontSize:"2rem"}}>Type:{this.state.userType.toUpperCase()}</p>
-            <p style={{fontSize:"2rem"}}>{
-              this.state.subscriptionLapse.length > 1 ? (
-                <p>Subscription Until: {this.state.subscriptionLapse}</p>
-              ) : (null)
-            }</p>
-            <Mutation mutation={createSubscriptionMutation} onError={err => {console.log(err)}}>
-              {mutation => (
-                <div>
-                  <StripeCheckout
-                    amount={premium}
-                    label="Become a Premium User"
-                    description="Become a Premium User!"
-                    locale="auto"
-                    name="NutritionTrkr"
-                    email={this.state.email}
-                    stripeKey={process.env.REACT_APP_STRIPE_KEY}
-                    token={async token => {
-                      console.log(token.id,token.email, premium)
-                      const response = await mutation({
-                        variables: {
-                          source: token.id,
-                          email: token.email,
-                          amount: premium
-                        }
-                      });
-                      console.log(response)
-                    }}
-                    zipcode
-                  />
-                  <StripeCheckout
-                    amount={coach}
-                    label="Become a Coach"
-                    description="Become a Coach!"
-                    locale="auto"
-                    name="NutritionTrkr"
-                    email={this.state.email}
-                    stripeKey={process.env.REACT_APP_STRIPE_KEY}
-                    token={async token => {
-                      console.log(token)
-                      const response = await mutation({
-                        variables: {
-                          source: token.id,
-                          email: token.email,
-                          amount: coach
-                        }
-                      });
-                      console.log(response)
-                    }}
-                    zipcode
-                  />
-                </div>
-              )}
-            </Mutation>
-          </BillingTop>
+          <p>Type: {this.state.userType.toUpperCase()}</p>
+          {
+            this.state.subscriptionLapse.length > 1 ? (
+              <p>Current Until: {this.state.subscriptionLapse}</p>
+            ) : (null)
+          }
+          <Mutation mutation={CREATE_SUBSCRIPTION} onError={err => {console.log(err)}}>
+            {mutation => (
+              <div>
+                <StripeCheckout
+                  amount={premium}
+                  billingAddress
+                  label="Become a Premium User"
+                  description="Become a Premium User!"
+                  locale="auto"
+                  name="NutritionTrkr"
+                  email={this.state.email}
+                  stripeKey={process.env.REACT_APP_STRIPE_KEY}
+                  token={async token => {
+                    console.log(token.id,token.email, premium)
+                    const response = await mutation({
+                      variables: {
+                        source: token.id,
+                        email: token.email,
+                        amount: premium
+                      }
+                    });
+                    console.log(response)
+                  }}
+                  zipcode
+                />
+                <StripeCheckout
+                  amount={coach}
+                  billingAddress
+                  label="Become a Coach"
+                  description="Become a Coach!"
+                  locale="auto"
+                  name="NutritionTrkr"
+                  email={this.state.email}
+                  stripeKey={process.env.REACT_APP_STRIPE_KEY}
+                  token={async token => {
+                    console.log(token)
+                    const response = await mutation({
+                      variables: {
+                        source: token.id,
+                        email: token.email,
+                        amount: coach
+                      }
+                    });
+                    console.log(response)
+                  }}
+                  zipcode
+                />
+              </div>
+            )}
+          </Mutation>
           <BillingHistory/>
         </BillingContainer>
       </div>

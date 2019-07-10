@@ -8,7 +8,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
-import { GET_ALL_FOOD } from "../../graphql/queries";
+import { GET_ALL_FOOD, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import gql from "graphql-tag";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -46,6 +46,10 @@ const styles = theme => ({
     fontSize: 16,
     width: '100%',
     minWidth: '100%'
+  },
+  formButton: {
+    fontSize: 16,
+    width: '100%'
   }
 });
 
@@ -53,15 +57,6 @@ const Error = styled.div`
   color: red;
   font-weight: bold;
   font-size: 2rem;
-`;
-
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-    }
-  }
 `;
 
 class EntryForm extends Component {
@@ -102,7 +97,7 @@ class EntryForm extends Component {
 
     client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response =>
         this.setState({
@@ -143,22 +138,7 @@ class EntryForm extends Component {
       errorMsg.errorFood = "Please provide name of food.";
       errorMsg.error = true;
     }
-    if (!this.state.newAddFood.caloriesPerServ) {
-      errorMsg.errorCal = "Please provide calories per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.fats) {
-      errorMsg.errorFats = "Please provide grams of fat per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.carbs) {
-      errorMsg.errorCarbs = "Please provide grams of carbs per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.proteins) {
-      errorMsg.errorProteins = "Please provide grams of protein per serving.";
-      errorMsg.error = true;
-    }
+
     if (!this.state.newAddFood.meal_category_id) {
       errorMsg.errorCategory = "Please provide meal category.";
       errorMsg.error = true;
@@ -187,9 +167,6 @@ class EntryForm extends Component {
           proteins: this.state.newAddFood.proteins,
           edamam_id: this.state.newAddFood.edamam_id
         };
-        // console.log("foodAddedToDB", foodAddedToDB);
-        // console.log(this.state.newAddFood.meal_category_id);
-        // console.log("servingqty", this.state.newAddFood.servingQty);
         const client = new ApolloClient({
           uri: "https://nutrition-tracker-be.herokuapp.com"
         });
@@ -282,7 +259,6 @@ class EntryForm extends Component {
           })
           .catch(err => {
             this.setState({
-              // errors: [],
               edamamExist: false,
               newAddFood: {
                 foodName: "",
@@ -359,16 +335,16 @@ class EntryForm extends Component {
       foodName = this.props.selectedFood.label;
       caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL
         ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2)
-        : 0;
+        : 0.00;
       fats = this.props.selectedFood.nutrients.FAT
         ? this.props.selectedFood.nutrients.FAT.toFixed(2)
-        : 0;
+        : 0.00;
       carbs = this.props.selectedFood.nutrients.CHOCDF
         ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2)
-        : 0;
+        : 0.00;
       proteins = this.props.selectedFood.nutrients.PROCNT
         ? this.props.selectedFood.nutrients.PROCNT.toFixed(2)
-        : 0;
+        : 0.00;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -396,16 +372,16 @@ class EntryForm extends Component {
       foodName = this.props.selectedFood.label;
       caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL
         ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2)
-        : 0;
+        : 0.00;
       fats = this.props.selectedFood.nutrients.FAT
         ? this.props.selectedFood.nutrients.FAT.toFixed(2)
-        : 0;
+        : 0.00;
       carbs = this.props.selectedFood.nutrients.CHOCDF
         ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2)
-        : 0;
+        : 0.00;
       proteins = this.props.selectedFood.nutrients.PROCNT
         ? this.props.selectedFood.nutrients.PROCNT.toFixed(2)
-        : 0;
+        : 0.00;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -492,7 +468,7 @@ class EntryForm extends Component {
             this.state.newAddFood.servingQty
               ? this.state.newAddFood.servingQty
               : ""
-          }
+        }
           InputProps={{
             classes: {
               input: classes.input
@@ -513,11 +489,7 @@ class EntryForm extends Component {
           type="number"
           name="caloriesPerServ"
           onChange={this.onInputChange}
-          value={
-            this.state.newAddFood.caloriesPerServ
-              ? this.state.newAddFood.caloriesPerServ
-              : ""
-          }
+          value={this.state.newAddFood.caloriesPerServ}
           InputProps={{
             classes: {
               input: classes.input
@@ -539,9 +511,7 @@ class EntryForm extends Component {
           name="proteins"
           error={this.state.errorMsg.errorProteins}
           onChange={this.onInputChange}
-          value={
-            this.state.newAddFood.proteins ? this.state.newAddFood.proteins : ""
-          }
+          value={this.state.newAddFood.proteins}
           InputProps={{
             classes: {
               input: classes.input
@@ -561,7 +531,7 @@ class EntryForm extends Component {
           name="carbs"
           error={this.state.errorMsg.errorCarbs}
           onChange={this.onInputChange}
-          value={this.state.newAddFood.carbs ? this.state.newAddFood.carbs : ""}
+          value={this.state.newAddFood.carbs}
           required
           aria-describedby="errorCarbs-text"
           InputProps={{
@@ -581,7 +551,7 @@ class EntryForm extends Component {
           name="fats"
           error={this.state.errorMsg.errorFats}
           onChange={this.onInputChange}
-          value={this.state.newAddFood.fats ? this.state.newAddFood.fats : ""}
+          value={this.state.newAddFood.fats}
           required
           aria-describedby="errorFats-text"
           InputProps={{
@@ -614,13 +584,13 @@ class EntryForm extends Component {
           {this.state.errorMsg.errorDate}
         </FormHelperText>
         <Button
-          className="form-field"
+          className={classes.formButton}
           type="submit"
           onClick={this.onEntrySubmit}
         >
           Add Entry
         </Button>
-        {this.props.searchedFood && <Button onClick={this.props.closeFoodForm}> Add searched Item</Button>}
+        {this.props.searchedFood && <Button className={classes.formButton} onClick={this.props.closeFoodForm}> Add searched Item</Button>}
       </Container>
     );
   }

@@ -43,7 +43,7 @@ const ModalButton = styled.button`
   padding: 5px 30px;
   margin-right: 20px;
   font-size: 1.4em;
-  background: #5E366A;
+  background: #5e366a;
   color: #fcfcfb;
   display: block;
   right: 0;
@@ -53,6 +53,14 @@ const ModalButton = styled.button`
 const NoResultDiv = styled.div`
   padding: 20px 30px;
   font-size: 1.4em;
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 500px;
 `;
 
 const customStyles = {
@@ -75,7 +83,9 @@ const AppModal = props => {
   if (props.resultsLoading) {
     return (
       <Modal style={customStyles} isOpen={props.isOpen}>
-        <CircularProgress />
+        <LoadingDiv>
+          <CircularProgress />
+        </LoadingDiv>
       </Modal>
     );
   } else {

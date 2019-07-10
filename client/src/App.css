@@ -202,6 +202,17 @@ button {
 .form-container > div{
   width: 100%;
 }
+
+.fc-today {
+  background: #40a798 !important;
+}
+.fc-highlight {
+  background: #f4b4c3 !important;
+}
+.fc-view-container {
+  z-index: 0;
+}
+
 /* ------------ MEDIA QUERIES ------------ */
 
 @media (max-width: 800px) {

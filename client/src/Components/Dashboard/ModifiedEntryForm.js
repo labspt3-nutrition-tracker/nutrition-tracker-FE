@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-// import { Query } from "react-apollo";
 import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
-import { GET_ALL_FOOD } from "../../graphql/queries";
-import gql from "graphql-tag";
+import { GET_ALL_FOOD, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -12,47 +10,32 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 
-const Form = styled.form`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  width: 30%;
-  padding: 20px;
-  max-height: 100vh;
-  overflow-y: auto;
-  @media(max-width: 800px) {
-    max-width: 500px;
-    width: 100%;
+const styles = theme => ({
+  formButton: {
+    fontSize: 16
+  },
+  formTitle: {
+    fontFamily: "Oswald",
+    fontWeight: 100,
+    fontSize: "2.5rem"
+    // textTransform: "uppercase"
+  },
+  input: {
+    fontSize: 16,
+    width: "100%",
+    minWidth: "100%"
+  },
+  foodTitle: {
+    // fontFamily: "Oswald",
+    fontSize: 16,
+    margin: "10px 0",
+    textTransform: "titlecase",
+    fontWeight: "bold"
   }
-
-  h1 {
-    font-size: 1.5em;
-    font-weight: bold;
-    padding-bottom: 30px;
-    text-align: center;
-    color: blue;
-  }
-
-  h3 {
-    color: blue;
-  }
-`;
-
-const Error = styled.div`
-  color: red;
-  font-weight: bold;
-  font-size: 2rem;
-`;
-
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-    }
-  }
-`;
+});
 
 class ModifiedEntryForm extends Component {
   constructor(props) {
@@ -92,7 +75,7 @@ class ModifiedEntryForm extends Component {
 
     client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response =>
         this.setState({
@@ -132,22 +115,7 @@ class ModifiedEntryForm extends Component {
       errorMsg.errorFood = "Please provide name of food.";
       errorMsg.error = true;
     }
-    if (!this.state.newAddFood.caloriesPerServ) {
-      errorMsg.errorCal = "Please provide calories per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.fats) {
-      errorMsg.errorFats = "Please provide grams of fat per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.carbs) {
-      errorMsg.errorCarbs = "Please provide grams of carbs per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.proteins) {
-      errorMsg.errorProteins = "Please provide grams of protein per serving.";
-      errorMsg.error = true;
-    }
+
     if (!this.state.newAddFood.meal_category_id) {
       errorMsg.errorCategory = "Please provide meal category.";
       errorMsg.error = true;
@@ -354,10 +322,10 @@ class ModifiedEntryForm extends Component {
 
     if (this.props.selectedFood) {
       foodName = this.props.selectedFood.label;
-      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL;
-      fats = this.props.selectedFood.nutrients.FAT;
-      carbs = this.props.selectedFood.nutrients.CHOCDF;
-      proteins = this.props.selectedFood.nutrients.PROCNT;
+      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL? this.props.selectedFood.nutrients.ENERC_KCAL: 0;
+      fats = this.props.selectedFood.nutrients.FAT? this.props.selectedFood.nutrients.FAT: 0;
+      carbs = this.props.selectedFood.nutrients.CHOCDF?  this.props.selectedFood.nutrients.CHOCDF: 0;
+      proteins = this.props.selectedFood.nutrients.PROCNT? this.props.selectedFood.nutrients.PROCNT: 0;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -383,10 +351,10 @@ class ModifiedEntryForm extends Component {
 
     if (prevProps.selectedFood !== this.props.selectedFood) {
       foodName = this.props.selectedFood.label;
-      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL;
-      fats = this.props.selectedFood.nutrients.FAT;
-      carbs = this.props.selectedFood.nutrients.CHOCDF;
-      proteins = this.props.selectedFood.nutrients.PROCNT;
+      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL? this.props.selectedFood.nutrients.ENERC_KCAL: 0;
+      fats = this.props.selectedFood.nutrients.FAT? this.props.selectedFood.nutrients.FAT: 0;
+      carbs = this.props.selectedFood.nutrients.CHOCDF? this.props.selectedFood.nutrients.CHOCDF: 0;
+      proteins = this.props.selectedFood.nutrients.PROCNT? this.props.selectedFood.nutrients.PROCNT: 0;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -403,15 +371,24 @@ class ModifiedEntryForm extends Component {
   }
 
   render() {
+    const { classes } = this.props;
     this.getCurrentUser(localStorage.getItem("token"));
     return (
-      <Form>
-        <Typography variant="h4">Add food entry</Typography>
-        <label htmlFor="foodName">Food</label>
+      <Container className="form-container">
+        <Typography className={classes.formTitle} variant="h4">
+          Add food entry
+        </Typography>
+        {/* <label htmlFor="foodName">Food</label> */}
 
-        <h3>{this.state.newAddFood.foodName}</h3>
+        {/* <h3>{this.state.newAddFood.foodName}</h3> */}
 
-        <InputLabel htmlFor="meal_category_id">Meal Category</InputLabel>
+        <Typography className={classes.foodTitle}>
+          Food: {this.state.newAddFood.foodName}
+        </Typography>
+
+        <InputLabel className={classes.label} htmlFor="meal_category_id">
+          Meal Category
+        </InputLabel>
         <Select
           autoFocus
           margin="dense"
@@ -438,39 +415,79 @@ class ModifiedEntryForm extends Component {
         <TextField
           autoFocus
           margin="dense"
+          error={this.state.errorMsg.errorQty}
           label="Serving Quantity"
           className="form-field"
           type="number"
           name="servingQty"
           onChange={this.onInputChange}
+          value={
+            this.state.newAddFood.servingQty
+              ? this.state.newAddFood.servingQty
+              : ""
+          }
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
+          required
+          aria-describedby="errorQty-text"
         />
 
-        <label htmlFor="caloriesPerServ">Calories per serving</label>
+        {/* <label htmlFor="caloriesPerServ">Calories per serving</label>
         <h3>
           {this.state.newAddFood.caloriesPerServ
             ? this.state.newAddFood.caloriesPerServ.toFixed(2)
             : 0}
-        </h3>
+        </h3> */}
+        <Typography className={classes.foodTitle}>
+          Calories per Serving:{" "}
+          {this.state.newAddFood.caloriesPerServ
+            ? this.state.newAddFood.caloriesPerServ.toFixed(2)
+            : 0}
+        </Typography>
 
-        <label htmlFor="proteins">Grams of Protein per Serving</label>
+        {/* <label htmlFor="proteins">Grams of Protein per Serving</label>
         <h3>
           {this.state.newAddFood.proteins
             ? this.state.newAddFood.proteins.toFixed(2)
             : 0}
-        </h3>
-        <label htmlFor="carbs">Grams of Carbs per Serving</label>
+        </h3> */}
+
+        <Typography className={classes.foodTitle}>
+          Grams of Protein per Serving:{" "}
+          {this.state.newAddFood.proteins
+            ? this.state.newAddFood.proteins.toFixed(2)
+            : 0}
+        </Typography>
+
+        {/* <label htmlFor="carbs">Grams of Carbs per Serving</label>
         <h3>
           {" "}
           {this.state.newAddFood.carbs
             ? this.state.newAddFood.carbs.toFixed(2)
             : 0}
-        </h3>
-        <label htmlFor="fats">Grams of Fat per Serving</label>
+        </h3> */}
+        <Typography className={classes.foodTitle}>
+          Grams of Carbs per Serving:{" "}
+          {this.state.newAddFood.carbs
+            ? this.state.newAddFood.carbs.toFixed(2)
+            : 0}
+        </Typography>
+
+        {/* <label htmlFor="fats">Grams of Fat per Serving</label>
         <h3>
           {this.state.newAddFood.fats
             ? this.state.newAddFood.fats.toFixed(2)
             : ""}
-        </h3>
+        </h3> */}
+        <Typography className={classes.foodTitle}>
+          Grams of Fat per Serving:{" "}
+          {this.state.newAddFood.fats
+            ? this.state.newAddFood.fats.toFixed(2)
+            : ""}
+        </Typography>
 
         <TextField
           label="Date"
@@ -482,24 +499,32 @@ class ModifiedEntryForm extends Component {
           required
           aria-describedby="errorDate-text"
           value={this.state.newAddFood.date ? this.state.newAddFood.date : ""}
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
         />
         <FormHelperText id="errorDate-text">
           {this.state.errorMsg.errorDate}
         </FormHelperText>
 
         <Button
-          className="form-field"
+          className={classes.formButton}
           type="submit"
           onClick={this.onEntrySubmit}
         >
           Add Entry
         </Button>
-        <Button onClick={this.props.handleShowFood}>
+        <Button
+          className={classes.formButton}
+          onClick={this.props.handleShowFood}
+        >
           I'll add my own entry
         </Button>
-      </Form>
+      </Container>
     );
   }
 }
 
-export default ModifiedEntryForm;
+export default withStyles(styles)(ModifiedEntryForm);
