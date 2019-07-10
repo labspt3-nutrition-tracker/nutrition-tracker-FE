@@ -31,6 +31,13 @@ import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 500px;
+`;
 const styles = theme => ({
   root: {
     maxWidth: 960,
@@ -53,14 +60,13 @@ const styles = theme => ({
     color: "#ffffff",
     textTransform: "uppercase",
     textAlign: "center",
-    letterSpacing: "1.3px",
-
+    letterSpacing: "1.3px"
   },
   flexData: {
     display: "flex",
     justifyContent: "space-evenly",
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: "column",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column"
     },
     color: "#545454"
   },
@@ -69,17 +75,16 @@ const styles = theme => ({
     // maxWidth: 300,
     margin: 0,
     padding: 0,
-    [theme.breakpoints.down('sm')]: {
-      width: "100%",
-    },
-
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
+    }
   },
   flexDataConFirst: {
     width: "100%",
     maxWidth: 300,
     margin: 0,
     padding: "0 0 0 32",
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       width: "100%",
       maxWidth: "100%"
     }
@@ -87,7 +92,7 @@ const styles = theme => ({
   heading: {
     fontFamily: "Oswald",
     fontWeight: 100,
-    fontSize: "2.5rem",
+    fontSize: "2.5rem"
     // textTransform: "uppercase"
   }
 });
@@ -114,10 +119,10 @@ class Dashboard extends Component {
   };
 
   componentDidMount = () => {
-    if (this.props.selectedFood ){
+    if (this.props.selectedFood) {
       this.setState({
         showFoodForm: false
-      })
+      });
     }
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
@@ -312,9 +317,11 @@ class Dashboard extends Component {
       headers: { authorization: idToken }
     });
 
-    const edamam_id = editEntry.food_id.edamam_id ? editEntry.food_id.edamam_id : null
+    const edamam_id = editEntry.food_id.edamam_id
+      ? editEntry.food_id.edamam_id
+      : null;
     const foodId = parseInt(editEntry.food_id.id);
-    const mealCategoryId = parseInt(editEntry.meal_category_id.id)
+    const mealCategoryId = parseInt(editEntry.meal_category_id.id);
 
     const foodInput = {
       foodName: editEntry.food_id.foodName,
@@ -322,7 +329,7 @@ class Dashboard extends Component {
       fats: parseFloat(editEntry.food_id.fats),
       carbs: parseFloat(editEntry.food_id.carbs),
       proteins: parseFloat(editEntry.food_id.proteins),
-      edamam_id: edamam_id,
+      edamam_id: edamam_id
     };
 
     const foodEntryInput = {
@@ -331,43 +338,42 @@ class Dashboard extends Component {
       user_id: parseInt(this.state.currentUser),
       servingQty: parseInt(editEntry.servingQty),
       meal_category_id: parseInt(mealCategoryId)
-    }
+    };
 
     client
       .mutate({
         mutation: EDIT_FOOD,
         variables: {
-        id: foodId,
-        input: foodInput
-      }
-    })
-    .then(response => {
-      client
-        .mutate({
-          mutation: EDIT_FOOD_ENTRY,
-          variables: {
-            id: editId,
-            variables: foodEntryInput
-          }
-        })
-        .then(response => {
-          client
-            .query({
-              query: GET_FOOD_ENTRIES_BY_USER_QUERY,
-              variables: {
-                userId: this.state.currentUser
-              }
-            })
-            .then(response => {
-              this.setState({
-                foodEntries: response.data.getFoodEntriesByUserId
+          id: foodId,
+          input: foodInput
+        }
+      })
+      .then(response => {
+        client
+          .mutate({
+            mutation: EDIT_FOOD_ENTRY,
+            variables: {
+              id: editId,
+              variables: foodEntryInput
+            }
+          })
+          .then(response => {
+            client
+              .query({
+                query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+                variables: {
+                  userId: this.state.currentUser
+                }
+              })
+              .then(response => {
+                this.setState({
+                  foodEntries: response.data.getFoodEntriesByUserId
+                });
               });
-            });
-        })
-        .catch(err => console.log(err));
-    })
-  }
-
+          })
+          .catch(err => console.log(err));
+      });
+  };
 
   editExerEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
@@ -500,7 +506,6 @@ class Dashboard extends Component {
   };
 
   render() {
-
     const { classes } = this.props;
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     if (this.state.userType === "Super User") {
@@ -516,7 +521,7 @@ class Dashboard extends Component {
               </Typography>
             </CardContent>
             <CardContent>
-              <Calories />
+              <Calories foodEntries={this.state.foodEntries}/>
             </CardContent>
             <CardContent className={classes.flexData}>
               {!this.state.foodIsLoading ? (
@@ -535,7 +540,9 @@ class Dashboard extends Component {
                   />
                 </Container>
               ) : (
-                <CircularProgress />
+                <LoadingDiv>
+                  <CircularProgress />
+                </LoadingDiv>
               )}
               <Container className={classes.forms}>
                 {this.state.showFoodForm && (
@@ -579,7 +586,9 @@ class Dashboard extends Component {
                         />
                       </Container>
                     ) : (
-                      <CircularProgress />
+                      <LoadingDiv>
+                        <CircularProgress />
+                      </LoadingDiv>
                     )}
                     <Container className={classes.flexDataCon}>
                       <Exercise
@@ -599,7 +608,7 @@ class Dashboard extends Component {
       return (
         <Container className={classes.root}>
           <DashTitle>{currentDate}</DashTitle>
-          <Calories />
+          <Calories foodEntries={this.state.foodEntries} />
           <DashDisplay className="container">
             <InfoCon>
               <FoodEntry foodEntries={this.state.foodEntries} />

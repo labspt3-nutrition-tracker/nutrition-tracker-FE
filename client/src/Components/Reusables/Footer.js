@@ -23,7 +23,12 @@ const useStyles = makeStyles({
 
   heading: {
     fontSize: "2rem",
-    marginTop: "4.5%"
+    marginTop: "4.5%",
+    maxWidth: 300
+  },
+
+  headingImg: {
+    width: "100%",
   },
 
   heading2: {
@@ -96,7 +101,7 @@ React.useEffect(() => {
 
             <BottomNavigation  className={classes.root}>
             <div className={classes.heading}>
-              <img src={logo} alt="Created my free logo at LogoMakr.com" />
+              <img className={classes.headingImg} src={logo} alt="Created my free logo at LogoMakr.com" />
             </div>
         <div className={classes.lowerDiv}>
           <div className={classes.contactDiv}>
