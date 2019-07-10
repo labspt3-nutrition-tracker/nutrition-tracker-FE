@@ -155,7 +155,7 @@ class Calories extends React.Component {
                     return (
                       <CardContent className={classes.card}>
                         <Container className={classes.calCon}>
-                          <CardContent className={classes.calConWrap}>
+                          <Container className={classes.calConWrap}>
                             <Typography className={classes.num}>
                               {mealCal}
                             </Typography>
@@ -165,9 +165,9 @@ class Calories extends React.Component {
                             >
                               Calorie Intake
                             </Typography>
-                          </CardContent>
+                          </Container>
 
-                          <CardContent className={classes.calConWrap}>
+                          <Container className={classes.calConWrap}>
                             <Typography className={classes.centerNum}>
                               {remainCal}
                             </Typography>
@@ -177,9 +177,9 @@ class Calories extends React.Component {
                             >
                               Remaining Calories
                             </Typography>
-                          </CardContent>
+                          </Container>
 
-                          <CardContent className={classes.calConWrap}>
+                          <Container className={classes.calConWrap}>
                             <Typography className={classes.num}>
                               {calGoal}
                             </Typography>
@@ -189,7 +189,7 @@ class Calories extends React.Component {
                             >
                               Daily Calorie Goal
                             </Typography>
-                          </CardContent>
+                          </Container>
                         </Container>
                       </CardContent>
                     );

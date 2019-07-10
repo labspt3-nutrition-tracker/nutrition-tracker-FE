@@ -168,13 +168,23 @@ button {
 }
 
 .navLink {
-  color: #fcfcfb;
+  color: #ffffff;
   padding-right: 7%;
   text-decoration: none;
 	font-size: 1.6rem;
 	font-size: 16px;
   /* text-shadow: 1px 1px 1px #000000;  */
 }
+
+.navLinkMobile {
+  color: #545454;
+  padding-right: 7%;
+  text-decoration: none;
+	font-size: 1.6rem;
+	font-size: 16px;
+  /* text-shadow: 1px 1px 1px #000000;  */
+}
+
 
 .navLink:first-of-type {
   padding-left: 5%;
@@ -184,15 +194,23 @@ button {
   color: #545454;
 }
 
+.searchBarHome {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-container > div{
+  width: 100%;
+}
 /* ------------ MEDIA QUERIES ------------ */
 
 @media (max-width: 800px) {
-  .navLink {
+  /* .navLink {
     border-bottom: 1px solid black;
     padding: 10px 0;
     width: 100%;
     text-align: center;
-  }
+  } */
 }
 
 @media (max-width: 500px) {

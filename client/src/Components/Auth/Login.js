@@ -4,43 +4,46 @@ import { GoogleLogin } from "react-google-login";
 import FacebookLogin from "react-facebook-login";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
-import logo from "../../Assets/logo-black.png";
-import { Pulse } from 'animate-css-styled-components';
+import logo from "../../Assets/logo-green.png";
+import loginBg from "../../Assets/login-bg.png"
+import { Pulse } from "animate-css-styled-components";
 
 import LoginForm from "./LoginForm";
 import { ADD_USER_MUTATION } from "../../graphql/mutations";
 import { USER_EXIST_QUERY } from "../../graphql/queries";
 
-import Avatar from '@material-ui/core/Avatar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import Avatar from "@material-ui/core/Avatar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 // add min width for logo
 const LoginOrRegisterContainer = styled.div`
-  /* background: #fcfcfb; */
+  /* background: #5E366A; */
   display: flex;
   justify-content: center;
   align-content: center;
   flex-wrap: wrap;
   width: 100%;
   height: 100vh;
+  background: url(${loginBg}) no-repeat;
+  background-size: cover;
 `;
 
 const LogoContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 20px;
+  padding: 20px;
 `;
 
 const Logo = styled.div`
-  max-width: 800px;
+  max-width: 360px;
   width: 100%;
   img {
     width: 100%;
@@ -48,19 +51,20 @@ const Logo = styled.div`
 `;
 
 const LoginOrRegisterForm = styled.div`
- background: #40a798;
-  width: 60%;
+  /* background: #40a798; */
+  background: #ffffff;
+  width: 100%;
+  max-width: 500px;
   height: 500px;
-  padding: 0 100px;
   display: flex;
   justify-content: center;
   align-content: center;
   flex-wrap: wrap;
-  -webkit-box-shadow: 6px 7px 24px -1px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 6px 7px 24px -1px rgba(0, 0, 0, 0.75);
-  box-shadow: 6px 7px 24px -1px rgba(0, 0, 0, 0.75);
-  border-radius: 10px;
-  border: 3px solid #3685b5;  
+  -webkit-box-shadow: 0 0 24px -1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 24px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 24px -1px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  /* border: 3px solid #3685b5; */
 `;
 
 const FormContainer = styled.div`
@@ -70,9 +74,9 @@ const FormContainer = styled.div`
 `;
 
 const PulseContainer = styled.div`
-display: flex;
-justify-content: center;
-`
+  display: flex;
+  justify-content: center;
+`;
 
 const FacebookBtn = styled.div`
   button {
@@ -83,26 +87,25 @@ const FacebookBtn = styled.div`
   }
 `;
 
-
 const LoginMessage = styled.div`
-background: #40a798;
-display: flex;
-justify-content: center;
-padding: 40% 0;
-
-`
+  /* background: #40a798; */
+  display: flex;
+  justify-content: center;
+  padding: 40% 0;
+  color: #5E366A;
+`;
 
 const MadeWithLove = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Built with love by the '}
+      {"Built with love by the "}
       <Link color="inherit" href="https://material-ui.com/">
         Material-UI
       </Link>
-      {' team.'}
+      {" team."}
     </Typography>
   );
-}
+};
 
 class LoginOrRegister extends React.Component {
   constructor(props) {
@@ -157,7 +160,8 @@ class LoginOrRegister extends React.Component {
         }
       })
       .then(response => {
-        if (response.data.getUserBy) this.setState({ toDashboard: !this.state.toDashboard });
+        if (response.data.getUserBy)
+          this.setState({ toDashboard: !this.state.toDashboard });
         else
           this.setState({
             checkExistence: !this.state.checkExistence,
@@ -199,7 +203,9 @@ class LoginOrRegister extends React.Component {
         }
       })
       .then(response => this.setState({ toDashboard: !this.state.toDashboard }))
-      .catch(err => console.log("There was a problem creating the user account. ", err));
+      .catch(err =>
+        console.log("There was a problem creating the user account. ", err)
+      );
   };
 
   render() {
@@ -211,30 +217,36 @@ class LoginOrRegister extends React.Component {
     return (
       <LoginOrRegisterContainer>
         <FormContainer>
-        <Pulse delay=".3s" >
-          <PulseContainer>
-     
-          <LoginOrRegisterForm>
-          <LogoContainer>
-          <Logo>
-            <img src={logo} alt="Created my free logo at LogoMakr.com" />
-          </Logo>
-          </LogoContainer>
-            <div>
-              {this.state.checkExistence ? (
-                <LoginForm addUser={this.createUser} handleChange={this.handleChange} props={this.state} />
-              ) : (
-                <>
-                <LoginMessage>Login to your account!</LoginMessage>
-                <>
-                  <GoogleLogin
-                    style={{ height: 10 }}
-                    clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
-                    onSuccess={this.onSuccess}
-                    onFailure={this.onFailure}
-                    theme='dark'
-                  />
-                  {/* <FacebookBtn>
+          <Pulse delay=".3s">
+            <PulseContainer>
+              <LoginOrRegisterForm>
+                <LogoContainer>
+                  <Logo>
+                    <img
+                      src={logo}
+                      alt="Created my free logo at LogoMakr.com"
+                    />
+                  </Logo>
+                </LogoContainer>
+                <div>
+                  {this.state.checkExistence ? (
+                    <LoginForm
+                      addUser={this.createUser}
+                      handleChange={this.handleChange}
+                      props={this.state}
+                    />
+                  ) : (
+                    <>
+                      <LoginMessage>Login to your account!</LoginMessage>
+                      <>
+                        <GoogleLogin
+                          style={{ height: 10 }}
+                          clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
+                          onSuccess={this.onSuccess}
+                          onFailure={this.onFailure}
+                          theme="dark"
+                        />
+                        {/* <FacebookBtn>
                     <FacebookLogin
                       appId='390080238272158'
                       // autoLoad={true}
@@ -243,13 +255,12 @@ class LoginOrRegister extends React.Component {
                       icon='fa-facebook'
                     />
                   </FacebookBtn> */}
-                </>
-                </>
-              )}
-            </div>
-          </LoginOrRegisterForm>
-         
-          </PulseContainer>
+                      </>
+                    </>
+                  )}
+                </div>
+              </LoginOrRegisterForm>
+            </PulseContainer>
           </Pulse>
         </FormContainer>
       </LoginOrRegisterContainer>

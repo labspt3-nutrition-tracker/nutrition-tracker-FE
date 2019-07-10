@@ -18,7 +18,8 @@ import {
   DELETE_EXERENTRY,
   EDIT_EXER_ENTRY,
   DELETE_FOOD_ENTRY,
-  EDIT_FOOD_ENTRY
+  EDIT_FOOD_ENTRY,
+  EDIT_FOOD
 } from "../../graphql/mutations";
 import {
   EXER_QUERY,
@@ -35,7 +36,8 @@ const styles = theme => ({
   root: {
     maxWidth: 960,
     width: "100%",
-    marginBottom: "3%"
+    marginBottom: "3%",
+    color: "#545454"
   },
   date: {
     margin: "50px auto 0 auto",
@@ -46,25 +48,48 @@ const styles = theme => ({
   },
   title: {
     // flexGrow: 1,
-    fontSize: 16,
+    fontSize: 20,
     background: "#5E366A",
     padding: 10,
-    color: "#ffffff"
+    color: "#ffffff",
+    textTransform: "uppercase",
+    textAlign: "center",
+    letterSpacing: "1.3px",
+
   },
   flexData: {
     display: "flex",
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: "column",
+    },
+    color: "#545454"
   },
   flexDataCon: {
     width: "100%",
+    // maxWidth: 300,
+    margin: 0,
+    padding: 0,
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+    },
+    
+  },
+  flexDataConFirst: {
+    width: "100%",
     maxWidth: 300,
     margin: 0,
-    padding: 0
+    padding: "0 0 0 32",
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+      maxWidth: "100%"
+    }
   },
   heading: {
     fontFamily: "Oswald",
     fontWeight: 100,
-    fontSize: "2rem"
+    fontSize: "2.5rem",
+    // textTransform: "uppercase"
   }
 });
 
@@ -120,6 +145,11 @@ class Dashboard extends Component {
   };
 
   componentDidMount = () => {
+    if (this.props.selectedFood ){
+      this.setState({
+        showFoodForm: false
+      })
+    }
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
@@ -321,52 +351,67 @@ class Dashboard extends Component {
   // }
 
   editFoodEntry = (editId, editEntry, idToken) => {
-    const foodInput = {
-      foodName: editEntry.foodName,
-      caloriesPerServ: editEntry.caloriesPerServ,
-      fats: editEntry.fats,
-      carbs: editEntry.carbs,
-      proteins: editEntry.proteins,
-      edamam_id: editEntry.edamam_id,
-    };
-
-    const foodEntryInput = {
-      date: editEntry.date,
-      food_id: editEntry.food_id,
-      user_id: editEntry.user_id,
-      servingQty: editEntry.servingQty,
-      meal_category_id: parseInt(editEntry.meal_category_id)
-    }
-    console.log("arg food", editEntry);
-    console.log("props", this.state.foodEntry);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
+
+    const edamam_id = editEntry.food_id.edamam_id ? editEntry.food_id.edamam_id : null
+    const foodId = parseInt(editEntry.food_id.id);
+    const mealCategoryId = parseInt(editEntry.meal_category_id.id)
+
+    const foodInput = {
+      foodName: editEntry.food_id.foodName,
+      caloriesPerServ: parseInt(editEntry.food_id.caloriesPerServ),
+      fats: parseFloat(editEntry.food_id.fats),
+      carbs: parseFloat(editEntry.food_id.carbs),
+      proteins: parseFloat(editEntry.food_id.proteins),
+      edamam_id: edamam_id,
+    };
+
+    const foodEntryInput = {
+      date: editEntry.date,
+      food_id: parseInt(foodId),
+      user_id: parseInt(this.state.currentUser),
+      servingQty: parseInt(editEntry.servingQty),
+      meal_category_id: parseInt(mealCategoryId)
+    }
+
     client
       .mutate({
-        mutation: EDIT_FOOD_ENTRY,
-        variables: { id: editId, input: editEntry }
-      })
-      .then(response => {
-        console.log("first part of response", response);
-        client
-          .query({
-            query: GET_FOOD_ENTRIES_BY_USER_QUERY,
-            variables: {
-              userId: this.state.currentUser
-            }
-          })
-          .then(response => {
-            console.log(response);
-            this.setState({
-              foodEntry: this.state.foodEntry,
-              foodEntries: response.data.getFoodEntriesByUserId
+        mutation: EDIT_FOOD,
+        variables: {
+        id: foodId,
+        input: foodInput
+      }
+    })
+    .then(response => {
+      client
+        .mutate({
+          mutation: EDIT_FOOD_ENTRY,
+          variables: {
+            id: editId,
+            variables: foodEntryInput
+          }
+        })
+        .then(response => {
+          client
+            .query({
+              query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+              variables: {
+                userId: this.state.currentUser
+              }
+            })
+            .then(response => {
+              this.setState({
+                foodEntries: response.data.getFoodEntriesByUserId
+              });
             });
-          });
-      })
-      .catch(err => console.log("error message edit food", err));
-  };
+        })
+        .catch(err => console.log(err));
+    })
+  }
+
 
   editExerEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
@@ -499,6 +544,7 @@ class Dashboard extends Component {
   };
 
   render() {
+
     const { classes } = this.props;
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     if (this.state.userType === "Super User") {
@@ -518,7 +564,7 @@ class Dashboard extends Component {
             </CardContent>
             <CardContent className={classes.flexData}>
               {!this.state.foodIsLoading ? (
-                <Container className={classes.flexDataCon}>
+                <Container className={classes.flexDataConFirst}>
                   <Typography className={classes.heading}>Meals</Typography>
                   <hr />
                   <FoodEntry
@@ -541,6 +587,7 @@ class Dashboard extends Component {
                     <EntryForm
                       addFoodEntry={this.addFoodEntry}
                       closeFoodForm={this.closeFoodForm}
+                      searchedFood={this.props.selectedFood}
                     />
                   </Container>
                 )}
@@ -562,11 +609,10 @@ class Dashboard extends Component {
                 <>
                   <CardContent className={classes.flexData}>
                     {!this.state.exerIsLoading ? (
-                      <Container className={classes.flexDataCon}>
+                      <Container className={classes.flexDataConFirst}>
                         <Typography className={classes.heading}>
                           Activity
                         </Typography>
-                        <hr />
                         <ExerciseEntry
                           exerEntries={this.state.exerEntries}
                           deleteExerEntry={this.deleteExerEntry}
@@ -606,6 +652,7 @@ class Dashboard extends Component {
               <EntryForm
                 addFoodEntry={this.addFoodEntry}
                 closeFoodForm={this.closeFoodForm}
+                searchedFood={this.props.selectedFood}
               />
             )}
             {!this.state.showFoodForm && (
