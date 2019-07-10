@@ -140,7 +140,6 @@ class Calories extends React.Component {
 
                   const calGoal = this.state.calGoal;
                   let mealCal = [];
-                  // console.log("foodEntries:", foodEntries);
                   if (foodEntries.length === 0) {
                     const mealCal = 0;
                     const remainCal = calGoal - mealCal;
