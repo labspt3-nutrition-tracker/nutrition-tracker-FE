@@ -210,7 +210,7 @@ class ExerForm extends Component {
         <Button className="form-field" type="submit" onClick={this.onSubmit}>
           Add Entry
         </Button>
-        <Button onClick={this.props.closeExerEntry}>Close </Button>
+        {/* <Button onClick={this.props.closeExerEntry}>Close </Button> */}
       </Form>
     );
   }

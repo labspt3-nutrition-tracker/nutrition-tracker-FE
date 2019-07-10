@@ -108,7 +108,7 @@ const getCurrentUser = idToken => {
         // this.setState({
         //   loggedOut: true
         // });
-        console.log("user exis")
+        // console.log("user exists")
       }
     })
     .catch(err => console.log(err));
@@ -152,7 +152,7 @@ React.useEffect(() => {
   // }
 
   return (
-    console.log(loggedOut),
+    // console.log(loggedOut),
 <>
   {loggedOut ? (
 
