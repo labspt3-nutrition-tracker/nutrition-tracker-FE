@@ -76,7 +76,7 @@ class Calories extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
-      calGoal: 2000
+      calGoal: null
     };
   }
 
@@ -96,8 +96,8 @@ class Calories extends React.Component {
         query: GET_CURRENT_USERID
       })
       .then(response => {
-        this.setState({ currentUser: response.data.getCurrentUser.id });
-        // console.log(this.state.currentUser)
+        this.setState({ currentUser: response.data.getCurrentUser.id, calGoal: response.data.getCurrentUser.calorieGoal });
+        console.log(this.state.calGoal)
       })
       .catch(err => console.log(err));
   };

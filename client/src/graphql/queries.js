@@ -94,6 +94,7 @@ export const GET_CURRENT_USERID = gql`
     getCurrentUser {
       id
       userType
+      calorieGoal
     }
   }
 `;
