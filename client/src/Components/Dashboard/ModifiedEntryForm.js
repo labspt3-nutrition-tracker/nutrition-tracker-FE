@@ -115,22 +115,7 @@ class ModifiedEntryForm extends Component {
       errorMsg.errorFood = "Please provide name of food.";
       errorMsg.error = true;
     }
-    if (!this.state.newAddFood.caloriesPerServ) {
-      errorMsg.errorCal = "Please provide calories per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.fats) {
-      errorMsg.errorFats = "Please provide grams of fat per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.carbs) {
-      errorMsg.errorCarbs = "Please provide grams of carbs per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.proteins) {
-      errorMsg.errorProteins = "Please provide grams of protein per serving.";
-      errorMsg.error = true;
-    }
+
     if (!this.state.newAddFood.meal_category_id) {
       errorMsg.errorCategory = "Please provide meal category.";
       errorMsg.error = true;
@@ -337,10 +322,10 @@ class ModifiedEntryForm extends Component {
 
     if (this.props.selectedFood) {
       foodName = this.props.selectedFood.label;
-      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL;
-      fats = this.props.selectedFood.nutrients.FAT;
-      carbs = this.props.selectedFood.nutrients.CHOCDF;
-      proteins = this.props.selectedFood.nutrients.PROCNT;
+      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL? this.props.selectedFood.nutrients.ENERC_KCAL: 0;
+      fats = this.props.selectedFood.nutrients.FAT? this.props.selectedFood.nutrients.FAT: 0;
+      carbs = this.props.selectedFood.nutrients.CHOCDF?  this.props.selectedFood.nutrients.CHOCDF: 0;
+      proteins = this.props.selectedFood.nutrients.PROCNT? this.props.selectedFood.nutrients.PROCNT: 0;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -366,10 +351,10 @@ class ModifiedEntryForm extends Component {
 
     if (prevProps.selectedFood !== this.props.selectedFood) {
       foodName = this.props.selectedFood.label;
-      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL;
-      fats = this.props.selectedFood.nutrients.FAT;
-      carbs = this.props.selectedFood.nutrients.CHOCDF;
-      proteins = this.props.selectedFood.nutrients.PROCNT;
+      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL? this.props.selectedFood.nutrients.ENERC_KCAL: 0;
+      fats = this.props.selectedFood.nutrients.FAT? this.props.selectedFood.nutrients.FAT: 0;
+      carbs = this.props.selectedFood.nutrients.CHOCDF? this.props.selectedFood.nutrients.CHOCDF: 0;
+      proteins = this.props.selectedFood.nutrients.PROCNT? this.props.selectedFood.nutrients.PROCNT: 0;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -495,6 +480,7 @@ class ModifiedEntryForm extends Component {
         <h3>
           {this.state.newAddFood.fats
             ? this.state.newAddFood.fats.toFixed(2)
+<<<<<<< HEAD
             : ""}
         </h3> */}
         <Typography className={classes.foodTitle}>
@@ -503,6 +489,10 @@ class ModifiedEntryForm extends Component {
             ? this.state.newAddFood.fats.toFixed(2)
             : ""}
         </Typography>
+=======
+            : 0}
+        </h3>
+>>>>>>> development
 
         <TextField
           label="Date"
