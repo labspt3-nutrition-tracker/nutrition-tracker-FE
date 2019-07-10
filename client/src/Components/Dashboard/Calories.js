@@ -9,15 +9,15 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const LoadingDiv = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100%;
-min-height: 500px;
-`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 500px;
+`;
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -83,6 +83,13 @@ class Calories extends React.Component {
   componentDidMount() {
     const idToken = localStorage.getItem("token");
     this.getCurrentUser(idToken);
+    this.setState({ foodEntries: this.props.foodEntries });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.foodEntries !== this.props.foodEntries) {
+      this.setState({ foodEntries: this.props.foodEntries });
+    }
   }
 
   getCurrentUser = idToken => {
@@ -96,8 +103,10 @@ class Calories extends React.Component {
         query: GET_CURRENT_USERID
       })
       .then(response => {
-        this.setState({ currentUser: response.data.getCurrentUser.id, calGoal: response.data.getCurrentUser.calorieGoal });
-        console.log(this.state.calGoal)
+        this.setState({
+          currentUser: response.data.getCurrentUser.id,
+          calGoal: response.data.getCurrentUser.calorieGoal
+        });
       })
       .catch(err => console.log(err));
   };
@@ -123,145 +132,86 @@ class Calories extends React.Component {
       }
     `;
 
-    return (
-      <div>
-        <Query query={CURRENT_USERID}>
-          {({ loading, error, data }) => {
-            return (
-              <Query query={CAL_QUERY}>
-                {({ loading, error, data }) => {
-                  if (loading)
-                    return (
-                      <LoadingDiv>
-                        <Card className={classes.card}>
-                          <CircularProgress className={classes.progress} />
-                        </Card>
-                      </LoadingDiv>
-                    );
-                  if (error) return <div>Error</div>;
-                  const dateToday = new Date();
-                  const month = dateToday.getMonth();
-                  const day = dateToday.getDate();
-                  const year = dateToday.getFullYear();
-                  let foodEntries = data.getFoodEntriesByUserId;
-                  foodEntries = foodEntries.filter(entry => {
-                    const dateEntry = new Date(entry.date);
-                    const entryMonth = dateEntry.getMonth();
-                    const entryDay = dateEntry.getDate();
-                    const entryYear = dateEntry.getFullYear();
-                    return (
-                      entryMonth === month &&
-                      entryDay === day &&
-                      entryYear === year
-                    );
-                  });
+    const dateToday = new Date();
+    const month = dateToday.getMonth();
+    const day = dateToday.getDate();
+    const year = dateToday.getFullYear();
+    let foodEntries = this.props.foodEntries;
+    foodEntries = foodEntries.filter(entry => {
+      const dateEntry = new Date(entry.date);
+      const entryMonth = dateEntry.getMonth();
+      const entryDay = dateEntry.getDate();
+      const entryYear = dateEntry.getFullYear();
+      return entryMonth === month && entryDay === day && entryYear === year;
+    });
+    const calGoal = this.state.calGoal;
+    let mealCal = [];
+    // console.log("foodEntries:", foodEntries);
+    if (foodEntries.length === 0) {
+      const mealCal = 0;
+      const remainCal = calGoal - mealCal;
 
-                  const calGoal = this.state.calGoal;
-                  let mealCal = [];
-                  // console.log("foodEntries:", foodEntries);
-                  if (foodEntries.length === 0) {
-                    const mealCal = 0;
-                    const remainCal = calGoal - mealCal;
-                    return (
-                      <CardContent className={classes.card}>
-                        <Container className={classes.calCon}>
-                          <Container className={classes.calConWrap}>
-                            <Typography className={classes.num}>
-                              {mealCal}
-                            </Typography>
-                            <Typography
-                              className={classes.calTitle}
-                              variant="h4"
-                            >
-                              Calorie Intake
-                            </Typography>
-                          </Container>
+      return (
+        <CardContent className={classes.card}>
+          <Container className={classes.calCon}>
+            <Container className={classes.calConWrap}>
+              <Typography className={classes.num}>{mealCal}</Typography>
+              <Typography className={classes.calTitle} variant="h4">
+                Calorie Intake
+              </Typography>
+            </Container>
 
-                          <Container className={classes.calConWrap}>
-                            <Typography className={classes.centerNum}>
-                              {remainCal}
-                            </Typography>
-                            <Typography
-                              className={classes.calTitle}
-                              variant="h4"
-                            >
-                              Remaining Calories
-                            </Typography>
-                          </Container>
+            <Container className={classes.calConWrap}>
+              <Typography className={classes.centerNum}>{remainCal}</Typography>
+              <Typography className={classes.calTitle} variant="h4">
+                Remaining Calories
+              </Typography>
+            </Container>
 
-                          <Container className={classes.calConWrap}>
-                            <Typography className={classes.num}>
-                              {calGoal}
-                            </Typography>
-                            <Typography
-                              className={classes.calTitle}
-                              variant="h4"
-                            >
-                              Daily Calorie Goal
-                            </Typography>
-                          </Container>
-                        </Container>
-                      </CardContent>
-                    );
-                  } else {
-                    foodEntries.map(entry =>
-                      mealCal.push(
-                        entry.food_id.caloriesPerServ * entry.servingQty
-                      )
-                    );
-                    mealCal = mealCal.reduce((a, b) => {
-                      return a + b;
-                    });
-                    const remainCal = calGoal - mealCal;
-                    return (
-                      <CardContent className={classes.card}>
-                        <Container className={classes.calCon}>
-                          <Container className={classes.calConWrap}>
-                            <Typography className={classes.num}>
-                              {mealCal}
-                            </Typography>
-                            <Typography
-                              className={classes.calTitle}
-                              variant="h4"
-                            >
-                              Calorie Intake
-                            </Typography>
-                          </Container>
+            <Container className={classes.calConWrap}>
+              <Typography className={classes.num}>{calGoal}</Typography>
+              <Typography className={classes.calTitle} variant="h4">
+                Daily Calorie Goal
+              </Typography>
+            </Container>
+          </Container>
+        </CardContent>
+      );
+    } else {
+      foodEntries.map(entry =>
+        mealCal.push(entry.food_id.caloriesPerServ * entry.servingQty)
+      );
+      mealCal = mealCal.reduce((a, b) => {
+        return a + b;
+      });
+      const remainCal = calGoal - mealCal;
+      return (
+        <CardContent className={classes.card}>
+          <Container className={classes.calCon}>
+            <Container className={classes.calConWrap}>
+              <Typography className={classes.num}>{mealCal}</Typography>
+              <Typography className={classes.calTitle} variant="h4">
+                Calorie Intake
+              </Typography>
+            </Container>
 
-                          <Container className={classes.calConWrap}>
-                            <Typography className={classes.centerNum}>
-                              {remainCal}
-                            </Typography>
-                            <Typography
-                              className={classes.calTitle}
-                              variant="h4"
-                            >
-                              Remaining Calories
-                            </Typography>
-                          </Container>
+            <Container className={classes.calConWrap}>
+              <Typography className={classes.centerNum}>{remainCal}</Typography>
+              <Typography className={classes.calTitle} variant="h4">
+                Remaining Calories
+              </Typography>
+            </Container>
 
-                          <Container className={classes.calConWrap}>
-                            <Typography className={classes.num}>
-                              {calGoal}
-                            </Typography>
-                            <Typography
-                              className={classes.calTitle}
-                              variant="h4"
-                            >
-                              Daily Calorie Goal
-                            </Typography>
-                          </Container>
-                        </Container>
-                      </CardContent>
-                    );
-                  }
-                }}
-              </Query>
-            );
-          }}
-        </Query>
-      </div>
-    );
+            <Container className={classes.calConWrap}>
+              <Typography className={classes.num}>{calGoal}</Typography>
+              <Typography className={classes.calTitle} variant="h4">
+                Daily Calorie Goal
+              </Typography>
+            </Container>
+          </Container>
+        </CardContent>
+      );
+    }
   }
 }
 

@@ -565,7 +565,7 @@ class Dashboard extends Component {
               </Typography>
             </CardContent>
             <CardContent>
-              <Calories />
+              <Calories foodEntries={this.state.foodEntries}/>
             </CardContent>
             <CardContent className={classes.flexData}>
               {!this.state.foodIsLoading ? (
@@ -652,7 +652,7 @@ class Dashboard extends Component {
       return (
         <Container className={classes.root}>
           <DashTitle>{currentDate}</DashTitle>
-          <Calories />
+          <Calories foodEntries={this.state.foodEntries} />
           <DashDisplay className="container">
             <InfoCon>
               <FoodEntry foodEntries={this.state.foodEntries} />
