@@ -16,7 +16,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 //import Menu from "@material-ui/core/Menu";
 import moment from "moment";
 
-import { GET_CURRENT_USERID } from "../../graphql/queries";
+import { GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import { flexbox } from "@material-ui/system";
 
 const Form = styled.form`
@@ -172,7 +172,7 @@ class FoodEntry extends React.Component {
     });
     client
       .query({
-        query: GET_CURRENT_USERID
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
         this.setState({ currentUser: response.data.getCurrentUser.id });

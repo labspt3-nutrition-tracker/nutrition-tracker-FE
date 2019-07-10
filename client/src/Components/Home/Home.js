@@ -118,17 +118,6 @@ const SearchFeature = styled.div`
   width: 100%;
 `;
 
-const Feature_Reverse = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-  width: 70%;
-  justify-content: space-around;
-  padding-bottom: 50px;
-  align-items: center;
-  @media (max-width: 500px) {
-    flex-direction: column;
-  }
-`;
 
 const FeatureImg = styled.img`
   width: 100%;

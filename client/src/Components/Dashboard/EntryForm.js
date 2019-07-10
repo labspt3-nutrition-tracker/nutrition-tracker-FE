@@ -8,7 +8,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
-import { GET_ALL_FOOD } from "../../graphql/queries";
+import { GET_ALL_FOOD, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import gql from "graphql-tag";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -55,15 +55,6 @@ const Error = styled.div`
   font-size: 2rem;
 `;
 
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-    }
-  }
-`;
-
 class EntryForm extends Component {
   constructor(props) {
     super(props);
@@ -102,7 +93,7 @@ class EntryForm extends Component {
 
     client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response =>
         this.setState({
@@ -187,9 +178,6 @@ class EntryForm extends Component {
           proteins: this.state.newAddFood.proteins,
           edamam_id: this.state.newAddFood.edamam_id
         };
-        // console.log("foodAddedToDB", foodAddedToDB);
-        // console.log(this.state.newAddFood.meal_category_id);
-        // console.log("servingqty", this.state.newAddFood.servingQty);
         const client = new ApolloClient({
           uri: "https://nutrition-tracker-be.herokuapp.com"
         });
@@ -282,7 +270,6 @@ class EntryForm extends Component {
           })
           .catch(err => {
             this.setState({
-              // errors: [],
               edamamExist: false,
               newAddFood: {
                 foodName: "",
@@ -359,16 +346,16 @@ class EntryForm extends Component {
       foodName = this.props.selectedFood.label;
       caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL
         ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2)
-        : 0;
+        : 0.00;
       fats = this.props.selectedFood.nutrients.FAT
         ? this.props.selectedFood.nutrients.FAT.toFixed(2)
-        : 0;
+        : 0.00;
       carbs = this.props.selectedFood.nutrients.CHOCDF
         ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2)
-        : 0;
+        : 0.00;
       proteins = this.props.selectedFood.nutrients.PROCNT
         ? this.props.selectedFood.nutrients.PROCNT.toFixed(2)
-        : 0;
+        : 0.00;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -396,16 +383,16 @@ class EntryForm extends Component {
       foodName = this.props.selectedFood.label;
       caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL
         ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2)
-        : 0;
+        : 0.00;
       fats = this.props.selectedFood.nutrients.FAT
         ? this.props.selectedFood.nutrients.FAT.toFixed(2)
-        : 0;
+        : 0.00;
       carbs = this.props.selectedFood.nutrients.CHOCDF
         ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2)
-        : 0;
+        : 0.00;
       proteins = this.props.selectedFood.nutrients.PROCNT
         ? this.props.selectedFood.nutrients.PROCNT.toFixed(2)
-        : 0;
+        : 0.00;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {

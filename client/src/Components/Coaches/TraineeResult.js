@@ -1,5 +1,4 @@
 import React from "react";
-import Modal from "react-modal";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -76,10 +75,10 @@ const TraineeResult = props => {
               <h2> {props.traineeSearchResults.email}</h2>
             </SearchInfo>
             <RequestButton disabled={props.trainees.length === 1 && props.currentUser.userType !== "coach"} onClick={props.request}> Request to follow</RequestButton>
-            {props.trainees.length === 1 
-              && props.currentUser.userType !== "coach" 
+            {props.trainees.length === 1
+              && props.currentUser.userType !== "coach"
               && (
-                <> 
+                <>
                   <div>Please upgrade to Coach to follow more than one person.</div>
                   <Link to="/billing">Upgrade</Link>
                 </>)}

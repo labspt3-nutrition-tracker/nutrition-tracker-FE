@@ -5,12 +5,10 @@ import ApolloClient from "apollo-boost";
 import "@fullcalendar/core/main.css";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
-
 import Calendar from "./Calendar";
 import JournalEntry from "./JournalEntry";
-
 import { getCurrentUser } from "../../util/getCurrentUser";
-
+import {FOOD_ENTRY_QUERY} from "../../graphql/queries";
 const DELETE_MEAL = gql`
   mutation deleteFoodEntry($id: ID!) {
     deleteFoodEntry(id: $id)
@@ -35,29 +33,6 @@ const UPDATE_FOOD = gql`
       carbs
       proteins
       edamam_id
-    }
-  }
-`;
-
-const FOODENTRYQUERY = gql`
-  query getFoodEntry($userId: ID!) {
-    getFoodEntriesByUserId(userId: $userId) {
-      id
-      date
-      servingQty
-      food_id {
-        id
-        foodName
-        caloriesPerServ
-        fats
-        proteins
-        carbs
-        edamam_id
-      }
-      meal_category_id {
-        id
-        mealCategoryName
-      }
     }
   }
 `;
@@ -99,7 +74,7 @@ class Journal extends React.Component {
 
     await client
       .query({
-        query: FOODENTRYQUERY,
+        query: FOOD_ENTRY_QUERY,
         variables: {
           userId: this.state.currentUser
         }
@@ -125,7 +100,7 @@ class Journal extends React.Component {
       });
 
       const response = await client.query({
-        query: FOODENTRYQUERY,
+        query: FOOD_ENTRY_QUERY,
         variables: {
           userId: this.state.currentUser
         }
@@ -177,7 +152,7 @@ class Journal extends React.Component {
       });
 
       const response = await client.query({
-        query: FOODENTRYQUERY,
+        query: FOOD_ENTRY_QUERY,
         variables: {
           userId: this.state.currentUser
         }

@@ -9,6 +9,7 @@ import styled from "styled-components";
 import AccountNav from '../AccountNav';
 import { makeStyles } from '@material-ui/core/styles';
 import { wrap } from "module";
+import {GET_CURRENT_USER_QUERY, GET_RECENT_BILLING} from "../../graphql/queries";
 
 const createSubscriptionMutation = gql`
   mutation createSubscription($source: String!, $email: String!, $amount: Int!){
@@ -18,23 +19,7 @@ const createSubscriptionMutation = gql`
   }
 `;
 
-const getRecentBillingQuery  = gql`
-  query getRecentBilling($id: ID!){
-    getRecentBilling(id: $id){
-      date
-    }
-  }
-`;
 
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-      userType
-    }
-  }
-`;
 const BillingContainer = styled.div`
   padding-top:50px;
   display:flex;
@@ -82,7 +67,7 @@ let divStyle = {
 
     await client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
         this.getRecentBilling(response.data.getCurrentUser.id)
@@ -100,7 +85,7 @@ let divStyle = {
 
     await client
       .query({
-        query: getRecentBillingQuery,
+        query: GET_RECENT_BILLING,
         variables: {
           id: id
         }

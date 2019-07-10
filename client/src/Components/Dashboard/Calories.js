@@ -2,13 +2,14 @@ import React from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import ApolloClient from "apollo-boost";
-import { GET_CURRENT_USERID } from "../../graphql/queries";
+import { GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+
 
 const styles = theme => ({
   root: {
@@ -85,11 +86,10 @@ class Calories extends React.Component {
 
     client
       .query({
-        query: GET_CURRENT_USERID
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
         this.setState({ currentUser: response.data.getCurrentUser.id });
-        // console.log(this.state.currentUser)
       })
       .catch(err => console.log(err));
   };
@@ -107,17 +107,9 @@ class Calories extends React.Component {
       }
     }
     `;
-    const CURRENT_USERID = gql`
-      query getCurrentUser {
-        getCurrentUser {
-          id
-        }
-      }
-    `;
-
     return (
       <div>
-        <Query query={CURRENT_USERID}>
+        <Query query={GET_CURRENT_USER_QUERY}>
           {({ loading, error, data }) => {
             return (
               <Query query={CAL_QUERY}>

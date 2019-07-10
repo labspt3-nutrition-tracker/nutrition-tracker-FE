@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import moment from "moment";
-import { GET_CURRENT_USERID } from "../../graphql/queries";
+import { GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormHelperText from "@material-ui/core/FormHelperText";
@@ -49,8 +49,6 @@ const ExerciseActivity = styled.div`
   width: 100%;
   max-width: 200px;
 `;
-
-const ExerciseEntry = styled.div``;
 
 const Form = styled.form`
   display: flex;
@@ -103,7 +101,7 @@ class ExerEntry extends React.Component {
     });
     client
       .query({
-        query: GET_CURRENT_USERID
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
         this.setState({ currentUser: response.data.getCurrentUser.id });

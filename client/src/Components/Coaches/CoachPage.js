@@ -22,6 +22,7 @@ const TraineeBasic = styled.div`
   width: 50%;
   height: 90vh;
 `;
+
 const TraineeDetailed = styled.div`
   width: 50%;
   height: 90vh;
