@@ -362,6 +362,47 @@ class JournalEntry extends React.Component {
                 }
               }}
             />
+
+            {this.state.mealEntry && this.state.edamamExist && (
+              <>
+                <TextField
+                  disabled
+                  id="standard-disabled"
+                  label="Calories Per Serving"
+                  defaultValue={`${
+                    this.state.mealEntry.food_id.caloriesPerServ
+                  }`}
+                  margin="dense"
+                />
+                <TextField
+                  disabled
+                  id="standard-disabled"
+                  label="Proteins"
+                  defaultValue={`${
+                    this.state.mealEntry.food_id.proteins
+                  }`}
+                  margin="dense"
+                />
+                <TextField
+                  disabled
+                  id="standard-disabled"
+                  label="Carbs"
+                  defaultValue={`${
+                    this.state.mealEntry.food_id.carbs
+                  }`}
+                  margin="dense"
+                />
+                <TextField
+                  disabled
+                  id="standard-disabled"
+                  label="Fats"
+                  defaultValue={`${
+                    this.state.mealEntry.food_id.fats
+                  }`}
+                  margin="dense"
+                />
+              </>
+            )}
             {this.state.mealEntry && !this.state.edamamExist && (
               <>
                 <TextField

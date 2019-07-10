@@ -46,6 +46,10 @@ const styles = theme => ({
     fontSize: 16,
     width: '100%',
     minWidth: '100%'
+  },
+  formButton: {
+    fontSize: 16,
+    width: '100%'
   }
 });
 
@@ -580,13 +584,13 @@ class EntryForm extends Component {
           {this.state.errorMsg.errorDate}
         </FormHelperText>
         <Button
-          className="form-field"
+          className={classes.formButton}
           type="submit"
           onClick={this.onEntrySubmit}
         >
           Add Entry
         </Button>
-        {this.props.searchedFood && <Button onClick={this.props.closeFoodForm}> Add searched Item</Button>}
+        {this.props.searchedFood && <Button className={classes.formButton} onClick={this.props.closeFoodForm}> Add searched Item</Button>}
       </Container>
     );
   }
