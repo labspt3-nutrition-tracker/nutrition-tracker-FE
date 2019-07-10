@@ -480,7 +480,6 @@ class ModifiedEntryForm extends Component {
         <h3>
           {this.state.newAddFood.fats
             ? this.state.newAddFood.fats.toFixed(2)
-<<<<<<< HEAD
             : ""}
         </h3> */}
         <Typography className={classes.foodTitle}>
@@ -489,10 +488,6 @@ class ModifiedEntryForm extends Component {
             ? this.state.newAddFood.fats.toFixed(2)
             : ""}
         </Typography>
-=======
-            : 0}
-        </h3>
->>>>>>> development
 
         <TextField
           label="Date"
