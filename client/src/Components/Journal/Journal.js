@@ -9,7 +9,7 @@ import Calendar from "./Calendar";
 import JournalEntry from "./JournalEntry";
 import { getCurrentUser } from "../../util/getCurrentUser";
 import {FOOD_ENTRY_QUERY} from "../../graphql/queries";
-import {DELETE_FOOD_ENTRY, EDIT_FOOD_ENTRY, EDIT_FOOD} from "../../graphql/queries";
+import {DELETE_FOOD_ENTRY, EDIT_FOOD_ENTRY, EDIT_FOOD} from "../../graphql/mutations";
 
 class Journal extends React.Component {
   constructor(props) {
