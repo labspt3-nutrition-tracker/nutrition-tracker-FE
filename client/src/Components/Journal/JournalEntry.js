@@ -410,15 +410,6 @@ class JournalEntry extends React.Component {
                   }`}
                   margin="dense"
                 />
-                <TextField
-                  disabled
-                  id="standard-disabled"
-                  label="Meal Category"
-                  defaultValue={`${
-                    this.state.mealEntry.meal_category_id.name
-                  }`}
-                  margin="dense"
-                />
               </>
             )}
             {this.state.mealEntry && !this.state.edamamExist && (
