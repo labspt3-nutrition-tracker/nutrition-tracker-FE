@@ -10,15 +10,7 @@ import AccountNav from '../AccountNav';
 import { makeStyles } from '@material-ui/core/styles';
 import { wrap } from "module";
 import {GET_CURRENT_USER_QUERY, GET_RECENT_BILLING} from "../../graphql/queries";
-
-const createSubscriptionMutation = gql`
-  mutation createSubscription($source: String!, $email: String!, $amount: Int!){
-    createSubscription(source: $source, email: $email, amount: $amount){
-      id
-    }
-  }
-`;
-
+import {CREATE_SUBSCRIPTION} from "../../graphql/mutations";
 
 const BillingContainer = styled.div`
   padding-top:50px;
@@ -130,7 +122,7 @@ let divStyle = {
               <p>Current Until: {this.state.subscriptionLapse}</p>
             ) : (null)
           }
-          <Mutation mutation={createSubscriptionMutation} onError={err => {console.log(err)}}>
+          <Mutation mutation={CREATE_SUBSCRIPTION} onError={err => {console.log(err)}}>
             {mutation => (
               <div>
                 <StripeCheckout

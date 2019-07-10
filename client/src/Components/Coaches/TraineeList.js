@@ -24,7 +24,7 @@ class TraineeList extends React.Component{
           return <Trainee key={data.id} deleteTrainee={this.props.deleteTrainee} handleChooseUser={this.props.handleChooseUser} data={data}/>
         })}
       </TraineeListDiv>
-  )
+    ) 
   }
 };
 

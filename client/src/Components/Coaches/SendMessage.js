@@ -27,8 +27,6 @@ class SendMessageFromCoach extends React.Component{
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-    console.log('message changing',
-    this.state.message)
   };
 
   handleSubmit(){
@@ -62,7 +60,6 @@ class SendMessageFromCoach extends React.Component{
         }
       })
       .then(response => {
-        console.log(response)
         this.setState({
           error: "",
           errorText: "",

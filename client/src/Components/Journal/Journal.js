@@ -9,33 +9,7 @@ import Calendar from "./Calendar";
 import JournalEntry from "./JournalEntry";
 import { getCurrentUser } from "../../util/getCurrentUser";
 import {FOOD_ENTRY_QUERY} from "../../graphql/queries";
-const DELETE_MEAL = gql`
-  mutation deleteFoodEntry($id: ID!) {
-    deleteFoodEntry(id: $id)
-  }
-`;
-
-const UPDATE_FOOD_ENTRY = gql`
-  mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
-    updateFoodEntry(id: $id, input: $input) {
-      id
-    }
-  }
-`;
-
-const UPDATE_FOOD = gql`
-  mutation updateFood($id: ID!, $input: FoodInput!) {
-    updateFood(id: $id, input: $input) {
-      id
-      foodName
-      caloriesPerServ
-      fats
-      carbs
-      proteins
-      edamam_id
-    }
-  }
-`;
+import {DELETE_FOOD_ENTRY, EDIT_FOOD_ENTRY, EDIT_FOOD} from "../../graphql/queries";
 
 class Journal extends React.Component {
   constructor(props) {
@@ -95,7 +69,7 @@ class Journal extends React.Component {
 
     try {
       await client.mutate({
-        mutation: DELETE_MEAL,
+        mutation: DELETE_FOOD_ENTRY,
         variables: { id }
       });
 
@@ -136,7 +110,7 @@ class Journal extends React.Component {
 
     try {
       await client.mutate({
-        mutation: UPDATE_FOOD,
+        mutation: EDIT_FOOD,
         variables: {
           id: food_id,
           input: foodInput
@@ -144,7 +118,7 @@ class Journal extends React.Component {
       });
 
       await client.mutate({
-        mutation: UPDATE_FOOD_ENTRY,
+        mutation: EDIT_FOOD_ENTRY,
         variables: {
           id: entry_id,
           input: foodEntryInput

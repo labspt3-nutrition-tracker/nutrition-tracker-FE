@@ -54,7 +54,6 @@ class CoachPage extends React.Component {
     await this.setState({
       selectedTrainee: user
     });
-    console.log(this.state.selectedTrainee);
   };
 
   componentDidMount(){
@@ -132,27 +131,25 @@ class CoachPage extends React.Component {
     });
 
     try {
-      await client.mutate({ mutation: DELETE_TRAINEE,         variables: {coach_id: userId, trainee_id: traineeId} });
+      await client.mutate({ mutation: DELETE_TRAINEE, variables: {coach_id: userId, trainee_id: traineeId} });
       const trainees = await client.query({
         query: GET_TRAINEES,
         variables: {
           coach_id: userId
         }
       });
-      this.setState({ trainees: trainees.data.getTrainees }); //reset after sending request
+      this.setState({ trainees: trainees.data.getTrainees });
     } catch (err) {
       console.log(err);
     }
   }
 
   handleRequest = async () => {
-    //send request message to traineeSearchResults.id
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
-    //   const user = await client.query({ query: GET_CURRENT_USER_QUERY });
     const userId = this.state.currentUser.id;
     const name = `${this.state.currentUser.firstName} ${this.state.currentUser.lastName}`;
     const variables = {
@@ -166,7 +163,7 @@ class CoachPage extends React.Component {
     };
     try {
       await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
-      this.setState({ traineeSearchResults: [] }); //reset after sending request
+      this.setState({ traineeSearchResults: [] }); 
     } catch (err) {
       console.log(err);
     }

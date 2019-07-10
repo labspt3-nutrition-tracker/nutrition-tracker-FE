@@ -148,8 +148,6 @@ class TraineeInfo extends React.Component{
             )}
           </ViewData>
       }
-
-
       </TraineeInfoContainer>
     )
   }
