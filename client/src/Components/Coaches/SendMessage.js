@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 import ApolloClient from "apollo-boost";
@@ -13,9 +12,6 @@ const styles = theme => ({
   }
 })
 
-const messageContainer = styled.div`
-  background: #40A798;
-`;
 
 class SendMessageFromCoach extends React.Component{
   constructor(props){
@@ -31,8 +27,6 @@ class SendMessageFromCoach extends React.Component{
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-    console.log('message changing',
-    this.state.message)
   };
 
   handleSubmit(){
@@ -58,7 +52,6 @@ class SendMessageFromCoach extends React.Component{
       recipient: parseInt(this.props.traineeID),
     };
 
-    console.log('new Message', NewMessage)
     client
       .mutate({
         mutation: ADD_MESSAGE_MUTATION,
@@ -67,7 +60,6 @@ class SendMessageFromCoach extends React.Component{
         }
       })
       .then(response => {
-        console.log(response)
         this.setState({
           error: "",
           errorText: "",
@@ -84,11 +76,8 @@ class SendMessageFromCoach extends React.Component{
       })
   }
 
-
-
   render(){
     const { traineeID, firstName, lastName } = this.props
-    console.log('message props',this.props)
     return(
       <div style={{width:"80%", marginLeft:"10%", borderRadius:"10px", boxShadow: "6px 6px 15px -5px rgba(0,0,0,0.75)"}}>
         {traineeID &&

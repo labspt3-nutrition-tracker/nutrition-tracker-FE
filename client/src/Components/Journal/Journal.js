@@ -5,62 +5,11 @@ import ApolloClient from "apollo-boost";
 import "@fullcalendar/core/main.css";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
-
 import Calendar from "./Calendar";
 import JournalEntry from "./JournalEntry";
-
 import { getCurrentUser } from "../../util/getCurrentUser";
-
-const DELETE_MEAL = gql`
-  mutation deleteFoodEntry($id: ID!) {
-    deleteFoodEntry(id: $id)
-  }
-`;
-
-const UPDATE_FOOD_ENTRY = gql`
-  mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
-    updateFoodEntry(id: $id, input: $input) {
-      id
-    }
-  }
-`;
-
-const UPDATE_FOOD = gql`
-  mutation updateFood($id: ID!, $input: FoodInput!) {
-    updateFood(id: $id, input: $input) {
-      id
-      foodName
-      caloriesPerServ
-      fats
-      carbs
-      proteins
-      edamam_id
-    }
-  }
-`;
-
-const FOODENTRYQUERY = gql`
-  query getFoodEntry($userId: ID!) {
-    getFoodEntriesByUserId(userId: $userId) {
-      id
-      date
-      servingQty
-      food_id {
-        id
-        foodName
-        caloriesPerServ
-        fats
-        proteins
-        carbs
-        edamam_id
-      }
-      meal_category_id {
-        id
-        mealCategoryName
-      }
-    }
-  }
-`;
+import {FOOD_ENTRY_QUERY} from "../../graphql/queries";
+import {DELETE_FOOD_ENTRY, EDIT_FOOD_ENTRY, EDIT_FOOD} from "../../graphql/mutations";
 
 class Journal extends React.Component {
   constructor(props) {
@@ -99,7 +48,7 @@ class Journal extends React.Component {
 
     await client
       .query({
-        query: FOODENTRYQUERY,
+        query: FOOD_ENTRY_QUERY,
         variables: {
           userId: this.state.currentUser
         }
@@ -120,12 +69,12 @@ class Journal extends React.Component {
 
     try {
       await client.mutate({
-        mutation: DELETE_MEAL,
+        mutation: DELETE_FOOD_ENTRY,
         variables: { id }
       });
 
       const response = await client.query({
-        query: FOODENTRYQUERY,
+        query: FOOD_ENTRY_QUERY,
         variables: {
           userId: this.state.currentUser
         }
@@ -161,7 +110,7 @@ class Journal extends React.Component {
 
     try {
       await client.mutate({
-        mutation: UPDATE_FOOD,
+        mutation: EDIT_FOOD,
         variables: {
           id: food_id,
           input: foodInput
@@ -169,7 +118,7 @@ class Journal extends React.Component {
       });
 
       await client.mutate({
-        mutation: UPDATE_FOOD_ENTRY,
+        mutation: EDIT_FOOD_ENTRY,
         variables: {
           id: entry_id,
           input: foodEntryInput
@@ -177,7 +126,7 @@ class Journal extends React.Component {
       });
 
       const response = await client.query({
-        query: FOODENTRYQUERY,
+        query: FOOD_ENTRY_QUERY,
         variables: {
           userId: this.state.currentUser
         }

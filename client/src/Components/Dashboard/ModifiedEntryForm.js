@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-// import { Query } from "react-apollo";
 import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
-import { GET_ALL_FOOD } from "../../graphql/queries";
-import gql from "graphql-tag";
+import { GET_ALL_FOOD, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -45,15 +43,6 @@ const Error = styled.div`
   font-size: 2rem;
 `;
 
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-    }
-  }
-`;
-
 class ModifiedEntryForm extends Component {
   constructor(props) {
     super(props);
@@ -92,7 +81,7 @@ class ModifiedEntryForm extends Component {
 
     client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response =>
         this.setState({
