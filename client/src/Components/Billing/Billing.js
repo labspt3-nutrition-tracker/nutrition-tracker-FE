@@ -31,6 +31,7 @@ const GET_CURRENT = gql`
     getCurrentUser {
       id
       email
+      firstName
       userType
     }
   }
@@ -81,7 +82,9 @@ let divStyle = {
     this.state = {
       subscriptionLapse: "",
       premiumCurrent: false,
-      userType: ""
+      userType: "",
+      name: "",
+      email: ""
     }
   }
 
@@ -101,7 +104,9 @@ let divStyle = {
       .then(response => {
         this.getRecentBilling(response.data.getCurrentUser.id)
         this.setState({
-          userType: response.data.getCurrentUser.userType
+          userType: response.data.getCurrentUser.userType,
+          name: response.data.getCurrentUser.firstName,
+          email: response.data.getCurrentUser.email
         })
       })
       .catch(err => console.log(err));
@@ -165,11 +170,11 @@ let divStyle = {
                 <div>
                   <StripeCheckout
                     amount={premium}
-                    billingAddress
                     label="Become a Premium User"
                     description="Become a Premium User!"
                     locale="auto"
                     name="NutritionTrkr"
+                    email={this.state.email}
                     stripeKey={process.env.REACT_APP_STRIPE_KEY}
                     token={async token => {
                       console.log(token.id,token.email, premium)
@@ -186,11 +191,11 @@ let divStyle = {
                   />
                   <StripeCheckout
                     amount={coach}
-                    billingAddress
                     label="Become a Coach"
                     description="Become a Coach!"
                     locale="auto"
                     name="NutritionTrkr"
+                    email={this.state.email}
                     stripeKey={process.env.REACT_APP_STRIPE_KEY}
                     token={async token => {
                       console.log(token)
