@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import logo from "../../Assets/logo-white.png";
-// import { Link } from 'react-router-dom';
+ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import ApolloClient from "apollo-boost";
@@ -179,7 +179,10 @@ React.useEffect(() => {
           ) : (
             <BottomNavigation  className={classes.root}>                                                                                                                                                                     >
               <div className={classes.heading2}>What are you waiting for? Let's get started.</div>
-                  <button className={classes.button}><a className={classes.href} href="https://nutrition-tracker-lambda.netlify.com/login">Sign Up</a></button>
+                 <button className={classes.button}> <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to={{ pathname: "/login" }}
+              >Sign Up</Link></button>
               <div className={classes.lowerDiv}>
                 <div className={classes.contactDiv}>
                   <div className={classes.lDiv}>About Us</div>

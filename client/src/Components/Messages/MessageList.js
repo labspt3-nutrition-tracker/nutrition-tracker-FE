@@ -55,6 +55,7 @@ class MessageList extends Component {
   render() {
     const { option } = this.state;
     const {
+      type,
       messages,
       coaches,
       trainees,
@@ -94,6 +95,7 @@ class MessageList extends Component {
           <Grid item xs={12}>
             {messages.length > 0 ? (
               <MessageInfo
+                type={type}
                 messages={messages}
                 option={option}
                 coaches={coaches}

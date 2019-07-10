@@ -79,6 +79,7 @@ class MessagePage extends React.Component {
     this.state = {
       currentUser: null,
       messages: [],
+      sentMessages: [],
       coaches: [],
       trainees: [],
       option: 0,
@@ -111,9 +112,14 @@ class MessagePage extends React.Component {
       const user = await client.query({ query: GET_CURRENT_USER_QUERY });
       const userId = user.data.getCurrentUser.id;
       const variables = { param: "recipient", value: userId };
+      const sentVariables = { param: "sender", value: userId };
       const messages = await client.query({
         query: GET_MESSAGES_QUERY,
         variables: variables
+      });
+      const sentMessages = await client.query({
+        query: GET_MESSAGES_QUERY,
+        variables: sentVariables
       });
       const coaches = await client.query({
         query: GET_COACHES,
@@ -125,6 +131,7 @@ class MessagePage extends React.Component {
       });
       this.setState({
         messages: messages.data.getMessagesBy,
+        sentMessages: sentMessages.data.getMessagesBy,
         coaches: coaches.data.getCoaches,
         trainees: trainees.data.getTrainees,
         currentUser: user.data.getCurrentUser
@@ -246,6 +253,7 @@ class MessagePage extends React.Component {
   render() {
     const {
       messages,
+      sentMessages,
       coaches,
       trainees,
       currentMessage,
@@ -255,7 +263,7 @@ class MessagePage extends React.Component {
     const { classes } = this.props;
 
     const alerts = messages.filter(message => message.type === "alert");
-    if (option === 2 && alerts.length === 0) option = 0;
+    if (option === 3 && alerts.length === 0) option = 0;
     return (
       <div>
         <Tabs
@@ -268,11 +276,13 @@ class MessagePage extends React.Component {
           }}
         >
           <Tab label="Inbox" className={classes.tab} />
+          <Tab label="Sent" className={classes.tab} />
           <Tab label="New Message" className={classes.tab} />
           {alerts.length > 0 && <Tab label="Alerts" className={classes.tab} />}
         </Tabs>
         {option === 0 ? (
           <MessageList
+            type="inbox"
             messages={messages}
             coaches={coaches}
             trainees={trainees}
@@ -280,6 +290,15 @@ class MessagePage extends React.Component {
             deleteMessage={this.deleteMessageHandler}
           />
         ) : option === 1 ? (
+          <MessageList
+            type="sent"
+            messages={sentMessages}
+            coaches={coaches}
+            trainees={trainees}
+            showMessage={this.showMessage}
+            deleteMessage={this.deleteMessageHandler}
+          />
+        ) : option === 2 ? (
           <NewMessage
             coaches={coaches}
             trainees={trainees}

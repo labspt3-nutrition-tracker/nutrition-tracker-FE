@@ -6,7 +6,6 @@ import Grid from "@material-ui/core/Grid";
 import { defaults } from "react-chartjs-2";
 
 import { getTotalData } from "../../util/getTotalData";
-import { makeRandomColor } from "../../util/makeRandomColor";
 
 class ManyDaysStats extends Component {
   state = {
