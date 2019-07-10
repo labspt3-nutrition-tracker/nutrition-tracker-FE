@@ -403,6 +403,30 @@ class JournalEntry extends React.Component {
                           onChange={this.handleChange}
                         />
 
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Proteins"
+                          defaultValue={this.state.mealEntry.food_id.proteins}
+                          margin="dense"
+                        />
+
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Disabled"
+                          defaultValue={this.state.mealEntry.food_id.carbs}
+                          margin="dense"
+                        />
+
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Disabled"
+                          defaultValue={this.state.mealEntry.food_id.fats}
+                          margin="dense"
+                        />
+
                         <InputLabel htmlFor="meal-simple">
                           MealCategory
                         </InputLabel>
@@ -448,6 +472,7 @@ class JournalEntry extends React.Component {
             <EntryItems>No Breakfast entries have been added</EntryItems>
           )}
         </div>
+
         <CategoryTitle> Lunch</CategoryTitle>
         <div>
           {Lunch.length > 0 ? (
@@ -581,12 +606,34 @@ class JournalEntry extends React.Component {
                           id="Serving Quantity"
                           name="servingQty"
                           label="Serving Quantity"
-                          placeholder={`${
-                            this.state.mealEntry.food_id.servingQty
-                          }`}
+                          placeholder={`${this.state.mealEntry.servingQty}`}
                           value={this.state.servingQty}
                           margin="dense"
                           onChange={this.handleChange}
+                        />
+
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Proteins"
+                          defaultValue={this.state.mealEntry.food_id.proteins}
+                          margin="dense"
+                        />
+
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Disabled"
+                          defaultValue={this.state.mealEntry.food_id.carbs}
+                          margin="dense"
+                        />
+
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Disabled"
+                          defaultValue={this.state.mealEntry.food_id.fats}
+                          margin="dense"
                         />
 
                         <InputLabel htmlFor="meal-simple">
@@ -772,6 +819,30 @@ class JournalEntry extends React.Component {
                           onChange={this.handleChange}
                         />
 
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Proteins"
+                          defaultValue={this.state.mealEntry.food_id.proteins}
+                          margin="dense"
+                        />
+
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Disabled"
+                          defaultValue={this.state.mealEntry.food_id.carbs}
+                          margin="dense"
+                        />
+
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Disabled"
+                          defaultValue={this.state.mealEntry.food_id.fats}
+                          margin="dense"
+                        />
+
                         <InputLabel htmlFor="meal-simple">
                           MealCategory
                         </InputLabel>
@@ -955,10 +1026,34 @@ class JournalEntry extends React.Component {
                           id="Serving Quantity"
                           name="servingQty"
                           label="Serving Quantity"
-                          placeholder={`${this.state.mealEntry}`}
+                          placeholder={`${this.state.mealEntry.servingQty}`}
                           value={this.state.servingQty}
                           margin="dense"
                           onChange={this.handleChange}
+                        />
+
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Proteins"
+                          defaultValue={this.state.mealEntry.food_id.proteins}
+                          margin="dense"
+                        />
+
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Disabled"
+                          defaultValue={this.state.mealEntry.food_id.carbs}
+                          margin="dense"
+                        />
+
+                        <TextField
+                          disabled
+                          id="standard-disabled"
+                          label="Disabled"
+                          defaultValue={this.state.mealEntry.food_id.fats}
+                          margin="dense"
                         />
 
                         <InputLabel htmlFor="meal-simple">
