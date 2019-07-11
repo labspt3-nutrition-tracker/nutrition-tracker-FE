@@ -252,10 +252,11 @@ class MessagePage extends React.Component {
       this.handleClose();
       this.getData();
     } catch (err) {
-      console.log(err);
+      const error = err.message.split(":")[1];
+      console.log(error);
       this.setState(prevState => {
         const errors = prevState.errors;
-        errors.push("err");
+        errors.push(error);
         return { errors: errors };
       });
     }
@@ -289,10 +290,11 @@ class MessagePage extends React.Component {
       this.setState({ option: 0, info: "Your message was sent" });
       this.getData();
     } catch (err) {
-      console.log(err);
+      const error = err.message.split(":")[1];
+      console.log(error);
       this.setState(prevState => {
         const errors = prevState.errors;
-        errors.push("err");
+        errors.push(error);
         return { errors: errors };
       });
     }
@@ -311,10 +313,11 @@ class MessagePage extends React.Component {
       this.setState({ info: "Your message was deleted." });
       this.getData();
     } catch (err) {
-      console.log(err);
+      const error = err.message.split(":")[1];
+      console.log(error);
       this.setState(prevState => {
         const errors = prevState.errors;
-        errors.push("err");
+        errors.push(error);
         return { errors: errors };
       });
     }
