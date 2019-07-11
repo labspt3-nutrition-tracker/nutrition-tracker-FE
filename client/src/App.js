@@ -116,6 +116,10 @@ class App extends React.Component {
     this.closeModal();
   };
 
+  resetSelected = () => {
+    this.setState({selectedFood: []})
+  }
+
   resetSearch = () => {
     this.setState({
       searchInput: ""
@@ -164,7 +168,7 @@ class App extends React.Component {
           <PrivateRoute
             path="/dashboard"
             render={props => (
-              <Dashboard {...props} selectedFood={this.state.selectedFood} />
+              <Dashboard {...props} selectedFood={this.state.selectedFood} resetSelected={this.resetSelected}/>
             )}
           />
           <PrivateRoute exact path="/billing" render={() => <Billing />} />
