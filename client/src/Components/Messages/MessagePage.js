@@ -286,7 +286,7 @@ class MessagePage extends React.Component {
     try {
       const variables = { input: NewMessage };
       await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
-      this.setState({ option: 0, info: "" });
+      this.setState({ option: 0, info: "Your message was sent" });
       this.getData();
     } catch (err) {
       console.log(err);
@@ -308,7 +308,7 @@ class MessagePage extends React.Component {
     const variables = { id: messageId };
     try {
       await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
-      this.setState({ info: "" });
+      this.setState({ info: "Your message was deleted." });
       this.getData();
     } catch (err) {
       console.log(err);
