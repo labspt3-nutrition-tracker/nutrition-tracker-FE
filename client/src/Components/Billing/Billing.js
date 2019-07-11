@@ -6,6 +6,11 @@ import ApolloClient from "apollo-boost";
 import moment from 'moment';
 import styled from "styled-components";
 import AccountNav from '../AccountNav';
+import { makeStyles } from '@material-ui/core/styles';
+import { wrap } from "module";
+import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
+
 import {GET_CURRENT_USER_QUERY, GET_RECENT_BILLING} from "../../graphql/queries";
 import {CREATE_SUBSCRIPTION} from "../../graphql/mutations";
 
@@ -35,7 +40,7 @@ const BillingTop = styled.div`
 let divStyle = {
   display: 'flex',
   flexWrap: 'wrap',
-  height: '80vh',
+  // height: '80vh',
   justifyContent: 'flex-start'
   // marginLeft: "25%"
 }
@@ -123,9 +128,23 @@ let divStyle = {
   render(){
     const premium = 700;
     const coach = 1000;
+    const { classes } = this.props;
     return(
+
+      // <div
+      // className={classes.root}
+      // >
+
       <div style={divStyle}>
             <AccountNav />
+    <Grid 
+      item md={8} xs={12}
+      container
+      justify="center"
+      alignItems="center"
+      border="1px solid black"
+      classes={{ root: classes.gridContainer }}
+    >
         <BillingContainer>
           <BillingTop>
           <p style={{fontSize:"2rem"}}>Type:{this.state.userType.toUpperCase()}</p>
@@ -138,6 +157,7 @@ let divStyle = {
             {mutation => (
               <div>
                 <StripeCheckout
+                backgroundColor="#5E366A"
                   amount={premium}
                   label="Become a Premium User"
                   description="Become a Premium User!"
@@ -185,9 +205,22 @@ let divStyle = {
         </BillingTop>
           <BillingHistory/>
         </BillingContainer>
+        </Grid>
       </div>
+   
     )
   }
 }
 
- export default Billing;
+const styles = theme => ({
+  gridContainer: {
+    padding: "3%",
+    margin: "20% 0",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center"
+  }
+});
+
+ export default withStyles(styles)(Billing);
