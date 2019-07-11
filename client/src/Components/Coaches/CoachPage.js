@@ -69,7 +69,8 @@ class CoachPage extends React.Component {
       })
       .then(response => {
         this.setState({
-          currentUser: response.data.getCurrentUser
+          currentUser: response.data.getCurrentUser,
+          errorText: ''
         })
         client
           .query({
@@ -85,7 +86,9 @@ class CoachPage extends React.Component {
           })
       })
       .catch(err => {
-        console.log(err)
+        this.setState({
+          errorText: 'Unable to get data'
+        })
       })
   }
 
@@ -140,7 +143,9 @@ class CoachPage extends React.Component {
       });
       this.setState({ trainees: trainees.data.getTrainees });
     } catch (err) {
-      console.log(err);
+      this.setState({
+        errorText: 'Unable to delete your trainee'
+      })
     }
   }
 
@@ -163,9 +168,11 @@ class CoachPage extends React.Component {
     };
     try {
       await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
-      this.setState({ traineeSearchResults: [] }); 
+      this.setState({ traineeSearchResults: [] });
     } catch (err) {
-      console.log(err);
+      this.setState({
+        errorText: 'Unable to send SendMessage'
+      })
     }
   };
 
