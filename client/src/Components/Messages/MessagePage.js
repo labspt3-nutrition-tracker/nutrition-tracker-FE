@@ -33,6 +33,15 @@ const LoadingDiv = styled.div`
   min-height: 500px;
 `;
 
+const Errors = styled.ul`
+  text-align: center;
+  li {
+    margin: 15px 0;
+    color: #40a798;
+    font-family: Oswald;
+  }
+`;
+
 const styles = theme => ({
   root: {
     display: "flex",
@@ -86,6 +95,13 @@ const styles = theme => ({
     fontSize: "1.6rem",
     wordWrap: "break-word",
     margin: 10
+  },
+  message: {
+    fontSize: "2rem",
+    textAlign: "center",
+    margin: 10,
+    color: "#40a798",
+    fontFamily: "Oswald"
   }
 });
 
@@ -101,7 +117,9 @@ class MessagePage extends React.Component {
       option: 0,
       currentMessage: null,
       modalOpen: false,
-      loading: false
+      loading: false,
+      errors: [],
+      info: ""
     };
   }
 
@@ -153,15 +171,22 @@ class MessagePage extends React.Component {
         coaches: coaches.data.getCoaches,
         trainees: trainees.data.getTrainees,
         currentUser: user.data.getCurrentUser,
-        loading: false
+        loading: false,
+        errors: []
       });
     } catch (err) {
-      console.log(err);
+      const error = err.message.split(":")[1];
+      console.log(error);
+      this.setState(prevState => {
+        const errors = prevState.errors;
+        errors.push(error);
+        return { errors: errors };
+      });
     }
   };
 
   handleChange = (event, newOption) => {
-    this.setState({ option: newOption });
+    this.setState({ option: newOption, info: "" });
   };
 
   showMessage = async message => {
@@ -187,11 +212,17 @@ class MessagePage extends React.Component {
         mutation: UPDATE_MESSAGE_MUTATION,
         variables: variables
       });
+      //Show full message in a modal
+      this.setState({ currentMessage: message, modalOpen: true, info: "" });
     } catch (err) {
-      console.log(err);
+      const error = err.message.split(":")[1];
+      console.log(error);
+      this.setState(prevState => {
+        const errors = prevState.errors;
+        errors.push(error);
+        return { errors: errors };
+      });
     }
-    //Show full message in a modal
-    this.setState({ currentMessage: message, modalOpen: true });
   };
 
   handleClose = () => {
@@ -214,20 +245,29 @@ class MessagePage extends React.Component {
       //delete the alert message
       const variables = { id: this.state.currentMessage.id };
       await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
+      const coach = `${this.state.currentMessage.sender.firstName} ${
+        this.state.currentMessage.sender.lastName
+      }`;
+      this.setState({ info: `You are now connected with ${coach}` });
       this.handleClose();
       this.getData();
     } catch (err) {
       console.log(err);
+      this.setState(prevState => {
+        const errors = prevState.errors;
+        errors.push("err");
+        return { errors: errors };
+      });
     }
   };
 
   handleReply = () => {
-    this.setState({ option: 2 });
+    this.setState({ option: 2, info: "" });
     this.handleClose();
   };
 
   handleCancel = () => {
-    this.setState({ option: 0 });
+    this.setState({ option: 0, info: "" });
   };
 
   sendMessage = async ({ recipient, message }) => {
@@ -246,10 +286,15 @@ class MessagePage extends React.Component {
     try {
       const variables = { input: NewMessage };
       await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
-      this.setState({ option: 0 });
+      this.setState({ option: 0, info: "" });
       this.getData();
     } catch (err) {
       console.log(err);
+      this.setState(prevState => {
+        const errors = prevState.errors;
+        errors.push("err");
+        return { errors: errors };
+      });
     }
   };
 
@@ -263,9 +308,15 @@ class MessagePage extends React.Component {
     const variables = { id: messageId };
     try {
       await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
+      this.setState({ info: "" });
       this.getData();
     } catch (err) {
       console.log(err);
+      this.setState(prevState => {
+        const errors = prevState.errors;
+        errors.push("err");
+        return { errors: errors };
+      });
     }
   };
 
@@ -277,7 +328,9 @@ class MessagePage extends React.Component {
       trainees,
       currentMessage,
       currentUser,
-      modalOpen
+      modalOpen,
+      errors,
+      info
     } = this.state;
     let { option } = this.state;
     const { classes } = this.props;
@@ -285,103 +338,118 @@ class MessagePage extends React.Component {
     const alerts = messages.filter(message => message.type === "alert");
     if (option === 3 && alerts.length === 0) option = 0;
     return (
-      <div>
-        <Tabs
-          value={option}
-          onChange={this.handleChange}
-          className={classes.tabs}
-          classes={{
-            indicator: classes.indicator,
-            flexContainer: classes.flex
-          }}
-        >
-          <Tab label="Inbox" className={classes.tab} />
-          <Tab label="Sent" className={classes.tab} />
-          <Tab label="New Message" className={classes.tab} />
-          {alerts.length > 0 && <Tab label="Alerts" className={classes.tab} />}
-        </Tabs>
-        {this.state.loading && (
-          <LoadingDiv>
-            <CircularProgress />
-          </LoadingDiv>
-        )}
-        {option === 0 ? (
-          <MessageList
-            type="inbox"
-            messages={messages}
-            coaches={coaches}
-            trainees={trainees}
-            showMessage={this.showMessage}
-            deleteMessage={this.deleteMessageHandler}
-          />
-        ) : option === 1 ? (
-          <MessageList
-            type="sent"
-            messages={sentMessages}
-            coaches={coaches}
-            trainees={trainees}
-            showMessage={this.showMessage}
-            deleteMessage={this.deleteMessageHandler}
-          />
-        ) : option === 2 ? (
-          <NewMessage
-            coaches={coaches}
-            trainees={trainees}
-            recipient={
-              currentMessage &&
-              (currentUser.id !== currentMessage.sender.id
-                ? currentMessage.sender.id
-                : currentMessage.recipient.id)
-            }
-            handleCancel={this.handleCancel}
-            sendMessage={this.sendMessage}
-          />
+      <>
+        {errors.length > 0 ? (
+          <Errors>
+            {errors.map((error, i) => (
+              <li key={i}>{error}</li>
+            ))}
+          </Errors>
         ) : (
-          <AlertsList alerts={alerts} showMessage={this.showMessage} />
-        )}
-        {currentMessage && (
-          <Modal
-            aria-labelledby="display message"
-            aria-describedby="display message"
-            open={modalOpen}
-            onClose={this.handleClose}
-          >
-            <div className={classes.modal}>
-              <Typography variant="h4" id="modal-title">
-                {option === 0
-                  ? `${currentMessage.sender.firstName} ${
-                      currentMessage.sender.lastName
-                    }`
-                  : `${currentMessage.recipient.firstName} ${
-                      currentMessage.recipient.lastName
-                    }`}
-              </Typography>
-              <Typography
-                variant="h4"
-                id="simple-modal-description"
-                className={classes.text}
-              >
-                {currentMessage.text}
-              </Typography>
-              <Button onClick={this.handleClose} className={classes.btn}>
-                Close
-              </Button>
-              {currentMessage.type === "alert" ? (
-                <Button
-                  onClick={() => this.handleAccept(currentMessage.sender.id)}
-                  className={classes.btn}
-                >
-                  Accept
-                </Button>
-              ) : (
-                <Button onClick={this.handleReply} className={classes.btn}>
-                  {option === 0 ? "Reply" : "New Message"}
-                </Button>
+          <div>
+            {info && <h2 className={classes.message}>{info}</h2>}
+            <Tabs
+              value={option}
+              onChange={this.handleChange}
+              className={classes.tabs}
+              classes={{
+                indicator: classes.indicator,
+                flexContainer: classes.flex
+              }}
+            >
+              <Tab label="Inbox" className={classes.tab} />
+              <Tab label="Sent" className={classes.tab} />
+              <Tab label="New Message" className={classes.tab} />
+              {alerts.length > 0 && (
+                <Tab label="Alerts" className={classes.tab} />
               )}
-            </div>
-          </Modal>
+            </Tabs>
+            {this.state.loading && (
+              <LoadingDiv>
+                <CircularProgress />
+              </LoadingDiv>
+            )}
+            {option === 0 ? (
+              <MessageList
+                type="inbox"
+                messages={messages}
+                coaches={coaches}
+                trainees={trainees}
+                showMessage={this.showMessage}
+                deleteMessage={this.deleteMessageHandler}
+              />
+            ) : option === 1 ? (
+              <MessageList
+                type="sent"
+                messages={sentMessages}
+                coaches={coaches}
+                trainees={trainees}
+                showMessage={this.showMessage}
+                deleteMessage={this.deleteMessageHandler}
+              />
+            ) : option === 2 ? (
+              <NewMessage
+                coaches={coaches}
+                trainees={trainees}
+                recipient={
+                  currentMessage &&
+                  (currentUser.id !== currentMessage.sender.id
+                    ? currentMessage.sender.id
+                    : currentMessage.recipient.id)
+                }
+                handleCancel={this.handleCancel}
+                sendMessage={this.sendMessage}
+              />
+            ) : (
+              <AlertsList alerts={alerts} showMessage={this.showMessage} />
+            )}
+            {currentMessage && (
+              <Modal
+                aria-labelledby="display message"
+                aria-describedby="display message"
+                open={modalOpen}
+                onClose={this.handleClose}
+              >
+                <div className={classes.modal}>
+                  <Typography variant="h4" id="modal-title">
+                    {option === 0
+                      ? `${currentMessage.sender.firstName} ${
+                          currentMessage.sender.lastName
+                        }`
+                      : `${currentMessage.recipient.firstName} ${
+                          currentMessage.recipient.lastName
+                        }`}
+                  </Typography>
+                  <Typography
+                    variant="h4"
+                    id="simple-modal-description"
+                    className={classes.text}
+                  >
+                    {currentMessage.text}
+                  </Typography>
+                  <Button onClick={this.handleClose} className={classes.btn}>
+                    Close
+                  </Button>
+                  {currentMessage.type === "alert" ? (
+                    <Button
+                      onClick={() =>
+                        this.handleAccept(currentMessage.sender.id)
+                      }
+                      className={classes.btn}
+                    >
+                      Accept
+                    </Button>
+                  ) : (
+                    <Button onClick={this.handleReply} className={classes.btn}>
+                      {option === 0 ? "Reply" : "New Message"}
+                    </Button>
+                  )}
+                </div>
+              </Modal>
+            )}
+          </div>
         )}
-      </div>
+      </>
     );
   }
 }
