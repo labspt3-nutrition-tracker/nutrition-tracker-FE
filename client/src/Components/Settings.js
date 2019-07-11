@@ -9,6 +9,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import FolderIcon from "@material-ui/icons/Folder";
 import EditIcon from "@material-ui/icons/Edit";
+import Grid from "@material-ui/core/Grid";
 
 import { getCurrentUser } from "../util/getCurrentUser";
 import { getCurrentWeight } from "../util/getCurrentweight";
@@ -19,18 +20,29 @@ import { wrap } from "module";
 const styles = theme => ({
   root: {
     display: 'flex',
-    flexWrap: 'wrap',
+    // flexWrap: 'wrap',
+    justifyContent: "center",
     flexDirection: "row",
     flexGrow: 1,
     margin: "0",
     position: "relative"
   },
   card: {
-    width: "50%",
+    width: "100%",
     maxWidth: 500,
-    height: "500px",
-    margin: "30px 200px",
-    padding: 10
+    height: "400px",
+    marginLeft: "7%",
+    // margin: "30px 150px",
+    padding: 10,
+    flexWrap: 'nowrap',
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+      maxWidth: 1000,
+      margin: "inherit",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }
   },
   media: {
     padding: 20
@@ -100,8 +112,15 @@ class Settings extends React.Component {
   render() {
     const { classes } = this.props;
     const { currentUser, editType } = this.state;
+       //  {/* <div className={classes.root}> */}
     return (
-      <div className={classes.root}>
+      <Grid
+        container
+        justify="space-between"
+        alignItems="center"
+        flexWrap="nowrap"
+        classes={{ root: classes.gridContainer }}
+      >
         <AccountNav />
         <UserEditModal
           open={this.state.modalOpen}
@@ -110,6 +129,8 @@ class Settings extends React.Component {
           editType={editType}
           currentWeight={this.state.currentWeight}
         />
+        <Grid item md={8} s={10} xs={12}
+        >
         <Card className={classes.card}>
           <CardContent>
             <Typography
@@ -188,10 +209,18 @@ class Settings extends React.Component {
               </ListItem>
             </List>
           </CardContent>
-        </Card>
-      </div>
+         
+          </Card>
+          </Grid>
+        </Grid>
     );
   }
 }
+
+// const styles = theme => ({
+//   gridContainer: {
+//     flexWrap="nowrap"
+//   }
+// });
 
 export default withStyles(styles)(Settings);

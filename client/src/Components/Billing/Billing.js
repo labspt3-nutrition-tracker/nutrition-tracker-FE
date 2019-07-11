@@ -9,6 +9,9 @@ import styled from "styled-components";
 import AccountNav from '../AccountNav';
 import { makeStyles } from '@material-ui/core/styles';
 import { wrap } from "module";
+import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
+
 
 const createSubscriptionMutation = gql`
   mutation createSubscription($source: String!, $email: String!, $amount: Int!){
@@ -47,7 +50,7 @@ const BillingContainer = styled.div`
 let divStyle = {
   display: 'flex',
   flexWrap: 'wrap',
-  height: '80vh',
+  // height: '80vh',
   justifyContent: 'flex-start'
   // marginLeft: "25%"
 }
@@ -131,14 +134,24 @@ let divStyle = {
   render(){
     const premium = 700;
     const coach = 1000;
+    const { classes } = this.props;
     return(
 
       // <div
       // className={classes.root}
       // >
+
       <div style={divStyle}>
             <AccountNav />
-        <BillingContainer>
+    <Grid 
+      item md={8} xs={12}
+      container
+      justify="center"
+      alignItems="center"
+      border="1px solid black"
+      classes={{ root: classes.gridContainer }}
+    >
+        {/* <BillingContainer> */}
           <p>Type: {this.state.userType.toUpperCase()}</p>
           {
             this.state.subscriptionLapse.length > 1 ? (
@@ -149,6 +162,7 @@ let divStyle = {
             {mutation => (
               <div>
                 <StripeCheckout
+                backgroundColor="#5E366A"
                   amount={premium}
                   billingAddress
                   label="Become a Premium User"
@@ -194,10 +208,23 @@ let divStyle = {
             )}
           </Mutation>
           <BillingHistory/>
-        </BillingContainer>
+        {/* </BillingContainer> */}
+        </Grid>
       </div>
+   
     )
   }
 }
 
- export default Billing;
+const styles = theme => ({
+  gridContainer: {
+    padding: "3%",
+    margin: "20% 0",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center"
+  }
+});
+
+ export default withStyles(styles)(Billing);
