@@ -104,7 +104,8 @@ class App extends React.Component {
           searchInput: "",
           noResultError: "No results found",
           showModal: true,
-          searchResults: []
+          searchResults: [],
+          resultsLoading: false
         });
         console.log("error", error);
       });
