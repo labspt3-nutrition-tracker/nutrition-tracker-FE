@@ -15,13 +15,12 @@ import { getCurrentUser } from "../util/getCurrentUser";
 import { getCurrentWeight } from "../util/getCurrentweight";
 import UserEditModal from "../Components/UserEditModal";
 import AccountNav from "./AccountNav";
-import { wrap } from "module";
 
 const styles = theme => ({
   root: {
     display: 'flex',
-    // flexWrap: 'wrap',
     justifyContent: "center",
+    flexWrap: "wrap",
     flexDirection: "row",
     flexGrow: 1,
     margin: "0",
@@ -217,10 +216,5 @@ class Settings extends React.Component {
   }
 }
 
-// const styles = theme => ({
-//   gridContainer: {
-//     flexWrap="nowrap"
-//   }
-// });
 
 export default withStyles(styles)(Settings);

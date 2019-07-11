@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const TraineeDiv = styled.div`
   display: flex;
-  justify-content:center;
+  justify-content: flex-end;
   font-family: Oswald;
   color: #ffffff;
   font-size: 2rem;
@@ -23,6 +23,7 @@ const TraineeDiv = styled.div`
 
 const TraineeContent = styled.div`
   display:flex;
+  width: 75%;
   flex-wrap:wrap;
   justify-content: center;
 `;
@@ -40,17 +41,23 @@ const TraineeStatsContainer = styled.div`
   flex-wrap:wrap;
 `;
 
+const DeleteButton= styled.button`
+  align-self: center;
+  width: 21%;
+  margin-right: 2%;
+  color: #FFF;
+  font-family: Oswald;
+  background: none;
+  font-size: 1em;
+`;
 
 class Trainee extends React.Component{
-  constructor(props){
-    super(props)
-  }
 
   render(){
     const data = this.props.data;
     return(
-      <TraineeDiv onClick={() => {this.props.handleChooseUser(this.props.data)}}>
-        <TraineeContent>
+      <TraineeDiv>
+        <TraineeContent  onClick={() => {this.props.handleChooseUser(this.props.data)}}>
           <TraineeName>{data.firstName} {data.lastName}</TraineeName>
           <TraineeStatsContainer>
             <h2>Calories:</h2>
@@ -59,6 +66,7 @@ class Trainee extends React.Component{
               <h3>{data.weight}</h3>
           </TraineeStatsContainer>
         </TraineeContent>
+        <DeleteButton onClick={() => {this.props.deleteTrainee(this.props.data.id)}}>remove trainee</DeleteButton>
       </TraineeDiv>
     )
   }

@@ -1,5 +1,4 @@
 import React from "react";
-import { gql } from "apollo-boost";
 import { Mutation } from "react-apollo";
 import StripeCheckout from 'react-stripe-checkout';
 import BillingHistory from './BillingHistory';
@@ -12,39 +11,30 @@ import { wrap } from "module";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 
+import {GET_CURRENT_USER_QUERY, GET_RECENT_BILLING} from "../../graphql/queries";
+import {CREATE_SUBSCRIPTION} from "../../graphql/mutations";
 
-const createSubscriptionMutation = gql`
-  mutation createSubscription($source: String!, $email: String!, $amount: Int!){
-    createSubscription(source: $source, email: $email, amount: $amount){
-      id
-    }
-  }
-`;
-
-const getRecentBillingQuery  = gql`
-  query getRecentBilling($id: ID!){
-    getRecentBilling(id: $id){
-      date
-    }
-  }
-`;
-
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-      userType
-    }
-  }
-`;
 const BillingContainer = styled.div`
+  margin-top:30px;
   padding-top:50px;
   display:flex;
-  flex-direction:column;
-  align-content:center;
+  flex-direction:row;
+  justify-content:center;
   flex-wrap:wrap;
   width:60%;
+  background-color: white;
+  height:500px;
+  -webkit-box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
+  -moz-box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
+  box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
+`;
+
+const BillingTop = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  height:100px;
+  width: 100%;
 `;
 
 let divStyle = {
@@ -70,7 +60,9 @@ let divStyle = {
     this.state = {
       subscriptionLapse: "",
       premiumCurrent: false,
-      userType: ""
+      userType: "",
+      name: "",
+      email: ""
     }
   }
 
@@ -85,12 +77,14 @@ let divStyle = {
 
     await client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
         this.getRecentBilling(response.data.getCurrentUser.id)
         this.setState({
-          userType: response.data.getCurrentUser.userType
+          userType: response.data.getCurrentUser.userType,
+          name: response.data.getCurrentUser.firstName,
+          email: response.data.getCurrentUser.email
         })
       })
       .catch(err => console.log(err));
@@ -103,7 +97,7 @@ let divStyle = {
 
     await client
       .query({
-        query: getRecentBillingQuery,
+        query: GET_RECENT_BILLING,
         variables: {
           id: id
         }
@@ -151,24 +145,25 @@ let divStyle = {
       border="1px solid black"
       classes={{ root: classes.gridContainer }}
     >
-        {/* <BillingContainer> */}
-          <p>Type: {this.state.userType.toUpperCase()}</p>
-          {
+        <BillingContainer>
+          <BillingTop>
+          <p style={{fontSize:"2rem"}}>Type:{this.state.userType.toUpperCase()}</p>
+          <p style={{fontSize:"2rem"}}>{
             this.state.subscriptionLapse.length > 1 ? (
-              <p>Current Until: {this.state.subscriptionLapse}</p>
+              <p>Subscription Until: {this.state.subscriptionLapse}</p>
             ) : (null)
-          }
-          <Mutation mutation={createSubscriptionMutation} onError={err => {console.log(err)}}>
+          }</p>
+          <Mutation mutation={CREATE_SUBSCRIPTION} onError={err => {console.log(err)}}>
             {mutation => (
               <div>
                 <StripeCheckout
                 backgroundColor="#5E366A"
                   amount={premium}
-                  billingAddress
                   label="Become a Premium User"
                   description="Become a Premium User!"
                   locale="auto"
                   name="NutritionTrkr"
+                  email={this.state.email}
                   stripeKey={process.env.REACT_APP_STRIPE_KEY}
                   token={async token => {
                     console.log(token.id,token.email, premium)
@@ -185,11 +180,11 @@ let divStyle = {
                 />
                 <StripeCheckout
                   amount={coach}
-                  billingAddress
                   label="Become a Coach"
                   description="Become a Coach!"
                   locale="auto"
                   name="NutritionTrkr"
+                  email={this.state.email}
                   stripeKey={process.env.REACT_APP_STRIPE_KEY}
                   token={async token => {
                     console.log(token)
@@ -207,8 +202,9 @@ let divStyle = {
               </div>
             )}
           </Mutation>
+        </BillingTop>
           <BillingHistory/>
-        {/* </BillingContainer> */}
+        </BillingContainer>
         </Grid>
       </div>
    

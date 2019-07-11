@@ -5,23 +5,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
-import { getCurrentUser } from "../../util/getCurrentUser";
-
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-    }
-  }
-`;
 
 const useStyles = makeStyles({
   root: {
     width: "100%",
     height: "50vh",
     background: "#40A798",
-    position: 'absolute',
     color: "#FFFFFF",
     display: "flex",
     justifyContent: "space-around",
@@ -34,7 +23,12 @@ const useStyles = makeStyles({
 
   heading: {
     fontSize: "2rem",
-    marginTop: "4.5%"
+    marginTop: "4.5%",
+    maxWidth: 300
+  },
+
+  headingImg: {
+    width: "100%",
   },
 
   heading2: {
@@ -90,43 +84,10 @@ const useStyles = makeStyles({
 
 export default function HomeFooter(props) {
   const classes = useStyles();
-  // const [value, setValue] = React.useState('recents');
-  const [loggedOut, setValue] = React.useState(false);
+  const [loggedIn, setValue] = React.useState(false);
 
-const getCurrentUser = idToken => {
-  const client = new ApolloClient({
-    uri: "https://nutrition-tracker-be.herokuapp.com",
-    headers: { authorization: idToken }
-  });
-
-  client
-    .query({
-      query: GET_CURRENT
-    })
-    .then(response => {
-      if (response.data.getCurrentUser) {
-        // this.setState({
-        //   loggedOut: true
-        // });
-        // console.log("user exists")
-      }
-    })
-    .catch(err => console.log(err));
-};
-
-// React.useEffect(  loggedOut  => {
-//   const token = localStorage.getItem("token");
-//   getCurrentUser(token)
-//     .then()
-//     .catch(err => {
-//       console.log(err);
-//       localStorage.removeItem("token"); //If token expired or not valid, remove it
-//     });
-//   })
 React.useEffect(() => {
   const token = localStorage.getItem("token");
-  getCurrentUser(token)
-  // console.log(token)
   if (token) {
     setValue(true)
   } else {
@@ -134,31 +95,13 @@ React.useEffect(() => {
   }
 })
 
-
-// const logIn = event => setValue({loggedOut: !loggedOut})
-
-
-// const logOut = event => {
-//   if (loggedOut) {
-//   localStorage.removeItem("token")
-//   setValue({loggedOut: !loggedOut})
-//   }
-//   console.log('token removed?')
-// }
-
-
-  // function handleChange(event, newValue) {
-  //   setValue(newValue);
-  // }
-
   return (
-    // console.log(loggedOut),
-<>
-  {loggedOut ? (
+  <>
+  {loggedIn ? (
 
             <BottomNavigation  className={classes.root}>
             <div className={classes.heading}>
-              <img src={logo} alt="Created my free logo at LogoMakr.com" />
+              <img className={classes.headingImg} src={logo} alt="Created my free logo at LogoMakr.com" />
             </div>
         <div className={classes.lowerDiv}>
           <div className={classes.contactDiv}>
@@ -180,7 +123,7 @@ React.useEffect(() => {
               >Sign Up</Link></button>
               <div className={classes.lowerDiv}>
                 <div className={classes.contactDiv}>
-                  <div className={classes.lDiv}>About Us</div>
+                  <div className={classes.lDiv}><Link to="/about">About Us</Link></div>
                   <div className={classes.lDiv}>|</div>
                   <div className={classes.lDiv}>Contact</div>
                   <div className={classes.lDiv}>|</div>

@@ -11,13 +11,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import * as moment from "moment";
 import ApolloClient from "apollo-boost";
-import gql from "graphql-tag";
 
-import { GET_CURRENT_USERID } from "../../graphql/queries";
+import { GET_CURRENT_USER_QUERY, GET_FOOD_BY_ID } from "../../graphql/queries";
 import MealFoods from "./MealFoods";
 
 const styles = theme => ({
@@ -87,15 +84,6 @@ const styles = theme => ({
   }
 });
 
-const GET_FOOD_BY_ID = gql`
-  query getFoodById($foodId: ID!) {
-    getFoodById(foodId: $foodId) {
-      id
-      edamam_id
-    }
-  }
-`;
-
 class JournalEntry extends React.Component {
   constructor(props) {
     super(props);
@@ -131,7 +119,7 @@ class JournalEntry extends React.Component {
 
     client
       .query({
-        query: GET_CURRENT_USERID
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
         this.setState({ currentUser: response.data.getCurrentUser.id });
@@ -176,7 +164,6 @@ class JournalEntry extends React.Component {
         }
       })
       .catch(err => console.log(err));
-
     this.setState({
       mealEntry: mealEntry
     });
@@ -213,7 +200,6 @@ class JournalEntry extends React.Component {
 
   editMealEntry = e => {
     e.preventDefault();
-
     const foodEntry = {
       foodName: this.state.mealEntry.food_id.foodName,
       caloriesPerServ: this.state.caloriesPerServ
@@ -373,6 +359,41 @@ class JournalEntry extends React.Component {
                 }
               }}
             />
+
+            {this.state.mealEntry && this.state.edamamExist && (
+              <>
+                <TextField
+                  disabled
+                  id="standard-disabled"
+                  label="Calories Per Serving"
+                  defaultValue={`${
+                    this.state.mealEntry.food_id.caloriesPerServ
+                  }`}
+                  margin="dense"
+                />
+                <TextField
+                  disabled
+                  id="standard-disabled"
+                  label="Proteins"
+                  defaultValue={`${this.state.mealEntry.food_id.proteins}`}
+                  margin="dense"
+                />
+                <TextField
+                  disabled
+                  id="standard-disabled"
+                  label="Carbs"
+                  defaultValue={`${this.state.mealEntry.food_id.carbs}`}
+                  margin="dense"
+                />
+                <TextField
+                  disabled
+                  id="standard-disabled"
+                  label="Fats"
+                  defaultValue={`${this.state.mealEntry.food_id.fats}`}
+                  margin="dense"
+                />
+              </>
+            )}
             {this.state.mealEntry && !this.state.edamamExist && (
               <>
                 <TextField

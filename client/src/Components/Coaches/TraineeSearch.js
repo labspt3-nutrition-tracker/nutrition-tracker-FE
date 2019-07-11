@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { SEARCH_USER_BY_EMAIL } from "../../graphql/queries";
-
 
 const Search = styled.div`
   height: 80px;
@@ -23,9 +21,6 @@ const SearchButton = styled.button`
 `;
 
 class TraineeSearch extends React.Component{
-  constructor(props){
-    super(props)
-  }
 
   render(){
     return(

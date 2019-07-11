@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -6,6 +7,7 @@ import ApolloClient from "apollo-boost";
 import Modal from "@material-ui/core/Modal";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import { CircularProgress } from "@material-ui/core";
 
 import MessageList from "./MessageList";
 import NewMessage from "./NewMessage";
@@ -23,6 +25,14 @@ import {
   ADD_TRAINEE
 } from "../../graphql/mutations";
 
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 500px;
+`;
+
 const styles = theme => ({
   root: {
     display: "flex",
@@ -34,13 +44,19 @@ const styles = theme => ({
     fontFamily: "Oswald",
     margin: 10,
     padding: "1px 6px",
-    width: "150px"
+    width: "150px",
+    [theme.breakpoints.down("sm")]: {
+      width: "inherit"
+    }
   },
   indicator: {
     backgroundColor: "#60B5A9"
   },
   flex: {
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
+    [theme.breakpoints.down("sm")]: {
+      flexWrap: "wrap"
+    }
   },
   icon: {
     fontSize: "1.5rem"
@@ -48,8 +64,8 @@ const styles = theme => ({
   modal: {
     position: "absolute",
     top: "30%",
-    left: "30%",
-    width: 400,
+    left: "5%",
+    width: 300,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(4),
@@ -79,11 +95,13 @@ class MessagePage extends React.Component {
     this.state = {
       currentUser: null,
       messages: [],
+      sentMessages: [],
       coaches: [],
       trainees: [],
       option: 0,
       currentMessage: null,
-      modalOpen: false
+      modalOpen: false,
+      loading: false
     };
   }
 
@@ -100,6 +118,7 @@ class MessagePage extends React.Component {
   }
 
   getData = async () => {
+    this.setState({ loading: true });
     const idToken = localStorage.getItem("token");
 
     const client = new ApolloClient({
@@ -111,9 +130,14 @@ class MessagePage extends React.Component {
       const user = await client.query({ query: GET_CURRENT_USER_QUERY });
       const userId = user.data.getCurrentUser.id;
       const variables = { param: "recipient", value: userId };
+      const sentVariables = { param: "sender", value: userId };
       const messages = await client.query({
         query: GET_MESSAGES_QUERY,
         variables: variables
+      });
+      const sentMessages = await client.query({
+        query: GET_MESSAGES_QUERY,
+        variables: sentVariables
       });
       const coaches = await client.query({
         query: GET_COACHES,
@@ -125,9 +149,11 @@ class MessagePage extends React.Component {
       });
       this.setState({
         messages: messages.data.getMessagesBy,
+        sentMessages: sentMessages.data.getMessagesBy,
         coaches: coaches.data.getCoaches,
         trainees: trainees.data.getTrainees,
-        currentUser: user.data.getCurrentUser
+        currentUser: user.data.getCurrentUser,
+        loading: false
       });
     } catch (err) {
       console.log(err);
@@ -246,6 +272,7 @@ class MessagePage extends React.Component {
   render() {
     const {
       messages,
+      sentMessages,
       coaches,
       trainees,
       currentMessage,
@@ -255,7 +282,7 @@ class MessagePage extends React.Component {
     const { classes } = this.props;
 
     const alerts = messages.filter(message => message.type === "alert");
-    if (option === 2 && alerts.length === 0) option = 0;
+    if (option === 3 && alerts.length === 0) option = 0;
     return (
       <div>
         <Tabs
@@ -268,11 +295,18 @@ class MessagePage extends React.Component {
           }}
         >
           <Tab label="Inbox" className={classes.tab} />
+          <Tab label="Sent" className={classes.tab} />
           <Tab label="New Message" className={classes.tab} />
           {alerts.length > 0 && <Tab label="Alerts" className={classes.tab} />}
         </Tabs>
+        {this.state.loading && (
+          <LoadingDiv>
+            <CircularProgress />
+          </LoadingDiv>
+        )}
         {option === 0 ? (
           <MessageList
+            type="inbox"
             messages={messages}
             coaches={coaches}
             trainees={trainees}
@@ -280,6 +314,15 @@ class MessagePage extends React.Component {
             deleteMessage={this.deleteMessageHandler}
           />
         ) : option === 1 ? (
+          <MessageList
+            type="sent"
+            messages={sentMessages}
+            coaches={coaches}
+            trainees={trainees}
+            showMessage={this.showMessage}
+            deleteMessage={this.deleteMessageHandler}
+          />
+        ) : option === 2 ? (
           <NewMessage
             coaches={coaches}
             trainees={trainees}
