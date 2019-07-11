@@ -20,28 +20,31 @@ const drawerWidth = 250;
 
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: "flex",
-    // height: "100vh",
-    background: "lavender"
-  },
+
   root: {
     zIndex: 0,
     display: 'flex',
     color: "white",
-    height: "relative",
     alignItems: "center",
     position: "relative",
+    [theme.breakpoints.down('sm')]: {
+      width: "100%"
+    }
   },
   title: {
     textDecoration: "none",
     color: "#FFFFFF",
     border: 0,
     fontSize: "1.5rem",
-
+    [theme.breakpoints.down('sm')]: {
+      fontSize: "1.8rem"
+    }
   },
 title2: {
-  height: "80vh"
+  height: "80vh",
+  [theme.breakpoints.down('sm')]: {
+    height: "inherit"
+  }
     // paddingBottom: 315.1,
   },
   symbol: {
@@ -51,26 +54,37 @@ title2: {
   appBar: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
+    [theme.breakpoints.down('sm')]: {
+      width: "100%"
+    }
   },
-  // navHeader: {
-  //   display: 'flex',
-  //   color: "#FFFFFF",
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   fontSize: "2rem",
-  //   margin: "-47px 30px 0 18px",
-  //   marginRight: "157px",
-  //   paddingBottom: 20,
-  //   // borderBottom: "1px solid #FFFFFF"
-  // },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-
+    [theme.breakpoints.down('sm')]: {
+      width: "100%"
+    }
+  },
+  drawerMobile: {
+    justifyContent: "space-evenly",
+    display: "none",
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      justifyContent: "space-between",
+    },
+    fontSize: 16
   },
   drawerPaper: {
     width: drawerWidth,
-    // position: "relative",
+    [theme.breakpoints.down('sm')]: {
+      width: "100%"
+    },
+    background: "#5E366A",
+    position: "relative",
+    // height: "50vh"
+  },
+  drawerPaperMobile: {
+    width: 100,
     background: "#5E366A",
     position: "relative",
     // height: "50vh"
@@ -78,7 +92,7 @@ title2: {
   // toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(3)
   },
 
 }));
@@ -89,6 +103,7 @@ export default function  AccountNav() {
   return (
     // <div
     // className={classes.container}
+    // classes={{ root: classes.gridContainer }}
     // >
         <div
         className={classes.root}
@@ -97,6 +112,7 @@ export default function  AccountNav() {
         {/* <AppBar position="relative" className={classes.appBar}>
       </AppBar> */}
         <Drawer
+            
             className={classes.drawer}
             variant="permanent"
             classes={{
@@ -134,7 +150,7 @@ export default function  AccountNav() {
             <div className={classes.toolbar} />
         </main>
       </div>
-    // </div>
+    //  </div>
     );
 
 }

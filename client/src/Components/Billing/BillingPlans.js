@@ -142,7 +142,7 @@ function Pricing(props) {
                   subheader={tier.subheader}
                   titleTypographyProps={{ align: 'center' }}
                   subheaderTypographyProps={{ align: 'center' }}
-                  action={tier.title === 'Super User' ? <StarIcon /> : null}
+                  action={tier.title === 'Premium' ? <StarIcon /> : null}
                   className={classes.cardHeader}
                 />
                 <CardContent>
@@ -162,7 +162,7 @@ function Pricing(props) {
                 </CardContent>
                 <CardActions className={classes.cardActions}
               >
-              {tier.title === 'Super User' ? <Button fullWidth variant={tier.buttonVariant} className={classes.button} component={Link} to ="/login" >   {tier.buttonText}
+              {tier.title === 'Premium' ? <Button fullWidth variant={tier.buttonVariant} className={classes.button} component={Link} to ="/login" >   {tier.buttonText}
                 </Button>  : <Button fullWidth variant={tier.buttonVariant} className={classes.button} component={Link} to ="/login" >   {tier.buttonText}
                 </Button> }
                   {/* <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing"   >
