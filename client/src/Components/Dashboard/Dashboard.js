@@ -521,7 +521,7 @@ class Dashboard extends Component {
               </Typography>
             </CardContent>
             <CardContent>
-              <Calories foodEntries={this.state.foodEntries}/>
+              <Calories foodEntries={this.state.foodEntries} />
             </CardContent>
             <CardContent className={classes.flexData}>
               {!this.state.foodIsLoading ? (
@@ -557,6 +557,7 @@ class Dashboard extends Component {
                 {!this.state.showFoodForm && (
                   <Container className={classes.flexDataCon}>
                     <ModifiedEntryForm
+                      resetSelected={this.props.resetSelected}
                       addFoodEntry={this.addFoodEntry}
                       selectedFood={this.props.selectedFood}
                       handleShowFood={this.handleShowFood}
@@ -622,6 +623,7 @@ class Dashboard extends Component {
             )}
             {!this.state.showFoodForm && (
               <ModifiedEntryForm
+                resetSelected={this.props.resetSelected}
                 addFoodEntry={this.addFoodEntry}
                 selectedFood={this.props.selectedFood}
                 handleShowFood={this.handleShowFood}

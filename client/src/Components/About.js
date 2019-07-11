@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Typography, Grid } from "@material-ui/core";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
 
 import alando from "../Assets/team/alando.jpeg";
 import leila from "../Assets/team/leila.jpeg";
@@ -167,13 +166,7 @@ function About(props) {
               </a>
             </Contact>
             <Typography className={classes.desc}>
-              We're acquainted with the wormhole phenomenon, but this... Is a
-              remarkable piece of bio-electronic engineering by which I see much
-              of the EM spectrum ranging from heat and infrared through radio
-              waves, et cetera, and forgive me if I've said and listened to this
-              a thousand times. This planet's interior heat provides an
-              abundance of geothermal energy. We need to neutralize the homing
-              signal.
+            David is a full-stack developer with a passion for JavaScript, React, and debugging. He has a background in tech support, retail, and hospitality. Today, he is constantly eager to not only improve his current skill but also to learn new technologies. With programming, sky is the limit and that sky is the entire world wide web.
             </Typography>
           </Grid>
         </Grid>
@@ -225,13 +218,7 @@ function About(props) {
               </a>
             </Contact>
             <Typography className={classes.desc}>
-              We're acquainted with the wormhole phenomenon, but this... Is a
-              remarkable piece of bio-electronic engineering by which I see much
-              of the EM spectrum ranging from heat and infrared through radio
-              waves, et cetera, and forgive me if I've said and listened to this
-              a thousand times. This planet's interior heat provides an
-              abundance of geothermal energy. We need to neutralize the homing
-              signal.
+            Christene is a full-stack web developer who is fascinated with user experience and design. She comes from the world of customer service and is excited to be using her creativity with code as her medium. When she's not coding, Christene can be found discovering the best food the Phoenix area has to offer. 
             </Typography>
           </Grid>
         </Grid>
