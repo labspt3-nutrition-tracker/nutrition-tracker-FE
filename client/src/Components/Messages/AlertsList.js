@@ -76,42 +76,45 @@ const AlertsList = props => {
       {alerts.length > 0 ? (
         <List>
           {alerts.map(alert => (
-            <ListItem
-              key={alert.id}
-              button
-              onClick={() => props.showMessage(alert)}
-              classes={{ root: classes.message }}
-            >
-              <div className={classes.flexName}>
-                {!alert.read && (
-                  <ListItemIcon>
-                    <NotificationIcon classes={{ root: classes.icon }} />
-                  </ListItemIcon>
-                )}
-                <ListItemText
-                  primary={`${alert.sender.firstName} ${alert.sender.lastName}`}
-                  classes={{
-                    primary: classes.textRoot
-                  }}
-                />
-              </div>
-              <div className={classes.flexText}>
-                <ListItemText
-                  primary={alert.text}
-                  classes={{
-                    primary: classes.text,
-                    root: classes.textRoot
-                  }}
-                />
-                <ListItemText
-                  secondary={alert.created_at}
-                  classes={{
-                    secondary: classes.secondaryText,
-                    root: classes.textRoot
-                  }}
-                />
-              </div>
-            </ListItem>
+            <React.Fragment key={alert.id}>
+              <ListItem
+                button
+                onClick={() => props.showMessage(alert)}
+                classes={{ root: classes.message }}
+              >
+                <div className={classes.flexName}>
+                  {!alert.read && (
+                    <ListItemIcon>
+                      <NotificationIcon classes={{ root: classes.icon }} />
+                    </ListItemIcon>
+                  )}
+                  <ListItemText
+                    primary={`${alert.sender.firstName} ${
+                      alert.sender.lastName
+                    }`}
+                    classes={{
+                      primary: classes.textRoot
+                    }}
+                  />
+                </div>
+                <div className={classes.flexText}>
+                  <ListItemText
+                    primary={alert.text}
+                    classes={{
+                      primary: classes.text,
+                      root: classes.textRoot
+                    }}
+                  />
+                  <ListItemText
+                    secondary={alert.created_at}
+                    classes={{
+                      secondary: classes.secondaryText,
+                      root: classes.textRoot
+                    }}
+                  />
+                </div>
+              </ListItem>
+            </React.Fragment>
           ))}
         </List>
       ) : (

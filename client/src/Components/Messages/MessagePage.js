@@ -222,7 +222,7 @@ class MessagePage extends React.Component {
   };
 
   handleReply = () => {
-    this.setState({ option: 1 });
+    this.setState({ option: 2 });
     this.handleClose();
   };
 
@@ -276,6 +276,7 @@ class MessagePage extends React.Component {
       coaches,
       trainees,
       currentMessage,
+      currentUser,
       modalOpen
     } = this.state;
     let { option } = this.state;
@@ -326,7 +327,12 @@ class MessagePage extends React.Component {
           <NewMessage
             coaches={coaches}
             trainees={trainees}
-            recipient={currentMessage && currentMessage.sender.id}
+            recipient={
+              currentMessage &&
+              (currentUser.id !== currentMessage.sender.id
+                ? currentMessage.sender.id
+                : currentMessage.recipient.id)
+            }
             handleCancel={this.handleCancel}
             sendMessage={this.sendMessage}
           />
@@ -342,8 +348,13 @@ class MessagePage extends React.Component {
           >
             <div className={classes.modal}>
               <Typography variant="h4" id="modal-title">
-                {currentMessage.sender.firstName}{" "}
-                {currentMessage.sender.lastName}
+                {option === 0
+                  ? `${currentMessage.sender.firstName} ${
+                      currentMessage.sender.lastName
+                    }`
+                  : `${currentMessage.recipient.firstName} ${
+                      currentMessage.recipient.lastName
+                    }`}
               </Typography>
               <Typography
                 variant="h4"
@@ -364,7 +375,7 @@ class MessagePage extends React.Component {
                 </Button>
               ) : (
                 <Button onClick={this.handleReply} className={classes.btn}>
-                  Reply
+                  {option === 0 ? "Reply" : "New Message"}
                 </Button>
               )}
             </div>
