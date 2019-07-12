@@ -59,7 +59,7 @@ const Form = styled.form`
 
 const ModalButton = styled.button`
   color: #fcfcfb;
-  background: #f4b4c3;
+  background: #5E366A;
   margin-bottom: 5px;
   padding: 5px 15px;
   font-size: 0.9em;
