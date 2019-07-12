@@ -312,7 +312,7 @@ class Dashboard extends Component {
   };
 
   editFoodEntry = (editId, editEntry, idToken) => {
-    console.log('edit', editEntry)
+    console.log("edit", editEntry);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
