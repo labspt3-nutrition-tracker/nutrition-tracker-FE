@@ -11,16 +11,21 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import Paper from "@material-ui/core/Paper";
 import CardContent from "@material-ui/core/CardContent";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import { flexbox } from "@material-ui/system";
 
 const styles = theme => ({
   title: {
-    fontSize: 16,
-    background: "#5E366A",
-    padding: 10,
-    color: "#ffffff"
+    fontFamily: "Oswald",
+    fontSize: "3rem",
+    color: "#5E366A",
+    padding: "0 12px"
   },
   mealCard: {
     minHeight: 100,
@@ -42,6 +47,41 @@ const styles = theme => ({
     fontSize: 20,
     textTransform: "capitalize"
   },
+  dialogBox: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  exer: {
+    fontFamily: "Oswald",
+    fontSize: "2.5rem",
+    color: "#5E366A",
+    margin: 0
+  },
+  btn: {
+    fontSize: "1.4rem",
+    color: "#FCFCFB",
+    border: "2px solid #5E366A",
+    backgroundColor: "#5E366A",
+    padding: "5px 8px",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "#545454"
+    },
+    fontFamily: "Oswald"
+  },
+  buttons: { justifyContent: "space-around" },
+  del: {
+    fontSize: "1.4rem",
+    color: "#FCFCFB",
+    border: "2px solid #40A798",
+    padding: "5px 8px",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "#40A798"
+    },
+    fontFamily: "Oswald",
+    backgroundColor: "#40A798"
+  }
 });
 
 const ExerciseActivity = styled.div`
@@ -187,7 +227,99 @@ class ExerEntry extends React.Component {
                 </ExerciseActivity>
               </div>
             ))}
-            <ExerciseModal isOpen={this.state.showModal}>
+            <Dialog
+             open={this.state.showModal}
+             onClose={this.closeModal}
+             aria-labelledby="form-dialog-title"
+             PaperProps={{
+               style: {
+                 minWidth: "300px"
+               }
+             }}
+            >
+            <DialogContent classes={{ root: classes.dialogBox }} dividers>
+            <DialogContentText classes={{ root: classes.exer }}>
+              {this.props.exerEntry && (
+                <Form>
+                  <span className={classes.title}> Edit Exercise Entry</span>
+                  <TextField
+                    required
+                    error={this.state.errorMsg.errorName}
+                    autoFocus
+                    margin="dense"
+                    label="Name of Exercise"
+                    className="form-field"
+                    type="text"
+                    placeholder="Add exercise here..."
+                    onChange={this.props.onInputChange}
+                    name="exerciseName"
+                    value={this.props.exerEntry.exerciseName}
+                    aria-describedby="errorName-text"
+                  />
+                  <FormHelperText id="errorName-text">
+                    {this.state.errorMsg.errorName}
+                  </FormHelperText>
+
+                  <TextField
+                    label="Date"
+                    className="form-field"
+                    type="date"
+                    name="exerciseEntryDate"
+                    error={this.state.errorMsg.errorDate}
+                    onChange={this.props.onInputChange}
+                    required
+                    aria-describedby="errorDate-text"
+                    // defaultValue={this.state.exerEntry.exerciseEntryDate}
+                    value={moment(
+                      this.props.exerEntry.exerciseEntryDate
+                    ).format("YYYY-MM-DD")}
+                  />
+                  <FormHelperText id="errorDate-text">
+                    {this.state.errorMsg.errorDate}
+                  </FormHelperText>
+
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    error={this.state.errorMsg.errorCal}
+                    label="Calories Burned"
+                    className="form-field"
+                    type="number"
+                    name="caloriesBurned"
+                    onChange={this.props.onInputChange}
+                    value={this.props.exerEntry.caloriesBurned}
+                    required
+                    step="1"
+                    aria-describedby="errorCal-text"
+                  />
+
+                  <FormHelperText id="errorCal-text">
+                    {this.state.errorMsg.errorCal}
+                  </FormHelperText>
+
+                  <Button
+                    className={classes.btn}
+                    // className="form-field"
+                    type="submit"
+                    onClick={() => this.editExerciseEntry(this.props.exerEntry)}
+                  >
+                    Edit Entry
+                  </Button>
+                </Form>
+              )}
+              </DialogContentText>
+              </DialogContent>
+                <DialogActions className={classes.buttons}>
+                <Button onClick={this.closeModal} className={classes.btn}>Cancel</Button>
+                <Button
+                  onClick={() => this.deleteExercise(this.props.exerEntry.id)}
+                  className={classes.del}
+                >
+                  Delete
+                </Button>
+                </DialogActions>
+            </Dialog>
+            {/* <ExerciseModal isOpen={this.state.showModal}>
               {this.props.exerEntry && (
                 <Form>
                   <TextField
@@ -261,7 +393,8 @@ class ExerEntry extends React.Component {
               >
                 Delete?
               </ModalButton>
-            </ExerciseModal>
+            </ExerciseModal> */}
+
           </CardContent>
         </CardContent>
       );

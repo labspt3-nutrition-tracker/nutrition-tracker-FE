@@ -220,10 +220,7 @@ const styles = theme => ({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-    [theme.breakpoints.down("sm")]: {
-      display: "flex",
-      justifyContent: "space-around"
-    }
+
   }
 });
 
