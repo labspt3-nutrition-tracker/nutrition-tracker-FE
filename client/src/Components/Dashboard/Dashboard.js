@@ -609,56 +609,76 @@ class Dashboard extends Component {
     } else {
       return (
         <Container className={classes.root}>
-        <Typography variant="h3" className={classes.date}>
-          {currentDate}
-        </Typography>
-          <Calories foodEntries={this.state.foodEntries} />
-          <DashDisplay className="container">
-            <InfoCon>
-              <FoodEntry foodEntries={this.state.foodEntries} />
-            </InfoCon>
+          <Typography variant="h3" className={classes.date}>
+            {currentDate}
+          </Typography>
+          <Card>
+
+            <CardContent>
+              <Typography className={classes.title}>
+                Today's Summary:
+              </Typography>
+            </CardContent>
+
+            <CardContent>
+              <Calories foodEntries={this.state.foodEntries} />
+            </CardContent>
+
+            <CardContent className={classes.flexData}>
+
+            {!this.state.foodIsLoading ? (
+              <Container className={classes.flexDataConFirst}>
+                <Typography className={classes.heading}>Meals</Typography>
+                <hr/>
+                <FoodEntry
+                  foodEntries={this.state.foodEntries}
+                  deleteFoodEntry={this.deleteFoodEntry}
+                  foodEntry={this.state.foodEntry}
+                  onFoodEntryChange={this.onFoodEntryChange}
+                  onFoodChange={this.onFoodChange}
+                  onMealChange={this.onMealChange}
+                  editFoodEntry={this.editFoodEntry}
+                  passFoodData={this.passFoodData}
+                />
+              </Container>
+            ):(
+              <LoadingDiv>
+                <CircularProgress />
+              </LoadingDiv>
+            )}
+            </CardContent>
+
+          <Container className={classes.forms}>
+
             {this.state.showFoodForm && (
+              <Container className={classes.flexDataCon}>
               <EntryForm
                 addFoodEntry={this.addFoodEntry}
                 closeFoodForm={this.closeFoodForm}
                 searchedFood={this.props.selectedFood}
               />
+              </Container>
             )}
+
             {!this.state.showFoodForm && (
-              <ModifiedEntryForm
-                resetSelected={this.props.resetSelected}
-                addFoodEntry={this.addFoodEntry}
-                selectedFood={this.props.selectedFood}
-                handleShowFood={this.handleShowFood}
-                revertToNormalForm={this.revertToNormalForm}
-              />
+              <Container className={classes.flexDataCon}>
+                <ModifiedEntryForm
+                  resetSelected={this.props.resetSelected}
+                  addFoodEntry={this.addFoodEntry}
+                  selectedFood={this.props.selectedFood}
+                  handleShowFood={this.handleShowFood}
+                  revertToNormalForm={this.revertToNormalForm}
+                />
+              </Container>
             )}
-          </DashDisplay>
-        </Container>
+
+          </Container>
+
+        </Card>
+      </Container>
       );
     }
   }
 }
-const DashTitle = styled.div`
-  /* font-size: 3rem;
-  text-align: center; */
-`;
-const InfoCon = styled.div`
-  /* display: flex;
-  width: 40%;
-  @media (max-width: 800px) {
-    width: 100%; */
-  /* } */
-`;
-const DashDisplay = styled.div`
-  /* width: 100%;
-  display: flex;
-  margin-top: 5%;
-  margin-bottom: 4%;
-  justify-content: space-around;
-  @media (max-width: 800px) {
-    flex-direction: column;
-    align-items: center;
-  } */
-`;
+
 export default withStyles(styles)(Dashboard);
