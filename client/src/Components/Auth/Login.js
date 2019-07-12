@@ -5,7 +5,7 @@ import FacebookLogin from "react-facebook-login";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import logo from "../../Assets/logo-green.png";
-import loginBg from "../../Assets/login-bg.png"
+import loginBg from "../../Assets/login-bg.png";
 import { Pulse } from "animate-css-styled-components";
 
 import LoginForm from "./LoginForm";
@@ -92,7 +92,7 @@ const LoginMessage = styled.div`
   display: flex;
   justify-content: center;
   padding: 40% 0;
-  color: #5E366A;
+  color: #5e366a;
 `;
 
 const MadeWithLove = () => {
