@@ -194,6 +194,16 @@ button {
   color: #545454;
 }
 
+.footer-link {
+  text-decoration: none;
+  color: #ffffff;
+  padding-bottom: 1px;
+}
+
+.footer-link:hover {
+  border-bottom: 1px solid #ffffff;
+}
+
 .searchBarHome {
   width: 100%;
   max-width: 400px;
@@ -212,6 +222,7 @@ button {
 .fc-view-container {
   z-index: 0;
 }
+
 
 /* ------------ MEDIA QUERIES ------------ */
 

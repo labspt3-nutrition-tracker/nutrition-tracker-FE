@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import logo from "../../Assets/logo-white.png";
- import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
+import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import BottomNavigation from "@material-ui/core/BottomNavigation";
 import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     alignContent: "center",
     alignItems: "center",
     textDecoration: "none",
-    zIndex:2
+    zIndex: 2
   },
 
   heading: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   },
 
   headingImg: {
-    width: "100%",
+    width: "100%"
   },
 
   heading2: {
@@ -54,7 +54,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     alignContent: "space-evenly",
     justifyContent: "space-between",
-    borderTop: "1px solid #FFFFFF",
+    borderTop: "1px solid #FFFFFF"
   },
 
   contactDiv: {
@@ -67,7 +67,7 @@ const useStyles = makeStyles({
   },
 
   lDiv: {
-    fontSize: "1.3rem",
+    fontSize: "1.3rem"
     // padding: "0 5%",
   },
 
@@ -86,53 +86,87 @@ export default function HomeFooter(props) {
   const classes = useStyles();
   const [loggedIn, setValue] = React.useState(false);
 
-React.useEffect(() => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    setValue(true)
-  } else {
-    setValue(false)
-  }
-})
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setValue(true);
+    } else {
+      setValue(false);
+    }
+  });
 
   return (
-  <>
-  {loggedIn ? (
-
-            <BottomNavigation  className={classes.root}>
-            <div className={classes.heading}>
-              <img className={classes.headingImg} src={logo} alt="Created my free logo at LogoMakr.com" />
-            </div>
-        <div className={classes.lowerDiv}>
-          <div className={classes.contactDiv}>
-            <div className={classes.lDiv}>About Us</div>
-            <div className={classes.lDiv}>|</div>
-            <div className={classes.lDiv}>Contact</div>
-            <div className={classes.lDiv}>|</div>
-            <div className={classes.lDiv}><a className={classes.href} href="https://github.com/labspt3-nutrition-tracker">Github</a> </div>
+    <>
+      {loggedIn ? (
+        <BottomNavigation className={classes.root}>
+          <div className={classes.heading}>
+            <img
+              className={classes.headingImg}
+              src={logo}
+              alt="Created my free logo at LogoMakr.com"
+            />
           </div>
-        </div>
-        <div className={classes.copyright}>Copyright 2019 Lambda School</div>
-        </BottomNavigation>
-          ) : (
-            <BottomNavigation  className={classes.root}>                                                                                                                                                                     >
-              <div className={classes.heading2}>What are you waiting for? Let's get started.</div>
-                 <button className={classes.button}> <Link
-                style={{ textDecoration: "none", color: "white" }}
-                to={{ pathname: "/login" }}
-              >Sign Up</Link></button>
-              <div className={classes.lowerDiv}>
-                <div className={classes.contactDiv}>
-                  <div className={classes.lDiv}><Link to="/about">About Us</Link></div>
-                  <div className={classes.lDiv}>|</div>
-                  <div className={classes.lDiv}>Contact</div>
-                  <div className={classes.lDiv}>|</div>
-                  <div className={classes.lDiv}><a className={classes.href} href="https://github.com/labspt3-nutrition-tracker">Github</a> </div>
-                </div>
+          <div className={classes.lowerDiv}>
+            <div className={classes.contactDiv}>
+              <div className={classes.lDiv}>
+                <Link className="footer-link" to="/about">
+                  About Us
+                </Link>
               </div>
-              <div className={classes.copyright}>Copyright 2019 Lambda School</div>
-            </BottomNavigation>
-          )}
-  </>
+              <div className={classes.lDiv}>|</div>
+              <div className={classes.lDiv}>Contact</div>
+              <div className={classes.lDiv}>|</div>
+              <div className={classes.lDiv}>
+                <a
+                  className={classes.href}
+                  href="https://github.com/labspt3-nutrition-tracker"
+                >
+                  Github
+                </a>{" "}
+              </div>
+            </div>
+          </div>
+          <div className={classes.copyright}>Copyright 2019 Lambda School</div>
+        </BottomNavigation>
+      ) : (
+        <BottomNavigation className={classes.root}>
+          {" "}
+          >
+          <div className={classes.heading2}>
+            What are you waiting for? Let's get started.
+          </div>
+          <button className={classes.button}>
+            {" "}
+            <Link
+              style={{ textDecoration: "none", color: "white" }}
+              to={{ pathname: "/login" }}
+            >
+              Sign Up
+            </Link>
+          </button>
+          <div className={classes.lowerDiv}>
+            <div className={classes.contactDiv}>
+              <div className={classes.lDiv}>
+                <Link className="footer-link" to="/about">
+                  About Us
+                </Link>
+              </div>
+              <div className={classes.lDiv}>|</div>
+              <div className={classes.lDiv}>Contact</div>
+              <div className={classes.lDiv}>|</div>
+              <div className={classes.lDiv}>
+                <a
+                  className={classes.href}
+                  href="https://github.com/labspt3-nutrition-tracker"
+                >
+                  Github
+                </a>{" "}
+              </div>
+            </div>
+          </div>
+          <div className={classes.copyright}>Copyright 2019 Lambda School</div>
+        </BottomNavigation>
+      )}
+    </>
   );
 }

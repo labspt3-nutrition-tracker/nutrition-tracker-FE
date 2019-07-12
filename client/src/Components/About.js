@@ -108,13 +108,7 @@ function About(props) {
               </a>
             </Contact>
             <Typography className={classes.desc}>
-              We're acquainted with the wormhole phenomenon, but this... Is a
-              remarkable piece of bio-electronic engineering by which I see much
-              of the EM spectrum ranging from heat and infrared through radio
-              waves, et cetera, and forgive me if I've said and listened to this
-              a thousand times. This planet's interior heat provides an
-              abundance of geothermal energy. We need to neutralize the homing
-              signal.
+            Leila is a full-stack developer who's always loved coding. Graduating with a Masters in Computer Science, she worked for two years before interrupting her career to raise her three daughters. Joined Lambda School to give her career in tech another chance.
             </Typography>
           </Grid>
         </Grid>
@@ -166,7 +160,7 @@ function About(props) {
               </a>
             </Contact>
             <Typography className={classes.desc}>
-            David is a full-stack developer with a passion for JavaScript, React, and debugging. He has a background in tech support, retail, and hospitality. Today, he is constantly eager to not only improve his current skill but also to learn new technologies. With programming, sky is the limit and that sky is the entire world wide web.
+            David is a full-stack developer with a passion for JavaScript, React, and debugging. He has a background in tech support, retail, and hospitality. Today, he is constantly eager to not only improve his current skill but also to learn new technologies. With programming, the sky is the limit and that sky is the entire world wide web.
             </Typography>
           </Grid>
         </Grid>

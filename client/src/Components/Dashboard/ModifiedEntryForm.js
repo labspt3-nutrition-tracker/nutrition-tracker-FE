@@ -244,6 +244,7 @@ class ModifiedEntryForm extends Component {
               }
             });
             this.props.revertToNormalForm();
+            this.props.resetSelected();
           })
           .catch(err => {
             this.setState({
@@ -264,9 +265,11 @@ class ModifiedEntryForm extends Component {
             console.error(err);
           });
       }
+    
     } else {
       return;
     }
+    
   };
 
   edamamExistCheck = edamam_id => {
