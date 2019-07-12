@@ -60,7 +60,13 @@ card: {
     }
   },
   paraDiv: {
+    display: "flex",
+    alignItems: "center",
     fontSize: "2rem"
+  },
+  paraDivValue: {
+    fontSize: "1.7rem",
+    paddingLeft: "5px"
   },
   buttons: { justifyContent: "space-around" },
   btn: {
@@ -167,12 +173,13 @@ card: {
     >
         <Card className={classes.card}>
           <div className={classes.billingTop}>
-            <p className={classes.paraDiv}>Type: {this.state.userType.toUpperCase()}</p>
-            <p className={classes.paraDiv}>{
+            {/* <div> */}
+            <p className={classes.paraDiv}>Type:  <p className={classes.paraDivValue}> {this.state.userType.charAt(0).toUpperCase() + this.state.userType.slice(1)}</p></p>
+             {
               this.state.subscriptionLapse.length > 1 ? (
-                <p>Subscription Until: {this.state.subscriptionLapse}</p>
+                <p className={classes.paraDiv}> Subscription Until: <p className={classes.paraDivValue}> {this.state.subscriptionLapse}</p></p>
               ) : (null)
-            }</p>
+            }
           <Mutation mutation={CREATE_SUBSCRIPTION} onError={err => {console.log(err)}}>
             {mutation => (
               <div className={classes.subscriptionDiv}>
@@ -235,6 +242,7 @@ card: {
           </Mutation>
         </div>
           <BillingHistory/>
+          {/* </div> */}
         </Card>
         </Grid>
       </div>
