@@ -5,14 +5,15 @@ import ApolloClient from "apollo-boost";
 import BillingHistoryCard from './BillingHistoryCard';
 import {GET_CURRENT_USER_QUERY, GET_BILLING_HISTORY} from "../../graphql/queries";
 
+
+
 const PaymentHistory = styled.div`
     display:flex;
     flex-direction:column;
-    justify-content:flex-start;
+    justify-content:center;
     overflow:auto;
     align-items:center;
     padding:20px;
-    width:60%;
     max-height:350px;
 `;
 class BillingHistory extends React.Component{
@@ -56,7 +57,7 @@ class BillingHistory extends React.Component{
                         if (error) return <div>Error</div>;
                         return (
                             <PaymentHistory>
-                                <h2 style={{fontSize:"2rem"}}>Previous Payments:</h2>
+                                <h2 style={{fontSize:"2rem", display: "flex"}}>Previous Payments:</h2>
                                 {data.getBillingHistory.map(bills => (
                                     <BillingHistoryCard key={bills.id} date={bills.date} amountPaid={bills.amount_paid}/>
                                 ))}

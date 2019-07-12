@@ -16,23 +16,24 @@ import {CREATE_SUBSCRIPTION} from "../../graphql/mutations";
 
 const styles = theme => ({
 divStyle: {
+  fontFamily: "Oswald",
   display: 'flex',
   flexWrap: 'wrap',
   justifyContent: 'flex-start',
   alignItems: "flex-start"
-  // marginLeft: "25%"
+},
+subscriptionDiv: {
+  display: "flex"
 },
 gridContainer: {
   padding: "3%",
-  // margin: "20% 0",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
 
 },
-
-  billingTop: {
+billingTop: {
     display: 'flex',
     alignItems: "center",
     flexWrap: "wrap",
@@ -41,12 +42,11 @@ gridContainer: {
     height:"100px",
     width: "100%"
   },
-  card: {
+card: {
     width: "100%",
     maxWidth: 500,
     height: "400px",
     marginLeft: "7%",
-    // margin: "30px 150px",
     padding: 10,
     flexWrap: 'nowrap',
     [theme.breakpoints.down('sm')]: {
@@ -54,10 +54,27 @@ gridContainer: {
       maxWidth: 1000,
       margin: "inherit",
       display: "flex",
+      flexDirection: "column",
       alignItems: "center",
       justifyContent: "center"
     }
   },
+  paraDiv: {
+    fontSize: "2rem"
+  },
+  buttons: { justifyContent: "space-around" },
+  btn: {
+    fontSize: "1.4rem",
+    color: "#FCFCFB",
+    border: "2px solid #5E366A",
+    backgroundColor: "#5E366A",
+    padding: "5px 8px",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "#545454"
+    },
+    fontFamily: "Oswald"
+  }
 });
 
  class Billing extends React.Component{
@@ -135,6 +152,7 @@ gridContainer: {
     const premium = 700;
     const coach = 1000;
     const { classes } = this.props;
+
     return(
 
     <div className={classes.divStyle}>
@@ -149,17 +167,24 @@ gridContainer: {
     >
         <Card className={classes.card}>
           <div className={classes.billingTop}>
-          <p style={{fontSize:"2rem"}}>Type:{this.state.userType.toUpperCase()}</p>
-          <p style={{fontSize:"2rem"}}>{
-            this.state.subscriptionLapse.length > 1 ? (
-              <p>Subscription Until: {this.state.subscriptionLapse}</p>
-            ) : (null)
-          }</p>
+            <p className={classes.paraDiv}>Type: {this.state.userType.toUpperCase()}</p>
+            <p className={classes.paraDiv}>{
+              this.state.subscriptionLapse.length > 1 ? (
+                <p>Subscription Until: {this.state.subscriptionLapse}</p>
+              ) : (null)
+            }</p>
           <Mutation mutation={CREATE_SUBSCRIPTION} onError={err => {console.log(err)}}>
             {mutation => (
-              <div>
+              <div className={classes.subscriptionDiv}>
+                <div style={
+                  {
+                  body: "#5e366a",
+                  paddingRight: "5px"
+                  }
+                }>
                 <StripeCheckout
                   amount={premium}
+                  className=""
                   label="Become a Premium User"
                   description="Become a Premium User!"
                   locale="auto"
@@ -179,6 +204,8 @@ gridContainer: {
                   }}
                   zipcode
                 />
+                </div>
+                <div>
                 <StripeCheckout
                   amount={coach}
                   label="Become a Coach"
@@ -201,6 +228,7 @@ gridContainer: {
                   }}
                   zipcode
                 />
+                </div>
               </div>
             )}
           </Mutation>

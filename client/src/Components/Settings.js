@@ -18,6 +18,7 @@ import AccountNav from "./AccountNav";
 
 const styles = theme => ({
   divStyle: {
+    fontFamily: "Oswald",
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
