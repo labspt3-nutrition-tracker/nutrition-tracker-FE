@@ -33,13 +33,18 @@ const useStyles = makeStyles({
 
   heading2: {
     fontSize: "2rem",
-    margin: "2.5% 0"
+    margin: "2.5% 0",
+    "@media (max-width: 500px)":{
+      textAlign: "center"
+    }
   },
 
   button: {
     background: "#5E366A",
     color: "#FFFFFF",
-    width: 300,
+    maxWidth: 300,
+    minWidth: 200,
+    width: "100%",
     padding: "1% 0",
     fontSize: "1.5rem",
     border: "1px solid #5E366A",
@@ -70,7 +75,10 @@ const useStyles = makeStyles({
     alignContent: "space-between",
     justifyContent: "space-around",
     width: "100%",
-    padding: "0 30%"
+    padding: "0 30%",
+    '@media (max-width: 500px)': {
+      flexDirection: "column"
+    }
   },
 
   lDiv: {
