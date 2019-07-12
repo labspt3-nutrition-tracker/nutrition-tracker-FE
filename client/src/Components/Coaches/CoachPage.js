@@ -35,6 +35,7 @@ class CoachPage extends React.Component {
       currentUser: "",
       traineeSearchInput: "",
       traineeSearchResults: [],
+      traineeExist: false,
       isSearchModalOpen: false,
       trainees: [],
       selectedTrainee: [],
@@ -149,6 +150,35 @@ class CoachPage extends React.Component {
     }
   }
 
+  traineeExistCheck = async (coachId, traineeId) => {
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    const trainees = await client.query({
+      query: GET_TRAINEES,
+      variables: {
+        coach_id: coachId
+      }
+    });
+
+    const filteredTrainees = trainees.data.getTrainees.some(trainee => {
+      return trainee.id === traineeId;
+    });
+
+    if (filteredTrainees === true){
+      this.setState({
+        traineeExist: true
+      })
+    } else {
+      this.setState({
+        traineeExist: false
+      })
+    }
+  }
+
   handleRequest = async () => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
@@ -166,13 +196,22 @@ class CoachPage extends React.Component {
         recipient: this.state.traineeSearchResults.id
       }
     };
-    try {
-      await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
-      this.setState({ traineeSearchResults: [] });
-    } catch (err) {
+    await this.traineeExistCheck(userId, this.state.traineeSearchResults.id)
+
+    if (this.state.traineeExist){
+      console.log('user exist already')
       this.setState({
-        errorText: 'Unable to send SendMessage'
+        errorText: "User has already been added"
       })
+    } else {
+      try {
+        await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
+        this.setState({ traineeSearchResults: [] });
+      } catch (err) {
+        this.setState({
+          errorText: 'Unable to send SendMessage'
+        })
+      }
     }
   };
 
