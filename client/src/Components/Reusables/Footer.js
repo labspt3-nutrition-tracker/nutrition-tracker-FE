@@ -114,7 +114,11 @@ export default function HomeFooter(props) {
                 </Link>
               </div>
               <div className={classes.lDiv}>|</div>
-              <div className={classes.lDiv}>Contact</div>
+              <div className={classes.lDiv}>
+                <Link className="footer-link" to="/contact">
+                  Contact
+                </Link>
+              </div>
               <div className={classes.lDiv}>|</div>
               <div className={classes.lDiv}>
                 <a
@@ -152,7 +156,11 @@ export default function HomeFooter(props) {
                 </Link>
               </div>
               <div className={classes.lDiv}>|</div>
-              <div className={classes.lDiv}>Contact</div>
+              <div className={classes.lDiv}>
+                <Link className="footer-link" to="/contact">
+                  Contact
+                </Link>
+              </div>
               <div className={classes.lDiv}>|</div>
               <div className={classes.lDiv}>
                 <a
