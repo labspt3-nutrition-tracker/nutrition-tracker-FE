@@ -42,7 +42,14 @@ const useStyles = makeStyles({
     width: 300,
     padding: "1% 0",
     fontSize: "1.5rem",
-    border: "1px solid #40A798"
+    border: "1px solid #5E366A",
+    height: 45,
+    cursor: "pointer",
+    fontWeight: 500,
+    "&:hover": {
+      background: "#ffffff",
+      color: "#5E366A"
+    }
   },
 
   lowerDiv: {
@@ -122,11 +129,11 @@ export default function HomeFooter(props) {
               <div className={classes.lDiv}>|</div>
               <div className={classes.lDiv}>
                 <a
-                  className={classes.href}
+                  className={`${classes.href} footer-link`}
                   href="https://github.com/labspt3-nutrition-tracker"
                 >
                   Github
-                </a>{" "}
+                </a>
               </div>
             </div>
           </div>
@@ -139,15 +146,9 @@ export default function HomeFooter(props) {
           <div className={classes.heading2}>
             What are you waiting for? Let's get started.
           </div>
-          <button className={classes.button}>
-            {" "}
-            <Link
-              style={{ textDecoration: "none", color: "white" }}
-              to={{ pathname: "/login" }}
-            >
-              Sign Up
-            </Link>
-          </button>
+          <Link to={{ pathname: "/login" }}>
+            <button className={classes.button}>Sign Up</button>
+          </Link>
           <div className={classes.lowerDiv}>
             <div className={classes.contactDiv}>
               <div className={classes.lDiv}>
@@ -164,11 +165,12 @@ export default function HomeFooter(props) {
               <div className={classes.lDiv}>|</div>
               <div className={classes.lDiv}>
                 <a
-                  className={classes.href}
+                  target="_blank"
+                  className={`${classes.href} footer-link`}
                   href="https://github.com/labspt3-nutrition-tracker"
                 >
                   Github
-                </a>{" "}
+                </a>
               </div>
             </div>
           </div>
