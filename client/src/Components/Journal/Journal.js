@@ -1,10 +1,11 @@
 import React from "react";
 import moment from "moment";
-import gql from "graphql-tag";
+import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import "@fullcalendar/core/main.css";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
+
 import Calendar from "./Calendar";
 import JournalEntry from "./JournalEntry";
 import { getCurrentUser } from "../../util/getCurrentUser";
@@ -15,6 +16,15 @@ import {
   EDIT_FOOD
 } from "../../graphql/mutations";
 
+const Errors = styled.ul`
+  text-align: center;
+  li {
+    margin: 15px 0;
+    color: #40a798;
+    font-family: Oswald;
+  }
+`;
+
 class Journal extends React.Component {
   constructor(props) {
     super(props);
@@ -22,7 +32,9 @@ class Journal extends React.Component {
       currentUser: null,
       premiumUser: true,
       datePicked: "",
-      foodEntry: []
+      foodEntry: [],
+      errors: [],
+      info: ""
     };
   }
 
@@ -31,12 +43,14 @@ class Journal extends React.Component {
     if (premium) {
       this.setState({
         datePicked: date,
-        premiumUser: premium
+        premiumUser: premium,
+        info: ""
       });
     } else {
       this.setState({
         datePicked: date,
-        premiumUser: premium
+        premiumUser: premium,
+        info: ""
       });
     }
   };
@@ -49,9 +63,12 @@ class Journal extends React.Component {
       this.setState({ datePicked: date, currentUser: user.id });
     } catch (err) {
       console.log(err);
-      if (err.response.errors[0].message === "You must be logged in!") {
-        localStorage.removeItem("token");
-      }
+      const error = err.message.split(":")[1];
+      this.setState(prevState => {
+        const errors = prevState.errors;
+        errors.push(error);
+        return { errors: errors };
+      });
     }
 
     this.loadFoodEntries();
@@ -62,19 +79,25 @@ class Journal extends React.Component {
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
-    await client
-      .query({
+    try {
+      const response = await client.query({
         query: FOOD_ENTRY_QUERY,
         variables: {
           userId: this.state.currentUser
         }
-      })
-      .then(response => {
-        this.setState({
-          foodEntry: response.data.getFoodEntriesByUserId
-        });
-      })
-      .catch(err => console.log(err));
+      });
+      this.setState({
+        foodEntry: response.data.getFoodEntriesByUserId
+      });
+    } catch (err) {
+      console.log(err);
+      const error = err.message.split(":")[1];
+      this.setState(prevState => {
+        const errors = prevState.errors;
+        errors.push(error);
+        return { errors: errors };
+      });
+    }
   };
 
   deleteMealEntry = async id => {
@@ -96,10 +119,17 @@ class Journal extends React.Component {
         }
       });
       this.setState({
-        foodEntry: response.data.getFoodEntriesByUserId
+        foodEntry: response.data.getFoodEntriesByUserId,
+        info: "The food entry has been deleted."
       });
     } catch (err) {
       console.log(err);
+      const error = err.message.split(":")[1];
+      this.setState(prevState => {
+        const errors = prevState.errors;
+        errors.push(error);
+        return { errors: errors };
+      });
     }
   };
 
@@ -148,10 +178,17 @@ class Journal extends React.Component {
         }
       });
       this.setState({
-        foodEntry: response.data.getFoodEntriesByUserId
+        foodEntry: response.data.getFoodEntriesByUserId,
+        info: "The food entry has been edited successfully."
       });
     } catch (err) {
       console.log(err);
+      const error = err.message.split(":")[1];
+      this.setState(prevState => {
+        const errors = prevState.errors;
+        errors.push(error);
+        return { errors: errors };
+      });
     }
   };
 
@@ -169,32 +206,46 @@ class Journal extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { errors, info } = this.state;
     return (
-      <Grid
-        container
-        justify="center"
-        alignItems="center"
-        classes={{ root: classes.gridContainer }}
-      >
-        <Grid item md={4} xs={12}>
-          {this.state.foodEntry.length > 1 && this.state.premiumUser ? (
-            <JournalEntry
-              foodEntries={this.state.foodEntry}
-              datePicked={this.state.datePicked}
-              deleteMeal={this.deleteMealEntry}
-              editMeal={this.editMealEntry}
-            />
-          ) : (
-            this.premiumCheck()
-          )}
-        </Grid>
-        <Grid item md={8} xs={12}>
-          <Calendar
-            datePicked={this.state.datePicked}
-            handleDateClick={this.handleDateClick}
-          />
-        </Grid>
-      </Grid>
+      <>
+        {errors.length > 0 ? (
+          <Errors>
+            {errors.map((error, i) => (
+              <li key={i}>{error}</li>
+            ))}
+          </Errors>
+        ) : (
+          <>
+            {info && <h2 className={classes.message}>{info}</h2>}
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              classes={{ root: classes.gridContainer }}
+            >
+              <Grid item md={4} xs={12}>
+                {this.state.foodEntry.length > 1 && this.state.premiumUser ? (
+                  <JournalEntry
+                    foodEntries={this.state.foodEntry}
+                    datePicked={this.state.datePicked}
+                    deleteMeal={this.deleteMealEntry}
+                    editMeal={this.editMealEntry}
+                  />
+                ) : (
+                  this.premiumCheck()
+                )}
+              </Grid>
+              <Grid item md={8} xs={12}>
+                <Calendar
+                  datePicked={this.state.datePicked}
+                  handleDateClick={this.handleDateClick}
+                />
+              </Grid>
+            </Grid>
+          </>
+        )}
+      </>
     );
   }
 }
@@ -202,6 +253,13 @@ class Journal extends React.Component {
 const styles = theme => ({
   gridContainer: {
     padding: "3%"
+  },
+  message: {
+    fontSize: "2rem",
+    textAlign: "center",
+    margin: 10,
+    color: "#40a798",
+    fontFamily: "Oswald"
   }
 });
 
