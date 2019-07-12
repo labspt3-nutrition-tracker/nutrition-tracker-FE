@@ -609,7 +609,9 @@ class Dashboard extends Component {
     } else {
       return (
         <Container className={classes.root}>
-          <DashTitle>{currentDate}</DashTitle>
+        <Typography variant="h3" className={classes.date}>
+          {currentDate}
+        </Typography>
           <Calories foodEntries={this.state.foodEntries} />
           <DashDisplay className="container">
             <InfoCon>
