@@ -4,55 +4,61 @@ import StripeCheckout from 'react-stripe-checkout';
 import BillingHistory from './BillingHistory';
 import ApolloClient from "apollo-boost";
 import moment from 'moment';
-import styled from "styled-components";
 import AccountNav from '../AccountNav';
-import { makeStyles } from '@material-ui/core/styles';
-import { wrap } from "module";
+// import { wrap } from "module";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+
 
 import {GET_CURRENT_USER_QUERY, GET_RECENT_BILLING} from "../../graphql/queries";
 import {CREATE_SUBSCRIPTION} from "../../graphql/mutations";
 
-const BillingContainer = styled.div`
-  margin-top:30px;
-  padding-top:50px;
-  display:flex;
-  flex-direction:row;
-  justify-content:center;
-  flex-wrap:wrap;
-  width:60%;
-  background-color: white;
-  height:500px;
-  -webkit-box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
-  -moz-box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
-  box-shadow: 6px 6px 15px -5px rgba(0,0,0,0.75);
-`;
-
-const BillingTop = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items:center;
-  height:100px;
-  width: 100%;
-`;
-
-const divStyle = {
+const styles = theme => ({
+divStyle: {
   display: 'flex',
   flexWrap: 'wrap',
   justifyContent: 'flex-start',
   alignItems: "flex-start"
   // marginLeft: "25%"
-}
+},
+gridContainer: {
+  padding: "3%",
+  // margin: "20% 0",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
 
-// const useStyles = makeStyles(theme => ({
+},
 
-//   root: {
-//     display: 'flex',
-//   }
-
-// }));
-// const classes = useStyles();
+  billingTop: {
+    display: 'flex',
+    alignItems: "center",
+    flexWrap: "wrap",
+    flexDirection: "column",
+    flexGrow: 1,
+    height:"100px",
+    width: "100%"
+  },
+  card: {
+    width: "100%",
+    maxWidth: 500,
+    height: "400px",
+    marginLeft: "7%",
+    // margin: "30px 150px",
+    padding: 10,
+    flexWrap: 'nowrap',
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+      maxWidth: 1000,
+      margin: "inherit",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }
+  },
+});
 
  class Billing extends React.Component{
   constructor(props){
@@ -131,11 +137,7 @@ const divStyle = {
     const { classes } = this.props;
     return(
 
-      // <div
-      // className={classes.root}
-      // >
-
-      <div style={divStyle}>
+    <div className={classes.divStyle}>
             <AccountNav />
     <Grid 
       item md={8} xs={12}
@@ -145,8 +147,8 @@ const divStyle = {
       border="1px solid black"
       classes={{ root: classes.gridContainer }}
     >
-        <BillingContainer>
-          <BillingTop>
+        <Card className={classes.card}>
+          <div className={classes.billingTop}>
           <p style={{fontSize:"2rem"}}>Type:{this.state.userType.toUpperCase()}</p>
           <p style={{fontSize:"2rem"}}>{
             this.state.subscriptionLapse.length > 1 ? (
@@ -187,6 +189,7 @@ const divStyle = {
                   stripeKey={process.env.REACT_APP_STRIPE_KEY}
                   token={async token => {
                     console.log(token)
+                    console.log(token.id,token.email, coach)
                     const response = await mutation({
                       variables: {
                         source: token.id,
@@ -201,9 +204,9 @@ const divStyle = {
               </div>
             )}
           </Mutation>
-        </BillingTop>
+        </div>
           <BillingHistory/>
-        </BillingContainer>
+        </Card>
         </Grid>
       </div>
    
@@ -211,16 +214,16 @@ const divStyle = {
   }
 }
 
-const styles = theme => ({
-  gridContainer: {
-    padding: "3%",
-    // margin: "20% 0",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
+// const styles = theme => ({
+//   gridContainer: {
+//     padding: "3%",
+//     // margin: "20% 0",
+//     display: "flex",
+//     flexDirection: "column",
+//     justifyContent: "space-between",
+//     alignItems: "center",
 
-  }
-});
+//   }
+// });
 
  export default withStyles(styles)(Billing);

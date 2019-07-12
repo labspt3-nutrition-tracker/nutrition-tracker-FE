@@ -241,8 +241,8 @@ class ExerEntry extends React.Component {
             <DialogContentText classes={{ root: classes.exer }}>
               {this.props.exerEntry && (
                 <Form>
-                                    <DialogTitle id="form-dialog-title" classes={{ root: classes.title }}>
-                  <span className={classes.title}> Edit Exercise Entry</span>
+                  <DialogTitle id="form-dialog-title" classes={{ root: classes.title }}>
+                    <span className={classes.title}> Edit Exercise Entry</span>
                   </DialogTitle>
                   <TextField
                     required
