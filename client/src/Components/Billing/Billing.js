@@ -184,7 +184,7 @@ card: {
                 }>
                 <StripeCheckout
                   amount={premium}
-                  className=""
+                  class="StripeCheckout"
                   label="Become a Premium User"
                   description="Become a Premium User!"
                   locale="auto"
@@ -209,6 +209,7 @@ card: {
                 <StripeCheckout
                   amount={coach}
                   label="Become a Coach"
+                  className="StripeCheckout"
                   description="Become a Coach!"
                   locale="auto"
                   name="NutritionTrkr"
@@ -241,17 +242,5 @@ card: {
     )
   }
 }
-
-// const styles = theme => ({
-//   gridContainer: {
-//     padding: "3%",
-//     // margin: "20% 0",
-//     display: "flex",
-//     flexDirection: "column",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-
-//   }
-// });
 
  export default withStyles(styles)(Billing);

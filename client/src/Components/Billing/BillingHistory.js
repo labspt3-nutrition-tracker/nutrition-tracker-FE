@@ -9,6 +9,7 @@ import {GET_CURRENT_USER_QUERY, GET_BILLING_HISTORY} from "../../graphql/queries
 
 const PaymentHistory = styled.div`
     display:flex;
+    font-size: 1.3rem;
     flex-direction:column;
     justify-content:center;
     overflow:auto;
