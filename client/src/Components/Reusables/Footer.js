@@ -105,7 +105,7 @@ React.useEffect(() => {
             </div>
         <div className={classes.lowerDiv}>
           <div className={classes.contactDiv}>
-            <div className={classes.lDiv}>About Us</div>
+            <div className={classes.lDiv}><Link to="/about">About Us</Link></div>
             <div className={classes.lDiv}>|</div>
             <div className={classes.lDiv}>Contact</div>
             <div className={classes.lDiv}>|</div>

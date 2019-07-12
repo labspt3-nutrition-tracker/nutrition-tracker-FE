@@ -157,7 +157,6 @@ const divStyle = {
             {mutation => (
               <div>
                 <StripeCheckout
-                backgroundColor="#5E366A"
                   amount={premium}
                   label="Become a Premium User"
                   description="Become a Premium User!"
