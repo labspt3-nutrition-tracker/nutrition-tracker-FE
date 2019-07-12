@@ -509,7 +509,7 @@ class Dashboard extends Component {
   render() {
     const { classes } = this.props;
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
-    if (this.state.userType === "premium") {
+    if (this.state.userType !== "basic") {
       return (
         <Container className={classes.root}>
           <Typography variant="h3" className={classes.date}>
