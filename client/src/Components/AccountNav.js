@@ -120,7 +120,6 @@ export default function  AccountNav() {
             }}
             anchor="left"
         >
-            {/* <div className={classes.toolbar} /> */}
             <Divider />
             <List component={Link} to ="/settings" >
             {[''].map((text, index) => (
@@ -150,7 +149,6 @@ export default function  AccountNav() {
             <div className={classes.toolbar} />
         </main>
       </div>
-    //  </div>
     );
 
 }
