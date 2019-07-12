@@ -37,11 +37,11 @@ const BillingTop = styled.div`
   width: 100%;
 `;
 
-let divStyle = {
+const divStyle = {
   display: 'flex',
   flexWrap: 'wrap',
-  // height: '80vh',
-  justifyContent: 'flex-start'
+  justifyContent: 'flex-start',
+  alignItems: "flex-start"
   // marginLeft: "25%"
 }
 
@@ -215,11 +215,12 @@ let divStyle = {
 const styles = theme => ({
   gridContainer: {
     padding: "3%",
-    margin: "20% 0",
+    // margin: "20% 0",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
+
   }
 });
 

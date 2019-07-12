@@ -911,7 +911,10 @@ class FoodEntry extends React.Component {
                         onChange={this.props.onFoodEntryChange}
                         required
                         aria-describedby="errorDate-text"
-                         value={this.props.foodEntry.date}
+                        //  value={this.props.foodEntry.date}
+                        value={moment(this.props.foodEntry.date).format(
+                          "YYYY-MM-DD"
+                        )}
                         defaultValue={moment(this.props.foodEntry.date).format(
                           "YYYY-MM-DD"
                         )}
@@ -932,6 +935,9 @@ class FoodEntry extends React.Component {
               <Button onClick={this.closeModal} className={classes.btn}>Cancel</Button>
               <Button onClick={() => this.editFood(this.props.foodEntry)} className={classes.btn}>
                 Edit
+                {/* disabled={
+                        userType !== "premium" 
+                      } */}
               </Button>
               <Button
                 onClick={() => this.deleteFood(this.props.foodEntry.id)}
