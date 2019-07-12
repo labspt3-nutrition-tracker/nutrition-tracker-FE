@@ -17,14 +17,35 @@ import UserEditModal from "../Components/UserEditModal";
 import AccountNav from "./AccountNav";
 
 const styles = theme => ({
-  root: {
+  divStyle: {
     display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: "flex-start"
+    // flexDirection: "row",
+    // flexGrow: 1,
+    // margin: "0",
+    // position: "relative"
+  },
+  gridContainer: {
+    padding: "3%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  settingsTop: {
     justifyContent: "center",
     flexWrap: "wrap",
     flexDirection: "row",
     flexGrow: 1,
-    margin: "0",
-    position: "relative"
+    // height:"100px",
+    // width: "100%",
+    [theme.breakpoints.down('sm')]: {
+      // display: "flex"
+      justifyContent: "space-around"
+    }
   },
   card: {
     width: "100%",
@@ -39,14 +60,38 @@ const styles = theme => ({
       maxWidth: 1000,
       margin: "inherit",
       display: "flex",
-      alignItems: "center",
       justifyContent: "center"
+    }
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  cardContent: {
+    [theme.breakpoints.down('sm')]: {
+    padding: "16px",
+    flexDirection: "column",
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center"
+    }
+  },
+  cardContentItems: {
+    [theme.breakpoints.down('sm')]: {
+    padding: "16px",
+    flexDirection: "column",
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center"
     }
   },
   media: {
     padding: 20
   },
   listItemText: {
+    display: "flex",
     fontFamily: "Roboto",
     fontSize: "1.8rem"
   },
@@ -111,16 +156,18 @@ class Settings extends React.Component {
   render() {
     const { classes } = this.props;
     const { currentUser, editType } = this.state;
-       //  {/* <div className={classes.root}> */}
+     
     return (
-      <Grid
-        container
-        justify="space-between"
-        alignItems="center"
-        flexWrap="nowrap"
-        classes={{ root: classes.gridContainer }}
-      >
-        <AccountNav />
+      <div className={classes.divStyle}>
+           <AccountNav />
+      <Grid 
+      item md={8} xs={12}
+      container
+      justify="center"
+      alignItems="center"
+      border="1px solid black"
+      classes={{ root: classes.gridContainer }}
+    > 
         <UserEditModal
           open={this.state.modalOpen}
           handleClose={this.handleClose}
@@ -128,10 +175,11 @@ class Settings extends React.Component {
           editType={editType}
           currentWeight={this.state.currentWeight}
         />
-        <Grid item md={8} s={10} xs={12}
-        >
         <Card className={classes.card}>
+        <div className={classes.settingsTop}>
           <CardContent>
+          <div className={classes.cardContent}>
+          <div className={classes.header}>
             <Typography
               gutterBottom
               variant="h3"
@@ -148,6 +196,7 @@ class Settings extends React.Component {
             >
               {currentUser.email}
             </Typography>
+            </div>
             <List dense={false}>
               <ListItem>
                 <ListItemIcon>
@@ -207,11 +256,12 @@ class Settings extends React.Component {
                 />
               </ListItem>
             </List>
+            </div>
           </CardContent>
-         
+           </div>
           </Card>
-          </Grid>
         </Grid>
+        </div>
     );
   }
 }
