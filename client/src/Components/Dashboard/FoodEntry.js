@@ -936,7 +936,7 @@ class FoodEntry extends React.Component {
               <Button onClick={() => this.editFood(this.props.foodEntry)} className={classes.btn}>
                 Edit
                 {/* disabled={
-                        userType !== "premium" 
+                        userType !== "basic" 
                       } */}
               </Button>
               <Button
