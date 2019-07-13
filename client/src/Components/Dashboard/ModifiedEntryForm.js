@@ -182,6 +182,7 @@ class ModifiedEntryForm extends Component {
                   servingQty: null
                 }
               });
+              this.props.resetSelected();
             })
             .catch(err => {
               console.log("food entry error", err);
@@ -244,7 +245,7 @@ class ModifiedEntryForm extends Component {
               }
             });
             this.props.revertToNormalForm();
-            this.props.resetSelected();
+           
           })
           .catch(err => {
             this.setState({
@@ -346,19 +347,27 @@ class ModifiedEntryForm extends Component {
 
   componentDidUpdate(prevProps) {
     let foodName;
-    let caloriesPerServ;
-    let fats;
-    let carbs;
-    let proteins;
     let edamam_id;
+    let caloriesPerServ = 0;
+    let fats = 0;
+    let carbs = 0;
+    let proteins = 0;
 
     if (prevProps.selectedFood !== this.props.selectedFood) {
-      foodName = this.props.selectedFood.label;
-      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL? this.props.selectedFood.nutrients.ENERC_KCAL: 0;
-      fats = this.props.selectedFood.nutrients.FAT? this.props.selectedFood.nutrients.FAT: 0;
-      carbs = this.props.selectedFood.nutrients.CHOCDF? this.props.selectedFood.nutrients.CHOCDF: 0;
-      proteins = this.props.selectedFood.nutrients.PROCNT? this.props.selectedFood.nutrients.PROCNT: 0;
-      edamam_id = this.props.selectedFood.foodId;
+      if (this.props.selectedFood) {
+        foodName = this.props.selectedFood.label;
+        edamam_id = this.props.selectedFood.foodId;
+
+        if (this.props.selectedFood.nutrients) {
+          caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL;
+          fats = this.props.selectedFood.nutrients.FAT;
+          carbs = this.props.selectedFood.nutrients.CHOCDF;
+          proteins = this.props.selectedFood.nutrients.PROCNT;
+        }
+
+        this.edamamExistCheck(this.props.selectedFood.foodId);
+      }
+
       this.setState({
         newAddFood: {
           foodName: foodName,
@@ -369,7 +378,6 @@ class ModifiedEntryForm extends Component {
           edamam_id: edamam_id
         }
       });
-      this.edamamExistCheck(this.props.selectedFood.foodId);
     }
   }
 
