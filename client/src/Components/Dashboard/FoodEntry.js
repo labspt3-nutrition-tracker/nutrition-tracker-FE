@@ -564,7 +564,8 @@ const styles = theme => ({
   },
   mealTitle: {
     fontFamily: "Oswald",
-    fontSize: "1.8rem"
+    fontSize: "1.8rem",
+    marginTop: 10
   }
 });
 
