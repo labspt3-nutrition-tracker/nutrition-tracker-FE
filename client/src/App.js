@@ -77,7 +77,6 @@ class App extends React.Component {
   };
 
   closeModal = () => {
-    console.log(this.state.searchInput);
     this.setState({ showModal: false });
   };
 
@@ -118,7 +117,7 @@ class App extends React.Component {
   };
 
   resetSelected = () => {
-    this.setState({selectedFood: null})
+    this.setState({selectedFood: null, searchResults: []})
   }
 
   resetSearch = () => {
