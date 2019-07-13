@@ -223,6 +223,16 @@ button {
 .fc-view-container {
   z-index: 0;
 }
+.StripeCheckout {
+  background: #5e366a !important;
+}
+
+.StripeCheckout span {
+  font-family: "oswald" !important;
+  background: #5e366a !important;
+  background-image:none !important;
+  background-color: #5e366a !important;
+}
 
 /* ------------ MEDIA QUERIES ------------ */
 
