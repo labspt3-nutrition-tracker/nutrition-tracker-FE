@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
@@ -23,6 +22,13 @@ const styles = theme => ({
     padding: 15,
     fontFamily: "Oswald",
     maxWidth: "1200px"
+  },
+  message: {
+    fontSize: "2rem",
+    textAlign: "center",
+    margin: 10,
+    color: "#40a798",
+    fontFamily: "Oswald"
   }
 });
 
@@ -39,19 +45,24 @@ class CoachPage extends React.Component {
       selectedTrainee: [],
       noUserFoundError: "",
       errorText: "",
-      error: false
+      error: false,
+      info: ""
     };
   }
 
   updateTraineeSearch = e => {
     this.setState({
-      traineeSearchInput: e.target.value
+      traineeSearchInput: e.target.value,
+      info: "",
+      errorText: ""
     });
   };
 
   handleChooseUser = async user => {
     await this.setState({
-      selectedTrainee: user
+      selectedTrainee: user,
+      info: "",
+      errorText: ""
     });
   };
 
@@ -86,7 +97,7 @@ class CoachPage extends React.Component {
       })
       .catch(err => {
         this.setState({
-          errorText: "Unable to get data"
+          errorText: err.message.split(":")[1]
         });
       });
   }
@@ -111,7 +122,9 @@ class CoachPage extends React.Component {
           traineeSearchResults: response.data.getUserBy,
           isSearchModalOpen: true,
           noUserFoundError: "",
-          traineeSearchInput: ""
+          traineeSearchInput: "",
+          info: "",
+          errorText: ""
         });
       })
       .catch(error => {
@@ -143,7 +156,11 @@ class CoachPage extends React.Component {
           coach_id: userId
         }
       });
-      this.setState({ trainees: trainees.data.getTrainees });
+      this.setState({
+        trainees: trainees.data.getTrainees,
+        info: "Trainee has been deleted successfully.",
+        errorText: ""
+      });
     } catch (err) {
       this.setState({
         errorText: "Unable to delete your trainee"
@@ -204,12 +221,21 @@ class CoachPage extends React.Component {
     if (this.state.traineeExist) {
       console.log("user exist already");
       this.setState({
-        errorText: "User has already been added"
+        traineeSearchResults: null,
+        errorText: `User ${this.state.traineeSearchResults.firstName} ${
+          this.state.traineeSearchResults.lastName
+        } has already been added`
       });
     } else {
       try {
         await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
-        this.setState({ traineeSearchResults: null });
+        this.setState({
+          traineeSearchResults: null,
+          info: `A request message has been sent to ${
+            this.state.traineeSearchResults.firstName
+          } ${this.state.traineeSearchResults.lastName}.`,
+          errorText: ""
+        });
       } catch (err) {
         this.setState({
           errorText: "Unable to send SendMessage"
@@ -220,8 +246,11 @@ class CoachPage extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { info, errorText } = this.state;
     return (
       <>
+        {info && <h2 className={classes.message}>{info}</h2>}
+        {errorText && <h2 className={classes.message}>{errorText}</h2>}
         <Grid
           container
           justify="center"
@@ -249,6 +278,7 @@ class CoachPage extends React.Component {
               trainees={this.state.trainees}
               deleteTrainee={this.deleteTrainee}
               handleChooseUser={this.handleChooseUser}
+              traineeID={this.state.selectedTrainee.id}
             />
           </Grid>
           <Grid item sm={6} xs={12}>

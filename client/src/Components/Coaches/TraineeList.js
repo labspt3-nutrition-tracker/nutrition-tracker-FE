@@ -14,22 +14,26 @@ const TraineeListDiv = styled.div`
 
 class TraineeList extends React.Component {
   render() {
-    const { trainees } = this.props;
+    const { trainees, traineeID } = this.props;
     return (
-      <TraineeListDiv>
-        <h1> Trainee List </h1>
-        {trainees &&
-          trainees.map(data => {
-            return (
-              <Trainee
-                key={data.id}
-                deleteTrainee={this.props.deleteTrainee}
-                handleChooseUser={this.props.handleChooseUser}
-                data={data}
-              />
-            );
-          })}
-      </TraineeListDiv>
+      <>
+        {trainees && trainees.length > 0 && (
+          <TraineeListDiv>
+            <h1> Trainee List </h1>
+            {trainees.map(data => {
+              return (
+                <Trainee
+                  key={data.id}
+                  deleteTrainee={this.props.deleteTrainee}
+                  handleChooseUser={this.props.handleChooseUser}
+                  data={data}
+                  selectedTrainee={traineeID}
+                />
+              );
+            })}
+          </TraineeListDiv>
+        )}
+      </>
     );
   }
 }

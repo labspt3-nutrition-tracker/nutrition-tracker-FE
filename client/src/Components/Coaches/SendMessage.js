@@ -102,7 +102,6 @@ class SendMessageFromCoach extends React.Component {
             Send Message to: {firstName} {lastName}
             <TextField
               label="message"
-              // style={{ background: "#fff" }}
               rows="10"
               error={this.state.error}
               helperText={this.state.errorText}

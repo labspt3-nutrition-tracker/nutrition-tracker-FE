@@ -11,13 +11,14 @@ const TraineeDiv = styled.div`
   margin: auto;
   margin-top: 10px;
   height: 80px;
-  background: #5e366a;
+  ${"" /* background: #5e366a; */}
   -webkit-box-shadow: 6px 6px 15px -5px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 6px 6px 15px -5px rgba(0, 0, 0, 0.75);
   box-shadow: 6px 6px 15px -5px rgba(0, 0, 0, 0.75);
   border-radius: 10px;
   text-align: center;
   padding-top: 10px;
+  background: ${props => (props.selected ? "#40A798" : "#5e366a")};
 `;
 
 const TraineeContent = styled.div`
@@ -60,12 +61,12 @@ const DeleteButton = styled.button`
 
 class Trainee extends React.Component {
   render() {
-    const data = this.props.data;
+    const { data, selectedTrainee } = this.props;
     return (
-      <TraineeDiv>
+      <TraineeDiv selected={selectedTrainee === data.id}>
         <TraineeContent
           onClick={() => {
-            this.props.handleChooseUser(this.props.data);
+            this.props.handleChooseUser(data);
           }}
         >
           <TraineeName>
