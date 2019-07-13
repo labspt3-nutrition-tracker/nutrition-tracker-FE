@@ -8,33 +8,31 @@ const styles = theme => ({
   root: {
     textAlign: "center"
   },
-  title: {
-    color: "#3685B5",
-    fontSize: "2.5rem",
-    fontFamily: "Oxygen",
-    margin: "20px 0"
-  },
   formTextLabel: {
-    fontFamily: "Oxygen",
-    fontSize: "2rem",
-    color: "#3685B5"
+    fontFamily: "Oswald",
+    fontSize: "2.2rem",
+    color: "#5E366A"
   },
   formTextInput: {
-    fontFamily: "Oxygen",
     fontSize: "1.8rem",
     width: "100%"
   },
   btn: {
-    fontFamily: "Oxygen",
+    fontFamily: "Oswald",
     fontSize: "1.4rem",
     color: "white",
-    backgroundColor: "#F4B4C3",
-    marginTop: 35
+    backgroundColor: "#40a798",
+    border: "1px solid #40a798",
+    marginTop: 35,
+    "&:hover": {
+      backgroundColor: "white",
+      color: "#40a798"
+    }
   },
   errors: {
-    fontFamily: "Oxygen",
-    fontSize: "1.5rem",
-    color: "#F4B4C3"
+    fontFamily: "Oswald",
+    fontSize: "1.2rem",
+    color: "#40a798"
   },
   input: {
     marginTop: 10,
@@ -46,7 +44,6 @@ class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
       calorieGoal: 0,
       weight: 0,
       error: []
@@ -56,18 +53,18 @@ class LoginForm extends React.Component {
   bundleUserInfo = e => {
     e.preventDefault();
     const errors = [];
-    if (!this.state.username.trim()) {
-      errors.push({ field: "username", text: "Please provide a valid username" });
-    }
     if (isNaN(this.state.calorieGoal) || Number(this.state.calorieGoal) === 0) {
-      errors.push({ field: "calorieGoal", text: "Please provide a valid calories goal" });
+      errors.push({
+        field: "calorieGoal",
+        text: "Please provide a valid calories goal"
+      });
     }
     if (isNaN(this.state.weight)) {
       errors.push({ field: "weight", text: "Please provide a valid weight" });
     }
     if (errors.length === 0) {
       const userInfo = {
-        username: this.state.username,
+        username: "username",
         calorieGoal: Number(this.state.calorieGoal),
         weight: Number(this.state.weight)
       };
@@ -84,56 +81,24 @@ class LoginForm extends React.Component {
   render() {
     const { classes } = this.props;
     const { error } = this.state;
-    const usernameErr = error.find(err => err.field === "username");
     const caloriesGoalErr = error.find(err => err.field === "calorieGoal");
     const weightErr = error.find(err => err.field === "weight");
     return (
       <div>
         {this.props.addUser ? (
           <div className={classes.root}>
-            <div className={classes.title}><a className={classes.href} href="https://nutrition-tracker-lambda.netlify.com/login">Sign Up</a></div>
             <form onSubmit={this.bundleUserInfo}>
-              <Grid container justify='flex-start' alignItems='flex-start'>
-                <Grid item xs={12} className={classes.input}>
-                  <TextField
-                    autoFocus
-                    type='text'
-                    required
-                    error={usernameErr !== undefined}
-                    helperText={usernameErr && usernameErr.text}
-                    id='username'
-                    name='username'
-                    label='username'
-                    value={this.state.username}
-                    margin='dense'
-                    onChange={this.handleChange}
-                    InputLabelProps={{
-                      classes: {
-                        root: classes.formTextLabel
-                      }
-                    }}
-                    InputProps={{
-                      classes: {
-                        input: classes.formTextInput
-                      }
-                    }}
-                    FormHelperTextProps={{
-                      classes: {
-                        error: classes.errors
-                      }
-                    }}
-                  />
-                </Grid>
+              <Grid container justify="flex-start" alignItems="flex-start">
                 <Grid item xs={12} className={classes.input}>
                   <TextField
                     required
                     error={caloriesGoalErr !== undefined}
                     helperText={caloriesGoalErr && caloriesGoalErr.text}
-                    id='calorieGoal'
-                    name='calorieGoal'
-                    label='Daily Calories Goal'
+                    id="calorieGoal"
+                    name="calorieGoal"
+                    label="Daily Calories Goal"
                     value={this.state.calorieGoal}
-                    margin='dense'
+                    margin="dense"
                     onChange={this.handleChange}
                     InputLabelProps={{
                       classes: {
@@ -156,11 +121,11 @@ class LoginForm extends React.Component {
                   <TextField
                     error={weightErr !== undefined}
                     helperText={weightErr && weightErr.text}
-                    id='weight'
-                    name='weight'
-                    label='Current Weight'
+                    id="weight"
+                    name="weight"
+                    label="Current Weight"
                     value={this.state.weight}
-                    margin='dense'
+                    margin="dense"
                     onChange={this.handleChange}
                     InputLabelProps={{
                       classes: {
@@ -180,7 +145,7 @@ class LoginForm extends React.Component {
                   />
                 </Grid>
               </Grid>
-              <Button type='submit' variant='contained' className={classes.btn}>
+              <Button type="submit" variant="contained" className={classes.btn}>
                 Submit
               </Button>
             </form>
