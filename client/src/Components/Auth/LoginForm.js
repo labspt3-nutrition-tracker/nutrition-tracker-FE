@@ -8,33 +8,31 @@ const styles = theme => ({
   root: {
     textAlign: "center"
   },
-  title: {
-    color: "#3685B5",
-    fontSize: "2.5rem",
-    fontFamily: "Oxygen",
-    margin: "20px 0"
-  },
   formTextLabel: {
-    fontFamily: "Oxygen",
-    fontSize: "2rem",
-    color: "#3685B5"
+    fontFamily: "Oswald",
+    fontSize: "2.2rem",
+    color: "#5E366A"
   },
   formTextInput: {
-    fontFamily: "Oxygen",
     fontSize: "1.8rem",
     width: "100%"
   },
   btn: {
-    fontFamily: "Oxygen",
+    fontFamily: "Oswald",
     fontSize: "1.4rem",
     color: "white",
-    backgroundColor: "#F4B4C3",
-    marginTop: 35
+    backgroundColor: "#40a798",
+    border: "1px solid #40a798",
+    marginTop: 35,
+    "&:hover": {
+      backgroundColor: "white",
+      color: "#40a798"
+    }
   },
   errors: {
-    fontFamily: "Oxygen",
-    fontSize: "1.5rem",
-    color: "#F4B4C3"
+    fontFamily: "Oswald",
+    fontSize: "1.2rem",
+    color: "#40a798"
   },
   input: {
     marginTop: 10,
