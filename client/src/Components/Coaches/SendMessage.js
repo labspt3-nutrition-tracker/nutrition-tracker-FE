@@ -21,6 +21,13 @@ const styles = theme => ({
   message: {
     fontSize: "1.6rem",
     background: "#fff"
+  },
+  info: {
+    fontSize: "2rem",
+    textAlign: "center",
+    margin: 10,
+    color: "#40a798",
+    fontFamily: "Oswald"
   }
 });
 
@@ -30,21 +37,27 @@ class SendMessageFromCoach extends React.Component {
     this.state = {
       error: "",
       errorText: "",
-      message: ""
+      message: "",
+      info: ""
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.traineeID !== this.props.traineeID)
+      this.setState({ info: "" });
+  };
+
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value, info: "" });
   };
 
   handleSubmit() {
     if (!this.state.message) {
       this.setState({ error: true, errorText: "Please enter a valid message" });
     } else {
-      this.setState({ error: false, errorText: "" });
+      this.setState({ error: false, errorText: "", info: "" });
       this.sendMessage(this.state.message);
     }
   }
@@ -74,7 +87,8 @@ class SendMessageFromCoach extends React.Component {
         this.setState({
           error: "",
           errorText: "",
-          message: ""
+          message: "",
+          info: "Message sent"
         });
       })
       .catch(error => {
@@ -89,6 +103,7 @@ class SendMessageFromCoach extends React.Component {
 
   render() {
     const { classes, traineeID, firstName, lastName } = this.props;
+    const { info } = this.state;
     return (
       <div
         style={{
@@ -99,6 +114,7 @@ class SendMessageFromCoach extends React.Component {
       >
         {traineeID && (
           <div style={{ padding: 10 }}>
+            {info && <div className={classes.info}>{info}</div>}
             Send Message to: {firstName} {lastName}
             <TextField
               label="message"
