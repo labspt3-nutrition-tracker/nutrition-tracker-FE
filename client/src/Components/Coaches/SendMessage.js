@@ -8,12 +8,19 @@ import { ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
 
 const styles = theme => ({
   btn: {
-    backgroundColor: "#F4B4C3",
-    color: "white",
-    margin: 30
+    padding: "5px 10px",
+    fontSize: "1.4rem",
+    color: "#FCFCFB",
+    border: "2px solid #5E366A",
+    backgroundColor: "#5E366A",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "#545454"
+    }
   },
   message: {
-    fontSize: "1.6rem"
+    fontSize: "1.6rem",
+    background: "#fff"
   }
 });
 
@@ -85,8 +92,7 @@ class SendMessageFromCoach extends React.Component {
     return (
       <div
         style={{
-          width: "80%",
-          marginLeft: "10%",
+          margin: 10,
           borderRadius: "10px",
           boxShadow: "6px 6px 15px -5px rgba(0,0,0,0.75)"
         }}
@@ -96,7 +102,7 @@ class SendMessageFromCoach extends React.Component {
             Send Message to: {firstName} {lastName}
             <TextField
               label="message"
-              style={{ background: "#fff" }}
+              // style={{ background: "#fff" }}
               rows="10"
               error={this.state.error}
               helperText={this.state.errorText}
@@ -106,9 +112,6 @@ class SendMessageFromCoach extends React.Component {
               value={this.state.message}
               margin="normal"
               variant="outlined"
-              // inputProps={{
-              //   name: "message"
-              // }}
               InputProps={{
                 name: "message",
                 classes: {
@@ -116,10 +119,7 @@ class SendMessageFromCoach extends React.Component {
                 }
               }}
             />
-            <Button
-              onClick={this.handleSubmit}
-              style={{ background: "#40A798" }}
-            >
+            <Button onClick={this.handleSubmit} className={classes.btn}>
               Send
             </Button>
           </div>

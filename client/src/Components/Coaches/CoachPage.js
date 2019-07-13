@@ -26,24 +26,6 @@ const styles = theme => ({
   }
 });
 
-const CoachPageContainer = styled.div`
-  padding: 2% 4%;
-  min-height: 90vh;
-  width: 100%;
-  border: 1px solid pink;
-  display: flex;
-`;
-
-const TraineeBasic = styled.div`
-  width: 50%;
-  height: 90vh;
-`;
-
-const TraineeDetailed = styled.div`
-  width: 50%;
-  height: 90vh;
-`;
-
 class CoachPage extends React.Component {
   constructor(props) {
     super(props);
@@ -262,52 +244,25 @@ class CoachPage extends React.Component {
               trainees={this.state.trainees}
             />
           </Grid>
-          <Grid item sm={7} xs={11}>
+          <Grid item sm={6} xs={12}>
             <TraineeList
               trainees={this.state.trainees}
               deleteTrainee={this.deleteTrainee}
               handleChooseUser={this.handleChooseUser}
             />
           </Grid>
-          <Grid item xs={11}>
+          <Grid item sm={6} xs={12}>
             <SendMessageFromCoach
               traineeID={this.state.selectedTrainee.id}
               firstName={this.state.selectedTrainee.firstName}
               lastName={this.state.selectedTrainee.lastName}
               currentUser={this.state.currentUser}
             />
+          </Grid>
+          <Grid item xs={12}>
+            <TraineeInfo traineeID={this.state.selectedTrainee.id} />
           </Grid>
         </Grid>
-        {/* <CoachPageContainer>
-          <TraineeBasic>
-            <TraineeSearch
-              traineeSearchInput={this.state.traineeSearchInput}
-              updateTraineeSearch={this.updateTraineeSearch}
-              getUserData={this.getUserData}
-            />
-            <TraineeResult
-              traineeSearchResults={this.state.traineeSearchResults}
-              noUserFoundError={this.state.noUserFoundError}
-              request={this.handleRequest}
-              currentUser={this.state.currentUser}
-              trainees={this.state.trainees}
-            />
-            <TraineeList
-              trainees={this.state.trainees}
-              deleteTrainee={this.deleteTrainee}
-              handleChooseUser={this.handleChooseUser}
-            />
-            <SendMessageFromCoach
-              traineeID={this.state.selectedTrainee.id}
-              firstName={this.state.selectedTrainee.firstName}
-              lastName={this.state.selectedTrainee.lastName}
-              currentUser={this.state.currentUser}
-            />
-          </TraineeBasic>
-          <TraineeDetailed>
-            <TraineeInfo traineeID={this.state.selectedTrainee.id} />
-          </TraineeDetailed>
-        </CoachPageContainer> */}
       </>
     );
   }

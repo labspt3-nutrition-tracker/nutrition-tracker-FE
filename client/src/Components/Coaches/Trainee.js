@@ -25,6 +25,7 @@ const TraineeContent = styled.div`
   width: 75%;
   flex-wrap: wrap;
   justify-content: center;
+  cursor: pointer;
 `;
 
 const TraineeName = styled.h2`
@@ -50,6 +51,7 @@ const DeleteButton = styled.button`
   border: 1px solid white;
   border-radius: 5px;
   font-size: 1em;
+  cursor: pointer;
   :hover {
     background: #fff;
     color: #5e366a;

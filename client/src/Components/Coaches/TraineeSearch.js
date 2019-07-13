@@ -12,7 +12,6 @@ const styles = theme => ({
     margin: 10,
     display: "flex",
     alignItems: "center"
-    // width: 350
   },
   input: {
     marginLeft: 8,
