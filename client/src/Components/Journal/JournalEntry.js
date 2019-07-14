@@ -105,7 +105,8 @@ class JournalEntry extends React.Component {
       food_id: null,
       meal_category_id: null,
       showModal: false,
-      currentUser: 0
+      currentUser: 0,
+      mealCategoryName: null
       // }
     };
   }
@@ -127,47 +128,47 @@ class JournalEntry extends React.Component {
       .catch(err => console.log(err));
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.foodEntries !== this.props.foodEntries ||
       prevProps.datePicked !== this.props.datePicked
     ) {
       this.setState({ foodEntries: this.props.foodEntries });
     }
+
+    if (prevState.mealCategoryName !== this.state.mealCategoryName){
+      this.setState({ mealCategoryName: this.state.mealCategoryName})
+    }
   }
 
-  passMealData = mealEntry => {
+  passMealData = async (mealEntry) => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
-
-    client
-      .query({
-        query: GET_FOOD_BY_ID,
-        variables: {
-          foodId: mealEntry.food_id.id
-        }
-      })
-      .then(response => {
-        if (response.data.getFoodById.edamam_id !== "") {
-          this.setState({
-            edamamExist: true,
-            caloriesPerServ: mealEntry.caloriesPerServ,
-            proteins: mealEntry.proteins,
-            carbs: mealEntry.carbs,
-            fats: mealEntry.fats
-          });
-        } else {
-          this.setState({
-            edamamExist: false
-          });
-        }
-      })
-      .catch(err => console.log(err));
-    this.setState({
-      mealEntry: mealEntry
-    });
-
+    try {
+      const foodquery = await client
+        .query({
+          query: GET_FOOD_BY_ID,
+          variables: {
+            foodId: mealEntry.food_id.id
+          }
+        })
+      if (foodquery.data.getFoodById.edamam_id){
+        this.setState({
+          mealEntry: mealEntry,
+          edamamExist: true,
+          meal_category_id: mealEntry.meal_category_id.id.toString()
+        });
+      } else {
+        this.setState({
+          mealEntry: mealEntry,
+          edamamExist: false,
+          meal_category_id: mealEntry.meal_category_id.id.toString()
+        });
+      }
+    } catch (err){
+      console.log(err)
+    }
     this.openModal();
   };
 
@@ -175,13 +176,15 @@ class JournalEntry extends React.Component {
     this.setState({
       showModal: true
     });
+    console.log('edmamaExist', this.state.edamamExist)
   };
 
   closeModal = () => {
     this.setState({
       showModal: false,
       mealEntry: null,
-      meal_category_id: null
+      meal_category_id: null,
+      edamamExist: false
     });
   };
 
@@ -230,6 +233,11 @@ class JournalEntry extends React.Component {
       this.state.mealEntry.food_id.id,
       foodEntry
     );
+
+    this.setState({
+       mealEntry: null,
+       edamamExist: false
+    })
     this.closeModal();
   };
 
@@ -283,7 +291,7 @@ class JournalEntry extends React.Component {
           })}
         </List>
 
-        <Dialog
+      {this.state.mealEntry && <Dialog
           open={this.state.showModal}
           onClose={this.closeModal}
           aria-labelledby="form-dialog-title"
@@ -299,7 +307,7 @@ class JournalEntry extends React.Component {
           <DialogContent classes={{ root: classes.dialogBox }} dividers>
             <DialogContentText classes={{ root: classes.food }}>
               <span className={classes.food}>
-                {this.state.mealEntry && this.state.mealEntry.food_id.foodName}
+                {this.state.mealEntry.food_id.foodName}
               </span>
             </DialogContentText>
             <TextField
@@ -309,7 +317,6 @@ class JournalEntry extends React.Component {
               label="Day"
               value={this.state.date}
               defaultValue={
-                this.state.mealEntry &&
                 moment(new Date(this.state.mealEntry.date)).format("YYYY-MM-DD")
               }
               type="date"
@@ -334,13 +341,9 @@ class JournalEntry extends React.Component {
               id="Serving Quantity"
               name="servingQty"
               label="Serving Quantity"
-              placeholder={
-                this.state.mealEntry && `${this.state.mealEntry.servingQty}`
-              }
+              placeholder={this.state.mealEntry.servingQty}
               value={this.state.servingQty}
-              defaultValue={
-                this.state.mealEntry && this.state.mealEntry.servingQty
-              }
+              defaultValue={this.state.mealEntry.servingQty}
               margin="dense"
               onChange={this.handleChange}
               InputLabelProps={{
@@ -360,41 +363,40 @@ class JournalEntry extends React.Component {
               }}
             />
 
-            {this.state.mealEntry && this.state.edamamExist && (
+          {this.state.edamamExist && (
               <>
                 <TextField
                   disabled
                   id="standard-disabled"
                   label="Calories Per Serving"
-                  defaultValue={`${
-                    this.state.mealEntry.food_id.caloriesPerServ
-                  }`}
+                  defaultValue={this.state.mealEntry.food_id.caloriesPerServ}
                   margin="dense"
                 />
                 <TextField
                   disabled
                   id="standard-disabled"
                   label="Proteins"
-                  defaultValue={`${this.state.mealEntry.food_id.proteins}`}
+                  defaultValue={this.state.mealEntry.food_id.proteins}
                   margin="dense"
                 />
                 <TextField
                   disabled
                   id="standard-disabled"
                   label="Carbs"
-                  defaultValue={`${this.state.mealEntry.food_id.carbs}`}
+                  defaultValue={this.state.mealEntry.food_id.carbs}
                   margin="dense"
                 />
                 <TextField
                   disabled
                   id="standard-disabled"
                   label="Fats"
-                  defaultValue={`${this.state.mealEntry.food_id.fats}`}
+                  defaultValue={this.state.mealEntry.food_id.fats}
                   margin="dense"
                 />
               </>
             )}
-            {this.state.mealEntry && !this.state.edamamExist && (
+
+            {!this.state.edamamExist && (
               <>
                 <TextField
                   id="Calories Per Serving"
@@ -534,7 +536,7 @@ class JournalEntry extends React.Component {
               Delete
             </Button>
           </DialogActions>
-        </Dialog>
+        </Dialog> }
       </div>
     );
   }
