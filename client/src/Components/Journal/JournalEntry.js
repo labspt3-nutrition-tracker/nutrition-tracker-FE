@@ -89,6 +89,7 @@ class JournalEntry extends React.Component {
     super(props);
 
     const { foodEntries } = props;
+    console.log({ foodEntries });
     this.state = {
       foodEntries: foodEntries,
       edamamExist: false,
@@ -136,24 +137,23 @@ class JournalEntry extends React.Component {
       this.setState({ foodEntries: this.props.foodEntries });
     }
 
-    if (prevState.mealCategoryName !== this.state.mealCategoryName){
-      this.setState({ mealCategoryName: this.state.mealCategoryName})
+    if (prevState.mealCategoryName !== this.state.mealCategoryName) {
+      this.setState({ mealCategoryName: this.state.mealCategoryName });
     }
   }
 
-  passMealData = async (mealEntry) => {
+  passMealData = async mealEntry => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
     try {
-      const foodquery = await client
-        .query({
-          query: GET_FOOD_BY_ID,
-          variables: {
-            foodId: mealEntry.food_id.id
-          }
-        })
-      if (foodquery.data.getFoodById.edamam_id){
+      const foodquery = await client.query({
+        query: GET_FOOD_BY_ID,
+        variables: {
+          foodId: mealEntry.food_id.id
+        }
+      });
+      if (foodquery.data.getFoodById.edamam_id) {
         this.setState({
           mealEntry: mealEntry,
           edamamExist: true,
@@ -166,8 +166,8 @@ class JournalEntry extends React.Component {
           meal_category_id: mealEntry.meal_category_id.id.toString()
         });
       }
-    } catch (err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
     this.openModal();
   };
@@ -176,7 +176,7 @@ class JournalEntry extends React.Component {
     this.setState({
       showModal: true
     });
-    console.log('edmamaExist', this.state.edamamExist)
+    console.log("edmamaExist", this.state.edamamExist);
   };
 
   closeModal = () => {
@@ -235,15 +235,16 @@ class JournalEntry extends React.Component {
     );
 
     this.setState({
-       mealEntry: null,
-       edamamExist: false
-    })
+      mealEntry: null,
+      edamamExist: false
+    });
     this.closeModal();
   };
 
   render() {
-    const { classes } = this.props;
-    const datePicked = this.props.datePicked;
+    const { classes, datePicked } = this.props;
+    console.log({ datePicked });
+    console.log(moment(new Date(datePicked)).format("MM/DD"));
     const ModifiedEntry = this.state.foodEntries.filter(function(entry) {
       //  return entry.date === datePicked;
       return (
@@ -251,10 +252,12 @@ class JournalEntry extends React.Component {
         moment(new Date(datePicked)).format("MM/DD")
       );
     });
+    console.log({ ModifiedEntry });
     // set as new foodentries
     const Breakfast = ModifiedEntry.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Breakfast";
     });
+    console.log({ Breakfast });
 
     const Lunch = ModifiedEntry.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Lunch";
@@ -291,252 +294,257 @@ class JournalEntry extends React.Component {
           })}
         </List>
 
-      {this.state.mealEntry && <Dialog
-          open={this.state.showModal}
-          onClose={this.closeModal}
-          aria-labelledby="form-dialog-title"
-          PaperProps={{
-            style: {
-              minWidth: "300px"
-            }
-          }}
-        >
-          <DialogTitle id="form-dialog-title" classes={{ root: classes.title }}>
-            <span className={classes.title}> Edit Entry</span>
-          </DialogTitle>
-          <DialogContent classes={{ root: classes.dialogBox }} dividers>
-            <DialogContentText classes={{ root: classes.food }}>
-              <span className={classes.food}>
-                {this.state.mealEntry.food_id.foodName}
-              </span>
-            </DialogContentText>
-            <TextField
-              onChange={this.handleChange}
-              name="date"
-              id="date"
-              label="Day"
-              value={this.state.date}
-              defaultValue={
-                moment(new Date(this.state.mealEntry.date)).format("YYYY-MM-DD")
+        {this.state.mealEntry && (
+          <Dialog
+            open={this.state.showModal}
+            onClose={this.closeModal}
+            aria-labelledby="form-dialog-title"
+            PaperProps={{
+              style: {
+                minWidth: "300px"
               }
-              type="date"
-              InputLabelProps={{
-                shrink: true,
-                style: {
-                  fontSize: "2rem",
-                  color: "#60B5A9",
-                  fontFamily: "Oswald"
-                }
-              }}
-              inputProps={{
-                style: {
-                  fontSize: "1.5rem",
-                  lineHeight: "1.5",
-                  marginTop: "12px"
-                }
-              }}
-              margin="normal"
-            />
-            <TextField
-              id="Serving Quantity"
-              name="servingQty"
-              label="Serving Quantity"
-              placeholder={this.state.mealEntry.servingQty}
-              value={this.state.servingQty}
-              defaultValue={this.state.mealEntry.servingQty}
-              margin="dense"
-              onChange={this.handleChange}
-              InputLabelProps={{
-                shrink: true,
-                style: {
-                  fontSize: "2rem",
-                  color: "#60B5A9",
-                  fontFamily: "Oswald"
-                }
-              }}
-              inputProps={{
-                style: {
-                  fontSize: "1.5rem",
-                  lineHeight: "1.5",
-                  marginTop: "12px"
-                }
-              }}
-            />
-
-          {this.state.edamamExist && (
-              <>
-                <TextField
-                  disabled
-                  id="standard-disabled"
-                  label="Calories Per Serving"
-                  defaultValue={this.state.mealEntry.food_id.caloriesPerServ}
-                  margin="dense"
-                />
-                <TextField
-                  disabled
-                  id="standard-disabled"
-                  label="Proteins"
-                  defaultValue={this.state.mealEntry.food_id.proteins}
-                  margin="dense"
-                />
-                <TextField
-                  disabled
-                  id="standard-disabled"
-                  label="Carbs"
-                  defaultValue={this.state.mealEntry.food_id.carbs}
-                  margin="dense"
-                />
-                <TextField
-                  disabled
-                  id="standard-disabled"
-                  label="Fats"
-                  defaultValue={this.state.mealEntry.food_id.fats}
-                  margin="dense"
-                />
-              </>
-            )}
-
-            {!this.state.edamamExist && (
-              <>
-                <TextField
-                  id="Calories Per Serving"
-                  name="caloriesPerServ"
-                  label="Calories Per Serving"
-                  defaultValue={`${
-                    this.state.mealEntry.food_id.caloriesPerServ
-                  }`}
-                  value={this.state.caloriesPerServ}
-                  margin="dense"
-                  onChange={this.handleChange}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: {
-                      fontSize: "2rem",
-                      color: "#60B5A9",
-                      fontFamily: "Oswald"
-                    }
-                  }}
-                  inputProps={{
-                    style: {
-                      fontSize: "1.5rem",
-                      lineHeight: "1.5",
-                      marginTop: "12px"
-                    }
-                  }}
-                />
-                <TextField
-                  id="Protein"
-                  name="proteins"
-                  label="Protein"
-                  defaultValue={`${this.state.mealEntry.food_id.proteins}`}
-                  value={this.state.proteins}
-                  margin="dense"
-                  onChange={this.handleChange}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: {
-                      fontSize: "2rem",
-                      color: "#60B5A9",
-                      fontFamily: "Oswald"
-                    }
-                  }}
-                  inputProps={{
-                    style: {
-                      fontSize: "1.5rem",
-                      lineHeight: "1.5",
-                      marginTop: "12px"
-                    }
-                  }}
-                />
-                <TextField
-                  id="Carbs"
-                  name="carbs"
-                  label="Carbs"
-                  defaultValue={`${this.state.mealEntry.food_id.carbs}`}
-                  value={this.state.carbs}
-                  margin="dense"
-                  onChange={this.handleChange}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: {
-                      fontSize: "2rem",
-                      color: "#60B5A9",
-                      fontFamily: "Oswald"
-                    }
-                  }}
-                  inputProps={{
-                    style: {
-                      fontSize: "1.5rem",
-                      lineHeight: "1.5",
-                      marginTop: "12px"
-                    }
-                  }}
-                />
-                <TextField
-                  id="Fats"
-                  name="fats"
-                  label="Fats"
-                  defaultValue={`${this.state.mealEntry.food_id.fats}`}
-                  value={this.state.fats}
-                  margin="dense"
-                  onChange={this.handleChange}
-                  InputLabelProps={{
-                    shrink: true,
-                    style: {
-                      fontSize: "2rem",
-                      color: "#60B5A9",
-                      fontFamily: "Oswald"
-                    }
-                  }}
-                  inputProps={{
-                    style: {
-                      fontSize: "1.5rem",
-                      lineHeight: "1.5",
-                      marginTop: "12px"
-                    }
-                  }}
-                />
-              </>
-            )}
-
-            <InputLabel htmlFor="meal-simple" className={classes.label}>
-              MealCategory
-            </InputLabel>
-            <Select
-              value={this.state.meal_category_id}
-              onChange={this.handleChange}
-              inputProps={{
-                name: "meal_category_id",
-                id: "meal-simple"
-              }}
-              className={classes.category}
+            }}
+          >
+            <DialogTitle
+              id="form-dialog-title"
+              classes={{ root: classes.title }}
             >
-              <MenuItem value={1} className={classes.category}>
-                Breakfast
-              </MenuItem>
-              <MenuItem value={2} className={classes.category}>
-                Lunch
-              </MenuItem>
-              <MenuItem value={4} className={classes.category}>
-                Dinner
-              </MenuItem>
-              <MenuItem value={3} className={classes.category}>
-                Snack
-              </MenuItem>
-            </Select>
-          </DialogContent>
-          <DialogActions className={classes.buttons}>
-            <Button onClick={this.closeModal} className={classes.btn}>
-              Cancel
-            </Button>
-            <Button onClick={this.editMealEntry} className={classes.btn}>
-              Edit
-            </Button>
-            <Button onClick={this.deleteMealEntry} className={classes.del}>
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog> }
+              <span className={classes.title}> Edit Entry</span>
+            </DialogTitle>
+            <DialogContent classes={{ root: classes.dialogBox }} dividers>
+              <DialogContentText classes={{ root: classes.food }}>
+                <span className={classes.food}>
+                  {this.state.mealEntry.food_id.foodName}
+                </span>
+              </DialogContentText>
+              <TextField
+                onChange={this.handleChange}
+                name="date"
+                id="date"
+                label="Day"
+                value={this.state.date}
+                defaultValue={moment(
+                  new Date(this.state.mealEntry.date)
+                ).format("YYYY-MM-DD")}
+                type="date"
+                InputLabelProps={{
+                  shrink: true,
+                  style: {
+                    fontSize: "2rem",
+                    color: "#60B5A9",
+                    fontFamily: "Oswald"
+                  }
+                }}
+                inputProps={{
+                  style: {
+                    fontSize: "1.5rem",
+                    lineHeight: "1.5",
+                    marginTop: "12px"
+                  }
+                }}
+                margin="normal"
+              />
+              <TextField
+                id="Serving Quantity"
+                name="servingQty"
+                label="Serving Quantity"
+                placeholder={this.state.mealEntry.servingQty}
+                value={this.state.servingQty}
+                defaultValue={this.state.mealEntry.servingQty}
+                margin="dense"
+                onChange={this.handleChange}
+                InputLabelProps={{
+                  shrink: true,
+                  style: {
+                    fontSize: "2rem",
+                    color: "#60B5A9",
+                    fontFamily: "Oswald"
+                  }
+                }}
+                inputProps={{
+                  style: {
+                    fontSize: "1.5rem",
+                    lineHeight: "1.5",
+                    marginTop: "12px"
+                  }
+                }}
+              />
+
+              {this.state.edamamExist && (
+                <>
+                  <TextField
+                    disabled
+                    id="standard-disabled"
+                    label="Calories Per Serving"
+                    defaultValue={this.state.mealEntry.food_id.caloriesPerServ}
+                    margin="dense"
+                  />
+                  <TextField
+                    disabled
+                    id="standard-disabled"
+                    label="Proteins"
+                    defaultValue={this.state.mealEntry.food_id.proteins}
+                    margin="dense"
+                  />
+                  <TextField
+                    disabled
+                    id="standard-disabled"
+                    label="Carbs"
+                    defaultValue={this.state.mealEntry.food_id.carbs}
+                    margin="dense"
+                  />
+                  <TextField
+                    disabled
+                    id="standard-disabled"
+                    label="Fats"
+                    defaultValue={this.state.mealEntry.food_id.fats}
+                    margin="dense"
+                  />
+                </>
+              )}
+
+              {!this.state.edamamExist && (
+                <>
+                  <TextField
+                    id="Calories Per Serving"
+                    name="caloriesPerServ"
+                    label="Calories Per Serving"
+                    defaultValue={`${
+                      this.state.mealEntry.food_id.caloriesPerServ
+                    }`}
+                    value={this.state.caloriesPerServ}
+                    margin="dense"
+                    onChange={this.handleChange}
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
+                  />
+                  <TextField
+                    id="Protein"
+                    name="proteins"
+                    label="Protein"
+                    defaultValue={`${this.state.mealEntry.food_id.proteins}`}
+                    value={this.state.proteins}
+                    margin="dense"
+                    onChange={this.handleChange}
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
+                  />
+                  <TextField
+                    id="Carbs"
+                    name="carbs"
+                    label="Carbs"
+                    defaultValue={`${this.state.mealEntry.food_id.carbs}`}
+                    value={this.state.carbs}
+                    margin="dense"
+                    onChange={this.handleChange}
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
+                  />
+                  <TextField
+                    id="Fats"
+                    name="fats"
+                    label="Fats"
+                    defaultValue={`${this.state.mealEntry.food_id.fats}`}
+                    value={this.state.fats}
+                    margin="dense"
+                    onChange={this.handleChange}
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
+                  />
+                </>
+              )}
+
+              <InputLabel htmlFor="meal-simple" className={classes.label}>
+                MealCategory
+              </InputLabel>
+              <Select
+                value={this.state.meal_category_id}
+                onChange={this.handleChange}
+                inputProps={{
+                  name: "meal_category_id",
+                  id: "meal-simple"
+                }}
+                className={classes.category}
+              >
+                <MenuItem value={1} className={classes.category}>
+                  Breakfast
+                </MenuItem>
+                <MenuItem value={2} className={classes.category}>
+                  Lunch
+                </MenuItem>
+                <MenuItem value={4} className={classes.category}>
+                  Dinner
+                </MenuItem>
+                <MenuItem value={3} className={classes.category}>
+                  Snack
+                </MenuItem>
+              </Select>
+            </DialogContent>
+            <DialogActions className={classes.buttons}>
+              <Button onClick={this.closeModal} className={classes.btn}>
+                Cancel
+              </Button>
+              <Button onClick={this.editMealEntry} className={classes.btn}>
+                Edit
+              </Button>
+              <Button onClick={this.deleteMealEntry} className={classes.del}>
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
       </div>
     );
   }
