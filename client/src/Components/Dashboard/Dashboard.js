@@ -202,8 +202,6 @@ class Dashboard extends Component {
                   }
                 })
                 .then(response => {
-                  console.log(this.state.currentUser);
-                  console.log("food response", response);
                   this.setState({
                     foodEntries: response.data.getFoodEntriesByUserId
                   });
@@ -312,7 +310,6 @@ class Dashboard extends Component {
   };
 
   editFoodEntry = (editId, editEntry, idToken) => {
-    console.log("edit", editEntry);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
@@ -324,7 +321,6 @@ class Dashboard extends Component {
     const foodId = parseInt(editEntry.food_id.id);
     // const mealCategoryId = parseInt(editEntry.meal_category_id.id);
     const mealCategoryId = parseInt(editEntry.meal_category_id);
-    console.log({ mealCategoryId });
     const foodInput = {
       foodName: editEntry.food_id.foodName,
       caloriesPerServ: parseInt(editEntry.food_id.caloriesPerServ),
@@ -341,8 +337,6 @@ class Dashboard extends Component {
       servingQty: parseInt(editEntry.servingQty),
       meal_category_id: parseInt(mealCategoryId)
     };
-
-    console.log({ foodEntryInput });
 
     client
       .mutate({
@@ -370,7 +364,6 @@ class Dashboard extends Component {
                 }
               })
               .then(response => {
-                console.log("******** ", response.data.getFoodEntriesByUserId);
                 this.setState({
                   foodEntries: response.data.getFoodEntriesByUserId
                 });
@@ -419,7 +412,6 @@ class Dashboard extends Component {
         variables: { id }
       })
       .then(response => {
-        console.log(response);
         client
           .query({
             query: GET_FOOD_ENTRIES_BY_USER_QUERY,
@@ -428,7 +420,6 @@ class Dashboard extends Component {
             }
           })
           .then(response => {
-            console.log(response);
             this.setState({
               foodEntry: "",
               foodEntries: response.data.getFoodEntriesByUserId

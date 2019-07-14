@@ -89,7 +89,6 @@ class JournalEntry extends React.Component {
     super(props);
 
     const { foodEntries } = props;
-    console.log({ foodEntries });
     this.state = {
       foodEntries: foodEntries,
       edamamExist: false,
@@ -176,7 +175,6 @@ class JournalEntry extends React.Component {
     this.setState({
       showModal: true
     });
-    console.log("edmamaExist", this.state.edamamExist);
   };
 
   closeModal = () => {
@@ -243,8 +241,6 @@ class JournalEntry extends React.Component {
 
   render() {
     const { classes, datePicked } = this.props;
-    console.log({ datePicked });
-    console.log(moment(new Date(datePicked)).format("MM/DD"));
     const ModifiedEntry = this.state.foodEntries.filter(function(entry) {
       //  return entry.date === datePicked;
       return (
@@ -252,12 +248,10 @@ class JournalEntry extends React.Component {
         moment(new Date(datePicked)).format("MM/DD")
       );
     });
-    console.log({ ModifiedEntry });
     // set as new foodentries
     const Breakfast = ModifiedEntry.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Breakfast";
     });
-    console.log({ Breakfast });
 
     const Lunch = ModifiedEntry.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Lunch";

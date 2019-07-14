@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import styled from "styled-components";
+import moment from "moment";
 import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
 import { GET_ALL_FOOD, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
@@ -50,7 +50,7 @@ class ModifiedEntryForm extends Component {
         proteins: null,
         edamam_id: "",
         meal_category_id: null,
-        date: "",
+        date: moment().format("YYYY-MM-DD"),
         servingQty: null
       },
       errorMsg: {
@@ -178,7 +178,7 @@ class ModifiedEntryForm extends Component {
                   proteins: null,
                   edamam_id: null,
                   meal_category_id: null,
-                  date: "",
+                  date: moment().format("YYYY-MM-DD"),
                   servingQty: null
                 }
               });
@@ -197,7 +197,7 @@ class ModifiedEntryForm extends Component {
                   proteins: null,
                   edamam_id: null,
                   meal_category_id: null,
-                  date: "",
+                  date: moment().format("YYYY-MM-DD"),
                   servingQty: null
                 }
               });
@@ -240,12 +240,11 @@ class ModifiedEntryForm extends Component {
                 proteins: null,
                 edamam_id: null,
                 meal_category_id: null,
-                date: "",
+                date: moment().format("YYYY-MM-DD"),
                 servingQty: null
               }
             });
             this.props.revertToNormalForm();
-           
           })
           .catch(err => {
             this.setState({
@@ -259,18 +258,16 @@ class ModifiedEntryForm extends Component {
                 proteins: null,
                 edamam_id: null,
                 meal_category_id: null,
-                date: "",
+                date: moment().format("YYYY-MM-DD"),
                 servingQty: null
               }
             });
             console.error(err);
           });
       }
-    
     } else {
       return;
     }
-    
   };
 
   edamamExistCheck = edamam_id => {
@@ -326,10 +323,18 @@ class ModifiedEntryForm extends Component {
 
     if (this.props.selectedFood) {
       foodName = this.props.selectedFood.label;
-      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL? this.props.selectedFood.nutrients.ENERC_KCAL: 0;
-      fats = this.props.selectedFood.nutrients.FAT? this.props.selectedFood.nutrients.FAT: 0;
-      carbs = this.props.selectedFood.nutrients.CHOCDF?  this.props.selectedFood.nutrients.CHOCDF: 0;
-      proteins = this.props.selectedFood.nutrients.PROCNT? this.props.selectedFood.nutrients.PROCNT: 0;
+      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL
+        ? this.props.selectedFood.nutrients.ENERC_KCAL
+        : 0;
+      fats = this.props.selectedFood.nutrients.FAT
+        ? this.props.selectedFood.nutrients.FAT
+        : 0;
+      carbs = this.props.selectedFood.nutrients.CHOCDF
+        ? this.props.selectedFood.nutrients.CHOCDF
+        : 0;
+      proteins = this.props.selectedFood.nutrients.PROCNT
+        ? this.props.selectedFood.nutrients.PROCNT
+        : 0;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -338,7 +343,8 @@ class ModifiedEntryForm extends Component {
           fats: fats,
           carbs: carbs,
           proteins: proteins,
-          edamam_id: edamam_id
+          edamam_id: edamam_id,
+          date: moment().format("YYYY-MM-DD")
         }
       });
       this.edamamExistCheck(this.props.selectedFood.foodId);
@@ -368,15 +374,18 @@ class ModifiedEntryForm extends Component {
         this.edamamExistCheck(this.props.selectedFood.foodId);
       }
 
-      this.setState({
-        newAddFood: {
-          foodName: foodName,
-          caloriesPerServ: caloriesPerServ,
-          fats: fats,
-          carbs: carbs,
-          proteins: proteins,
-          edamam_id: edamam_id
-        }
+      this.setState(prevState => {
+        return {
+          newAddFood: {
+            ...prevState.newAddFood,
+            foodName: foodName,
+            caloriesPerServ: caloriesPerServ,
+            fats: fats,
+            carbs: carbs,
+            proteins: proteins,
+            edamam_id: edamam_id
+          }
+        };
       });
     }
   }
@@ -499,13 +508,13 @@ class ModifiedEntryForm extends Component {
             ? this.state.newAddFood.fats.toFixed(2)
             : ""}
         </Typography>
-
         <TextField
           label="Date"
           className="form-field"
           type="date"
           name="date"
           error={this.state.errorMsg.errorDate}
+          defaultValue={moment().format("YYYY-MM-DD")}
           onChange={this.onInputChange}
           required
           aria-describedby="errorDate-text"
@@ -537,5 +546,4 @@ class ModifiedEntryForm extends Component {
     );
   }
 }
-
 export default withStyles(styles)(ModifiedEntryForm);

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import moment from "moment";
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -14,9 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 
-
 export const Form = styled.form`
-
   /* display: flex;
   flex-direction: column; */
   /* max-width: 500px; */
@@ -39,17 +38,17 @@ const styles = theme => ({
   formTitle: {
     fontFamily: "Oswald",
     fontWeight: 100,
-    fontSize: "2.5rem",
+    fontSize: "2.5rem"
     // textTransform: "uppercase"
   },
   input: {
     fontSize: 16,
-    width: '100%',
-    minWidth: '100%'
+    width: "100%",
+    minWidth: "100%"
   },
   formButton: {
     fontSize: 16,
-    width: '100%'
+    width: "100%"
   }
 });
 
@@ -72,7 +71,7 @@ class EntryForm extends Component {
         proteins: null,
         edamam_id: "",
         meal_category_id: null,
-        date: "",
+        date: moment(Date.now()).format("YYYY-MM-DD"),
         servingQty: null
       },
       errorMsg: {
@@ -196,7 +195,7 @@ class EntryForm extends Component {
                 proteins: null,
                 edamam_id: null,
                 meal_category_id: null,
-                date: "",
+                date: moment().format("YYYY-MM-DD"),
                 servingQty: null
               }
             });
@@ -213,7 +212,7 @@ class EntryForm extends Component {
                 proteins: null,
                 edamam_id: null,
                 meal_category_id: null,
-                date: "",
+                date: moment().format("YYYY-MM-DD"),
                 servingQty: null
               }
             });
@@ -252,7 +251,7 @@ class EntryForm extends Component {
                 proteins: null,
                 edamam_id: null,
                 meal_category_id: null,
-                date: "",
+                date: moment().format("YYYY-MM-DD"),
                 servingQty: null
               }
             });
@@ -268,7 +267,7 @@ class EntryForm extends Component {
                 proteins: null,
                 edamam_id: null,
                 meal_category_id: null,
-                date: "",
+                date: moment().format("YYYY-MM-DD"),
                 servingQty: null
               }
             });
@@ -335,16 +334,16 @@ class EntryForm extends Component {
       foodName = this.props.selectedFood.label;
       caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL
         ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2)
-        : 0.00;
+        : 0.0;
       fats = this.props.selectedFood.nutrients.FAT
         ? this.props.selectedFood.nutrients.FAT.toFixed(2)
-        : 0.00;
+        : 0.0;
       carbs = this.props.selectedFood.nutrients.CHOCDF
         ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2)
-        : 0.00;
+        : 0.0;
       proteins = this.props.selectedFood.nutrients.PROCNT
         ? this.props.selectedFood.nutrients.PROCNT.toFixed(2)
-        : 0.00;
+        : 0.0;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -372,16 +371,16 @@ class EntryForm extends Component {
       foodName = this.props.selectedFood.label;
       caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL
         ? this.props.selectedFood.nutrients.ENERC_KCAL.toFixed(2)
-        : 0.00;
+        : 0.0;
       fats = this.props.selectedFood.nutrients.FAT
         ? this.props.selectedFood.nutrients.FAT.toFixed(2)
-        : 0.00;
+        : 0.0;
       carbs = this.props.selectedFood.nutrients.CHOCDF
         ? this.props.selectedFood.nutrients.CHOCDF.toFixed(2)
-        : 0.00;
+        : 0.0;
       proteins = this.props.selectedFood.nutrients.PROCNT
         ? this.props.selectedFood.nutrients.PROCNT.toFixed(2)
-        : 0.00;
+        : 0.0;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -468,7 +467,7 @@ class EntryForm extends Component {
             this.state.newAddFood.servingQty
               ? this.state.newAddFood.servingQty
               : ""
-        }
+          }
           InputProps={{
             classes: {
               input: classes.input
@@ -569,20 +568,25 @@ class EntryForm extends Component {
           className="form-field"
           type="date"
           name="date"
-          error={this.state.errorMsg.errorDate}
+          // error={this.state.errorMsg.errorDate}
           onChange={this.onInputChange}
-          required
+          // required
           aria-describedby="errorDate-text"
-          value={this.state.newAddFood.date ? this.state.newAddFood.date : ""}
+          defaultValue={moment().format("YYYY-MM-DD")}
+          value={
+            this.state.newAddFood.date
+              ? this.state.newAddFood.date
+              : moment().format("YYYY-MM-DD")
+          }
           InputProps={{
             classes: {
               input: classes.input
             }
           }}
         />
-        <FormHelperText id="errorDate-text">
+        {/* <FormHelperText id="errorDate-text">
           {this.state.errorMsg.errorDate}
-        </FormHelperText>
+        </FormHelperText> */}
         <Button
           className={classes.formButton}
           type="submit"
@@ -590,7 +594,15 @@ class EntryForm extends Component {
         >
           Add Entry
         </Button>
-        {this.props.searchedFood && <Button className={classes.formButton} onClick={this.props.closeFoodForm}> Add searched Item</Button>}
+        {this.props.searchedFood && (
+          <Button
+            className={classes.formButton}
+            onClick={this.props.closeFoodForm}
+          >
+            {" "}
+            Add searched Item
+          </Button>
+        )}
       </Container>
     );
   }
