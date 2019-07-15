@@ -10,36 +10,15 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
 import { GET_ALL_FOOD, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
-import gql from "graphql-tag";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
-
-export const Form = styled.form`
-  /* display: flex;
-  flex-direction: column; */
-  /* max-width: 500px; */
-  /* margin: 0 auto; */
-  /* padding: 20px; */
-  /* width: 100%; */
-  /* h1 {
-    font-size: 1.5em;
-    font-weight: bold;
-    padding-bottom: 30px;
-    text-align: center;
-    color: blue;
-  }
-  @media (max-width: 800px) {
-    max-width: 500px;
-  } */
-`;
 
 const styles = theme => ({
   formTitle: {
     fontFamily: "Oswald",
     fontWeight: 100,
     fontSize: "2.5rem"
-    // textTransform: "uppercase"
   },
   input: {
     fontSize: 16,
@@ -49,6 +28,10 @@ const styles = theme => ({
   formButton: {
     fontSize: 16,
     width: "100%"
+  },
+  category: {
+    fontSize: "1.6rem",
+    fontFamily: "Oswald"
   }
 });
 
@@ -445,10 +428,18 @@ class EntryForm extends Component {
           aria-describedby="errorCategory-text"
         >
           <MenuItem>Select Meal Category</MenuItem>
-          <MenuItem value="1">breakfast</MenuItem>
-          <MenuItem value="2">lunch</MenuItem>
-          <MenuItem value="4">dinner</MenuItem>
-          <MenuItem value="3">snack</MenuItem>
+          <MenuItem value="1" className={classes.category}>
+            breakfast
+          </MenuItem>
+          <MenuItem value="2" className={classes.category}>
+            lunch
+          </MenuItem>
+          <MenuItem value="4" className={classes.category}>
+            dinner
+          </MenuItem>
+          <MenuItem value="3" className={classes.category}>
+            snack
+          </MenuItem>
         </Select>
         <FormHelperText id="errorCategory-text">
           {this.state.errorMsg.errorCategory}

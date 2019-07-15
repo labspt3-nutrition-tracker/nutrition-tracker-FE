@@ -34,6 +34,10 @@ const styles = theme => ({
     margin: "10px 0",
     textTransform: "titlecase",
     fontWeight: "bold"
+  },
+  category: {
+    fontSize: "1.6rem",
+    fontFamily: "Oswald"
   }
 });
 
@@ -415,7 +419,7 @@ class ModifiedEntryForm extends Component {
           error={this.state.errorMsg.errorCategory}
           label="Meal Category"
           required
-          className="form-field"
+          // className="form-field"
           name="meal_category_id"
           type="number"
           value={this.state.newAddFood.meal_category_id}
@@ -423,10 +427,18 @@ class ModifiedEntryForm extends Component {
           aria-describedby="errorCategory-text"
         >
           <MenuItem>Select Meal Category</MenuItem>
-          <MenuItem value="1">breakfast</MenuItem>
-          <MenuItem value="2">lunch</MenuItem>
-          <MenuItem value="4">dinner</MenuItem>
-          <MenuItem value="3">snack</MenuItem>
+          <MenuItem value="1" className={classes.category}>
+            breakfast
+          </MenuItem>
+          <MenuItem value="2" className={classes.category}>
+            lunch
+          </MenuItem>
+          <MenuItem value="4" className={classes.category}>
+            dinner
+          </MenuItem>
+          <MenuItem value="3" className={classes.category}>
+            snack
+          </MenuItem>
         </Select>
         <FormHelperText id="errorCategory-text">
           {this.state.errorMsg.errorCategory}

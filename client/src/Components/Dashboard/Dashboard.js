@@ -242,6 +242,7 @@ class Dashboard extends Component {
   };
 
   addExerEntry = newExerEntry => {
+    console.log({ newExerEntry });
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
