@@ -8,17 +8,13 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import Paper from "@material-ui/core/Paper";
 import CardContent from "@material-ui/core/CardContent";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
-import { flexbox } from "@material-ui/system";
 
 const styles = theme => ({
   title: {
@@ -97,26 +93,6 @@ const Form = styled.form`
   padding: 20px;
 `;
 
-const ModalButton = styled.button`
-  color: #fcfcfb;
-  background: #5E366A;
-  margin-bottom: 5px;
-  padding: 5px 15px;
-  font-size: 0.9em;
-`;
-
-const ExerciseModal = styled(Modal)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 10% 20%;
-  padding: 10%;
-  border: 1px solid black;
-  border-radius: 5px;
-  background-color: white;
-`;
-
 class ExerEntry extends React.Component {
   constructor(props) {
     super(props);
@@ -160,7 +136,8 @@ class ExerEntry extends React.Component {
     this.openModal();
   };
 
-  editExerciseEntry = entry => {
+  editExerciseEntry = (event, entry) => {
+    event.preventDefault();
     let exerEntry = {
       exerciseEntryDate: entry.exerciseEntryDate,
       exerciseName: entry.exerciseName,
@@ -228,175 +205,109 @@ class ExerEntry extends React.Component {
               </div>
             ))}
             <Dialog
-             open={this.state.showModal}
-             onClose={this.closeModal}
-             aria-labelledby="form-dialog-title"
-             PaperProps={{
-               style: {
-                 minWidth: "300px"
-               }
-             }}
+              open={this.state.showModal}
+              onClose={this.closeModal}
+              aria-labelledby="form-dialog-title"
+              PaperProps={{
+                style: {
+                  minWidth: "300px"
+                }
+              }}
             >
-            <DialogContent classes={{ root: classes.dialogBox }} dividers>
-            <DialogContentText classes={{ root: classes.exer }}>
-              {this.props.exerEntry && (
-                <Form>
-                  <DialogTitle id="form-dialog-title" classes={{ root: classes.title }}>
-                    <span className={classes.title}> Edit Exercise Entry</span>
-                  </DialogTitle>
-                  <TextField
-                    required
-                    error={this.state.errorMsg.errorName}
-                    autoFocus
-                    margin="dense"
-                    label="Name of Exercise"
-                    className="form-field"
-                    type="text"
-                    placeholder="Add exercise here..."
-                    onChange={this.props.onInputChange}
-                    name="exerciseName"
-                    value={this.props.exerEntry.exerciseName}
-                    aria-describedby="errorName-text"
-                  />
-                  <FormHelperText id="errorName-text">
-                    {this.state.errorMsg.errorName}
-                  </FormHelperText>
+              <DialogContent classes={{ root: classes.dialogBox }} dividers>
+                <DialogContentText classes={{ root: classes.exer }}>
+                  {this.props.exerEntry && (
+                    <Form>
+                      <DialogTitle
+                        id="form-dialog-title"
+                        classes={{ root: classes.title }}
+                      >
+                        <span className={classes.title}>
+                          {" "}
+                          Edit Exercise Entry
+                        </span>
+                      </DialogTitle>
+                      <TextField
+                        required
+                        error={this.state.errorMsg.errorName}
+                        autoFocus
+                        margin="dense"
+                        label="Name of Exercise"
+                        className="form-field"
+                        type="text"
+                        placeholder="Add exercise here..."
+                        onChange={this.props.onInputChange}
+                        name="exerciseName"
+                        value={this.props.exerEntry.exerciseName}
+                        aria-describedby="errorName-text"
+                      />
+                      <FormHelperText id="errorName-text">
+                        {this.state.errorMsg.errorName}
+                      </FormHelperText>
 
-                  <TextField
-                    label="Date"
-                    className="form-field"
-                    type="date"
-                    name="exerciseEntryDate"
-                    error={this.state.errorMsg.errorDate}
-                    onChange={this.props.onInputChange}
-                    required
-                    aria-describedby="errorDate-text"
-                    // defaultValue={this.state.exerEntry.exerciseEntryDate}
-                    value={moment(
-                      this.props.exerEntry.exerciseEntryDate
-                    ).format("YYYY-MM-DD")}
-                  />
-                  <FormHelperText id="errorDate-text">
-                    {this.state.errorMsg.errorDate}
-                  </FormHelperText>
+                      <TextField
+                        label="Date"
+                        className="form-field"
+                        type="date"
+                        name="exerciseEntryDate"
+                        error={this.state.errorMsg.errorDate}
+                        onChange={this.props.onInputChange}
+                        required
+                        aria-describedby="errorDate-text"
+                        // defaultValue={this.state.exerEntry.exerciseEntryDate}
+                        value={moment(
+                          this.props.exerEntry.exerciseEntryDate
+                        ).format("YYYY-MM-DD")}
+                      />
+                      <FormHelperText id="errorDate-text">
+                        {this.state.errorMsg.errorDate}
+                      </FormHelperText>
 
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    error={this.state.errorMsg.errorCal}
-                    label="Calories Burned"
-                    className="form-field"
-                    type="number"
-                    name="caloriesBurned"
-                    onChange={this.props.onInputChange}
-                    value={this.props.exerEntry.caloriesBurned}
-                    required
-                    step="1"
-                    aria-describedby="errorCal-text"
-                  />
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        error={this.state.errorMsg.errorCal}
+                        label="Calories Burned"
+                        className="form-field"
+                        type="number"
+                        name="caloriesBurned"
+                        onChange={this.props.onInputChange}
+                        value={this.props.exerEntry.caloriesBurned}
+                        required
+                        step="1"
+                        aria-describedby="errorCal-text"
+                      />
 
-                  <FormHelperText id="errorCal-text">
-                    {this.state.errorMsg.errorCal}
-                  </FormHelperText>
+                      <FormHelperText id="errorCal-text">
+                        {this.state.errorMsg.errorCal}
+                      </FormHelperText>
 
-                  <Button
-                    className={classes.btn}
-                    // className="form-field"
-                    type="submit"
-                    onClick={() => this.editExerciseEntry(this.props.exerEntry)}
-                  >
-                    Edit Entry
-                  </Button>
-                </Form>
-              )}
-              </DialogContentText>
+                      <Button
+                        className={classes.btn}
+                        // className="form-field"
+                        type="submit"
+                        onClick={e =>
+                          this.editExerciseEntry(e, this.props.exerEntry)
+                        }
+                      >
+                        Edit Entry
+                      </Button>
+                    </Form>
+                  )}
+                </DialogContentText>
               </DialogContent>
-                <DialogActions className={classes.buttons}>
-                <Button onClick={this.closeModal} className={classes.btn}>Cancel</Button>
+              <DialogActions className={classes.buttons}>
+                <Button onClick={this.closeModal} className={classes.btn}>
+                  Cancel
+                </Button>
                 <Button
                   onClick={() => this.deleteExercise(this.props.exerEntry.id)}
                   className={classes.del}
                 >
                   Delete
                 </Button>
-                </DialogActions>
+              </DialogActions>
             </Dialog>
-            {/* <ExerciseModal isOpen={this.state.showModal}>
-              {this.props.exerEntry && (
-                <Form>
-                  <TextField
-                    required
-                    error={this.state.errorMsg.errorName}
-                    autoFocus
-                    margin="dense"
-                    label="Name of Exercise"
-                    className="form-field"
-                    type="text"
-                    placeholder="Add exercise here..."
-                    onChange={this.props.onInputChange}
-                    name="exerciseName"
-                    value={this.props.exerEntry.exerciseName}
-                    aria-describedby="errorName-text"
-                  />
-                  <FormHelperText id="errorName-text">
-                    {this.state.errorMsg.errorName}
-                  </FormHelperText>
-
-                  <TextField
-                    label="Date"
-                    className="form-field"
-                    type="date"
-                    name="exerciseEntryDate"
-                    error={this.state.errorMsg.errorDate}
-                    onChange={this.props.onInputChange}
-                    required
-                    aria-describedby="errorDate-text"
-                    // defaultValue={this.state.exerEntry.exerciseEntryDate}
-                    value={moment(
-                      this.props.exerEntry.exerciseEntryDate
-                    ).format("YYYY-MM-DD")}
-                  />
-                  <FormHelperText id="errorDate-text">
-                    {this.state.errorMsg.errorDate}
-                  </FormHelperText>
-
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    error={this.state.errorMsg.errorCal}
-                    label="Calories Burned"
-                    className="form-field"
-                    type="number"
-                    name="caloriesBurned"
-                    onChange={this.props.onInputChange}
-                    value={this.props.exerEntry.caloriesBurned}
-                    required
-                    step="1"
-                    aria-describedby="errorCal-text"
-                  />
-
-                  <FormHelperText id="errorCal-text">
-                    {this.state.errorMsg.errorCal}
-                  </FormHelperText>
-
-                  <Button
-                    className="form-field"
-                    type="submit"
-                    onClick={() => this.editExerciseEntry(this.props.exerEntry)}
-                  >
-                    Edit Entry
-                  </Button>
-                </Form>
-              )}
-
-              <ModalButton onClick={this.closeModal}>No?</ModalButton>
-              <ModalButton
-                onClick={() => this.deleteExercise(this.props.exerEntry.id)}
-              >
-                Delete?
-              </ModalButton>
-            </ExerciseModal> */}
-
           </CardContent>
         </CardContent>
       );

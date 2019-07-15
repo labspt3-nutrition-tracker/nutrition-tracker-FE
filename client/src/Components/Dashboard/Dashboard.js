@@ -53,7 +53,6 @@ const styles = theme => ({
     color: "#545454"
   },
   title: {
-    // flexGrow: 1,
     fontSize: 20,
     background: "#5E366A",
     padding: 10,
@@ -72,7 +71,6 @@ const styles = theme => ({
   },
   flexDataCon: {
     width: "100%",
-    // maxWidth: 300,
     margin: 0,
     padding: 0,
     [theme.breakpoints.down("sm")]: {
@@ -93,7 +91,13 @@ const styles = theme => ({
     fontFamily: "Oswald",
     fontWeight: 100,
     fontSize: "2.5rem"
-    // textTransform: "uppercase"
+  },
+  message: {
+    fontSize: "2rem",
+    textAlign: "center",
+    margin: 10,
+    color: "#40a798",
+    fontFamily: "Oswald"
   }
 });
 
@@ -115,7 +119,8 @@ class Dashboard extends Component {
     exerEntry: [],
     foodEntry: [],
     foodIsLoading: true,
-    exerIsLoading: true
+    exerIsLoading: true,
+    info: ""
   };
 
   componentDidMount = () => {
@@ -203,7 +208,8 @@ class Dashboard extends Component {
                 })
                 .then(response => {
                   this.setState({
-                    foodEntries: response.data.getFoodEntriesByUserId
+                    foodEntries: response.data.getFoodEntriesByUserId,
+                    info: ""
                   });
                 });
             });
@@ -234,7 +240,8 @@ class Dashboard extends Component {
           })
           .then(response => {
             this.setState({
-              foodEntries: response.data.getFoodEntriesByUserId
+              foodEntries: response.data.getFoodEntriesByUserId,
+              info: "Your Food Entry has been added successfully."
             });
           });
       })
@@ -242,7 +249,6 @@ class Dashboard extends Component {
   };
 
   addExerEntry = newExerEntry => {
-    console.log({ newExerEntry });
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
@@ -264,7 +270,8 @@ class Dashboard extends Component {
           })
           .then(response => {
             this.setState({
-              exerEntries: response.data.getExerciseEntriesByUserId
+              exerEntries: response.data.getExerciseEntriesByUserId,
+              info: "Your Exercise Entry has been added successfully."
             });
           });
       })
@@ -320,7 +327,6 @@ class Dashboard extends Component {
       ? editEntry.food_id.edamam_id
       : null;
     const foodId = parseInt(editEntry.food_id.id);
-    // const mealCategoryId = parseInt(editEntry.meal_category_id.id);
     const mealCategoryId = parseInt(editEntry.meal_category_id);
     const foodInput = {
       foodName: editEntry.food_id.foodName,
@@ -366,7 +372,8 @@ class Dashboard extends Component {
               })
               .then(response => {
                 this.setState({
-                  foodEntries: response.data.getFoodEntriesByUserId
+                  foodEntries: response.data.getFoodEntriesByUserId,
+                  info: "Your Food Entry has been updated successfully."
                 });
               });
           })
@@ -395,7 +402,8 @@ class Dashboard extends Component {
           .then(response => {
             this.setState({
               exerEntry: "",
-              exerEntries: response.data.getExerciseEntriesByUserId
+              exerEntries: response.data.getExerciseEntriesByUserId,
+              info: "Your Exercise Entry has been updated successfully."
             });
           });
       })
@@ -423,7 +431,8 @@ class Dashboard extends Component {
           .then(response => {
             this.setState({
               foodEntry: "",
-              foodEntries: response.data.getFoodEntriesByUserId
+              foodEntries: response.data.getFoodEntriesByUserId,
+              info: "Your Food Entry has been deleted successfully."
             });
           });
       })
@@ -451,7 +460,8 @@ class Dashboard extends Component {
           .then(response => {
             this.setState({
               exerEntry: "",
-              exerEntries: response.data.getExerciseEntriesByUserId
+              exerEntries: response.data.getExerciseEntriesByUserId,
+              info: "Your Exercise Entry has been deleted successfully."
             });
           });
       })
@@ -504,10 +514,16 @@ class Dashboard extends Component {
 
   render() {
     const { classes } = this.props;
+    const { info } = this.state;
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
     if (this.state.userType !== "basic") {
       return (
         <Container className={classes.root}>
+          {info && (
+            <Typography variant="h4" className={classes.message}>
+              {info}
+            </Typography>
+          )}
           <Typography variant="h3" className={classes.date}>
             {currentDate}
           </Typography>
