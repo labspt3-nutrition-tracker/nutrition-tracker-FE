@@ -116,7 +116,7 @@ export const GET_ALL_FOOD = gql`
   query {
     getFoods {
       id
-      calorieGoal
+      # calorieGoal
       edamam_id
     }
   }
