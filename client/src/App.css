@@ -138,7 +138,7 @@ table {
 
 /* BEGIN CUSTOM STYLES  */
 @import url("https://fonts.googleapis.com/css?family=Oswald&display=swap");
-@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap");
 
 * {
   box-sizing: border-box;
@@ -171,8 +171,8 @@ button {
   color: #ffffff;
   padding-right: 7%;
   text-decoration: none;
-	font-size: 1.6rem;
-	font-size: 16px;
+  font-size: 1.6rem;
+  font-size: 16px;
   /* text-shadow: 1px 1px 1px #000000;  */
 }
 
@@ -180,11 +180,10 @@ button {
   color: #545454;
   padding-right: 7%;
   text-decoration: none;
-	font-size: 1.6rem;
-	font-size: 16px;
+  font-size: 1.6rem;
+  font-size: 16px;
   /* text-shadow: 1px 1px 1px #000000;  */
 }
-
 
 .navLink:first-of-type {
   padding-left: 5%;
@@ -194,14 +193,47 @@ button {
   color: #545454;
 }
 
+.footer-link {
+  text-decoration: none;
+  color: #ffffff;
+  padding-bottom: 1px;
+  border-bottom: 1px solid rgba(255,255,255,0);
+  transition: .3s all ease-out;
+}
+
+.footer-link:hover {
+  border-bottom: 1px solid #ffffff;
+}
+
 .searchBarHome {
   width: 100%;
   max-width: 400px;
 }
 
-.form-container > div{
+.form-container > div {
   width: 100%;
 }
+
+.fc-today {
+  background: #40a798 !important;
+}
+.fc-highlight {
+  background: #f4b4c3 !important;
+}
+.fc-view-container {
+  z-index: 0;
+}
+.StripeCheckout {
+  background: #5e366a !important;
+}
+
+.StripeCheckout span {
+  font-family: "oswald" !important;
+  background: #5e366a !important;
+  background-image:none !important;
+  background-color: #5e366a !important;
+}
+
 /* ------------ MEDIA QUERIES ------------ */
 
 @media (max-width: 800px) {

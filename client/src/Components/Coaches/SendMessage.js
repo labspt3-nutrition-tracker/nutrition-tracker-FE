@@ -1,46 +1,64 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import ApolloClient from "apollo-boost";
+
 import { ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
 
 const styles = theme => ({
   btn: {
-    backgroundColor: "#F4B4C3",
-    color: "white",
-    margin: 30
+    padding: "5px 10px",
+    fontSize: "1.4rem",
+    color: "#FCFCFB",
+    border: "2px solid #5E366A",
+    backgroundColor: "#5E366A",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "#545454"
+    }
+  },
+  message: {
+    fontSize: "1.6rem",
+    background: "#fff"
+  },
+  info: {
+    fontSize: "2rem",
+    textAlign: "center",
+    margin: 10,
+    color: "#40a798",
+    fontFamily: "Oswald"
   }
-})
+});
 
-const messageContainer = styled.div`
-  background: #40A798;
-`;
-
-class SendMessageFromCoach extends React.Component{
-  constructor(props){
-    super(props)
-    this.state={
+class SendMessageFromCoach extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       error: "",
       errorText: "",
       message: "",
-    }
+      info: ""
+    };
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-    console.log('message changing',
-    this.state.message)
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.traineeID !== this.props.traineeID)
+      this.setState({ info: "" });
   };
 
-  handleSubmit(){
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value, info: "" });
+  };
+
+  handleSubmit() {
     if (!this.state.message) {
       this.setState({ error: true, errorText: "Please enter a valid message" });
-    } else{
-      this.setState({ error: false, errorText: "" });
-      this.sendMessage(this.state.message)
+    } else {
+      this.setState({ error: false, errorText: "", info: "" });
+      this.sendMessage(this.state.message);
     }
   }
 
@@ -55,48 +73,51 @@ class SendMessageFromCoach extends React.Component{
       text: this.state.message,
       read: false,
       sender: parseInt(this.props.currentUser.id),
-      recipient: parseInt(this.props.traineeID),
+      recipient: parseInt(this.props.traineeID)
     };
 
-    console.log('new Message', NewMessage)
     client
       .mutate({
         mutation: ADD_MESSAGE_MUTATION,
-        variables:{
+        variables: {
           input: NewMessage
         }
       })
       .then(response => {
-        console.log(response)
         this.setState({
           error: "",
           errorText: "",
           message: "",
-        })
+          info: "Message sent"
+        });
       })
       .catch(error => {
-        console.log(error)
+        console.log(error);
         this.setState({
           error: "",
           errorText: "",
-          message: "",
-        })
-      })
-  }
+          message: ""
+        });
+      });
+  };
 
-
-
-  render(){
-    const { traineeID, firstName, lastName } = this.props
-    console.log('message props',this.props)
-    return(
-      <div style={{width:"80%", marginLeft:"10%", borderRadius:"10px", boxShadow: "6px 6px 15px -5px rgba(0,0,0,0.75)"}}>
-        {traineeID &&
-          <div style={{padding: 10}}>
+  render() {
+    const { classes, traineeID, firstName, lastName } = this.props;
+    const { info } = this.state;
+    return (
+      <div
+        style={{
+          margin: 10,
+          borderRadius: "10px",
+          boxShadow: "6px 6px 15px -5px rgba(0,0,0,0.75)"
+        }}
+      >
+        {traineeID && (
+          <div style={{ padding: 10 }}>
+            {info && <div className={classes.info}>{info}</div>}
             Send Message to: {firstName} {lastName}
             <TextField
               label="message"
-              style={{background: "#fff"}}
               rows="10"
               error={this.state.error}
               helperText={this.state.errorText}
@@ -106,18 +127,21 @@ class SendMessageFromCoach extends React.Component{
               value={this.state.message}
               margin="normal"
               variant="outlined"
-              inputProps={{
-                name: "message"
+              InputProps={{
+                name: "message",
+                classes: {
+                  input: classes.message
+                }
               }}
             />
-            <Button onClick={this.handleSubmit} style={{background: "#40A798"}}>
+            <Button onClick={this.handleSubmit} className={classes.btn}>
               Send
             </Button>
           </div>
-        }
+        )}
       </div>
-    )
+    );
   }
 }
 
-export default SendMessageFromCoach;
+export default withStyles(styles)(SendMessageFromCoach);

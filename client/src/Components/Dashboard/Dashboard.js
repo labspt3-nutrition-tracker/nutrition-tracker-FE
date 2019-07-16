@@ -8,7 +8,6 @@ import ExerciseEntry from "./ExerEntry";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import moment from "moment";
-import gql from "graphql-tag";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 
@@ -23,7 +22,7 @@ import {
 } from "../../graphql/mutations";
 import {
   EXER_QUERY,
-  GET_CURRENT_USERID,
+  GET_CURRENT_USER_QUERY,
   GET_EXERCISE_ENTRIES_QUERY,
   GET_FOOD_ENTRIES_BY_USER_QUERY
 } from "../../graphql/queries";
@@ -32,6 +31,13 @@ import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
 
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 500px;
+`;
 const styles = theme => ({
   root: {
     maxWidth: 960,
@@ -47,40 +53,36 @@ const styles = theme => ({
     color: "#545454"
   },
   title: {
-    // flexGrow: 1,
     fontSize: 20,
     background: "#5E366A",
     padding: 10,
     color: "#ffffff",
     textTransform: "uppercase",
     textAlign: "center",
-    letterSpacing: "1.3px",
-
+    letterSpacing: "1.3px"
   },
   flexData: {
     display: "flex",
     justifyContent: "space-evenly",
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: "column",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column"
     },
     color: "#545454"
   },
   flexDataCon: {
     width: "100%",
-    // maxWidth: 300,
     margin: 0,
     padding: 0,
-    [theme.breakpoints.down('sm')]: {
-      width: "100%",
-    },
-    
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
+    }
   },
   flexDataConFirst: {
     width: "100%",
     maxWidth: 300,
     margin: 0,
     padding: "0 0 0 32",
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       width: "100%",
       maxWidth: "100%"
     }
@@ -88,8 +90,14 @@ const styles = theme => ({
   heading: {
     fontFamily: "Oswald",
     fontWeight: 100,
-    fontSize: "2.5rem",
-    // textTransform: "uppercase"
+    fontSize: "2.5rem"
+  },
+  message: {
+    fontSize: "2rem",
+    textAlign: "center",
+    margin: 10,
+    color: "#40a798",
+    fontFamily: "Oswald"
   }
 });
 
@@ -99,36 +107,6 @@ const Hr = styled.div`
   width: 90%;
   height: 1px;
 `;
-
-// const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
-//   query getFoodEntriesByUserId($userId: ID!) {
-//     getFoodEntriesByUserId(userId: $userId) {
-//       id
-//       date
-//       servingQty
-//       user_id {
-//         username
-//         firstName
-//         lastName
-//         email
-//         id
-//       }
-//       food_id {
-//         id
-//         foodName
-//         caloriesPerServ
-//         fats
-//         proteins
-//         carbs
-//         edamam_id
-//       }
-//       meal_category_id {
-//         id
-//         mealCategoryName
-//       }
-//     }
-//   }
-// `;
 
 class Dashboard extends Component {
   state = {
@@ -141,14 +119,15 @@ class Dashboard extends Component {
     exerEntry: [],
     foodEntry: [],
     foodIsLoading: true,
-    exerIsLoading: true
+    exerIsLoading: true,
+    info: ""
   };
 
   componentDidMount = () => {
-    if (this.props.selectedFood ){
+    if (this.props.selectedFood) {
       this.setState({
         showFoodForm: false
-      })
+      });
     }
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
@@ -157,7 +136,7 @@ class Dashboard extends Component {
     });
     client
       .query({
-        query: GET_CURRENT_USERID
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
         this.setState({
@@ -205,7 +184,7 @@ class Dashboard extends Component {
       });
       client
         .query({
-          query: GET_CURRENT_USERID
+          query: GET_CURRENT_USER_QUERY
         })
         .then(response => {
           this.setState({ currentUser: response.data.getCurrentUser.id });
@@ -228,10 +207,9 @@ class Dashboard extends Component {
                   }
                 })
                 .then(response => {
-                  console.log(this.state.currentUser);
-                  console.log("food response", response);
                   this.setState({
-                    foodEntries: response.data.getFoodEntriesByUserId
+                    foodEntries: response.data.getFoodEntriesByUserId,
+                    info: ""
                   });
                 });
             });
@@ -262,7 +240,8 @@ class Dashboard extends Component {
           })
           .then(response => {
             this.setState({
-              foodEntries: response.data.getFoodEntriesByUserId
+              foodEntries: response.data.getFoodEntriesByUserId,
+              info: "Your Food Entry has been added successfully."
             });
           });
       })
@@ -291,7 +270,8 @@ class Dashboard extends Component {
           })
           .then(response => {
             this.setState({
-              exerEntries: response.data.getExerciseEntriesByUserId
+              exerEntries: response.data.getExerciseEntriesByUserId,
+              info: "Your Exercise Entry has been added successfully."
             });
           });
       })
@@ -306,7 +286,6 @@ class Dashboard extends Component {
           e.target.type === "number" ? parseInt(e.target.value) : e.target.value
       }
     });
-    console.log("exerentry change", this.state.exerEntry);
   };
 
   onFoodEntryChange = e => {
@@ -322,7 +301,6 @@ class Dashboard extends Component {
           e.target.type === "number" ? parseInt(e.target.value) : e.target.value
       }
     });
-    console.log(this.state.foodEntry.foodName);
   };
 
   onFoodChange = e => {
@@ -338,17 +316,6 @@ class Dashboard extends Component {
       }
     });
   };
-  // onMealChange = e => {
-  //   this.setState({
-  //     foodEntry:{
-  //       meal_category_id:{
-  //         ...this.state.foodEntry.meal_category_id,
-  //         [e.target.name]:
-  //           e.target.type === "number" ? parseInt(e.target.value) : e.target.value
-  //       }
-  //     }
-  //   })
-  // }
 
   editFoodEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
@@ -356,17 +323,18 @@ class Dashboard extends Component {
       headers: { authorization: idToken }
     });
 
-    const edamam_id = editEntry.food_id.edamam_id ? editEntry.food_id.edamam_id : null
+    const edamam_id = editEntry.food_id.edamam_id
+      ? editEntry.food_id.edamam_id
+      : null;
     const foodId = parseInt(editEntry.food_id.id);
-    const mealCategoryId = parseInt(editEntry.meal_category_id.id)
-
+    const mealCategoryId = parseInt(editEntry.meal_category_id);
     const foodInput = {
       foodName: editEntry.food_id.foodName,
       caloriesPerServ: parseInt(editEntry.food_id.caloriesPerServ),
       fats: parseFloat(editEntry.food_id.fats),
       carbs: parseFloat(editEntry.food_id.carbs),
       proteins: parseFloat(editEntry.food_id.proteins),
-      edamam_id: edamam_id,
+      edamam_id: edamam_id
     };
 
     const foodEntryInput = {
@@ -375,43 +343,43 @@ class Dashboard extends Component {
       user_id: parseInt(this.state.currentUser),
       servingQty: parseInt(editEntry.servingQty),
       meal_category_id: parseInt(mealCategoryId)
-    }
+    };
 
     client
       .mutate({
         mutation: EDIT_FOOD,
         variables: {
-        id: foodId,
-        input: foodInput
-      }
-    })
-    .then(response => {
-      client
-        .mutate({
-          mutation: EDIT_FOOD_ENTRY,
-          variables: {
-            id: editId,
-            variables: foodEntryInput
-          }
-        })
-        .then(response => {
-          client
-            .query({
-              query: GET_FOOD_ENTRIES_BY_USER_QUERY,
-              variables: {
-                userId: this.state.currentUser
-              }
-            })
-            .then(response => {
-              this.setState({
-                foodEntries: response.data.getFoodEntriesByUserId
+          id: foodId,
+          input: foodInput
+        }
+      })
+      .then(response => {
+        client
+          .mutate({
+            mutation: EDIT_FOOD_ENTRY,
+            variables: {
+              id: editId,
+              input: foodEntryInput
+            }
+          })
+          .then(response => {
+            client
+              .query({
+                query: GET_FOOD_ENTRIES_BY_USER_QUERY,
+                variables: {
+                  userId: this.state.currentUser
+                }
+              })
+              .then(response => {
+                this.setState({
+                  foodEntries: response.data.getFoodEntriesByUserId,
+                  info: "Your Food Entry has been updated successfully."
+                });
               });
-            });
-        })
-        .catch(err => console.log(err));
-    })
-  }
-
+          })
+          .catch(err => console.log(err));
+      });
+  };
 
   editExerEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
@@ -434,7 +402,8 @@ class Dashboard extends Component {
           .then(response => {
             this.setState({
               exerEntry: "",
-              exerEntries: response.data.getExerciseEntriesByUserId
+              exerEntries: response.data.getExerciseEntriesByUserId,
+              info: "Your Exercise Entry has been updated successfully."
             });
           });
       })
@@ -452,7 +421,6 @@ class Dashboard extends Component {
         variables: { id }
       })
       .then(response => {
-        console.log(response);
         client
           .query({
             query: GET_FOOD_ENTRIES_BY_USER_QUERY,
@@ -461,10 +429,10 @@ class Dashboard extends Component {
             }
           })
           .then(response => {
-            console.log(response);
             this.setState({
               foodEntry: "",
-              foodEntries: response.data.getFoodEntriesByUserId
+              foodEntries: response.data.getFoodEntriesByUserId,
+              info: "Your Food Entry has been deleted successfully."
             });
           });
       })
@@ -492,7 +460,8 @@ class Dashboard extends Component {
           .then(response => {
             this.setState({
               exerEntry: "",
-              exerEntries: response.data.getExerciseEntriesByUserId
+              exerEntries: response.data.getExerciseEntriesByUserId,
+              info: "Your Exercise Entry has been deleted successfully."
             });
           });
       })
@@ -502,7 +471,7 @@ class Dashboard extends Component {
   handleShowFood = () => {
     this.setState({
       showFoodForm: true,
-      selectedFood: {}
+      selectedFood: []
     });
   };
 
@@ -544,12 +513,17 @@ class Dashboard extends Component {
   };
 
   render() {
-
     const { classes } = this.props;
+    const { info } = this.state;
     const currentDate = moment(new Date()).format("MMMM Do YYYY");
-    if (this.state.userType === "Super User") {
+    if (this.state.userType !== "basic") {
       return (
         <Container className={classes.root}>
+          {info && (
+            <Typography variant="h4" className={classes.message}>
+              {info}
+            </Typography>
+          )}
           <Typography variant="h3" className={classes.date}>
             {currentDate}
           </Typography>
@@ -560,7 +534,7 @@ class Dashboard extends Component {
               </Typography>
             </CardContent>
             <CardContent>
-              <Calories />
+              <Calories foodEntries={this.state.foodEntries} />
             </CardContent>
             <CardContent className={classes.flexData}>
               {!this.state.foodIsLoading ? (
@@ -579,7 +553,9 @@ class Dashboard extends Component {
                   />
                 </Container>
               ) : (
-                <CircularProgress />
+                <LoadingDiv>
+                  <CircularProgress />
+                </LoadingDiv>
               )}
               <Container className={classes.forms}>
                 {this.state.showFoodForm && (
@@ -594,6 +570,7 @@ class Dashboard extends Component {
                 {!this.state.showFoodForm && (
                   <Container className={classes.flexDataCon}>
                     <ModifiedEntryForm
+                      resetSelected={this.props.resetSelected}
                       addFoodEntry={this.addFoodEntry}
                       selectedFood={this.props.selectedFood}
                       handleShowFood={this.handleShowFood}
@@ -623,7 +600,9 @@ class Dashboard extends Component {
                         />
                       </Container>
                     ) : (
-                      <CircularProgress />
+                      <LoadingDiv>
+                        <CircularProgress />
+                      </LoadingDiv>
                     )}
                     <Container className={classes.flexDataCon}>
                       <Exercise
@@ -642,53 +621,71 @@ class Dashboard extends Component {
     } else {
       return (
         <Container className={classes.root}>
-          <DashTitle>{currentDate}</DashTitle>
-          <Calories />
-          <DashDisplay className="container">
-            <InfoCon>
-              <FoodEntry foodEntries={this.state.foodEntries} />
-            </InfoCon>
-            {this.state.showFoodForm && (
-              <EntryForm
-                addFoodEntry={this.addFoodEntry}
-                closeFoodForm={this.closeFoodForm}
-                searchedFood={this.props.selectedFood}
-              />
-            )}
-            {!this.state.showFoodForm && (
-              <ModifiedEntryForm
-                addFoodEntry={this.addFoodEntry}
-                selectedFood={this.props.selectedFood}
-                handleShowFood={this.handleShowFood}
-                revertToNormalForm={this.revertToNormalForm}
-              />
-            )}
-          </DashDisplay>
+          <Typography variant="h3" className={classes.date}>
+            {currentDate}
+          </Typography>
+          <Card>
+            <CardContent>
+              <Typography className={classes.title}>
+                Today's Summary:
+              </Typography>
+            </CardContent>
+
+            <CardContent>
+              <Calories foodEntries={this.state.foodEntries} />
+            </CardContent>
+
+            <CardContent className={classes.flexData}>
+              {!this.state.foodIsLoading ? (
+                <Container className={classes.flexDataConFirst}>
+                  <Typography className={classes.heading}>Meals</Typography>
+                  <hr />
+                  <FoodEntry
+                    foodEntries={this.state.foodEntries}
+                    deleteFoodEntry={this.deleteFoodEntry}
+                    foodEntry={this.state.foodEntry}
+                    onFoodEntryChange={this.onFoodEntryChange}
+                    onFoodChange={this.onFoodChange}
+                    onMealChange={this.onMealChange}
+                    editFoodEntry={this.editFoodEntry}
+                    passFoodData={this.passFoodData}
+                  />
+                </Container>
+              ) : (
+                <LoadingDiv>
+                  <CircularProgress />
+                </LoadingDiv>
+              )}
+            </CardContent>
+
+            <Container className={classes.forms}>
+              {this.state.showFoodForm && (
+                <Container className={classes.flexDataCon}>
+                  <EntryForm
+                    addFoodEntry={this.addFoodEntry}
+                    closeFoodForm={this.closeFoodForm}
+                    searchedFood={this.props.selectedFood}
+                  />
+                </Container>
+              )}
+
+              {!this.state.showFoodForm && (
+                <Container className={classes.flexDataCon}>
+                  <ModifiedEntryForm
+                    resetSelected={this.props.resetSelected}
+                    addFoodEntry={this.addFoodEntry}
+                    selectedFood={this.props.selectedFood}
+                    handleShowFood={this.handleShowFood}
+                    revertToNormalForm={this.revertToNormalForm}
+                  />
+                </Container>
+              )}
+            </Container>
+          </Card>
         </Container>
       );
     }
   }
 }
-const DashTitle = styled.div`
-  /* font-size: 3rem;
-  text-align: center; */
-`;
-const InfoCon = styled.div`
-  /* display: flex;
-  width: 40%;
-  @media (max-width: 800px) {
-    width: 100%; */
-  /* } */
-`;
-const DashDisplay = styled.div`
-  /* width: 100%;
-  display: flex;
-  margin-top: 5%;
-  margin-bottom: 4%;
-  justify-content: space-around;
-  @media (max-width: 800px) {
-    flex-direction: column;
-    align-items: center;
-  } */
-`;
+
 export default withStyles(styles)(Dashboard);

@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import * as moment from "moment";
 import Tabs from "@material-ui/core/Tabs";
@@ -8,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Zoom from "@material-ui/core/Zoom";
 import { PDFViewer, StyleSheet } from "@react-pdf/renderer";
+import { CircularProgress } from "@material-ui/core";
 
 import StatsDashboard from "./StatsDashboard";
 import OneDayStats from "./OneDayStats";
@@ -22,7 +24,22 @@ import {
   GET_WEIGHT_ENTRIES_QUERY,
   GET_EXERCISE_ENTRIES_QUERY
 } from "../../graphql/queries";
-import { CircularProgress } from "@material-ui/core";
+
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 500px;
+`;
+const Errors = styled.ul`
+  text-align: center;
+  li {
+    margin: 15px 0;
+    color: #40a798;
+    font-family: Oswald;
+  }
+`;
 
 class StatsView extends React.Component {
   state = {
@@ -34,10 +51,12 @@ class StatsView extends React.Component {
     option: 0,
     initialWeight: 0,
     currentUser: null,
-    statsLoading: true
+    statsLoading: false,
+    errors: []
   };
 
   componentDidMount = async () => {
+    this.setState({ statsLoading: true });
     const idToken = localStorage.getItem("token");
 
     const client = new ApolloClient({
@@ -68,14 +87,17 @@ class StatsView extends React.Component {
         exerciseEntries: exerciseEntries.data.getExerciseEntriesByUserId,
         initialWeight: initialWeight,
         currentUser: user.data.getCurrentUser,
-        statsLoading: false
+        statsLoading: false,
+        errors: []
       });
     } catch (err) {
-      console.log(err);
-      // if (err.response.errors[0].message === "You must be logged in!") {
-      //   localStorage.removeItem("token");
-      //   // this.props.history.push("/login");
-      // }
+      const error = err.message.split(":")[1];
+      console.log(error);
+      this.setState(prevState => {
+        const errors = prevState.errors;
+        errors.push(error);
+        return { errors: errors };
+      });
     }
   };
 
@@ -106,24 +128,28 @@ class StatsView extends React.Component {
       exerciseEntries,
       weightEntries,
       currentUser,
-      initialWeight
+      initialWeight,
+      errors
     } = this.state;
     let tooltipTitle = "";
 
-    if (this.state.statsLoading) {
-      return (
-        <div>
-          <CircularProgress />
-        </div>
-      );
-    } else {
-      if (currentUser) {
-        if (currentUser.userType === "basic")
-          tooltipTitle = "Please upgrade to access report";
-      }
-      return (
-        <>
+    if (currentUser && currentUser.userType === "basic")
+      tooltipTitle = "Please upgrade to access report";
+    return (
+      <>
+        {errors.length > 0 ? (
+          <Errors>
+            {errors.map((error, i) => (
+              <li key={i}>{error}</li>
+            ))}
+          </Errors>
+        ) : (
           <div>
+            {this.state.statsLoading && (
+              <LoadingDiv>
+                <CircularProgress />
+              </LoadingDiv>
+            )}
             <Paper className={classes.root}>
               <Tabs
                 value={option}
@@ -225,9 +251,9 @@ class StatsView extends React.Component {
               </>
             )}
           </div>
-        </>
-      );
-    }
+        )}
+      </>
+    );
   }
 }
 

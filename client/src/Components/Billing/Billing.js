@@ -1,65 +1,87 @@
 import React from "react";
-import { gql } from "apollo-boost";
 import { Mutation } from "react-apollo";
 import StripeCheckout from 'react-stripe-checkout';
 import BillingHistory from './BillingHistory';
 import ApolloClient from "apollo-boost";
 import moment from 'moment';
-import styled from "styled-components";
 import AccountNav from '../AccountNav';
-import { makeStyles } from '@material-ui/core/styles';
-import { wrap } from "module";
+// import { wrap } from "module";
+import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
 
-const createSubscriptionMutation = gql`
-  mutation createSubscription($source: String!, $email: String!, $amount: Int!){
-    createSubscription(source: $source, email: $email, amount: $amount){
-      id
-    }
-  }
-`;
 
-const getRecentBillingQuery  = gql`
-  query getRecentBilling($id: ID!){
-    getRecentBilling(id: $id){
-      date
-    }
-  }
-`;
+import {GET_CURRENT_USER_QUERY, GET_RECENT_BILLING} from "../../graphql/queries";
+import {CREATE_SUBSCRIPTION} from "../../graphql/mutations";
 
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-      userType
-    }
-  }
-`;
-const BillingContainer = styled.div`
-  padding-top:50px;
-  display:flex;
-  flex-direction:column;
-  align-content:center;
-  flex-wrap:wrap;
-  width:60%;
-`;
-
-let divStyle = {
+const styles = theme => ({
+divStyle: {
+  fontFamily: "Oswald",
   display: 'flex',
   flexWrap: 'wrap',
-  height: '80vh',
-  justifyContent: 'flex-start'
-  // marginLeft: "25%"
-}
+  justifyContent: 'flex-start',
+  alignItems: "flex-start"
+},
+subscriptionDiv: {
+  display: "flex"
+},
+gridContainer: {
+  padding: "3%",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
 
-// const useStyles = makeStyles(theme => ({
-
-//   root: {
-//     display: 'flex',
-//   }
-
-// }));
-// const classes = useStyles();
+},
+billingTop: {
+    display: 'flex',
+    alignItems: "center",
+    flexWrap: "wrap",
+    flexDirection: "column",
+    flexGrow: 1,
+    height:"100px",
+    width: "100%"
+  },
+card: {
+    width: "100%",
+    maxWidth: 500,
+    height: "400px",
+    marginLeft: "7%",
+    padding: 10,
+    flexWrap: 'nowrap',
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+      maxWidth: 1000,
+      margin: "inherit",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center"
+    }
+  },
+  paraDiv: {
+    display: "flex",
+    alignItems: "center",
+    fontSize: "2rem"
+  },
+  paraDivValue: {
+    fontSize: "1.7rem",
+    paddingLeft: "5px"
+  },
+  buttons: { justifyContent: "space-around" },
+  btn: {
+    fontSize: "1.4rem",
+    color: "#FCFCFB",
+    border: "2px solid #5E366A",
+    backgroundColor: "#5E366A",
+    padding: "5px 8px",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "#545454"
+    },
+    fontFamily: "Oswald"
+  }
+});
 
  class Billing extends React.Component{
   constructor(props){
@@ -67,7 +89,9 @@ let divStyle = {
     this.state = {
       subscriptionLapse: "",
       premiumCurrent: false,
-      userType: ""
+      userType: "",
+      name: "",
+      email: ""
     }
   }
 
@@ -82,12 +106,14 @@ let divStyle = {
 
     await client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
         this.getRecentBilling(response.data.getCurrentUser.id)
         this.setState({
-          userType: response.data.getCurrentUser.userType
+          userType: response.data.getCurrentUser.userType,
+          name: response.data.getCurrentUser.firstName,
+          email: response.data.getCurrentUser.email
         })
       })
       .catch(err => console.log(err));
@@ -100,7 +126,7 @@ let divStyle = {
 
     await client
       .query({
-        query: getRecentBillingQuery,
+        query: GET_RECENT_BILLING,
         variables: {
           id: id
         }
@@ -131,30 +157,46 @@ let divStyle = {
   render(){
     const premium = 700;
     const coach = 1000;
+    const { classes } = this.props;
+
     return(
 
-      // <div
-      // className={classes.root}
-      // >
-      <div style={divStyle}>
+    <div className={classes.divStyle}>
             <AccountNav />
-        <BillingContainer>
-          <p>Type: {this.state.userType.toUpperCase()}</p>
-          {
-            this.state.subscriptionLapse.length > 1 ? (
-              <p>Current Until: {this.state.subscriptionLapse}</p>
-            ) : (null)
-          }
-          <Mutation mutation={createSubscriptionMutation} onError={err => {console.log(err)}}>
+    <Grid 
+      item md={8} xs={12}
+      container
+      justify="center"
+      alignItems="center"
+      border="1px solid black"
+      classes={{ root: classes.gridContainer }}
+    >
+        <Card className={classes.card}>
+          <div className={classes.billingTop}>
+            {/* <div> */}
+            <p className={classes.paraDiv}>Type:  <p className={classes.paraDivValue}> {this.state.userType.charAt(0).toUpperCase() + this.state.userType.slice(1)}</p></p>
+             {
+              this.state.subscriptionLapse.length > 1 ? (
+                <p className={classes.paraDiv}> Subscription Until: <p className={classes.paraDivValue}> {this.state.subscriptionLapse}</p></p>
+              ) : (null)
+            }
+          <Mutation mutation={CREATE_SUBSCRIPTION} onError={err => {console.log(err)}}>
             {mutation => (
-              <div>
+              <div className={classes.subscriptionDiv}>
+                <div style={
+                  {
+                  body: "#5e366a",
+                  paddingRight: "5px"
+                  }
+                }>
                 <StripeCheckout
                   amount={premium}
-                  billingAddress
+                  class="StripeCheckout"
                   label="Become a Premium User"
                   description="Become a Premium User!"
                   locale="auto"
                   name="NutritionTrkr"
+                  email={this.state.email}
                   stripeKey={process.env.REACT_APP_STRIPE_KEY}
                   token={async token => {
                     console.log(token.id,token.email, premium)
@@ -169,16 +211,20 @@ let divStyle = {
                   }}
                   zipcode
                 />
+                </div>
+                <div>
                 <StripeCheckout
                   amount={coach}
-                  billingAddress
                   label="Become a Coach"
+                  className="StripeCheckout"
                   description="Become a Coach!"
                   locale="auto"
                   name="NutritionTrkr"
+                  email={this.state.email}
                   stripeKey={process.env.REACT_APP_STRIPE_KEY}
                   token={async token => {
                     console.log(token)
+                    console.log(token.id,token.email, coach)
                     const response = await mutation({
                       variables: {
                         source: token.id,
@@ -190,14 +236,19 @@ let divStyle = {
                   }}
                   zipcode
                 />
+                </div>
               </div>
             )}
           </Mutation>
+        </div>
           <BillingHistory/>
-        </BillingContainer>
+          {/* </div> */}
+        </Card>
+        </Grid>
       </div>
+   
     )
   }
 }
 
- export default Billing;
+ export default withStyles(styles)(Billing);

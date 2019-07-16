@@ -1,5 +1,4 @@
 import React from 'react';
-// import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // import AppBar from '@material-ui/core/AppBar';
@@ -31,7 +30,7 @@ const styles = theme => ({
     width: 'auto',
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(3),
-    [theme.breakpoints.up(900 + theme.spacing.unit * 3 * 2)]: {
+    [theme.breakpoints.up(900 + theme.spacing(3,2))]: {
       width: 900,
       marginLeft: 'auto',
       marginRight: 'auto',
@@ -143,7 +142,7 @@ function Pricing(props) {
                   subheader={tier.subheader}
                   titleTypographyProps={{ align: 'center' }}
                   subheaderTypographyProps={{ align: 'center' }}
-                  action={tier.title === 'Super User' ? <StarIcon /> : null}
+                  action={tier.title === 'Premium' ? <StarIcon /> : null}
                   className={classes.cardHeader}
                 />
                 <CardContent>
@@ -163,7 +162,7 @@ function Pricing(props) {
                 </CardContent>
                 <CardActions className={classes.cardActions}
               >
-              {tier.title === 'Super User' ? <Button fullWidth variant={tier.buttonVariant} className={classes.button} component={Link} to ="/login" >   {tier.buttonText}
+              {tier.title === 'Premium' ? <Button fullWidth variant={tier.buttonVariant} className={classes.button} component={Link} to ="/login" >   {tier.buttonText}
                 </Button>  : <Button fullWidth variant={tier.buttonVariant} className={classes.button} component={Link} to ="/login" >   {tier.buttonText}
                 </Button> }
                   {/* <Button fullWidth variant={tier.buttonVariant} color="primary" component={Link} to ="/billing"   >

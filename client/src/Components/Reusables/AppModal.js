@@ -11,6 +11,7 @@ const ResultDiv = styled.div`
   flex-direction: column;
   overflow: hidden;
   text-decoration: none;
+  transition: 0.3s all ease-out;
   &:focus,
   &:hover,
   &:visited,
@@ -18,21 +19,32 @@ const ResultDiv = styled.div`
   &:active {
     text-decoration: none;
   }
+  &:hover {
+    background: rgba(94,54,106, 0.1);
+  }
 `;
 const ResultTitle = styled.h1`
   color: #40a798;
-  font-size: 1.4em;
-  padding: 10px;
+  font-size: 20px;
+  font-size: 2rem;
+  font-family: "Oswald";
+  padding: 10px 0;
+  text-transform: capitalize;
 `;
 
 const ResultInfo = styled.div`
   padding: 5px 0px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 const ResultInfoP = styled.p`
-  font-size: 1.2em;
+  font-size: 16px;
+  font-size: 1.6rem;
   color: #2c363f;
 `;
 const ResultSpan = styled.span`
@@ -42,17 +54,33 @@ const ResultSpan = styled.span`
 const ModalButton = styled.button`
   padding: 5px 30px;
   margin-right: 20px;
-  font-size: 1.4em;
-  background: #5E366A;
+  font-size: 16px;
+  font-size: 1.6rem;
+  font-weight: 500;
+  background: #5e366a;
+  border: 1px solid #5e366a;
   color: #fcfcfb;
   display: block;
   right: 0;
   position: fixed;
+  cursor: pointer;
+  &:hover {
+    background: #ffffff;
+    color: #5e366a;
+  }
 `;
 
 const NoResultDiv = styled.div`
   padding: 20px 30px;
   font-size: 1.4em;
+`;
+
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 500px;
 `;
 
 const customStyles = {
@@ -65,9 +93,10 @@ const customStyles = {
     height: "50%",
     width: "50%",
     transform: "translate(-50%, -50%)",
-    position: "absolute"
+    position: "absolute",
   }
 };
+
 
 Modal.setAppElement("#root");
 
@@ -75,13 +104,15 @@ const AppModal = props => {
   if (props.resultsLoading) {
     return (
       <Modal style={customStyles} isOpen={props.isOpen}>
-        <CircularProgress />
+        <LoadingDiv>
+          <CircularProgress />
+        </LoadingDiv>
       </Modal>
     );
   } else {
     return (
       <Modal style={customStyles} isOpen={props.isOpen}>
-        <ModalButton onClick={props.closeModal}>close</ModalButton>
+        <ModalButton onClick={props.closeModal}>Close</ModalButton>
 
         {props.searchResults.length === 0 && (
           <NoResultDiv> No Results Found </NoResultDiv>
@@ -111,7 +142,7 @@ const AppModal = props => {
                 to={{ pathname: "/dashboard" }}
               >
                 <ResultDiv onClick={() => props.handleFoodSubmit(food.food)}>
-                  <ResultTitle> {edamam_name}</ResultTitle>
+                  <ResultTitle>{edamam_name}</ResultTitle>
                   <ResultInfo>
                     <ResultInfoP>
                       <ResultSpan>calories:</ResultSpan> {calories}{" "}
@@ -119,8 +150,8 @@ const AppModal = props => {
                     <ResultInfoP>
                       <ResultSpan>carbs:</ResultSpan> {carbs}
                     </ResultInfoP>
-                  </ResultInfo>
-                  <ResultInfo>
+                    {/* </ResultInfo>
+                  <ResultInfo> */}
                     <ResultInfoP>
                       <ResultSpan>protein:</ResultSpan> {protein}{" "}
                     </ResultInfoP>

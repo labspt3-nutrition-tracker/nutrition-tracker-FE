@@ -52,7 +52,6 @@ class Header extends React.Component {
     this.getCurrentUser(localStorage.getItem("token"));
   }
 
-
   getCurrentUser = idToken => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
@@ -111,7 +110,7 @@ class Header extends React.Component {
 
         <AppBar
           updateSearch={this.props.updateSearch}
-          searchInput={this.props.inputSearch}
+          searchInput={this.props.searchInput}
           getFoodData={this.props.getFoodData}
         />
       </div>

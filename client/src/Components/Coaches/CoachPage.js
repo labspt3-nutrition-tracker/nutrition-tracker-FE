@@ -1,31 +1,36 @@
 import React from "react";
-import styled from "styled-components";
 import ApolloClient from "apollo-boost";
+import Grid from "@material-ui/core/Grid";
+import { withStyles } from "@material-ui/core/styles";
 
 import TraineeList from "./TraineeList";
 import TraineeResult from "./TraineeResult";
 import TraineeSearch from "./TraineeSearch";
 import TraineeInfo from "./TraineeInfo";
 import SendMessageFromCoach from "./SendMessage";
-import { SEARCH_USER_BY_EMAIL, GET_CURRENT_USER_QUERY, GET_TRAINEES } from "../../graphql/queries";
-import { ADD_MESSAGE_MUTATION } from "../../graphql/mutations";
+import {
+  SEARCH_USER_BY_EMAIL,
+  GET_CURRENT_USER_QUERY,
+  GET_TRAINEES
+} from "../../graphql/queries";
+import { ADD_MESSAGE_MUTATION, DELETE_TRAINEE } from "../../graphql/mutations";
 
-const CoachPageContainer = styled.div`
-  padding: 2% 4%;
-  min-height: 90vh;
-  width: 100%;
-  border: 1px solid pink;
-  display: flex;
-`;
-
-const TraineeBasic = styled.div`
-  width: 50%;
-  height: 90vh;
-`;
-const TraineeDetailed = styled.div`
-  width: 50%;
-  height: 90vh;
-`;
+const styles = theme => ({
+  root: {
+    margin: "auto",
+    marginTop: 20,
+    padding: 15,
+    fontFamily: "Oswald",
+    maxWidth: "1200px"
+  },
+  message: {
+    fontSize: "2rem",
+    textAlign: "center",
+    margin: 10,
+    color: "#40a798",
+    fontFamily: "Oswald"
+  }
+});
 
 class CoachPage extends React.Component {
   constructor(props) {
@@ -33,30 +38,35 @@ class CoachPage extends React.Component {
     this.state = {
       currentUser: "",
       traineeSearchInput: "",
-      traineeSearchResults: [],
+      traineeSearchResults: null,
+      traineeExist: false,
       isSearchModalOpen: false,
       trainees: [],
       selectedTrainee: [],
       noUserFoundError: "",
       errorText: "",
       error: false,
+      info: ""
     };
   }
 
   updateTraineeSearch = e => {
     this.setState({
-      traineeSearchInput: e.target.value
+      traineeSearchInput: e.target.value,
+      info: "",
+      errorText: ""
     });
   };
 
   handleChooseUser = async user => {
     await this.setState({
-      selectedTrainee: user
+      selectedTrainee: user,
+      info: "",
+      errorText: ""
     });
-    console.log(this.state.selectedTrainee);
   };
 
-  componentDidMount(){
+  componentDidMount() {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
@@ -69,24 +79,27 @@ class CoachPage extends React.Component {
       })
       .then(response => {
         this.setState({
-          currentUser: response.data.getCurrentUser
-        })
+          currentUser: response.data.getCurrentUser,
+          errorText: ""
+        });
         client
           .query({
             query: GET_TRAINEES,
-            variables:{
+            variables: {
               coach_id: this.state.currentUser.id
             }
           })
           .then(response => {
             this.setState({
               trainees: response.data.getTrainees
-            })
-          })
+            });
+          });
       })
       .catch(err => {
-        console.log(err)
-      })
+        this.setState({
+          errorText: err.message.split(":")[1]
+        });
+      });
   }
 
   getUserData = email => {
@@ -109,29 +122,91 @@ class CoachPage extends React.Component {
           traineeSearchResults: response.data.getUserBy,
           isSearchModalOpen: true,
           noUserFoundError: "",
-          traineeSearchInput: ""
+          traineeSearchInput: "",
+          info: "",
+          errorText: ""
         });
       })
       .catch(error => {
         this.setState({
           traineeSearchInput: "",
-          traineeSearchResults: [],
+          traineeSearchResults: null,
           isSearchModalOpen: true,
           noUserFoundError: "No user by that email found"
         });
       });
   };
 
-  handleRequest = async () => {
-    //send request message to traineeSearchResults.id
+  deleteTrainee = async traineeId => {
+    const idToken = localStorage.getItem("token");
+    const userId = this.state.currentUser.id;
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    try {
+      await client.mutate({
+        mutation: DELETE_TRAINEE,
+        variables: { coach_id: userId, trainee_id: traineeId }
+      });
+      const trainees = await client.query({
+        query: GET_TRAINEES,
+        variables: {
+          coach_id: userId
+        }
+      });
+      this.setState({
+        trainees: trainees.data.getTrainees,
+        info: "Trainee has been deleted successfully.",
+        errorText: ""
+      });
+    } catch (err) {
+      this.setState({
+        errorText: "Unable to delete your trainee"
+      });
+    }
+  };
+
+  traineeExistCheck = async (coachId, traineeId) => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
-    //   const user = await client.query({ query: GET_CURRENT_USER_QUERY });
+
+    const trainees = await client.query({
+      query: GET_TRAINEES,
+      variables: {
+        coach_id: coachId
+      }
+    });
+
+    const filteredTrainees = trainees.data.getTrainees.some(trainee => {
+      return trainee.id === traineeId;
+    });
+
+    if (filteredTrainees === true) {
+      this.setState({
+        traineeExist: true
+      });
+    } else {
+      this.setState({
+        traineeExist: false
+      });
+    }
+  };
+
+  handleRequest = async () => {
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
     const userId = this.state.currentUser.id;
-    const name = `${this.state.currentUser.firstName} ${this.state.currentUser.lastName}`;
+    const name = `${this.state.currentUser.firstName} ${
+      this.state.currentUser.lastName
+    }`;
     const variables = {
       input: {
         type: "alert",
@@ -141,41 +216,86 @@ class CoachPage extends React.Component {
         recipient: this.state.traineeSearchResults.id
       }
     };
-    try {
-      await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
-      this.setState({ traineeSearchResults: [] }); //reset after sending request
-    } catch (err) {
-      console.log(err);
+    await this.traineeExistCheck(userId, this.state.traineeSearchResults.id);
+
+    if (this.state.traineeExist) {
+      console.log("user exist already");
+      this.setState({
+        traineeSearchResults: null,
+        errorText: `User ${this.state.traineeSearchResults.firstName} ${
+          this.state.traineeSearchResults.lastName
+        } has already been added`
+      });
+    } else {
+      try {
+        await client.mutate({ mutation: ADD_MESSAGE_MUTATION, variables });
+        this.setState({
+          traineeSearchResults: null,
+          info: `A request message has been sent to ${
+            this.state.traineeSearchResults.firstName
+          } ${this.state.traineeSearchResults.lastName}.`,
+          errorText: ""
+        });
+      } catch (err) {
+        this.setState({
+          errorText: "Unable to send SendMessage"
+        });
+      }
     }
   };
 
   render() {
+    const { classes } = this.props;
+    const { info, errorText } = this.state;
     return (
-      <CoachPageContainer>
-        <TraineeBasic>
-          <TraineeSearch
-            traineeSearchInput={this.state.traineeSearchInput}
-            updateTraineeSearch={this.updateTraineeSearch}
-            getUserData={this.getUserData}
-          />
-          <TraineeResult
-            traineeSearchResults={this.state.traineeSearchResults}
-            noUserFoundError={this.state.noUserFoundError}
-            request={this.handleRequest}
-            currentUser={this.state.currentUser}
-            trainees={this.state.trainees}
-          />
-        <TraineeList
-          trainees={this.state.trainees} handleChooseUser={this.handleChooseUser} />
-        <SendMessageFromCoach traineeID={this.state.selectedTrainee.id} firstName={this.state.selectedTrainee.firstName} lastName={this.state.selectedTrainee.lastName}
-        currentUser={this.state.currentUser} />
-        </TraineeBasic>
-        <TraineeDetailed>
-          <TraineeInfo traineeID={this.state.selectedTrainee.id} />
-        </TraineeDetailed>
-      </CoachPageContainer>
+      <>
+        {info && <h2 className={classes.message}>{info}</h2>}
+        {errorText && <h2 className={classes.message}>{errorText}</h2>}
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          className={classes.root}
+        >
+          <Grid item sm={5} xs={12}>
+            <TraineeSearch
+              traineeSearchInput={this.state.traineeSearchInput}
+              updateTraineeSearch={this.updateTraineeSearch}
+              getUserData={this.getUserData}
+            />
+          </Grid>
+          <Grid item sm={7} xs={12}>
+            <TraineeResult
+              traineeSearchResults={this.state.traineeSearchResults}
+              noUserFoundError={this.state.noUserFoundError}
+              request={this.handleRequest}
+              currentUser={this.state.currentUser}
+              trainees={this.state.trainees}
+            />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <TraineeList
+              trainees={this.state.trainees}
+              deleteTrainee={this.deleteTrainee}
+              handleChooseUser={this.handleChooseUser}
+              traineeID={this.state.selectedTrainee.id}
+            />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <SendMessageFromCoach
+              traineeID={this.state.selectedTrainee.id}
+              firstName={this.state.selectedTrainee.firstName}
+              lastName={this.state.selectedTrainee.lastName}
+              currentUser={this.state.currentUser}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TraineeInfo traineeID={this.state.selectedTrainee.id} />
+          </Grid>
+        </Grid>
+      </>
     );
   }
 }
 
-export default CoachPage;
+export default withStyles(styles)(CoachPage);
