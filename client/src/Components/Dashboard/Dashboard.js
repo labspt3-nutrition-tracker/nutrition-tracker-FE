@@ -174,7 +174,7 @@ class Dashboard extends Component {
       .catch(err => console.log(err));
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.selectedFood !== this.props.selectedFood) {
       this.setState({ showFoodForm: false });
       const idToken = localStorage.getItem("token");
@@ -215,7 +215,7 @@ class Dashboard extends Component {
             });
         })
         .catch(err => console.log(err));
-    }
+    } 
   }
 
   addFoodEntry = newFoodEntry => {
@@ -291,9 +291,11 @@ class Dashboard extends Component {
   onFoodEntryChange = e => {
     e.preventDefault();
     let food_id = this.state.foodEntry.food_id;
+    // let meal_category_id = this.state.foodEntry.meal_category_id;
     let key = e.target.name;
     let value = e.target.value;
     food_id[key] = value;
+    // meal_category_id[key] = value;
     this.setState({
       foodEntry: {
         ...this.state.foodEntry,
@@ -303,21 +305,10 @@ class Dashboard extends Component {
     });
   };
 
-  onFoodChange = e => {
-    this.setState({
-      foodEntry: {
-        food_id: {
-          ...this.state.foodEntry.food_id,
-          [e.target.name]:
-            e.target.type === "number"
-              ? parseInt(e.target.value)
-              : e.target.value
-        }
-      }
-    });
-  };
+
 
   editFoodEntry = (editId, editEntry, idToken) => {
+    console.log("edit entry dashboard", editEntry)
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
@@ -546,8 +537,6 @@ class Dashboard extends Component {
                     deleteFoodEntry={this.deleteFoodEntry}
                     foodEntry={this.state.foodEntry}
                     onFoodEntryChange={this.onFoodEntryChange}
-                    onFoodChange={this.onFoodChange}
-                    onMealChange={this.onMealChange}
                     editFoodEntry={this.editFoodEntry}
                     passFoodData={this.passFoodData}
                   />
@@ -644,11 +633,10 @@ class Dashboard extends Component {
                     foodEntries={this.state.foodEntries}
                     deleteFoodEntry={this.deleteFoodEntry}
                     foodEntry={this.state.foodEntry}
-                    onFoodEntryChange={this.onFoodEntryChange}
-                    onFoodChange={this.onFoodChange}
-                    onMealChange={this.onMealChange}
+                    onFoodEntryChange={this.onFoodEntryChange}                   
                     editFoodEntry={this.editFoodEntry}
                     passFoodData={this.passFoodData}
+                   
                   />
                 </Container>
               ) : (

@@ -152,7 +152,7 @@ class ExerForm extends Component {
 
   render() {
     const { classes } = this.props;
-    const { newExerEntry } = this.state;
+    // const { newExerEntry } = this.state;
     return (
       <Form>
         <Typography className={classes.formTitle} variant="h4">
