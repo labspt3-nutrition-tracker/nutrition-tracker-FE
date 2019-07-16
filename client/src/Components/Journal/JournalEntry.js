@@ -176,7 +176,6 @@ class JournalEntry extends React.Component {
     this.setState({
       showModal: true
     });
-    console.log('edmamaExist', this.state.edamamExist)
   };
 
   closeModal = () => {

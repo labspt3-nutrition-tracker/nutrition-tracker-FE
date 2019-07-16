@@ -202,7 +202,6 @@ class EntryForm extends Component {
             });
           })
           .catch(err => {
-            console.log("food entry error", err);
             this.setState({
               edamamExist: false,
               newFoodEntry: {

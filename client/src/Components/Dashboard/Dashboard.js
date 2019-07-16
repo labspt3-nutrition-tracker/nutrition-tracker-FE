@@ -202,8 +202,6 @@ class Dashboard extends Component {
                   }
                 })
                 .then(response => {
-                  console.log(this.state.currentUser);
-                  console.log("food response", response);
                   this.setState({
                     foodEntries: response.data.getFoodEntriesByUserId
                   });
@@ -415,7 +413,6 @@ class Dashboard extends Component {
         variables: { id }
       })
       .then(response => {
-        console.log(response);
         client
           .query({
             query: GET_FOOD_ENTRIES_BY_USER_QUERY,
@@ -424,7 +421,6 @@ class Dashboard extends Component {
             }
           })
           .then(response => {
-            console.log(response);
             this.setState({
               foodEntry: "",
               foodEntries: response.data.getFoodEntriesByUserId
