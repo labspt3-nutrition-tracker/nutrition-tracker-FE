@@ -92,7 +92,6 @@ class Calendar extends React.Component {
   pickDate = arg => {
     const listedDate = arg.date
     const today = moment()
-    console.log(today.diff(listedDate, 'days') > 7)
     if(this.state.premiumUser || !(today.diff(listedDate, 'days') > 7)){
       this.setState({
         date: listedDate
