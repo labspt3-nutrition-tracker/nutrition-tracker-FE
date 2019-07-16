@@ -39,7 +39,6 @@ class Journal extends React.Component {
   }
 
   handleDateClick = (date, premium) => {
-    console.log(premium);
     if (premium) {
       this.setState({
         datePicked: date,
@@ -62,7 +61,6 @@ class Journal extends React.Component {
       let date = moment().format("ddd MMMM D YYYY");
       this.setState({ datePicked: date, currentUser: user.id });
     } catch (err) {
-      console.log(err);
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -90,7 +88,6 @@ class Journal extends React.Component {
         foodEntry: response.data.getFoodEntriesByUserId
       });
     } catch (err) {
-      console.log(err);
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -101,7 +98,6 @@ class Journal extends React.Component {
   };
 
   deleteMealEntry = async id => {
-    console.log(id);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
@@ -123,7 +119,6 @@ class Journal extends React.Component {
         info: "The food entry has been deleted."
       });
     } catch (err) {
-      console.log(err);
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -182,7 +177,6 @@ class Journal extends React.Component {
         info: "The food entry has been edited successfully."
       });
     } catch (err) {
-      console.log(err);
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
