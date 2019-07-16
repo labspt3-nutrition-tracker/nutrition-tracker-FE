@@ -30,7 +30,7 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
-      premiumUser: true,
+      userType: false,
       datePicked: "",
       foodEntry: [],
       errors: [],
@@ -38,21 +38,12 @@ class Journal extends React.Component {
     };
   }
 
-  handleDateClick = (date, premium) => {
-    console.log(premium);
-    if (premium) {
+  handleDateClick = (date, type) => {
+    console.log("user type", type);
       this.setState({
         datePicked: date,
-        premiumUser: premium,
-        info: ""
+        userType: type
       });
-    } else {
-      this.setState({
-        datePicked: date,
-        premiumUser: premium,
-        info: ""
-      });
-    }
   };
 
   componentDidMount = async () => {
@@ -193,7 +184,7 @@ class Journal extends React.Component {
   };
 
   premiumCheck = () => {
-    if (!this.state.premiumUser) {
+    if (!this.state.userType) {
       return (
         <div>
           <h2>In order to see meal entries you must upgrade to premium!</h2>
@@ -225,7 +216,7 @@ class Journal extends React.Component {
               classes={{ root: classes.gridContainer }}
             >
               <Grid item md={4} xs={12}>
-                {this.state.foodEntry.length > 1 && this.state.premiumUser ? (
+                {this.state.foodEntry.length > 1 && this.state.userType ? (
                   <JournalEntry
                     foodEntries={this.state.foodEntry}
                     datePicked={this.state.datePicked}
