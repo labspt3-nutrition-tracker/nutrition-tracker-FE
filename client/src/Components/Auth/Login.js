@@ -1,30 +1,21 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
-import FacebookLogin from "react-facebook-login";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import logo from "../../Assets/logo-green.png";
-import loginBg from "../../Assets/login-bg.png"
+import loginBg from "../../Assets/login-bg.png";
 import { Pulse } from "animate-css-styled-components";
 
 import LoginForm from "./LoginForm";
 import { ADD_USER_MUTATION } from "../../graphql/mutations";
 import { USER_EXIST_QUERY } from "../../graphql/queries";
 
-import Avatar from "@material-ui/core/Avatar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+
 // add min width for logo
 const LoginOrRegisterContainer = styled.div`
-  /* background: #5E366A; */
   display: flex;
   justify-content: center;
   align-content: center;
@@ -51,7 +42,6 @@ const Logo = styled.div`
 `;
 
 const LoginOrRegisterForm = styled.div`
-  /* background: #40a798; */
   background: #ffffff;
   width: 100%;
   max-width: 500px;
@@ -64,7 +54,6 @@ const LoginOrRegisterForm = styled.div`
   -moz-box-shadow: 0 0 24px -1px rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 24px -1px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-  /* border: 3px solid #3685b5; */
 `;
 
 const FormContainer = styled.div`
@@ -78,21 +67,11 @@ const PulseContainer = styled.div`
   justify-content: center;
 `;
 
-const FacebookBtn = styled.div`
-  button {
-    margin-top: 20px;
-    padding: 9px;
-    font-size: 1.2rem;
-    height: 47px;
-  }
-`;
-
 const LoginMessage = styled.div`
-  /* background: #40a798; */
   display: flex;
   justify-content: center;
   padding: 40% 0;
-  color: #5E366A;
+  color: #5e366a;
 `;
 
 const MadeWithLove = () => {
@@ -134,14 +113,6 @@ class LoginOrRegister extends React.Component {
       lastName = userInfo.profileObj.familyName;
       firstName = userInfo.profileObj.givenName;
       idToken = userInfo.getAuthResponse().id_token;
-    } else if (auth === "facebook") {
-      email = userInfo.email;
-      const name = userInfo.name.split(" ");
-      lastName = name.pop();
-      firstName = name.join(" ");
-      idToken = userInfo.accessToken;
-      //testing authenticating the token with fb
-      console.log("userID: ", userInfo.userID);
     }
     localStorage.setItem("token", idToken);
 
@@ -210,7 +181,6 @@ class LoginOrRegister extends React.Component {
   render() {
     const { from } = this.props.location || { from: { pathname: "/" } };
     if (this.state.toDashboard === true) {
-      // return <Redirect to='/dashboard' />;
       return <Redirect to={from} />;
     }
     return (
@@ -245,15 +215,6 @@ class LoginOrRegister extends React.Component {
                           onFailure={this.onFailure}
                           theme="dark"
                         />
-                        {/* <FacebookBtn>
-                    <FacebookLogin
-                      appId='390080238272158'
-                      // autoLoad={true}
-                      fields='name,email'
-                      callback={this.responseFacebook}
-                      icon='fa-facebook'
-                    />
-                  </FacebookBtn> */}
                       </>
                     </>
                   )}

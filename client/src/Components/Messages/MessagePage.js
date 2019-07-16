@@ -116,6 +116,7 @@ class MessagePage extends React.Component {
       trainees: [],
       option: 0,
       currentMessage: null,
+      coachExist: false,
       modalOpen: false,
       loading: false,
       errors: [],
@@ -229,6 +230,35 @@ class MessagePage extends React.Component {
     this.setState({ modalOpen: false });
   };
 
+  coachExistCheck = async (coachId, traineeId) => {
+    const idToken = localStorage.getItem("token");
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    const coaches = await client.query({
+      query: GET_COACHES,
+      variables: {
+        trainee_id: traineeId
+      }
+    });
+
+    const filteredCoach = coaches.data.getCoaches.find(coach => {
+      return coach.id === coachId;
+    });
+
+    if (filteredCoach) {
+      this.setState({
+        coachExist: true
+      });
+    } else {
+      this.setState({
+        coachExist: false
+      });
+    }
+  };
+
   handleAccept = async senderId => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
@@ -236,21 +266,31 @@ class MessagePage extends React.Component {
       headers: { authorization: idToken }
     });
 
+    const coach = `${this.state.currentMessage.sender.firstName} ${
+      this.state.currentMessage.sender.lastName
+    }`;
     try {
-      //create a link (entry) between the sender and current user
-      await client.mutate({
-        mutation: ADD_TRAINEE,
-        variables: { coach_id: senderId, trainee_id: this.state.currentUser.id }
-      });
+      // Check if link already exists
+      await this.coachExistCheck(this.state.currentUser.id, senderId);
+      if (this.state.coachExist) {
+        this.setState({ info: `You are already connected with ${coach}` });
+        this.handleClose();
+      } else {
+        //if link doesn't exist, create a link (entry) between the sender and current user
+        await client.mutate({
+          mutation: ADD_TRAINEE,
+          variables: {
+            coach_id: senderId,
+            trainee_id: this.state.currentUser.id
+          }
+        });
+        this.setState({ info: `You are now connected with ${coach}` });
+        this.handleClose();
+      }
       //delete the alert message
       const variables = { id: this.state.currentMessage.id };
       await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
-      const coach = `${this.state.currentMessage.sender.firstName} ${
-        this.state.currentMessage.sender.lastName
-      }`;
-      this.setState({ info: `You are now connected with ${coach}` });
-      this.handleClose();
-      this.getData();
+      // this.getData();
     } catch (err) {
       const error = err.message.split(":")[1];
       console.log(error);
