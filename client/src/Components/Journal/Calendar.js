@@ -31,7 +31,7 @@ class Calendar extends React.Component {
     this.state = {
       date: "",
       prevSeven: "",
-      premiumUser: false
+      userType: "basic"
     };
   }
 
@@ -50,6 +50,9 @@ class Calendar extends React.Component {
       })
       .then(response => {
         this.getRecentBilling(response.data.getCurrentUser.id)
+        this.setState({
+          userType: response.data.getCurrentUser.userType
+        })
       })
       .catch(err => console.log(err));
   };
@@ -79,12 +82,7 @@ class Calendar extends React.Component {
 
     if(today.diff(lastCycle, 'days') < 30){
       this.setState({
-        premiumUser: !this.state.premiumUser
-      })
-    }else{
-      this.setState({
-        prevSeven: sevenDays,
-        premiumUser: false
+        prevSeven: sevenDays
       })
     }
   };
@@ -92,13 +90,10 @@ class Calendar extends React.Component {
   pickDate = arg => {
     const listedDate = arg.date
     const today = moment()
-    console.log(today.diff(listedDate, 'days') > 7)
-    if(this.state.premiumUser || !(today.diff(listedDate, 'days') > 7)){
-      this.setState({
-        date: listedDate
-      });
+    console.log(this.state.userType)
+    if(this.state.userType !== "basic" || !(today.diff(listedDate, 'days') > 7)){
       this.props.handleDateClick(moment(listedDate).format('ddd MMMM D YYYY'), true);
-    }else{
+    }else if((today.diff(listedDate, 'days') > 7)){
       this.props.handleDateClick(moment(listedDate).format('ddd MMMM D YYYY'), false)
     }
   };

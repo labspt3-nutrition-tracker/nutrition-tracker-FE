@@ -142,7 +142,7 @@ let divStyle = {
                   label="Become a Premium User"
                   description="Become a Premium User!"
                   locale="auto"
-                  name="NutritionTrkr"
+                  name="Hello Melon"
                   email={this.state.email}
                   stripeKey={process.env.REACT_APP_STRIPE_KEY}
                   token={async token => {
@@ -163,7 +163,7 @@ let divStyle = {
                   label="Become a Coach"
                   description="Become a Coach!"
                   locale="auto"
-                  name="NutritionTrkr"
+                  name="Hello Melon"
                   email={this.state.email}
                   stripeKey={process.env.REACT_APP_STRIPE_KEY}
                   token={async token => {
