@@ -45,7 +45,7 @@ const Errors = styled.ul`
 const styles = theme => ({
   root: {
     display: "flex",
-    justifyContent: "space-evenly",
+    justifyContent: "space-evenly"
   },
   tab: {
     fontSize: "1.6rem",
@@ -452,6 +452,9 @@ class MessagePage extends React.Component {
                 aria-describedby="display message"
                 open={modalOpen}
                 onClose={this.handleClose}
+                data-aos="fade-down"
+                data-aos-easing="ease-out-cubic"
+                data-aos-duration="500"
               >
                 <div className={classes.modal}>
                   <Typography variant="h4" id="modal-title">

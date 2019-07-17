@@ -8,6 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { withStyles } from "@material-ui/core/styles";
 import * as moment from "moment";
+import { FadeInLeft } from "animate-css-styled-components";
 
 const styles = theme => ({
   text: {
@@ -116,7 +117,7 @@ const MessageInfo = props => {
                 onClick={() => props.showMessage(message)}
                 classes={{ root: classes.message }}
               >
-                <div className={classes.flexName}>
+                <FadeInLeft className={classes.flexName}>
                   {!message.read ? (
                     <ListItemIcon className={classes.icon}>
                       <UnreadIcon />
@@ -149,8 +150,8 @@ const MessageInfo = props => {
                       />
                     )
                   )}
-                </div>
-                <div className={classes.flexText}>
+                </FadeInLeft>
+                <FadeInLeft className={classes.flexText}>
                   <ListItemText
                     primary={message.text.substring(0, 20) + "..."}
                     classes={{
@@ -171,7 +172,7 @@ const MessageInfo = props => {
                       classes={{ root: classes.delete }}
                     />
                   </ListItemIcon>
-                </div>
+                </FadeInLeft>
               </ListItem>
             </React.Fragment>
           ))}
