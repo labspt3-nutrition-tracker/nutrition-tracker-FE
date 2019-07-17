@@ -81,7 +81,9 @@ class App extends React.Component {
   };
 
   getFoodData = food => {
-    food = this.state.searchInput;
+    if (this.state.searchInput){
+      food = this.state.searchInput
+    }
     let encodedFood = food.replace(" ", "%20");
     this.setState({ showModal: true });
     axios
@@ -131,8 +133,6 @@ class App extends React.Component {
       <div className="App">
         <Header
           resetSearch={this.resetSearch}
-          searchInput={this.state.searchInput}
-          updateSearch={this.updateSearch}
           getFoodData={this.getFoodData}
           closeModal={this.closeModal}
         />
@@ -144,8 +144,6 @@ class App extends React.Component {
           handleFoodSubmit={this.handleFoodSubmit}
           searchResults={this.state.searchResults}
           resultsLoading={this.state.resultsLoading}
-          updateSearch={this.updateSearch}
-          searchInput={this.state.searchInput}
         />
         <div>
           <Route

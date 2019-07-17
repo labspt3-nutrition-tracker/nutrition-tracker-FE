@@ -45,7 +45,7 @@ const Errors = styled.ul`
 const styles = theme => ({
   root: {
     display: "flex",
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
   },
   tab: {
     fontSize: "1.6rem",
