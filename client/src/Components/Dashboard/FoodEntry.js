@@ -25,7 +25,16 @@ const FoodEntryContainer = styled.div`
 
 const styles = theme => ({
   root: {
-    marginBottom: 20
+    marginBottom: 20,
+    fontFamily: "Oswald",
+    fontSize: "1.5rem"
+  },
+  label: {
+    fontSize: "1.5rem",
+    marginTop: "10px",
+    marginBottom: "5px",
+    fontFamily: "Oswald",
+    color: "#60B5A9"
   },
   category: {
     fontSize: "1.6rem",
@@ -39,11 +48,13 @@ const styles = theme => ({
   },
   dialogBox: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   entryContainer: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    fontFamily: "Oswald",
+    fontSize: "3rem"
   },
   food: {
     fontFamily: "Oswald",
@@ -308,7 +319,7 @@ class FoodEntry extends React.Component {
                 ))}
               </CardContent>
 
-              {this.state.edamamExist && <Dialog
+               <Dialog
                 open={this.state.showModal}
                 onClose={this.closeModal}
                 aria-labelledby="form-dialog-title"
@@ -334,43 +345,68 @@ class FoodEntry extends React.Component {
                         this.props.foodEntry.food_id &&
                         this.props.foodEntry.meal_category_id && (
                           <div className={classes.entryContainer}>
-                            <TextField
-                              required
-                              error={this.state.errorMsg.errorFood}
-                              autoFocus
-                              margin="dense"
+
+                            {this.state.edamamExist && (
+                            <>
+                              <TextField
+                                disabled
+                                id="standard-disabled"
+                                className={classes.food}
+                                value={this.props.foodEntry.food_id.foodName}
+                                aria-describedby="errorFood-text"
+                              />
+                            </>
+                            )}
+                        {!this.state.edamamExist && (
+                            <>
+                              <TextField
+                                required
+                                error={this.state.errorMsg.errorFood}
+                                autoFocus
+                                margin="dense"
+                                className={classes.food}
+                                type="text"
+                                name="foodName"
+                                onChange={this.props.onFoodEntryChange}
+                                value={this.props.foodEntry.food_id.foodName}
+                                aria-describedby="errorFood-text"
+                              />
+                            </>
+                            )}
+                           <TextField
+                              label="Date"
                               className="form-field"
-                              type="text"
-                              name="foodName"
+                              type="date"
+                              name="date"
+                              error={this.state.errorMsg.errorDate}
                               onChange={this.props.onFoodEntryChange}
-                              //onChange={event => {this.onFoodEntryChange(event, this.props.onFoodEntryChange, 'foodName'); }}
-                              value={this.props.foodEntry.food_id.foodName}
-                              aria-describedby="errorFood-text"
+                              required
+                              aria-describedby="errorDate-text"
+                              value={moment(this.props.foodEntry.date).format(
+                                "YYYY-MM-DD"
+                              )}
+                              defaultValue={moment(
+                                this.props.foodEntry.date
+                              ).format("YYYY-MM-DD")}
+                              InputLabelProps={{
+                                shrink: true,
+                                style: {
+                                  fontSize: "2rem",
+                                  color: "#60B5A9",
+                                  fontFamily: "Oswald"
+                                }
+                              }}
+                              inputProps={{
+                                style: {
+                                  fontSize: "1.5rem",
+                                  lineHeight: "1.5",
+                                  marginTop: "12px"
+                                }
+                              }}
                             />
-                            <InputLabel htmlFor="meal_category_id">
-                              Meal Category
-                            </InputLabel>
-                            <Select
-                              autoFocus
-                              margin="dense"
-                              error={this.state.errorMsg.errorCategory}
-                              label="Meal Category"
-                              required
-                              className="form-field"
-                              name="meal_category_id"
-                              type="number"
-                              value={this.props.foodEntry.meal_category_id.id ? this.props.foodEntry.meal_category_id.id  : this.props.foodEntry.meal_category_id} 
-                              onChange={this.props.onFoodEntryChange}
-                              aria-describedby="errorCategory-text"
-                            >
-                              <MenuItem value="NaN">
-                                Select Meal Category
-                              </MenuItem>
-                              <MenuItem value="1">breakfast</MenuItem>
-                              <MenuItem value="2">lunch</MenuItem>
-                              <MenuItem value="4">dinner</MenuItem>
-                              <MenuItem value="3">snack</MenuItem>
-                            </Select>
+                             <FormHelperText id="errorDate-text">
+                              {this.state.errorMsg.errorDate}
+                            </FormHelperText>
                             <TextField
                               autoFocus
                               margin="dense"
@@ -383,7 +419,69 @@ class FoodEntry extends React.Component {
                               value={this.props.foodEntry.servingQty}
                               required
                               aria-describedby="errorQty-text"
+                              InputLabelProps={{
+                                shrink: true,
+                                style: {
+                                  fontSize: "2rem",
+                                  color: "#60B5A9",
+                                  fontFamily: "Oswald"
+                                }
+                              }}
+                              inputProps={{
+                                style: {
+                                  fontSize: "1.5rem",
+                                  lineHeight: "1.5",
+                                  marginTop: "12px"
+                                }
+                              }}
                             />
+
+                            {this.state.edamamExist && (
+                              <>
+                            <TextField
+                              disabled
+                              id="standard-disabled"
+                              label="Calories Per Serving"
+                              name="caloriesPerServ"
+                              defaultValue={ this.props.foodEntry.food_id.caloriesPerServ}
+                            />
+                            <FormHelperText id="errorCal-text">
+                              {this.state.errorMsg.errorCal}
+                            </FormHelperText>
+                            <TextField
+                              disabled
+                              id="standard-disabled"
+                              label="Grams of Protein per Serving"
+                              name="proteins"
+                              defaultValue={this.props.foodEntry.food_id.proteins}
+                            />
+                            <FormHelperText id="errorProteins-text">
+                              {this.state.errorMsg.errorProteins}
+                            </FormHelperText>
+                            <TextField
+                              disabled
+                              id="standard-disabled"
+                              label="Grams of Carbs per Serving"
+                              name="carbs"
+                              defaultValue={this.props.foodEntry.food_id.carbs}
+                            />
+                            <FormHelperText id="errorCarbs-text">
+                              {this.state.errorMsg.errorCarbs}
+                            </FormHelperText>
+                            <TextField
+                              disabled
+                              id="standard-disabled"
+                              label="Grams of Fat per Serving"
+                              name="fats"
+                              defaultValue={this.props.foodEntry.food_id.fats}
+                            />
+                            <FormHelperText id="errorFats-text">
+                              {this.state.errorMsg.errorFats}
+                            </FormHelperText>
+                            </>
+                          )}
+                          {!this.state.edamamExist && (
+                            <>
                             <TextField
                               required
                               error={this.state.errorMsg.errorFood}
@@ -399,11 +497,27 @@ class FoodEntry extends React.Component {
                                 this.props.foodEntry.food_id.caloriesPerServ
                               }
                               aria-describedby="errorCal-text"
+                              InputLabelProps={{
+                                shrink: true,
+                                style: {
+                                  fontSize: "2rem",
+                                  color: "#60B5A9",
+                                  fontFamily: "Oswald"
+                                }
+                              }}
+                              inputProps={{
+                                style: {
+                                  fontSize: "1.5rem",
+                                  lineHeight: "1.5",
+                                  marginTop: "12px"
+                                }
+                              }}
                             />
                             <FormHelperText id="errorCal-text">
                               {this.state.errorMsg.errorCal}
                             </FormHelperText>
                             <TextField
+                            required
                               autoFocus
                               margin="dense"
                               label="Grams of Protein per Serving"
@@ -413,7 +527,21 @@ class FoodEntry extends React.Component {
                               error={this.state.errorMsg.errorProteins}
                               onChange={this.props.onFoodEntryChange}
                               value={this.props.foodEntry.food_id.proteins}
-                              required
+                              InputLabelProps={{
+                                shrink: true,
+                                style: {
+                                  fontSize: "2rem",
+                                  color: "#60B5A9",
+                                  fontFamily: "Oswald"
+                                }
+                              }}
+                              inputProps={{
+                                style: {
+                                  fontSize: "1.5rem",
+                                  lineHeight: "1.5",
+                                  marginTop: "12px"
+                                }
+                              }}
                               aria-describedby="errorProteins-text"
                             />
                             <FormHelperText id="errorProteins-text">
@@ -429,6 +557,21 @@ class FoodEntry extends React.Component {
                               value={this.props.foodEntry.food_id.carbs}
                               required
                               aria-describedby="errorCarbs-text"
+                              InputLabelProps={{
+                                shrink: true,
+                                style: {
+                                  fontSize: "2rem",
+                                  color: "#60B5A9",
+                                  fontFamily: "Oswald"
+                                }
+                              }}
+                              inputProps={{
+                                style: {
+                                  fontSize: "1.5rem",
+                                  lineHeight: "1.5",
+                                  marginTop: "12px"
+                                }
+                              }}
                             />
                             <FormHelperText id="errorCarbs-text">
                               {this.state.errorMsg.errorCarbs}
@@ -443,30 +586,56 @@ class FoodEntry extends React.Component {
                               value={this.props.foodEntry.food_id.fats}
                               required
                               aria-describedby="errorFats-text"
+                              InputLabelProps={{
+                                shrink: true,
+                                style: {
+                                  fontSize: "2rem",
+                                  color: "#60B5A9",
+                                  fontFamily: "Oswald"
+                                }
+                              }}
+                              inputProps={{
+                                style: {
+                                  fontSize: "1.5rem",
+                                  lineHeight: "1.5",
+                                  marginTop: "12px"
+                                }
+                              }}
                             />
                             <FormHelperText id="errorFats-text">
                               {this.state.errorMsg.errorFats}
                             </FormHelperText>
-                            <TextField
-                              label="Date"
-                              className="form-field"
-                              type="date"
-                              name="date"
-                              error={this.state.errorMsg.errorDate}
-                              onChange={this.props.onFoodEntryChange}
+                            </>
+                          )}
+                            <InputLabel htmlFor="meal-simple" className={classes.label}>
+                              Meal Category
+                            </InputLabel>
+                            <Select
+                              autoFocus
+                              margin="dense"
+                              error={this.state.errorMsg.errorCategory}
+                              // label="Meal Category"
                               required
-                              aria-describedby="errorDate-text"
-                              //  value={this.props.foodEntry.date}
-                              value={moment(this.props.foodEntry.date).format(
-                                "YYYY-MM-DD"
-                              )}
-                              defaultValue={moment(
-                                this.props.foodEntry.date
-                              ).format("YYYY-MM-DD")}
-                            />
-                            <FormHelperText id="errorDate-text">
-                              {this.state.errorMsg.errorDate}
-                            </FormHelperText>
+                              // className="form-field"
+                              // name="meal_category_id"
+                              type="number"
+                              value={this.props.foodEntry.meal_category_id.id ? this.props.foodEntry.meal_category_id.id  : this.props.foodEntry.meal_category_id} 
+                              onChange={this.props.onFoodEntryChange}
+                              aria-describedby="errorCategory-text"
+                              inputProps={{
+                                name: "meal_category_id",
+                                id: "meal-simple"
+                              }}
+                              className={classes.category}
+                            >
+                              <MenuItem>
+                                Select Meal Category
+                              </MenuItem>
+                              <MenuItem value="1">breakfast</MenuItem>
+                              <MenuItem value="2">lunch</MenuItem>
+                              <MenuItem value="4">dinner</MenuItem>
+                              <MenuItem value="3">snack</MenuItem>
+                            </Select>
                           </div>
                         )}
                     </span>
@@ -489,7 +658,7 @@ class FoodEntry extends React.Component {
                     Delete
                   </Button>
                 </DialogActions>
-             </Dialog> } 
+             </Dialog> 
             </CardContent>
           </div>
         </FoodEntryContainer>

@@ -318,7 +318,8 @@ class Dashboard extends Component {
       ? editEntry.food_id.edamam_id
       : null;
     const foodId = parseInt(editEntry.food_id.id);
-    const mealCategoryId = parseInt(editEntry.meal_category_id);
+    const mealCategoryId = parseInt(editEntry.meal_category_id.id ?
+      editEntry.meal_category_id.id : editEntry.meal_category_id );
     const foodInput = {
       foodName: editEntry.food_id.foodName,
       caloriesPerServ: parseInt(editEntry.food_id.caloriesPerServ),

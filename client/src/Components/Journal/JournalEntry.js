@@ -303,7 +303,7 @@ class JournalEntry extends React.Component {
               id="form-dialog-title"
               classes={{ root: classes.title }}
             >
-              <span className={classes.title}> Edit Entry</span>
+              <span className={classes.title}> Edit Entry </span>
             </DialogTitle>
             <DialogContent classes={{ root: classes.dialogBox }} dividers>
               <DialogContentText classes={{ root: classes.food }}>
@@ -393,6 +393,21 @@ class JournalEntry extends React.Component {
                     label="Fats"
                     defaultValue={this.state.mealEntry.food_id.fats}
                     margin="dense"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
                   />
                 </>
               )}
