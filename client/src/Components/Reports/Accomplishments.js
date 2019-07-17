@@ -91,7 +91,12 @@ class Accomplishments extends Component {
         </h2>
         <Grid container justify="center" alignItems="center">
           <Grid item md={6} xs={12}>
-            <Card className={classes.card}>
+            <Card
+              className={classes.card}
+              data-aos="fade-right"
+              data-aos-easing="ease-out-cubic"
+              data-aos-duration="1500"
+            >
               <CardContent>
                 <Typography
                   className={classes.title}
@@ -134,7 +139,12 @@ class Accomplishments extends Component {
             </Card>
           </Grid>
           <Grid item md={6} xs={12}>
-            <Card className={classes.card}>
+            <Card
+              className={classes.card}
+              data-aos="fade-left"
+              data-aos-easing="ease-out-cubic"
+              data-aos-duration="1500"
+            >
               <CardContent>
                 <Typography
                   className={classes.title}
@@ -200,7 +210,12 @@ class Accomplishments extends Component {
             </Card>
           </Grid>
           <Grid item xs={12}>
-            <Card className={classes.card}>
+            <Card
+              className={classes.card}
+              data-aos="fade-up"
+              data-aos-easing="ease-out-cubic"
+              data-aos-duration="1500"
+            >
               <CardContent>
                 <Typography
                   className={classes.title}
