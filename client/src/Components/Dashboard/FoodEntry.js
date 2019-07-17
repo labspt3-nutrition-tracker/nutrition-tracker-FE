@@ -17,7 +17,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import moment from "moment";
 
-import { GET_CURRENT_USER_QUERY } from "../../graphql/queries";
+import { GET_CURRENT_USER_QUERY, GET_FOOD_BY_ID} from "../../graphql/queries";
 
 const FoodEntryContainer = styled.div`
   width: 100%;
@@ -38,6 +38,10 @@ const styles = theme => ({
     padding: "0 12px"
   },
   dialogBox: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  entryContainer: {
     display: "flex",
     flexDirection: "column"
   },
@@ -96,6 +100,7 @@ class FoodEntry extends React.Component {
       currentUser: "",
       showModal: false,
       foodEntry: [],
+      edamamExist: false, 
       editFoodObj: {
         date: "",
         foodName: "",
@@ -134,9 +139,31 @@ class FoodEntry extends React.Component {
     this.setState({ showModal: false });
   };
 
-  passFoodEntryData = entry => {
-    this.props.passFoodData(entry);
-    this.openModal();
+  passFoodEntryData = async entry => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    });
+    try {
+      const foodquery = await client.query({
+        query: GET_FOOD_BY_ID,
+        variables: {
+          foodId: entry.food_id.id
+        }
+      });
+      if (foodquery.data.getFoodById.edamam_id) {
+        this.setState({
+          edamamExist: true,
+        });
+      } else {
+        this.setState({
+          edamamExist: false,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    await this.props.passFoodData(entry);
+    await this.openModal();
   };
 
   deleteFood = id => {
@@ -174,12 +201,15 @@ class FoodEntry extends React.Component {
   };
 
   render() {
+    console.log("edamamExist!!", this.state.edamamExist)
+    console.log("regular props", this.props)
     const { classes } = this.props;
     const dateToday = new Date();
     const month = dateToday.getMonth();
     const day = dateToday.getDate();
     const year = dateToday.getFullYear();
     let foodEntries = this.props.foodEntries;
+    console.log("food entry...", this.props.foodEntry)
     foodEntries = foodEntries.filter(entry => {
       const dateEntry = new Date(entry.date);
       const entryMonth = dateEntry.getMonth();
@@ -278,7 +308,7 @@ class FoodEntry extends React.Component {
                 ))}
               </CardContent>
 
-              <Dialog
+              {this.state.edamamExist && <Dialog
                 open={this.state.showModal}
                 onClose={this.closeModal}
                 aria-labelledby="form-dialog-title"
@@ -288,14 +318,7 @@ class FoodEntry extends React.Component {
                   }
                 }}
               >
-                <DialogContent classes={{ root: classes.dialogBox }} dividers>
-                  <DialogContentText classes={{ root: classes.food }}>
-                    <span className={classes.food}>
-                      {this.props.foodEntry &&
-                        this.props.foodEntry.food_id &&
-                        this.props.foodEntry.meal_category_id && (
-                          <div>
-                            <DialogTitle
+                <DialogTitle
                               id="form-dialog-title"
                               classes={{ root: classes.title }}
                             >
@@ -304,6 +327,13 @@ class FoodEntry extends React.Component {
                                 Edit Food Entry
                               </span>
                             </DialogTitle>
+                <DialogContent classes={{ root: classes.dialogBox }} dividers>
+                  <DialogContentText classes={{ root: classes.food }}>
+                    <span className={classes.food}>
+                      {this.props.foodEntry &&
+                        this.props.foodEntry.food_id &&
+                        this.props.foodEntry.meal_category_id && (
+                          <div className={classes.entryContainer}>
                             <TextField
                               required
                               error={this.state.errorMsg.errorFood}
@@ -329,10 +359,7 @@ class FoodEntry extends React.Component {
                               className="form-field"
                               name="meal_category_id"
                               type="number"
-                              placeholder={
-                                this.props.foodEntry.meal_category_id
-                              }
-                              value={this.props.foodEntry.meal_category_id}
+                              value={this.props.foodEntry.meal_category_id.id ? this.props.foodEntry.meal_category_id.id  : this.props.foodEntry.meal_category_id} 
                               onChange={this.props.onFoodEntryChange}
                               aria-describedby="errorCategory-text"
                             >
@@ -462,7 +489,7 @@ class FoodEntry extends React.Component {
                     Delete
                   </Button>
                 </DialogActions>
-              </Dialog>
+             </Dialog> } 
             </CardContent>
           </div>
         </FoodEntryContainer>
