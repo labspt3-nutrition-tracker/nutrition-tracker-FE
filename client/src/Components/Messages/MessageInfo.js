@@ -117,7 +117,7 @@ const MessageInfo = props => {
                 onClick={() => props.showMessage(message)}
                 classes={{ root: classes.message }}
               >
-                <FadeInLeft className={classes.flexName}>
+                <FadeInLeft duration="1s" className={classes.flexName}>
                   {!message.read ? (
                     <ListItemIcon className={classes.icon}>
                       <UnreadIcon />
@@ -151,7 +151,7 @@ const MessageInfo = props => {
                     )
                   )}
                 </FadeInLeft>
-                <FadeInLeft className={classes.flexText}>
+                <FadeInLeft duration="1s" className={classes.flexText}>
                   <ListItemText
                     primary={message.text.substring(0, 20) + "..."}
                     classes={{
