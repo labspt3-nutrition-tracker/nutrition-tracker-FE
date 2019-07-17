@@ -68,7 +68,7 @@ const TypingDiv = styled.div`
     font-size: 30px;
     font-style: italic;
     color: #2c363f;
-    font-family: "Roboto", sans-serif
+    font-family: "Roboto", sans-serif;
   }
 `;
 
@@ -97,7 +97,6 @@ const BillingDiv = styled.div`
 
 const Features = styled.div`
   display: flex;
-  /* flex-direction: column; */
   align-items: flex-start;
   padding-top: 30px;
   justify-content: center;
@@ -128,7 +127,6 @@ const SearchFeature = styled.div`
   width: 100%;
 `;
 
-
 const FeatureImg = styled.img`
   width: 100%;
 `;
@@ -142,7 +140,6 @@ const FeatureInfo = styled.div`
   }
   h2 {
     color: #ffffff;
-    /* font-size: 2rem; */
     font-size: 30px;
     padding: 10px 0 0;
     font-family: "Oswald", sans-serif;
@@ -152,7 +149,6 @@ const FeatureInfo = styled.div`
   }
   p {
     color: #fcfcfb;
-    /* font-size: 1.2rem; */
     font-size: 20px;
   }
 `;
@@ -241,8 +237,6 @@ const styles = theme => ({
   }
 });
 
-// const { classes } = props;
-
 function Home(props) {
   const { classes } = props;
   return (
@@ -274,7 +268,11 @@ function Home(props) {
             Quick, easy food tracking to help you accomplish your health goals
           </Tagline>
           <Features>
-            <Feature>
+            <Feature
+              data-aos="fade-right"
+              data-aos-easing="ease-out-cubic"
+              data-aos-duration="1500"
+            >
               <ImgCon>
                 <FeatureImg
                   alt="icon made by freepik from flaticon.com"
@@ -292,7 +290,11 @@ function Home(props) {
               </FeatureInfo>
             </Feature>
 
-            <Feature>
+            <Feature
+              data-aos="fade-down"
+              data-aos-easing="ease-out-cubic"
+              data-aos-duration="1500"
+            >
               <ImgCon>
                 <FeatureImg
                   alt="icon by freepik from flaticon.com"
@@ -310,7 +312,11 @@ function Home(props) {
               </FeatureInfo>
             </Feature>
 
-            <Feature>
+            <Feature
+              data-aos="fade-left"
+              data-aos-easing="ease-out-cubic"
+              data-aos-duration="1500"
+            >
               <ImgCon>
                 <FeatureImg
                   alt="icon by freepik from flaticon.com"
@@ -332,7 +338,11 @@ function Home(props) {
       </SecondPane>
       <CoachSec>
         <Container className={classes.coachCon}>
-          <ImgConCoach>
+          <ImgConCoach
+            data-aos="flip-left"
+            data-aos-easing="ease-out-cubic"
+            data-aos-duration="2000"
+          >
             <img src={support} alt="coach icon" />
           </ImgConCoach>
           <Typography className={classes.secTitle}>
@@ -352,7 +362,11 @@ function Home(props) {
           <Typography className={classes.secP}>
             Search for a food and see its nutritional information.
           </Typography>
-          <SearchFeature>
+          <SearchFeature
+            data-aos="zoom-in-left"
+            data-aos-easing="ease-out-cubic"
+            data-aos-duration="2000"
+          >
             <SearchInputComponent
               updateSearch={props.updateSearch}
               searchInput={props.searchInput}
