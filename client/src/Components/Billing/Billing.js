@@ -163,7 +163,7 @@ card: {
 
     <div className={classes.divStyle}>
             <AccountNav />
-    <Grid 
+    <Grid
       item md={8} xs={12}
       container
       justify="center"
@@ -195,7 +195,7 @@ card: {
                   label="Become a Premium User"
                   description="Become a Premium User!"
                   locale="auto"
-                  name="NutritionTrkr"
+                  name="Hello Melon"
                   email={this.state.email}
                   stripeKey={process.env.REACT_APP_STRIPE_KEY}
                   token={async token => {
@@ -219,7 +219,7 @@ card: {
                   className="StripeCheckout"
                   description="Become a Coach!"
                   locale="auto"
-                  name="NutritionTrkr"
+                  name="Hello Melon"
                   email={this.state.email}
                   stripeKey={process.env.REACT_APP_STRIPE_KEY}
                   token={async token => {
@@ -246,7 +246,7 @@ card: {
         </Card>
         </Grid>
       </div>
-   
+
     )
   }
 }

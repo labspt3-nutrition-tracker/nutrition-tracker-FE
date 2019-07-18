@@ -30,7 +30,11 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
-      premiumUser: true,
+<<<<<<< HEAD
+      userType: true,
+=======
+      userType: false,
+>>>>>>> development
       datePicked: "",
       foodEntry: [],
       errors: [],
@@ -38,20 +42,22 @@ class Journal extends React.Component {
     };
   }
 
+<<<<<<< HEAD
+  handleDateClick = (date, type) => {
+    console.log("user type", type);
+=======
+<<<<<<< HEAD
+  handleDateClick = (date, type) => {
+    console.log("user type", type);
+=======
   handleDateClick = (date, premium) => {
     if (premium) {
+>>>>>>> 575885c808a50e278d0f4ab7502bc19894ffa582
+>>>>>>> development
       this.setState({
         datePicked: date,
-        premiumUser: premium,
-        info: ""
+        userType: type
       });
-    } else {
-      this.setState({
-        datePicked: date,
-        premiumUser: premium,
-        info: ""
-      });
-    }
   };
 
   componentDidMount = async () => {
@@ -61,6 +67,10 @@ class Journal extends React.Component {
       let date = moment().format("ddd MMMM D YYYY");
       this.setState({ datePicked: date, currentUser: user.id });
     } catch (err) {
+<<<<<<< HEAD
+      console.log(err);
+=======
+>>>>>>> development
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -88,6 +98,10 @@ class Journal extends React.Component {
         foodEntry: response.data.getFoodEntriesByUserId
       });
     } catch (err) {
+<<<<<<< HEAD
+      console.log(err);
+=======
+>>>>>>> development
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -119,6 +133,10 @@ class Journal extends React.Component {
         info: "The food entry has been deleted."
       });
     } catch (err) {
+<<<<<<< HEAD
+      console.log(err);
+=======
+>>>>>>> development
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -177,6 +195,10 @@ class Journal extends React.Component {
         info: "The food entry has been edited successfully."
       });
     } catch (err) {
+<<<<<<< HEAD
+      console.log(err);
+=======
+>>>>>>> development
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -187,7 +209,7 @@ class Journal extends React.Component {
   };
 
   premiumCheck = () => {
-    if (!this.state.premiumUser) {
+    if (!this.state.userType) {
       return (
         <div>
           <h2>In order to see meal entries you must upgrade to premium!</h2>
@@ -219,7 +241,7 @@ class Journal extends React.Component {
               classes={{ root: classes.gridContainer }}
             >
               <Grid item md={4} xs={12}>
-                {this.state.foodEntry.length > 1 && this.state.premiumUser ? (
+                {this.state.foodEntry.length > 1 && this.state.userType ? (
                   <JournalEntry
                     foodEntries={this.state.foodEntry}
                     datePicked={this.state.datePicked}
