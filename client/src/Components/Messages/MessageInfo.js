@@ -38,7 +38,7 @@ const styles = theme => ({
       width: "100%",
       marginBottom: 10
     },
-    [theme.breakpoints.between("sm", "lg")]: {
+    [theme.breakpoints.between("sm", "xl")]: {
       marginRight: 10,
       width: "30%"
     }
@@ -50,7 +50,7 @@ const styles = theme => ({
       width: "95%",
       marginBottom: 20
     },
-    [theme.breakpoints.between("sm", "lg")]: {
+    [theme.breakpoints.between("sm", "xl")]: {
       width: "75%"
     }
   },
@@ -60,7 +60,7 @@ const styles = theme => ({
       flexDirection: "column",
       alignItems: "center"
     },
-    [theme.breakpoints.between("sm", "lg")]: {
+    [theme.breakpoints.between("sm", "xl")]: {
       flexDirection: "row"
     }
   }

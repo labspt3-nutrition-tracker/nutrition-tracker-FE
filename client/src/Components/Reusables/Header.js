@@ -109,8 +109,6 @@ class Header extends React.Component {
         </LogoContainer>
 
         <AppBar
-          updateSearch={this.props.updateSearch}
-          searchInput={this.props.searchInput}
           getFoodData={this.props.getFoodData}
         />
       </div>

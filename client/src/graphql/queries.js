@@ -47,8 +47,8 @@ export const GET_CURRENT_USER_QUERY = gql`
 `;
 
 export const GET_USER_BY_ID = gql`
-  query getUserById($userId: ID!){
-    getUserById(userId: $userId){
+  query getUserById($userId: ID!) {
+    getUserById(userId: $userId) {
       id
       weight
     }
@@ -116,7 +116,7 @@ export const GET_ALL_FOOD = gql`
   query {
     getFoods {
       id
-      calorieGoal
+      # calorieGoal
       edamam_id
     }
   }
@@ -125,6 +125,11 @@ export const GET_FOOD_BY_ID = gql`
   query getFoodById($foodId: ID!) {
     getFoodById(foodId: $foodId) {
       id
+      foodName
+      caloriesPerServ
+      fats
+      carbs
+      proteins
       edamam_id
     }
   }
@@ -179,8 +184,8 @@ export const GET_MESSAGES_QUERY = gql`
 
 // Coaches
 export const GET_TRAINEES = gql`
-  query getTrainees($coach_id: ID!){
-    getTrainees(coach_id: $coach_id){
+  query getTrainees($coach_id: ID!) {
+    getTrainees(coach_id: $coach_id) {
       username
       email
       id
@@ -204,23 +209,23 @@ export const GET_COACHES = gql`
       weight
     }
   }
-`
+`;
 
 // Subscription
 export const GET_RECENT_BILLING = gql`
-  query getRecentBilling($id: ID!){
-    getRecentBilling(id: $id){
+  query getRecentBilling($id: ID!) {
+    getRecentBilling(id: $id) {
       date
     }
   }
 `;
 
 export const GET_BILLING_HISTORY = gql`
-query getBillingHistory($id: ID!){
-    getBillingHistory(id: $id){
-        id
-        date
-        amount_paid
+  query getBillingHistory($id: ID!) {
+    getBillingHistory(id: $id) {
+      id
+      date
+      amount_paid
     }
   }
 `;

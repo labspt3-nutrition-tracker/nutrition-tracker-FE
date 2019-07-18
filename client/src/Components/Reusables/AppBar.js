@@ -132,8 +132,6 @@ function ButtonAppBar(props) {
             </NavLink>
           </Button>
           <SearchInputComponent
-            updateSearch={props.updateSearch}
-            searchInput={props.searchInput}
             getFoodData={props.getFoodData}
           />
         </Toolbar>
@@ -185,8 +183,6 @@ function ButtonAppBar(props) {
             </List>
           </Drawer>
           <SearchInputComponent
-            updateSearch={props.updateSearch}
-            searchInput={props.searchInput}
             getFoodData={props.getFoodData}
           />
         </Toolbar>

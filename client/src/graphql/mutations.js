@@ -33,8 +33,8 @@ export const ADD_FOOD = gql`
 `;
 
 export const EDIT_FOOD = gql`
-  mutation updateFood($id: ID!, $input: FoodInput!){
-    updateFood(id: $id, input: $input){
+  mutation updateFood($id: ID!, $input: FoodInput!) {
+    updateFood(id: $id, input: $input) {
       id
       foodName
       caloriesPerServ
@@ -78,23 +78,14 @@ export const EDIT_FOOD_ENTRY = gql`
   mutation updateFoodEntry($id: ID!, $input: FoodEntryInput!) {
     updateFoodEntry(id: $id, input: $input) {
       id
-      food_id{
+      food_id {
         foodName
         caloriesPerServ
         fats
         carbs
         proteins
         edamam_id
-        meal_category_id {
-          id
-        }
       }
-      foodName
-      caloriesPerServ
-      fats
-      carbs
-      proteins
-      edamam_id
       meal_category_id {
         id
       }
@@ -204,7 +195,7 @@ export const UPDATE_MESSAGE_MUTATION = gql`
       read
     }
   }
-`
+`;
 
 //Coaches
 export const ADD_TRAINEE = gql`
@@ -219,18 +210,22 @@ export const ADD_TRAINEE = gql`
       weight
     }
   }
-`
+`;
 
 export const DELETE_TRAINEE = gql`
-  mutation deleteTrainees($coach_id: ID!, $trainee_id: ID!){
+  mutation deleteTrainees($coach_id: ID!, $trainee_id: ID!) {
     deleteTrainees(coach_id: $coach_id, trainee_id: $trainee_id)
   }
-`
+`;
 
 //Subscriptions
 export const CREATE_SUBSCRIPTION = gql`
-  mutation createSubscription($source: String!, $email: String!, $amount: Int!){
-    createSubscription(source: $source, email: $email, amount: $amount){
+  mutation createSubscription(
+    $source: String!
+    $email: String!
+    $amount: Int!
+  ) {
+    createSubscription(source: $source, email: $email, amount: $amount) {
       id
     }
   }

@@ -9,6 +9,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import FolderIcon from "@material-ui/icons/Folder";
 import EditIcon from "@material-ui/icons/Edit";
+import Grid from "@material-ui/core/Grid";
 
 import { getCurrentUser } from "../util/getCurrentUser";
 import { getCurrentWeight } from "../util/getCurrentweight";
@@ -16,25 +17,82 @@ import UserEditModal from "../Components/UserEditModal";
 import AccountNav from "./AccountNav";
 
 const styles = theme => ({
-  root: {
+  divStyle: {
+    fontFamily: "Oswald",
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: "flex-start"
+    // flexDirection: "row",
+    // flexGrow: 1,
+    // margin: "0",
+    // position: "relative"
+  },
+  gridContainer: {
+    padding: "3%",
     display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  settingsTop: {
+    justifyContent: "center",
     flexWrap: "wrap",
     flexDirection: "row",
     flexGrow: 1,
-    margin: "0",
-    position: "relative"
+    // height:"100px",
+    // width: "100%",
+    [theme.breakpoints.down('sm')]: {
+      // display: "flex"
+      justifyContent: "space-around"
+    }
   },
   card: {
-    width: "50%",
+    width: "100%",
     maxWidth: 500,
-    height: "500px",
-    margin: "30px 200px",
-    padding: 10
+    height: "400px",
+    marginLeft: "7%",
+    // margin: "30px 150px",
+    padding: 10,
+    flexWrap: 'nowrap',
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+      maxWidth: 1000,
+      margin: "inherit",
+      display: "flex",
+      justifyContent: "center"
+    }
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  cardContent: {
+    [theme.breakpoints.down('sm')]: {
+    padding: "16px",
+    flexDirection: "column",
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center"
+    }
+  },
+  cardContentItems: {
+    [theme.breakpoints.down('sm')]: {
+    padding: "16px",
+    flexDirection: "column",
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center"
+    }
   },
   media: {
     padding: 20
   },
   listItemText: {
+    display: "flex",
     fontFamily: "Roboto",
     fontSize: "1.8rem"
   },
@@ -99,9 +157,18 @@ class Settings extends React.Component {
   render() {
     const { classes } = this.props;
     const { currentUser, editType } = this.state;
+     
     return (
-      <div className={classes.root}>
-        <AccountNav />
+      <div className={classes.divStyle}>
+           <AccountNav />
+      <Grid 
+      item md={8} xs={12}
+      container
+      justify="center"
+      alignItems="center"
+      border="1px solid black"
+      classes={{ root: classes.gridContainer }}
+    > 
         <UserEditModal
           open={this.state.modalOpen}
           handleClose={this.handleClose}
@@ -110,7 +177,10 @@ class Settings extends React.Component {
           currentWeight={this.state.currentWeight}
         />
         <Card className={classes.card}>
+        <div className={classes.settingsTop}>
           <CardContent>
+          <div className={classes.cardContent}>
+          <div className={classes.header}>
             <Typography
               gutterBottom
               variant="h3"
@@ -127,6 +197,7 @@ class Settings extends React.Component {
             >
               {currentUser.email}
             </Typography>
+            </div>
             <List dense={false}>
               <ListItem>
                 <ListItemIcon>
@@ -186,11 +257,15 @@ class Settings extends React.Component {
                 />
               </ListItem>
             </List>
+            </div>
           </CardContent>
-        </Card>
-      </div>
+           </div>
+          </Card>
+        </Grid>
+        </div>
     );
   }
 }
+
 
 export default withStyles(styles)(Settings);

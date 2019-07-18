@@ -30,7 +30,11 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
+<<<<<<< HEAD
       userType: true,
+=======
+      userType: false,
+>>>>>>> development
       datePicked: "",
       foodEntry: [],
       errors: [],
@@ -38,8 +42,18 @@ class Journal extends React.Component {
     };
   }
 
+<<<<<<< HEAD
   handleDateClick = (date, type) => {
     console.log("user type", type);
+=======
+<<<<<<< HEAD
+  handleDateClick = (date, type) => {
+    console.log("user type", type);
+=======
+  handleDateClick = (date, premium) => {
+    if (premium) {
+>>>>>>> 575885c808a50e278d0f4ab7502bc19894ffa582
+>>>>>>> development
       this.setState({
         datePicked: date,
         userType: type
@@ -53,7 +67,10 @@ class Journal extends React.Component {
       let date = moment().format("ddd MMMM D YYYY");
       this.setState({ datePicked: date, currentUser: user.id });
     } catch (err) {
+<<<<<<< HEAD
       console.log(err);
+=======
+>>>>>>> development
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -81,7 +98,10 @@ class Journal extends React.Component {
         foodEntry: response.data.getFoodEntriesByUserId
       });
     } catch (err) {
+<<<<<<< HEAD
       console.log(err);
+=======
+>>>>>>> development
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -92,7 +112,6 @@ class Journal extends React.Component {
   };
 
   deleteMealEntry = async id => {
-    console.log(id);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
@@ -114,7 +133,10 @@ class Journal extends React.Component {
         info: "The food entry has been deleted."
       });
     } catch (err) {
+<<<<<<< HEAD
       console.log(err);
+=======
+>>>>>>> development
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -173,7 +195,10 @@ class Journal extends React.Component {
         info: "The food entry has been edited successfully."
       });
     } catch (err) {
+<<<<<<< HEAD
       console.log(err);
+=======
+>>>>>>> development
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;

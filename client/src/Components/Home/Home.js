@@ -43,8 +43,13 @@ const Main = styled.div`
 
   h1 {
     color: #40a798;
-    font-size: 4em;
-    font-size: 40px;
+    font-size: 70px;
+    font-size: 7rem;
+    font-family: "Oswald", sans-serif;
+    @media (max-width: 340px) {
+      font-size: 50px;
+      font-size: 5rem;
+    }
   }
 
   @media (max-width: 800px) {
@@ -59,10 +64,11 @@ const TypingDiv = styled.div`
   padding-top: 20px;
   padding-left: 10px;
   h3 {
-    font-size: 2rem;
-    font-size: 20px;
+    font-size: 3rem;
+    font-size: 30px;
     font-style: italic;
     color: #2c363f;
+    font-family: "Roboto", sans-serif
   }
 `;
 
