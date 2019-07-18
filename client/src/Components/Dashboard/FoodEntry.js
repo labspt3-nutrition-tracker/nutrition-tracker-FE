@@ -354,6 +354,22 @@ class FoodEntry extends React.Component {
                                 className={classes.food}
                                 value={this.props.foodEntry.food_id.foodName}
                                 aria-describedby="errorFood-text"
+                                InputLabelProps={{
+                                  shrink: true,
+                                  style: {
+                                    fontSize: "2rem",
+                                    color: "#60B5A9",
+                                    fontFamily: "Oswald"
+                                  }
+                                }}
+                                inputProps={{
+                                  style: {
+                                    fontFamily: "Oswald",
+                                    fontSize: "2rem",
+                                    lineHeight: "1.5",
+                                    marginTop: "12px"
+                                  }
+                                }}
                               />
                             </>
                             )}
@@ -370,6 +386,22 @@ class FoodEntry extends React.Component {
                                 onChange={this.props.onFoodEntryChange}
                                 value={this.props.foodEntry.food_id.foodName}
                                 aria-describedby="errorFood-text"
+                                InputLabelProps={{
+                                  shrink: true,
+                                  style: {
+                                    fontSize: "2rem",
+                                    color: "#60B5A9",
+                                    fontFamily: "Oswald"
+                                  }
+                                }}
+                                inputProps={{
+                                  style: {
+                                    fontFamily: "Oswald",
+                                    fontSize: "2rem",
+                                    lineHeight: "1.5",
+                                    marginTop: "12px"
+                                  }
+                                }}
                               />
                             </>
                             )}
@@ -398,7 +430,8 @@ class FoodEntry extends React.Component {
                               }}
                               inputProps={{
                                 style: {
-                                  fontSize: "1.5rem",
+                                  fontFamily: "Oswald",
+                                  fontSize: "2rem",
                                   lineHeight: "1.5",
                                   marginTop: "12px"
                                 }
@@ -444,6 +477,21 @@ class FoodEntry extends React.Component {
                               label="Calories Per Serving"
                               name="caloriesPerServ"
                               defaultValue={ this.props.foodEntry.food_id.caloriesPerServ}
+                              InputLabelProps={{
+                                shrink: true,
+                                style: {
+                                  fontSize: "2rem",
+                                  color: "#60B5A9",
+                                  fontFamily: "Oswald"
+                                }
+                              }}
+                              inputProps={{
+                                style: {
+                                  fontSize: "1.5rem",
+                                  lineHeight: "1.5",
+                                  marginTop: "12px"
+                                }
+                              }}
                             />
                             <FormHelperText id="errorCal-text">
                               {this.state.errorMsg.errorCal}
@@ -454,6 +502,21 @@ class FoodEntry extends React.Component {
                               label="Grams of Protein per Serving"
                               name="proteins"
                               defaultValue={this.props.foodEntry.food_id.proteins}
+                              InputLabelProps={{
+                                shrink: true,
+                                style: {
+                                  fontSize: "2rem",
+                                  color: "#60B5A9",
+                                  fontFamily: "Oswald"
+                                }
+                              }}
+                              inputProps={{
+                                style: {
+                                  fontSize: "1.5rem",
+                                  lineHeight: "1.5",
+                                  marginTop: "12px"
+                                }
+                              }}
                             />
                             <FormHelperText id="errorProteins-text">
                               {this.state.errorMsg.errorProteins}
@@ -464,6 +527,21 @@ class FoodEntry extends React.Component {
                               label="Grams of Carbs per Serving"
                               name="carbs"
                               defaultValue={this.props.foodEntry.food_id.carbs}
+                              InputLabelProps={{
+                                shrink: true,
+                                style: {
+                                  fontSize: "2rem",
+                                  color: "#60B5A9",
+                                  fontFamily: "Oswald"
+                                }
+                              }}
+                              inputProps={{
+                                style: {
+                                  fontSize: "1.5rem",
+                                  lineHeight: "1.5",
+                                  marginTop: "12px"
+                                }
+                              }}
                             />
                             <FormHelperText id="errorCarbs-text">
                               {this.state.errorMsg.errorCarbs}
@@ -474,6 +552,21 @@ class FoodEntry extends React.Component {
                               label="Grams of Fat per Serving"
                               name="fats"
                               defaultValue={this.props.foodEntry.food_id.fats}
+                              InputLabelProps={{
+                                shrink: true,
+                                style: {
+                                  fontSize: "2rem",
+                                  color: "#60B5A9",
+                                  fontFamily: "Oswald"
+                                }
+                              }}
+                              inputProps={{
+                                style: {
+                                  fontSize: "1.5rem",
+                                  lineHeight: "1.5",
+                                  marginTop: "12px"
+                                }
+                              }}
                             />
                             <FormHelperText id="errorFats-text">
                               {this.state.errorMsg.errorFats}

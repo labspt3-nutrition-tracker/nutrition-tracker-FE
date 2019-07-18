@@ -372,6 +372,21 @@ class JournalEntry extends React.Component {
                     label="Calories Per Serving"
                     defaultValue={this.state.mealEntry.food_id.caloriesPerServ}
                     margin="dense"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
                   />
                   <TextField
                     disabled
@@ -379,6 +394,21 @@ class JournalEntry extends React.Component {
                     label="Proteins"
                     defaultValue={this.state.mealEntry.food_id.proteins}
                     margin="dense"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
                   />
                   <TextField
                     disabled
@@ -386,6 +416,21 @@ class JournalEntry extends React.Component {
                     label="Carbs"
                     defaultValue={this.state.mealEntry.food_id.carbs}
                     margin="dense"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
                   />
                   <TextField
                     disabled
