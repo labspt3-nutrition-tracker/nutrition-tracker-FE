@@ -193,10 +193,13 @@ class NewMessage extends React.Component {
             </Grid>
           </div>
         ) : (
-          <h2>
-            You do not have any coach. Please request a coach first to send a
-            message.
-          </h2>
+          <>
+            <h2>You do not have any coach or trainee.</h2>
+            <h2>
+              To send a message, please request to be someone's coach, or get a
+              coach to follow you.
+            </h2>
+          </>
         )}
       </Paper>
     );

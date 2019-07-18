@@ -64,7 +64,6 @@ const styles = theme => ({
   },
   tooltip: {
     fontSize: "1.4rem",
-    // color: "white",
     backgroundColor: "#60B5A9"
   }
 });

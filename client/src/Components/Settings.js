@@ -24,10 +24,6 @@ const styles = theme => ({
     flexWrap: "wrap",
     justifyContent: "flex-start",
     alignItems: "flex-start"
-    // flexDirection: "row",
-    // flexGrow: 1,
-    // margin: "0",
-    // position: "relative"
   },
   gridContainer: {
     padding: "3%",
@@ -42,10 +38,7 @@ const styles = theme => ({
     flexWrap: "wrap",
     flexDirection: "row",
     flexGrow: 1,
-    // height:"100px",
-    // width: "100%",
     [theme.breakpoints.down("sm")]: {
-      // display: "flex"
       justifyContent: "space-around"
     }
   },
@@ -54,7 +47,6 @@ const styles = theme => ({
     maxWidth: 500,
     height: "400px",
     marginLeft: "7%",
-    // margin: "30px 150px",
     padding: 10,
     flexWrap: "nowrap",
     [theme.breakpoints.down("sm")]: {

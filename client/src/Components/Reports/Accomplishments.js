@@ -78,7 +78,6 @@ class Accomplishments extends Component {
       .map((goal, i) => (goal === 0 ? days[i] : goal))
       .filter(day => day !== -1 && day !== 1);
     const weightDiff =
-      // weights.length > 0 ? weights[0] - weights[weights.length - 1] : 0;
       weights.length > 0 && weights[0] - weights[weights.length - 1];
     const initialWeightDiff = currentUser.weight
       ? currentUser.weight - weights[weights.length - 1]
@@ -378,7 +377,6 @@ const styles = theme => ({
   pos: {
     fontSize: "1.3rem",
     marginBottom: 12
-    // fontFamily: "Oxygen"
   },
   list: {
     display: "flex",
@@ -388,7 +386,6 @@ const styles = theme => ({
   listItem: {
     margin: 10,
     fontSize: "1.3rem"
-    // fontFamily: "Oxygen"
   },
   link: {
     textDecoration: "none",

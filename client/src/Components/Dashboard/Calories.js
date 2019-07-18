@@ -1,30 +1,17 @@
 import React from "react";
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
 import ApolloClient from "apollo-boost";
 import { GET_CURRENT_USER_QUERY } from "../../graphql/queries";
-import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import styled from "styled-components";
 
-const LoadingDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  min-height: 500px;
-`;
 const styles = theme => ({
   root: {
     flexGrow: 1,
     background: "#5E366A"
   },
   title: {
-    // flexGrow: 1,
     fontSize: 16,
     background: "#5E366A",
     padding: 10,
@@ -32,7 +19,6 @@ const styles = theme => ({
   },
   calTitle: {
     fontFamily: "Oswald",
-    // fontFamily: "Roboto Condensed",
     fontSize: 18
   },
   card: {
@@ -41,19 +27,15 @@ const styles = theme => ({
     margin: "0 auto",
     display: "flex",
     flexDirection: "column"
-    // marginTop: 30,
-    // marginBottom: 50
   },
   num: {
     fontSize: 20,
     fontWeight: "bold",
-    // letterSpacing: 1.2,
     fontFamily: "Oswald"
   },
   centerNum: {
     fontSize: 40,
     fontWeight: "bold",
-    // letterSpacing: 1.2,
     fontFamily: "Oswald"
   },
   calCon: {
@@ -127,7 +109,6 @@ class Calories extends React.Component {
     });
     const calGoal = this.state.calGoal;
     let mealCal = [];
-    // console.log("foodEntries:", foodEntries);
     if (foodEntries.length === 0) {
       const mealCal = 0;
       const remainCal = calGoal - mealCal;

@@ -21,7 +21,6 @@ const styles = theme => ({
     fontFamily: "Oswald",
     fontWeight: 100,
     fontSize: "2.5rem"
-    // textTransform: "uppercase"
   },
   input: {
     fontSize: 16,
@@ -29,7 +28,6 @@ const styles = theme => ({
     minWidth: "100%"
   },
   foodTitle: {
-    // fontFamily: "Oswald",
     fontSize: 16,
     margin: "10px 0",
     textTransform: "titlecase",
@@ -402,9 +400,6 @@ class ModifiedEntryForm extends Component {
         <Typography className={classes.formTitle} variant="h4">
           Add food entry
         </Typography>
-        {/* <label htmlFor="foodName">Food</label> */}
-
-        {/* <h3>{this.state.newAddFood.foodName}</h3> */}
 
         <Typography className={classes.foodTitle}>
           Food: {this.state.newAddFood.foodName}
@@ -419,7 +414,6 @@ class ModifiedEntryForm extends Component {
           error={this.state.errorMsg.errorCategory}
           label="Meal Category"
           required
-          // className="form-field"
           name="meal_category_id"
           type="number"
           value={this.state.newAddFood.meal_category_id}
@@ -467,25 +461,12 @@ class ModifiedEntryForm extends Component {
           aria-describedby="errorQty-text"
         />
 
-        {/* <label htmlFor="caloriesPerServ">Calories per serving</label>
-        <h3>
-          {this.state.newAddFood.caloriesPerServ
-            ? this.state.newAddFood.caloriesPerServ.toFixed(2)
-            : 0}
-        </h3> */}
         <Typography className={classes.foodTitle}>
           Calories per Serving:{" "}
           {this.state.newAddFood.caloriesPerServ
             ? this.state.newAddFood.caloriesPerServ.toFixed(2)
             : 0}
         </Typography>
-
-        {/* <label htmlFor="proteins">Grams of Protein per Serving</label>
-        <h3>
-          {this.state.newAddFood.proteins
-            ? this.state.newAddFood.proteins.toFixed(2)
-            : 0}
-        </h3> */}
 
         <Typography className={classes.foodTitle}>
           Grams of Protein per Serving:{" "}
@@ -494,13 +475,6 @@ class ModifiedEntryForm extends Component {
             : 0}
         </Typography>
 
-        {/* <label htmlFor="carbs">Grams of Carbs per Serving</label>
-        <h3>
-          {" "}
-          {this.state.newAddFood.carbs
-            ? this.state.newAddFood.carbs.toFixed(2)
-            : 0}
-        </h3> */}
         <Typography className={classes.foodTitle}>
           Grams of Carbs per Serving:{" "}
           {this.state.newAddFood.carbs
@@ -508,12 +482,6 @@ class ModifiedEntryForm extends Component {
             : 0}
         </Typography>
 
-        {/* <label htmlFor="fats">Grams of Fat per Serving</label>
-        <h3>
-          {this.state.newAddFood.fats
-            ? this.state.newAddFood.fats.toFixed(2)
-            : ""}
-        </h3> */}
         <Typography className={classes.foodTitle}>
           Grams of Fat per Serving:{" "}
           {this.state.newAddFood.fats

@@ -134,7 +134,6 @@ const MessageInfo = props => {
                       }`}
                       classes={{
                         primary: classes.textRoot
-                        // root: classes.textRoot
                       }}
                     />
                   ) : (
@@ -145,7 +144,6 @@ const MessageInfo = props => {
                         }`}
                         classes={{
                           primary: classes.textRoot
-                          // root: classes.textRoot
                         }}
                       />
                     )

@@ -1,7 +1,6 @@
 import React from "react";
 import { Route, withRouter, Redirect } from "react-router-dom";
 import axios from "axios";
-import { Mutation } from 'react-apollo';
 
 import "./App.css";
 import Login from "./Components/Auth/Login";
@@ -75,8 +74,8 @@ class App extends React.Component {
     };
   }
 
-  componentDidUpdate(){
-    this.getCurrentUser(localStorage.getItem("token"))
+  componentDidUpdate() {
+    this.getCurrentUser(localStorage.getItem("token"));
   }
 
   getCurrentUser = async idToken => {
@@ -90,8 +89,8 @@ class App extends React.Component {
         query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
-        console.log(response.data.getCurrentUser.id)
-        this.checkUser(response.data.getCurrentUser.id)
+        console.log(response.data.getCurrentUser.id);
+        this.checkUser(response.data.getCurrentUser.id);
       })
       .catch(err => console.log(err));
   };
@@ -109,9 +108,9 @@ class App extends React.Component {
         }
       })
       .then(response => {
-        console.log(response)
-      })
-  }
+        console.log(response);
+      });
+  };
 
   updateSearch = e => {
     this.setState({
@@ -175,13 +174,13 @@ class App extends React.Component {
     });
   };
 
-  check = async(mutation) => {
+  check = async mutation => {
     await mutation({
       variables: {
         id: 5
       }
-    })
-  }
+    });
+  };
 
   render() {
     return (
