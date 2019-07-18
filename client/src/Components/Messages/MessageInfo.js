@@ -8,7 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { withStyles } from "@material-ui/core/styles";
 import * as moment from "moment";
-import { FadeInLeft } from "animate-css-styled-components";
+import { FadeInLeft, FadeInRight } from "animate-css-styled-components";
 
 const styles = theme => ({
   text: {
@@ -151,7 +151,7 @@ const MessageInfo = props => {
                     )
                   )}
                 </FadeInLeft>
-                <FadeInLeft duration="1s" className={classes.flexText}>
+                <FadeInRight duration="1s" className={classes.flexText}>
                   <ListItemText
                     primary={message.text.substring(0, 20) + "..."}
                     classes={{
@@ -172,7 +172,7 @@ const MessageInfo = props => {
                       classes={{ root: classes.delete }}
                     />
                   </ListItemIcon>
-                </FadeInLeft>
+                </FadeInRight>
               </ListItem>
             </React.Fragment>
           ))}

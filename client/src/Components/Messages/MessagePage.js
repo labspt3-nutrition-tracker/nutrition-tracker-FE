@@ -452,9 +452,6 @@ class MessagePage extends React.Component {
                 aria-describedby="display message"
                 open={modalOpen}
                 onClose={this.handleClose}
-                data-aos="fade-down"
-                data-aos-easing="ease-out-cubic"
-                data-aos-duration="500"
               >
                 <div className={classes.modal}>
                   <Typography variant="h4" id="modal-title">

@@ -174,7 +174,7 @@ class NewMessage extends React.Component {
                       marginBottom: 10
                     }
                   }}
-                  classes={{ root: classes.textField, label: classes.label }}
+                  classes={{ root: classes.textField }}
                 />
               </Grid>
               <Grid item xs={6}>
