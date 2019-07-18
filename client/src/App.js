@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, withRouter, Redirect } from "react-router-dom";
 import axios from "axios";
+import { Mutation } from 'react-apollo';
 
 import "./App.css";
 import Login from "./Components/Auth/Login";
@@ -17,6 +18,9 @@ import CoachPage from "./Components/Coaches/CoachPage";
 import MessagePage from "./Components/Messages/MessagePage";
 import Footer from "./Components/Reusables/Footer";
 import { getCurrentUser } from "./util/getCurrentUser";
+import { CHECK_USER_TYPE } from "./graphql/mutations";
+import { GET_CURRENT_USER_QUERY } from "./graphql/queries";
+import ApolloClient from "apollo-boost";
 import About from "./Components/About";
 import Contact from "./Components/Contact";
 import AOS from "aos";
@@ -65,9 +69,48 @@ class App extends React.Component {
       searchInput: "",
       searchResults: [],
       noResultError: "",
+      id: "",
       showModal: false,
       resultsLoading: true
     };
+  }
+
+  componentDidUpdate(){
+    this.getCurrentUser(localStorage.getItem("token"))
+  }
+
+  getCurrentUser = async idToken => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    await client
+      .query({
+        query: GET_CURRENT_USER_QUERY
+      })
+      .then(response => {
+        console.log(response.data.getCurrentUser.id)
+        this.checkUser(response.data.getCurrentUser.id)
+      })
+      .catch(err => console.log(err));
+  };
+
+  checkUser = async id => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    });
+
+    await client
+      .mutate({
+        mutation: CHECK_USER_TYPE,
+        variables: {
+          id: id
+        }
+      })
+      .then(response => {
+        console.log(response)
+      })
   }
 
   updateSearch = e => {
@@ -131,6 +174,14 @@ class App extends React.Component {
       searchInput: ""
     });
   };
+
+  check = async(mutation) => {
+    await mutation({
+      variables: {
+        id: 5
+      }
+    })
+  }
 
   render() {
     return (
