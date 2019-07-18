@@ -38,7 +38,20 @@ class SearchInputComponent extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      searchInput: ''
+    };
+  }
+
+  updateSearch = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  searchItem = item => {
+    item = this.state.searchInput;
+    this.props.getFoodData(item)
   }
 
   render() {
@@ -46,12 +59,12 @@ class SearchInputComponent extends React.Component {
       <Search>
         <SearchInput
           type="text"
-          onChange={this.props.updateSearch}
+          onChange={this.updateSearch}
           name="searchInput"
-          value={this.props.searchInput}
+          value={this.state.searchInput}
           placeholder="Search for a food..."
         />
-        <SearchButton onClick={this.props.getFoodData}>Search</SearchButton>
+      <SearchButton onClick={this.searchItem}>Search</SearchButton>
       </Search>
     );
   }

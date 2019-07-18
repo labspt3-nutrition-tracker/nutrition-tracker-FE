@@ -18,6 +18,7 @@ import MessagePage from "./Components/Messages/MessagePage";
 import Footer from "./Components/Reusables/Footer";
 import { getCurrentUser } from "./util/getCurrentUser";
 import About from "./Components/About";
+import Contact from "./Components/Contact";
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
 const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
@@ -76,12 +77,13 @@ class App extends React.Component {
   };
 
   closeModal = () => {
-    console.log(this.state.searchInput);
     this.setState({ showModal: false });
   };
 
   getFoodData = food => {
-    food = this.state.searchInput;
+    if (this.state.searchInput){
+      food = this.state.searchInput
+    }
     let encodedFood = food.replace(" ", "%20");
     this.setState({ showModal: true });
     axios
@@ -117,7 +119,7 @@ class App extends React.Component {
   };
 
   resetSelected = () => {
-    this.setState({selectedFood: []})
+    this.setState({selectedFood: null, searchResults: []})
   }
 
   resetSearch = () => {
@@ -131,8 +133,6 @@ class App extends React.Component {
       <div className="App">
         <Header
           resetSearch={this.resetSearch}
-          searchInput={this.state.searchInput}
-          updateSearch={this.updateSearch}
           getFoodData={this.getFoodData}
           closeModal={this.closeModal}
         />
@@ -144,8 +144,6 @@ class App extends React.Component {
           handleFoodSubmit={this.handleFoodSubmit}
           searchResults={this.state.searchResults}
           resultsLoading={this.state.resultsLoading}
-          updateSearch={this.updateSearch}
-          searchInput={this.state.searchInput}
         />
         <div>
           <Route
@@ -175,6 +173,7 @@ class App extends React.Component {
           <PrivateRoute exact path="/reports" render={() => <StatsView />} />
           <Route exact path="/login" render={() => <Login />} />
           <Route exact path="/about" render={() => <About />} />
+          <Route exact path="/contact" render={() => <Contact />} />
           <PrivateRoute exact path="/settings" render={() => <Settings />} />
           <PrivateRoute path="/journal" render={() => <Journal />} />
           <PrivateRoute path="/coach" render={() => <CoachPage />} />

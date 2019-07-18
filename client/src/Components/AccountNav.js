@@ -22,6 +22,7 @@ const drawerWidth = 250;
 const useStyles = makeStyles(theme => ({
 
   root: {
+    fontFamily: "Roboto",
     zIndex: 0,
     display: 'flex',
     color: "white",
