@@ -18,14 +18,11 @@ import CoachPage from "./Components/Coaches/CoachPage";
 import MessagePage from "./Components/Messages/MessagePage";
 import Footer from "./Components/Reusables/Footer";
 import { getCurrentUser } from "./util/getCurrentUser";
-<<<<<<< HEAD
 import { CHECK_USER_TYPE } from "./graphql/mutations";
 import { GET_CURRENT_USER_QUERY } from "./graphql/queries";
 import ApolloClient from "apollo-boost";
-=======
 import About from "./Components/About";
 import Contact from "./Components/Contact";
->>>>>>> development
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
 const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
@@ -217,22 +214,6 @@ class App extends React.Component {
               />
             )}
           />
-<<<<<<< HEAD
-              <PrivateRoute
-              path="/dashboard"
-              render={props => (
-                <Dashboard {...props} selectedFood={this.state.selectedFood}/>
-                )}
-              />
-              <PrivateRoute exact path="/billing" render={() => <Billing/>} />
-              <PrivateRoute exact path="/reports" render={() => <StatsView/>} />
-              <Route exact path="/login" render={() => <Login />} />
-              <PrivateRoute exact path="/settings" render={() => <Settings />} />
-              <PrivateRoute path="/journal" render={() => <Journal/>} />
-              <PrivateRoute path="/coach" render={() => <CoachPage/>} />
-              <PrivateRoute path="/messages" render={() => <MessagePage/>} />
-
-=======
           <PrivateRoute
             path="/dashboard"
             render={props => (
@@ -248,7 +229,6 @@ class App extends React.Component {
           <PrivateRoute path="/journal" render={() => <Journal />} />
           <PrivateRoute path="/coach" render={() => <CoachPage />} />
           <PrivateRoute path="/messages" render={() => <MessagePage />} />
->>>>>>> development
         </div>
         <PrivateRoute path="/account" component={AccountNav} />
         <Footer />
