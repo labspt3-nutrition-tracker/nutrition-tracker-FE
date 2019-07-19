@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import Tooltip from "@material-ui/core/Tooltip";
 import Zoom from "@material-ui/core/Zoom";
 import * as moment from "moment";
+import { FlipInX } from "animate-css-styled-components";
 
 import { getLastXDays } from "../../util/getLastXDays";
 
@@ -63,7 +64,6 @@ const styles = theme => ({
   },
   tooltip: {
     fontSize: "1.4rem",
-    // color: "white",
     backgroundColor: "#60B5A9"
   }
 });
@@ -178,13 +178,15 @@ class StatsDashboard extends React.Component {
         </Grid>
         <Grid item md={4} xs={12}>
           <div className={classes.manyDaysGroup}>
-            <Button
-              disabled={this.state.manyDays === 7}
-              className={classes.manyDaysBtn}
-              onClick={() => this.handleManyDaysChange(7)}
-            >
-              Last 7 Days
-            </Button>
+            <FlipInX delay="0.8s" duration="1s">
+              <Button
+                disabled={this.state.manyDays === 7}
+                className={classes.manyDaysBtn}
+                onClick={() => this.handleManyDaysChange(7)}
+              >
+                Last 7 Days
+              </Button>
+            </FlipInX>
             <CloneProps>
               {tabProps => (
                 <Tooltip
@@ -193,15 +195,17 @@ class StatsDashboard extends React.Component {
                   classes={{ tooltip: classes.tooltip }}
                 >
                   <div>
-                    <Button
-                      disabled={
-                        userType === "basic" || this.state.manyDays === 30
-                      }
-                      className={classes.manyDaysBtn}
-                      onClick={() => this.handleManyDaysChange(30)}
-                    >
-                      Last 30 Days
-                    </Button>
+                    <FlipInX delay="0.8s" duration="1s">
+                      <Button
+                        disabled={
+                          userType === "basic" || this.state.manyDays === 30
+                        }
+                        className={classes.manyDaysBtn}
+                        onClick={() => this.handleManyDaysChange(30)}
+                      >
+                        Last 30 Days
+                      </Button>
+                    </FlipInX>
                   </div>
                 </Tooltip>
               )}
@@ -214,15 +218,17 @@ class StatsDashboard extends React.Component {
                   classes={{ tooltip: classes.tooltip }}
                 >
                   <div>
-                    <Button
-                      disabled={
-                        userType === "basic" || this.state.manyDays === 365
-                      }
-                      className={classes.manyDaysBtn}
-                      onClick={() => this.handleManyDaysChange(365)}
-                    >
-                      Last Year
-                    </Button>
+                    <FlipInX delay="0.8s" duration="1s">
+                      <Button
+                        disabled={
+                          userType === "basic" || this.state.manyDays === 365
+                        }
+                        className={classes.manyDaysBtn}
+                        onClick={() => this.handleManyDaysChange(365)}
+                      >
+                        Last Year
+                      </Button>
+                    </FlipInX>
                   </div>
                 </Tooltip>
               )}

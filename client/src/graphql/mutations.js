@@ -230,3 +230,12 @@ export const CREATE_SUBSCRIPTION = gql`
     }
   }
 `;
+
+export const CHECK_USER_TYPE = gql`
+  mutation updateUserType($id: ID!){
+    updateUserType(id: $id){
+      id
+      userType
+    }
+  }
+`

@@ -1,11 +1,10 @@
 import React from "react";
-import moment from 'moment';
+import moment from "moment";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
-// import bootstrapPlugin from "@fullcalendar/bootstrap";
 
 import "@fullcalendar/core/main.css";
 
@@ -18,9 +17,9 @@ const GET_CURRENT = gql`
   }
 `;
 
-const getRecentBillingQuery  = gql`
-  query getRecentBilling($id: ID!){
-    getRecentBilling(id: $id){
+const getRecentBillingQuery = gql`
+  query getRecentBilling($id: ID!) {
+    getRecentBilling(id: $id) {
       date
     }
   }
@@ -31,12 +30,12 @@ class Calendar extends React.Component {
     this.state = {
       date: "",
       prevSeven: "",
-      premiumUser: false
+      userType: "basic"
     };
   }
 
-  componentDidMount(){
-    this.getCurrentUser(localStorage.getItem("token"))
+  componentDidMount() {
+    this.getCurrentUser(localStorage.getItem("token"));
   }
   getCurrentUser = async idToken => {
     const client = new ApolloClient({
@@ -49,7 +48,10 @@ class Calendar extends React.Component {
         query: GET_CURRENT
       })
       .then(response => {
-        this.getRecentBilling(response.data.getCurrentUser.id)
+        this.getRecentBilling(response.data.getCurrentUser.id);
+        this.setState({
+          userType: response.data.getCurrentUser.userType
+        });
       })
       .catch(err => console.log(err));
   };
@@ -67,41 +69,44 @@ class Calendar extends React.Component {
         }
       })
       .then(response => {
-        this.getDates(response.data.getRecentBilling.date)
+        this.getDates(response.data.getRecentBilling.date);
       })
-      .catch(err => console.log(err))
-  }
+      .catch(err => console.log(err));
+  };
 
   getDates = date => {
     const lastCycle = moment(date).format();
     const today = moment();
-    const sevenDays = moment(lastCycle).subtract(7, 'days').format('ddd MMMM D YYYY')
+    const sevenDays = moment(lastCycle)
+      .subtract(7, "days")
+      .format("ddd MMMM D YYYY");
 
-    if(today.diff(lastCycle, 'days') < 30){
+    if (today.diff(lastCycle, "days") < 30) {
       this.setState({
-        premiumUser: !this.state.premiumUser
-      })
-    }else{
-      this.setState({
-        prevSeven: sevenDays,
-        premiumUser: false
-      })
+        prevSeven: sevenDays
+      });
     }
   };
 
   pickDate = arg => {
-    const listedDate = arg.date
-    const today = moment()
-    if(this.state.premiumUser || !(today.diff(listedDate, 'days') > 7)){
-      this.setState({
-        date: listedDate
-      });
-      this.props.handleDateClick(moment(listedDate).format('ddd MMMM D YYYY'), true);
-    }else{
-      this.props.handleDateClick(moment(listedDate).format('ddd MMMM D YYYY'), false)
+    const listedDate = arg.date;
+    const today = moment();
+    console.log(this.state.userType);
+    if (
+      this.state.userType !== "basic" ||
+      !(today.diff(listedDate, "days") > 7)
+    ) {
+      this.props.handleDateClick(
+        moment(listedDate).format("ddd MMMM D YYYY"),
+        true
+      );
+    } else if (today.diff(listedDate, "days") > 7) {
+      this.props.handleDateClick(
+        moment(listedDate).format("ddd MMMM D YYYY"),
+        false
+      );
     }
   };
-
 
   render() {
     return (

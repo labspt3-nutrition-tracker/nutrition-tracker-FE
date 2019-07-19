@@ -78,7 +78,6 @@ class Accomplishments extends Component {
       .map((goal, i) => (goal === 0 ? days[i] : goal))
       .filter(day => day !== -1 && day !== 1);
     const weightDiff =
-      // weights.length > 0 ? weights[0] - weights[weights.length - 1] : 0;
       weights.length > 0 && weights[0] - weights[weights.length - 1];
     const initialWeightDiff = currentUser.weight
       ? currentUser.weight - weights[weights.length - 1]
@@ -91,7 +90,12 @@ class Accomplishments extends Component {
         </h2>
         <Grid container justify="center" alignItems="center">
           <Grid item md={6} xs={12}>
-            <Card className={classes.card}>
+            <Card
+              className={classes.card}
+              data-aos="fade-right"
+              data-aos-easing="ease-out-cubic"
+              data-aos-duration="1500"
+            >
               <CardContent>
                 <Typography
                   className={classes.title}
@@ -134,7 +138,12 @@ class Accomplishments extends Component {
             </Card>
           </Grid>
           <Grid item md={6} xs={12}>
-            <Card className={classes.card}>
+            <Card
+              className={classes.card}
+              data-aos="fade-left"
+              data-aos-easing="ease-out-cubic"
+              data-aos-duration="1500"
+            >
               <CardContent>
                 <Typography
                   className={classes.title}
@@ -200,7 +209,12 @@ class Accomplishments extends Component {
             </Card>
           </Grid>
           <Grid item xs={12}>
-            <Card className={classes.card}>
+            <Card
+              className={classes.card}
+              data-aos="fade-up"
+              data-aos-easing="ease-out-cubic"
+              data-aos-duration="1500"
+            >
               <CardContent>
                 <Typography
                   className={classes.title}
@@ -363,7 +377,6 @@ const styles = theme => ({
   pos: {
     fontSize: "1.3rem",
     marginBottom: 12
-    // fontFamily: "Oxygen"
   },
   list: {
     display: "flex",
@@ -373,7 +386,6 @@ const styles = theme => ({
   listItem: {
     margin: 10,
     fontSize: "1.3rem"
-    // fontFamily: "Oxygen"
   },
   link: {
     textDecoration: "none",

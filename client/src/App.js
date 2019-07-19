@@ -17,11 +17,18 @@ import CoachPage from "./Components/Coaches/CoachPage";
 import MessagePage from "./Components/Messages/MessagePage";
 import Footer from "./Components/Reusables/Footer";
 import { getCurrentUser } from "./util/getCurrentUser";
+import { CHECK_USER_TYPE } from "./graphql/mutations";
+import { GET_CURRENT_USER_QUERY } from "./graphql/queries";
+import ApolloClient from "apollo-boost";
 import About from "./Components/About";
 import Contact from "./Components/Contact";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
 const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
+
+AOS.init();
 
 const PrivateRoute = ({ component: Component, render, ...rest }) => {
   const token = localStorage.getItem("token");
@@ -61,10 +68,49 @@ class App extends React.Component {
       searchInput: "",
       searchResults: [],
       noResultError: "",
+      id: "",
       showModal: false,
       resultsLoading: true
     };
   }
+
+  componentDidUpdate() {
+    this.getCurrentUser(localStorage.getItem("token"));
+  }
+
+  getCurrentUser = async idToken => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com",
+      headers: { authorization: idToken }
+    });
+
+    await client
+      .query({
+        query: GET_CURRENT_USER_QUERY
+      })
+      .then(response => {
+        console.log(response.data.getCurrentUser.id);
+        this.checkUser(response.data.getCurrentUser.id);
+      })
+      .catch(err => console.log(err));
+  };
+
+  checkUser = async id => {
+    const client = new ApolloClient({
+      uri: "https://nutrition-tracker-be.herokuapp.com"
+    });
+
+    await client
+      .mutate({
+        mutation: CHECK_USER_TYPE,
+        variables: {
+          id: id
+        }
+      })
+      .then(response => {
+        console.log(response);
+      });
+  };
 
   updateSearch = e => {
     this.setState({
@@ -81,8 +127,8 @@ class App extends React.Component {
   };
 
   getFoodData = food => {
-    if (this.state.searchInput){
-      food = this.state.searchInput
+    if (this.state.searchInput) {
+      food = this.state.searchInput;
     }
     let encodedFood = food.replace(" ", "%20");
     this.setState({ showModal: true });
@@ -119,12 +165,20 @@ class App extends React.Component {
   };
 
   resetSelected = () => {
-    this.setState({selectedFood: null, searchResults: []})
-  }
+    this.setState({ selectedFood: null, searchResults: [] });
+  };
 
   resetSearch = () => {
     this.setState({
       searchInput: ""
+    });
+  };
+
+  check = async mutation => {
+    await mutation({
+      variables: {
+        id: 5
+      }
     });
   };
 
@@ -166,7 +220,11 @@ class App extends React.Component {
           <PrivateRoute
             path="/dashboard"
             render={props => (
-              <Dashboard {...props} selectedFood={this.state.selectedFood} resetSelected={this.resetSelected}/>
+              <Dashboard
+                {...props}
+                selectedFood={this.state.selectedFood}
+                resetSelected={this.resetSelected}
+              />
             )}
           />
           <PrivateRoute exact path="/billing" render={() => <Billing />} />

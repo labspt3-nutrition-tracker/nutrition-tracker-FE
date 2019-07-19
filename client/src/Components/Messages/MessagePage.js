@@ -45,7 +45,7 @@ const Errors = styled.ul`
 const styles = theme => ({
   root: {
     display: "flex",
-    justifyContent: "space-evenly",
+    justifyContent: "space-evenly"
   },
   tab: {
     fontSize: "1.6rem",
@@ -290,7 +290,6 @@ class MessagePage extends React.Component {
       //delete the alert message
       const variables = { id: this.state.currentMessage.id };
       await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
-      // this.getData();
     } catch (err) {
       const error = err.message.split(":")[1];
       console.log(error);
