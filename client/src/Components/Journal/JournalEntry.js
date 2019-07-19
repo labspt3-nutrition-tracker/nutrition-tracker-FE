@@ -92,7 +92,6 @@ class JournalEntry extends React.Component {
     this.state = {
       foodEntries: foodEntries,
       edamamExist: false,
-      // journalEntry: {
       date: null,
       foodName: null,
       servingQty: null,
@@ -107,7 +106,6 @@ class JournalEntry extends React.Component {
       showModal: false,
       currentUser: 0,
       mealCategoryName: null
-      // }
     };
   }
 
@@ -242,7 +240,6 @@ class JournalEntry extends React.Component {
   render() {
     const { classes, datePicked } = this.props;
     const ModifiedEntry = this.state.foodEntries.filter(function(entry) {
-      //  return entry.date === datePicked;
       return (
         moment(new Date(entry.date)).format("MM/DD") ===
         moment(new Date(datePicked)).format("MM/DD")

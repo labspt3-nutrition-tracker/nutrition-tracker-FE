@@ -1,7 +1,6 @@
 import React from "react";
 import { Route, withRouter, Redirect } from "react-router-dom";
 import axios from "axios";
-import { Mutation } from 'react-apollo';
 
 import "./App.css";
 import Login from "./Components/Auth/Login";
@@ -23,9 +22,13 @@ import { GET_CURRENT_USER_QUERY } from "./graphql/queries";
 import ApolloClient from "apollo-boost";
 import About from "./Components/About";
 import Contact from "./Components/Contact";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const EDAMAM_API_ID = process.env.REACT_APP_EDAMAM_APP_ID;
 const EDAMAM_API_KEY = process.env.REACT_APP_EDAMAM_API_KEY;
+
+AOS.init();
 
 const PrivateRoute = ({ component: Component, render, ...rest }) => {
   const token = localStorage.getItem("token");
@@ -71,8 +74,8 @@ class App extends React.Component {
     };
   }
 
-  componentDidUpdate(){
-    this.getCurrentUser(localStorage.getItem("token"))
+  componentDidUpdate() {
+    this.getCurrentUser(localStorage.getItem("token"));
   }
 
   getCurrentUser = async idToken => {
@@ -86,8 +89,8 @@ class App extends React.Component {
         query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
-        console.log(response.data.getCurrentUser.id)
-        this.checkUser(response.data.getCurrentUser.id)
+        console.log(response.data.getCurrentUser.id);
+        this.checkUser(response.data.getCurrentUser.id);
       })
       .catch(err => console.log(err));
   };
@@ -105,9 +108,9 @@ class App extends React.Component {
         }
       })
       .then(response => {
-        console.log(response)
-      })
-  }
+        console.log(response);
+      });
+  };
 
   updateSearch = e => {
     this.setState({
@@ -124,8 +127,8 @@ class App extends React.Component {
   };
 
   getFoodData = food => {
-    if (this.state.searchInput){
-      food = this.state.searchInput
+    if (this.state.searchInput) {
+      food = this.state.searchInput;
     }
     let encodedFood = food.replace(" ", "%20");
     this.setState({ showModal: true });
@@ -162,8 +165,8 @@ class App extends React.Component {
   };
 
   resetSelected = () => {
-    this.setState({selectedFood: null, searchResults: []})
-  }
+    this.setState({ selectedFood: null, searchResults: [] });
+  };
 
   resetSearch = () => {
     this.setState({
@@ -171,13 +174,13 @@ class App extends React.Component {
     });
   };
 
-  check = async(mutation) => {
+  check = async mutation => {
     await mutation({
       variables: {
         id: 5
       }
-    })
-  }
+    });
+  };
 
   render() {
     return (
@@ -217,7 +220,11 @@ class App extends React.Component {
           <PrivateRoute
             path="/dashboard"
             render={props => (
-              <Dashboard {...props} selectedFood={this.state.selectedFood} resetSelected={this.resetSelected}/>
+              <Dashboard
+                {...props}
+                selectedFood={this.state.selectedFood}
+                resetSelected={this.resetSelected}
+              />
             )}
           />
           <PrivateRoute exact path="/billing" render={() => <Billing />} />

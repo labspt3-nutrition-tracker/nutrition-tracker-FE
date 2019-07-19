@@ -215,7 +215,7 @@ class Dashboard extends Component {
             });
         })
         .catch(err => console.log(err));
-    } 
+    }
   }
 
   addFoodEntry = newFoodEntry => {
@@ -291,11 +291,9 @@ class Dashboard extends Component {
   onFoodEntryChange = e => {
     e.preventDefault();
     let food_id = this.state.foodEntry.food_id;
-    // let meal_category_id = this.state.foodEntry.meal_category_id;
     let key = e.target.name;
     let value = e.target.value;
     food_id[key] = value;
-    // meal_category_id[key] = value;
     this.setState({
       foodEntry: {
         ...this.state.foodEntry,
@@ -305,10 +303,8 @@ class Dashboard extends Component {
     });
   };
 
-
-
   editFoodEntry = (editId, editEntry, idToken) => {
-    console.log("edit entry dashboard", editEntry)
+    console.log("edit entry dashboard", editEntry);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
@@ -318,8 +314,11 @@ class Dashboard extends Component {
       ? editEntry.food_id.edamam_id
       : null;
     const foodId = parseInt(editEntry.food_id.id);
-    const mealCategoryId = parseInt(editEntry.meal_category_id.id ?
-      editEntry.meal_category_id.id : editEntry.meal_category_id );
+    const mealCategoryId = parseInt(
+      editEntry.meal_category_id.id
+        ? editEntry.meal_category_id.id
+        : editEntry.meal_category_id
+    );
     const foodInput = {
       foodName: editEntry.food_id.foodName,
       caloriesPerServ: parseInt(editEntry.food_id.caloriesPerServ),
@@ -634,10 +633,9 @@ class Dashboard extends Component {
                     foodEntries={this.state.foodEntries}
                     deleteFoodEntry={this.deleteFoodEntry}
                     foodEntry={this.state.foodEntry}
-                    onFoodEntryChange={this.onFoodEntryChange}                   
+                    onFoodEntryChange={this.onFoodEntryChange}
                     editFoodEntry={this.editFoodEntry}
                     passFoodData={this.passFoodData}
-                   
                   />
                 </Container>
               ) : (

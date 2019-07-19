@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import logo from "../../Assets/logo-white.png";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
-import ApolloClient from "apollo-boost";
-import { gql } from "apollo-boost";
 
 const useStyles = makeStyles({
   root: {
@@ -34,7 +32,7 @@ const useStyles = makeStyles({
   heading2: {
     fontSize: "2rem",
     margin: "2.5% 0",
-    "@media (max-width: 500px)":{
+    "@media (max-width: 500px)": {
       textAlign: "center"
     }
   },
@@ -76,14 +74,13 @@ const useStyles = makeStyles({
     justifyContent: "space-around",
     width: "100%",
     padding: "0 30%",
-    '@media (max-width: 500px)': {
+    "@media (max-width: 500px)": {
       flexDirection: "column"
     }
   },
 
   lDiv: {
     fontSize: "1.3rem"
-    // padding: "0 5%",
   },
 
   href: {

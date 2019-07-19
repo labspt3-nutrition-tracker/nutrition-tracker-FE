@@ -1,5 +1,4 @@
 import React from "react";
-import Modal from "react-modal";
 import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import moment from "moment";
@@ -254,7 +253,6 @@ class ExerEntry extends React.Component {
                         onChange={this.props.onInputChange}
                         required
                         aria-describedby="errorDate-text"
-                        // defaultValue={this.state.exerEntry.exerciseEntryDate}
                         value={moment(
                           this.props.exerEntry.exerciseEntryDate
                         ).format("YYYY-MM-DD")}
@@ -284,7 +282,6 @@ class ExerEntry extends React.Component {
 
                       <Button
                         className={classes.btn}
-                        // className="form-field"
                         type="submit"
                         onClick={e =>
                           this.editExerciseEntry(e, this.props.exerEntry)
