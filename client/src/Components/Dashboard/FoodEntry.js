@@ -15,6 +15,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import moment from "moment";
 
 import { GET_CURRENT_USER_QUERY, GET_FOOD_BY_ID} from "../../graphql/queries";
@@ -214,7 +217,7 @@ class FoodEntry extends React.Component {
   render() {
     console.log("edamamExist!!", this.state.edamamExist)
     console.log("regular props", this.props)
-    const { classes } = this.props;
+    const { classes, category } = this.props;
     const dateToday = new Date();
     const month = dateToday.getMonth();
     const day = dateToday.getDate();
@@ -259,9 +262,23 @@ class FoodEntry extends React.Component {
                     key={entry.id}
                     onClick={() => this.passFoodEntryData(entry)}
                   >
-                    <div entry={entry}>
-                      <span className="bullet">&#8226;</span>{" "}
+                    <div>
+                    {/* <div entry={entry}>
+                    <ListItem classes={{ root: classes.categoryList }}>
+                    <ListItemText
+                      primary={category}
+                      // classes={{ primary: classes.mealCategory }}
+                    />
+                     <List className={classes.root} disablePadding dense
+                     component="div"
+                    //  classes={{ root: classes.list }}
+                    >  */}
+                      <span className="bullet">&#8226;</span>
+                      {" "}
                       {entry.food_id.foodName}
+                      {/* </div> */}
+                      {/* </List>
+                      </ListItem> */}
                     </div>
                   </div>
                 ))}
