@@ -29,7 +29,9 @@ const styles = theme => ({
       color: "#545454"
     },
     "&:disabled": {
-      cursor: "not-allowed"
+      cursor: "not-allowed",
+      pointerEvents: "all !important",
+      color: "white"
     }
   },
   upgrade: {
