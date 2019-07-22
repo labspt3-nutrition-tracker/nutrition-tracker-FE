@@ -582,7 +582,7 @@ class EntryForm extends Component {
             className={classes.formButton}
             onClick={this.props.closeFoodForm}
           >
-            {" "}
+            {" "} 
             Add searched Item
           </Button>
         )}
