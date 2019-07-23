@@ -1,125 +1,253 @@
-/* http://meyerweb.com/eric/tools/css/reset/
+/* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
 */
+/* !!!!!!!!!!!!!!!! DO NOT EDIT CODE BELOW !!!!!!!!!!!!!!!! */
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-html {
-	font-size: 100%;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
 body {
-	line-height: 1;
-	width: 100%;
-	/* font-size: 62.5%; */
+  line-height: 1;
 }
-ol, ul {
-	list-style: none;
+ol,
+ul {
+  list-style: none;
 }
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+  quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
 }
 table {
-	border-collapse: collapse;
+  border-collapse: collapse;
   border-spacing: 0;
 }
+/* !!!!!!!!!!!!!!!! DO NOT EDIT CODE ABOVE !!!!!!!!!!!!!!!! */
 
-
-/* Begin custom styles  */
+/* BEGIN CUSTOM STYLES  */
+@import url("https://fonts.googleapis.com/css?family=Oswald&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap");
 
 * {
   box-sizing: border-box;
 }
 
 html {
+  font-size: 62.5%;
   font-family: Roboto, sans-serif;
 }
 
 body {
-  font-size: 62.5%;
+  font-size: 1.6rem;
+  color: #545454;
 }
 
-
+button {
+  border: none;
+  outline: none;
+  transition: 0.3s all ease-out;
+}
 
 .home {
-  /* min-height: 700px; */
-	background: url(./Assets/healthy-food-lg.jpg) no-repeat;
-	/* background-size: 100% 100%; */
-	background-size: cover;
-	background-repeat: no-repeat;
+  background: url(./Assets/healthy-food-lg.jpg) no-repeat;
+  background-size: cover;
+  background-repeat: no-repeat;
   color: #000;
-
-
 }
 
-@media (max-width: 500px){
-	.home{
-		background: url(./Assets/healthy-food-sm.jpg) no-repeat;
-		background-size: cover;
-	}
-
+.navLink {
+  color: #ffffff;
+  padding-right: 7%;
+  text-decoration: none;
+  font-size: 1.6rem;
+  font-size: 16px;
+  /* text-shadow: 1px 1px 1px #000000;  */
 }
 
-.fc-today{
-	background: #40A798 !important;
+.navLinkMobile {
+  color: #545454;
+  padding-right: 7%;
+  text-decoration: none;
+  font-size: 1.6rem;
+  font-size: 16px;
+  /* text-shadow: 1px 1px 1px #000000;  */
 }
 
-.fc-highlight{
-	background: #F4B4C3 !important;
+.navLink:first-of-type {
+  padding-left: 5%;
 }
 
+.active {
+  color: #545454;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: #ffffff;
+  padding-bottom: 1px;
+  border-bottom: 1px solid rgba(255,255,255,0);
+  transition: .3s all ease-out;
+}
+
+.footer-link:hover {
+  border-bottom: 1px solid #ffffff;
+}
+
+.searchBarHome {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-container > div {
+  width: 100%;
+}
+
+.fc-today {
+  background: #40a798 !important;
+}
+.fc-highlight {
+  background: #B5A3BB !important;
+}
 .fc-view-container {
   z-index: 0;
 }
-
-.navLink{
-	color: #FCFCFB;
-	padding-right: 7%;
-	text-decoration: none;
-	font-size: 1.1em;
-}
-.navLink:first-of-type{
-	padding-left: 5%;
+.StripeCheckout {
+  background: #5e366a !important;
 }
 
-@media(max-width:800px){
-	.navLink{
-		border-bottom: 1px solid black;
-		padding: 10px 0;
-		width: 100%;
-		text-align: center;
-	}
+.StripeCheckout span {
+  font-family: "oswald" !important;
+  background: #5e366a !important;
+  background-image:none !important;
+  background-color: #5e366a !important;
 }
 
-.active{
-	color: #F4B4C3;
-	text-decoration: underline;
+/* ------------ MEDIA QUERIES ------------ */
+
+@media (max-width: 800px) {
+  /* .navLink {
+    border-bottom: 1px solid black;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+  } */
+}
+
+@media (max-width: 500px) {
+  .home {
+    background: url(./Assets/healthy-food-sm.jpg) no-repeat;
+    background-size: cover;
+  }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import ApolloClient from "apollo-boost";
 import * as moment from "moment";
 import Tabs from "@material-ui/core/Tabs";
@@ -7,9 +8,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Zoom from "@material-ui/core/Zoom";
-import { Link } from "react-router-dom";
 import { PDFViewer, StyleSheet } from "@react-pdf/renderer";
-import styled from "styled-components";
+import { CircularProgress } from "@material-ui/core";
 
 import StatsDashboard from "./StatsDashboard";
 import OneDayStats from "./OneDayStats";
@@ -24,7 +24,22 @@ import {
   GET_WEIGHT_ENTRIES_QUERY,
   GET_EXERCISE_ENTRIES_QUERY
 } from "../../graphql/queries";
-import { CircularProgress } from "@material-ui/core";
+
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 500px;
+`;
+const Errors = styled.ul`
+  text-align: center;
+  li {
+    margin: 15px 0;
+    color: #40a798;
+    font-family: Oswald;
+  }
+`;
 
 class StatsView extends React.Component {
   state = {
@@ -36,10 +51,12 @@ class StatsView extends React.Component {
     option: 0,
     initialWeight: 0,
     currentUser: null,
-    statsLoading: true
+    statsLoading: false,
+    errors: []
   };
 
   componentDidMount = async () => {
+    this.setState({ statsLoading: true });
     const idToken = localStorage.getItem("token");
 
     const client = new ApolloClient({
@@ -70,19 +87,25 @@ class StatsView extends React.Component {
         exerciseEntries: exerciseEntries.data.getExerciseEntriesByUserId,
         initialWeight: initialWeight,
         currentUser: user.data.getCurrentUser,
-        statsLoading: false
+        statsLoading: false,
+        errors: []
       });
     } catch (err) {
-      console.log(err);
-      // if (err.response.errors[0].message === "You must be logged in!") {
-      //   localStorage.removeItem("token");
-      //   // this.props.history.push("/login");
-      // }
+      const error = err.message.split(":")[1];
+      console.log(error);
+      this.setState(prevState => {
+        const errors = prevState.errors;
+        errors.push(error);
+        return { errors: errors };
+      });
     }
   };
 
   handleChartChange = days => {
-    if (days.length === 1 && (this.state.data === "weight" || this.state.data === "exercise"))
+    if (
+      days.length === 1 &&
+      (this.state.data === "weight" || this.state.data === "exercise")
+    )
       this.setState({ data: "caloriesPerServ" });
     this.setState({ days: days });
   };
@@ -97,22 +120,36 @@ class StatsView extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { option, foodEntries, days, data, exerciseEntries, weightEntries, currentUser, initialWeight } = this.state;
+    const {
+      option,
+      foodEntries,
+      days,
+      data,
+      exerciseEntries,
+      weightEntries,
+      currentUser,
+      initialWeight,
+      errors
+    } = this.state;
     let tooltipTitle = "";
 
-    if (this.state.statsLoading) {
-      return (
-        <div>
-          <CircularProgress />
-        </div>
-      );
-    } else {
-      if (currentUser) {
-        if (currentUser.userType === "basic") tooltipTitle = "Please upgrade to access report";
-      }
-      return (
-        <>
+    if (currentUser && currentUser.userType === "basic")
+      tooltipTitle = "Please upgrade to access report";
+    return (
+      <>
+        {errors.length > 0 ? (
+          <Errors>
+            {errors.map((error, i) => (
+              <li key={i}>{error}</li>
+            ))}
+          </Errors>
+        ) : (
           <div>
+            {this.state.statsLoading && (
+              <LoadingDiv>
+                <CircularProgress />
+              </LoadingDiv>
+            )}
             <Paper className={classes.root}>
               <Tabs
                 value={option}
@@ -122,24 +159,31 @@ class StatsView extends React.Component {
                   indicator: classes.indicator
                 }}
               >
-                <Tab label='Charts' className={classes.tab} />
+                <Tab label="Charts" className={classes.tab} />
                 <CloneProps>
                   {tabProps => (
-                    <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
+                    <Tooltip
+                      TransitionComponent={Zoom}
+                      title={tooltipTitle}
+                      classes={{ tooltip: classes.tooltip }}
+                    >
                       <div>
                         <Tab
                           {...tabProps}
                           className={classes.tab}
-                          disabled={currentUser ? currentUser.userType === "basic" : true}
+                          disabled={
+                            currentUser
+                              ? currentUser.userType === "basic"
+                              : true
+                          }
                           label={<span>Accomplishments</span>}
                         />
                       </div>
                     </Tooltip>
                   )}
                 </CloneProps>
-                <Tab label='PDF Report' className={classes.tab} />
+                <Tab label="PDF Report" className={classes.tab} />
               </Tabs>
-              {/* <Link to='/pdfReport'>PDF REPORT</Link> */}
             </Paper>
             {option === 0 ? (
               <>
@@ -149,17 +193,32 @@ class StatsView extends React.Component {
                   currentUser={currentUser}
                 />
                 {days.length === 1 ? (
-                  <OneDayStats foodEntries={foodEntries} days={days} data={data} />
+                  <OneDayStats
+                    foodEntries={foodEntries}
+                    days={days}
+                    data={data}
+                  />
                 ) : (
                   <>
                     {data === "weight" ? (
-                      <WeightStats weightEntries={weightEntries} days={days} initialWeight={initialWeight} />
+                      <WeightStats
+                        weightEntries={weightEntries}
+                        days={days}
+                        initialWeight={initialWeight}
+                      />
                     ) : (
                       <>
                         {data === "exercise" ? (
-                          <ExerciseStats exerciseEntries={exerciseEntries} days={days} />
+                          <ExerciseStats
+                            exerciseEntries={exerciseEntries}
+                            days={days}
+                          />
                         ) : (
-                          <ManyDaysStats foodEntries={foodEntries} days={days} dataType={data} />
+                          <ManyDaysStats
+                            foodEntries={foodEntries}
+                            days={days}
+                            dataType={data}
+                          />
                         )}
                       </>
                     )}
@@ -184,7 +243,6 @@ class StatsView extends React.Component {
                     <PDFReport
                       currentUser={currentUser}
                       foodEntries={foodEntries}
-                      // weightEntries={weightEntries}
                       exerciseEntries={exerciseEntries}
                     />
                   </PDFViewer>
@@ -192,9 +250,9 @@ class StatsView extends React.Component {
               </>
             )}
           </div>
-        </>
-      );
-    }
+        )}
+      </>
+    );
   }
 }
 
@@ -209,20 +267,19 @@ const styles = theme => ({
     fontSize: "1.5rem",
     padding: "5px",
     boxShadow: "none",
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   tab: {
-    fontSize: "1.6rem",
-    color: "#3685B5",
-    fontFamily: "Oxygen"
+    fontSize: "1.7rem",
+    color: "#5E366A",
+    fontFamily: "Oswald"
   },
   indicator: {
-    backgroundColor: "#F4B4C3"
+    backgroundColor: "#60B5A9"
   },
   tooltip: {
     fontSize: "1.4rem",
-    // color: "white",
-    backgroundColor: "#F4B4C3"
+    backgroundColor: "#60B5A9"
   }
 });
 

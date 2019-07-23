@@ -1,22 +1,37 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Search = styled.div`
   margin-bottom: 5px;
   margin-right: 3%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 `;
 
 const SearchInput = styled.input`
-  margin: 10px 15px 0px;
-  font-size: 1.5em;
+  font-size: 1.5rem;
+  height: 35px;
+  width: 60%;
+  margin-right: 10px;
+  padding-left: 10px;
+  border: none;
+  border-radius: 5px;
 `;
 
 const SearchButton = styled.button`
-  color: #FCFCFB;
-  background: #F4B4C3;
-  margin-bottom: 5px;
-  padding: 5px 15px;
-  font-size: .9em;
+  color: #ffffff;
+  background: #5e366a;
+  border: 1px solid #5e366a;
+  height: 35px;
+  font-size: 1.6rem;
+  min-width: 100px;
+  width: 20%;
+  font-weight: 500;
+  &:hover {
+    background: #ffffff;
+    color: #5e366a;
+  }
 `;
 
 class SearchInputComponent extends React.Component {
@@ -24,24 +39,35 @@ class SearchInputComponent extends React.Component {
     super(props);
 
     this.state = {
-      
-    }
+      searchInput: ''
+    };
   }
 
+  updateSearch = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
 
-  render(){
-    return(
-        <Search>
-            <SearchInput
-            type="text"
-            onChange={this.props.updateSearch}
-            name="searchInput"
-            value={this.props.searchInput}/>
-          <SearchButton onClick={this.props.getFoodData}>Search</SearchButton>
-        </Search>
-      )
+  searchItem = item => {
+    item = this.state.searchInput;
+    this.props.getFoodData(item)
   }
 
+  render() {
+    return (
+      <Search>
+        <SearchInput
+          type="text"
+          onChange={this.updateSearch}
+          name="searchInput"
+          value={this.state.searchInput}
+          placeholder="Search for a food..."
+        />
+      <SearchButton onClick={this.searchItem}>Search</SearchButton>
+      </Search>
+    );
+  }
 }
 
 export default SearchInputComponent;

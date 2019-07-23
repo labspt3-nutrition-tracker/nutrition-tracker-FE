@@ -14,28 +14,28 @@ import { updateUserData } from "../util/updateUserData";
 
 const styles = theme => ({
   title: {
-    fontFamily: "Oxygen",
-    fontSize: "2rem",
-    color: "#3685B5"
+    fontFamily: "Oswald",
+    fontSize: "3rem",
+    color: "#5E366A"
   },
   message: {
-    fontFamily: "Oxygen",
+    fontFamily: "Roboto",
     fontSize: "1.7rem",
     color: "black"
   },
   formTextLabel: {
-    fontFamily: "Oxygen",
+    fontFamily: "Roboto",
     fontSize: "1.5rem",
-    color: "#3685B5"
+    color: "#5E366A"
   },
   formTextInput: {
-    fontFamily: "Oxygen",
+    fontFamily: "Roboto",
     fontSize: "1.5rem"
   },
   btn: {
-    fontFamily: "Oxygen",
+    fontFamily: "Roboto",
     fontSize: "1.6rem",
-    color: "#3685B5"
+    color: "#5E366A"
   },
   errors: {
     fontSize: "1.5rem"
@@ -67,7 +67,10 @@ class UserEditModal extends Component {
       if (!this.state.editInput.trim()) {
         this.setState({ errorText: "Please provide a value", error: true });
       } else if (!Number(this.state.editInput)) {
-        this.setState({ errorText: "Please provide a number value", error: true });
+        this.setState({
+          errorText: "Please provide a number value",
+          error: true
+        });
       } else {
         if (editType === "weight") {
           const input = {
@@ -85,7 +88,14 @@ class UserEditModal extends Component {
           const newGoal = this.state.editInput.trim()
             ? Number(this.state.editInput)
             : this.props.currentUser.calorieGoal;
-          const { firstName, lastName, username, email, userType, weight } = this.props.currentUser;
+          const {
+            firstName,
+            lastName,
+            username,
+            email,
+            userType,
+            weight
+          } = this.props.currentUser;
           const newUser = {
             firstName,
             lastName,
@@ -109,23 +119,39 @@ class UserEditModal extends Component {
   };
 
   render() {
-    const { classes, open, handleClose, editType, currentUser, currentWeight } = this.props;
+    const {
+      classes,
+      open,
+      handleClose,
+      editType,
+      currentUser,
+      currentWeight
+    } = this.props;
     let label;
     let message;
     if (editType === "weight") {
-      message = "Your current weight is " + currentWeight + ". Do you want to update it?";
+      message =
+        "Your current weight is " +
+        currentWeight +
+        ". Do you want to update it?";
       label = "Current Weight";
     } else if (editType === "caloriesGoal") {
-      message = "Current daily calories goal is " + currentUser.calorieGoal + ". What is your new daily calories goal?";
+      message =
+        "Current daily calories goal is " +
+        currentUser.calorieGoal +
+        ". What is your new daily calories goal?";
       label = "Calories Goal";
     } else if (editType === "userType") {
-      message = "Please upgrade to Premium";
+      message =
+        currentUser.userType === "basic"
+          ? "Please upgrade to Premium"
+          : "Please upgrade to coach";
     }
     return (
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby='form-dialog-title'
+        aria-labelledby="form-dialog-title"
         PaperProps={{
           style: {
             minHeight: "25vh",
@@ -133,8 +159,13 @@ class UserEditModal extends Component {
           }
         }}
       >
-        <DialogTitle id='form-dialog-title'>
-          <span className={classes.title}> {editType === "userType" ? "Upgrade you account" : "Update Your Data"}</span>
+        <DialogTitle id="form-dialog-title">
+          <span className={classes.title}>
+            {" "}
+            {editType === "userType"
+              ? "Upgrade your account"
+              : "Update Your Data"}
+          </span>
         </DialogTitle>
         <DialogContent>
           {message && (
@@ -148,10 +179,10 @@ class UserEditModal extends Component {
               error={this.state.error}
               helperText={this.state.errorText}
               autoFocus
-              margin='dense'
-              id='name'
+              margin="dense"
+              id="name"
               label={label}
-              type='email'
+              type="email"
               fullWidth
               onChange={this.handleInput}
               value={this.state.editInput}
@@ -179,7 +210,7 @@ class UserEditModal extends Component {
               this.handleCancel();
               handleClose();
             }}
-            color='primary'
+            color="primary"
             className={classes.btn}
           >
             Cancel
@@ -189,7 +220,7 @@ class UserEditModal extends Component {
               this.handleEdit(editType);
               // handleClose();
             }}
-            color='secondary'
+            color="secondary"
             className={classes.btn}
           >
             {editType === "userType" ? "Upgrade" : "Update"}

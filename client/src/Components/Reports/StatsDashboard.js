@@ -1,6 +1,5 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -10,60 +9,62 @@ import Grid from "@material-ui/core/Grid";
 import Tooltip from "@material-ui/core/Tooltip";
 import Zoom from "@material-ui/core/Zoom";
 import * as moment from "moment";
+import { FlipInX } from "animate-css-styled-components";
 
 import { getLastXDays } from "../../util/getLastXDays";
 
 const styles = theme => ({
   root: {
+    margin: "auto",
     marginTop: 20,
     padding: 15,
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald",
+    maxWidth: "1200px"
   },
   dataGroup: {
-    fontSize: "1.8rem",
     display: "flex",
+    width: "85%",
     flexDirection: "column"
   },
   label: {
     fontSize: "1.3rem",
     marginBottom: "10px",
     marginRight: 15,
-    fontFamily: "Oxygen",
-    color: "#3685B5"
+    fontFamily: "Oswald",
+    color: "#60B5A9"
   },
   data: {
-    fontSize: "1.5rem",
-    width: "90%",
-    fontFamily: "Oxygen"
+    fontSize: "1.6rem",
+    fontFamily: "Oswald"
   },
   textField: {
-    fontSize: "1.5rem",
-    width: "90%",
+    fontSize: "1.3rem",
+    width: "95%",
     margin: "0 10px",
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   manyDaysGroup: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-around",
+    width: "100%",
+    margin: "auto",
     marginTop: 20
   },
   manyDaysBtn: {
-    fontSize: "1rem",
+    fontSize: "1.4rem",
     color: "#FCFCFB",
-    margin: "0 10px",
-    border: "2px solid #F4B4C3",
-    backgroundColor: "#F4B4C3",
+    border: "2px solid #5E366A",
+    backgroundColor: "#5E366A",
     padding: "5px 8px",
     "&:hover": {
-      backgroundColor: "#2196F3",
-      borderColor: "#2196F3"
+      backgroundColor: "white",
+      color: "#545454"
     },
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   tooltip: {
-    fontSize: "1.6rem",
-    // color: "white",
-    backgroundColor: "#F4B4C3"
+    fontSize: "1.4rem",
+    backgroundColor: "#60B5A9"
   }
 });
 
@@ -98,19 +99,26 @@ class StatsDashboard extends React.Component {
     const userType = currentUser ? currentUser.userType : "basic";
     let tooltipTitle = "";
     if (currentUser) {
-      if (currentUser.userType === "basic") tooltipTitle = "Please upgrade to access report";
+      if (currentUser.userType === "basic")
+        tooltipTitle = "Please upgrade to access report";
     }
     return (
-      <Grid container justify='center' alignItems='center' className={classes.root}>
+      <Grid
+        container
+        justify="center"
+        alignItems="center"
+        className={classes.root}
+      >
         <Grid item md={4} xs={6}>
           <div className={classes.dataGroup}>
-            <InputLabel className={classes.label} htmlFor='data'>
+            <InputLabel className={classes.label} htmlFor="data">
               Stats
             </InputLabel>
             <Select
               className={classes.data}
               value={
-                manyDays === 1 && (selectValue === "weight" || selectValue === "exercise")
+                manyDays === 1 &&
+                (selectValue === "weight" || selectValue === "exercise")
                   ? "caloriesPerServ"
                   : selectValue
               }
@@ -145,56 +153,82 @@ class StatsDashboard extends React.Component {
         <Grid item md={4} xs={6}>
           <TextField
             onChange={this.handleDayChange}
-            id='date'
-            label='Pick a day'
-            type='date'
+            id="date"
+            label="Pick a day"
+            type="date"
             value={dayValue}
             className={classes.textField}
             InputLabelProps={{
               shrink: true,
-              style: { fontSize: "1.6rem", color: "#3685B5", fontFamily: "Oxygen" }
+              style: {
+                fontSize: "1.7rem",
+                color: "#60B5A9",
+                fontFamily: "Oswald"
+              }
             }}
             inputProps={{
-              style: { fontSize: "1.5rem", lineHeight: "1.5", marginTop: "12px" }
+              style: {
+                fontSize: "1.5rem",
+                lineHeight: "1.5",
+                marginTop: "12px"
+              }
             }}
-            margin='normal'
+            margin="normal"
           />
         </Grid>
         <Grid item md={4} xs={12}>
           <div className={classes.manyDaysGroup}>
-            <Button
-              disabled={this.state.manyDays === 7}
-              className={classes.manyDaysBtn}
-              onClick={() => this.handleManyDaysChange(7)}
-            >
-              Last 7 Days
-            </Button>
+            <FlipInX delay="0.8s" duration="1s">
+              <Button
+                disabled={this.state.manyDays === 7}
+                className={classes.manyDaysBtn}
+                onClick={() => this.handleManyDaysChange(7)}
+              >
+                Last 7 Days
+              </Button>
+            </FlipInX>
             <CloneProps>
               {tabProps => (
-                <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
+                <Tooltip
+                  TransitionComponent={Zoom}
+                  title={tooltipTitle}
+                  classes={{ tooltip: classes.tooltip }}
+                >
                   <div>
-                    <Button
-                      disabled={userType === "basic" || this.state.manyDays === 30}
-                      className={classes.manyDaysBtn}
-                      onClick={() => this.handleManyDaysChange(30)}
-                    >
-                      Last 30 Days
-                    </Button>
+                    <FlipInX delay="0.8s" duration="1s">
+                      <Button
+                        disabled={
+                          userType === "basic" || this.state.manyDays === 30
+                        }
+                        className={classes.manyDaysBtn}
+                        onClick={() => this.handleManyDaysChange(30)}
+                      >
+                        Last 30 Days
+                      </Button>
+                    </FlipInX>
                   </div>
                 </Tooltip>
               )}
             </CloneProps>
             <CloneProps>
               {tabProps => (
-                <Tooltip TransitionComponent={Zoom} title={tooltipTitle} classes={{ tooltip: classes.tooltip }}>
+                <Tooltip
+                  TransitionComponent={Zoom}
+                  title={tooltipTitle}
+                  classes={{ tooltip: classes.tooltip }}
+                >
                   <div>
-                    <Button
-                      disabled={userType === "basic" || this.state.manyDays === 365}
-                      className={classes.manyDaysBtn}
-                      onClick={() => this.handleManyDaysChange(365)}
-                    >
-                      Last Year
-                    </Button>
+                    <FlipInX delay="0.8s" duration="1s">
+                      <Button
+                        disabled={
+                          userType === "basic" || this.state.manyDays === 365
+                        }
+                        className={classes.manyDaysBtn}
+                        onClick={() => this.handleManyDaysChange(365)}
+                      >
+                        Last Year
+                      </Button>
+                    </FlipInX>
                   </div>
                 </Tooltip>
               )}

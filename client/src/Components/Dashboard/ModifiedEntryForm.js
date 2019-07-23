@@ -1,54 +1,43 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-// import { Query } from "react-apollo";
+import moment from "moment";
 import ApolloClient from "apollo-boost";
 import { ADD_FOOD } from "../../graphql/mutations";
-import { GET_ALL_FOOD } from "../../graphql/queries";
-import gql from "graphql-tag";
+import { GET_ALL_FOOD, GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 30%;
-  padding: 20px;
-  @media(max-width: 800px) {
-    max-width: 500px;
-    width: 100%;
+const styles = theme => ({
+  formButton: {
+    fontSize: 16
+  },
+  formTitle: {
+    fontFamily: "Oswald",
+    fontWeight: 100,
+    fontSize: "2.5rem"
+  },
+  input: {
+    fontSize: 16,
+    width: "100%",
+    minWidth: "100%"
+  },
+  foodTitle: {
+    fontSize: 16,
+    margin: "10px 0",
+    textTransform: "titlecase",
+    fontWeight: "bold"
+  },
+  category: {
+    fontSize: "1.6rem",
+    fontFamily: "Oswald"
   }
-
-  h1 {
-    font-size: 1.5em;
-    font-weight: bold;
-    padding-bottom: 30px;
-    text-align: center;
-    color: blue;
-  }
-
-  h3 {
-    color: blue;
-  }
-`;
-
-const Error = styled.div`
-  color: red;
-  font-weight: bold;
-  font-size: 2rem;
-`;
-
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-    }
-  }
-`;
+});
 
 class ModifiedEntryForm extends Component {
   constructor(props) {
@@ -63,7 +52,7 @@ class ModifiedEntryForm extends Component {
         proteins: null,
         edamam_id: "",
         meal_category_id: null,
-        date: "",
+        date: moment().format("YYYY-MM-DD"),
         servingQty: null
       },
       errorMsg: {
@@ -88,7 +77,7 @@ class ModifiedEntryForm extends Component {
 
     client
       .query({
-        query: GET_CURRENT
+        query: GET_CURRENT_USER_QUERY
       })
       .then(response =>
         this.setState({
@@ -128,22 +117,7 @@ class ModifiedEntryForm extends Component {
       errorMsg.errorFood = "Please provide name of food.";
       errorMsg.error = true;
     }
-    if (!this.state.newAddFood.caloriesPerServ) {
-      errorMsg.errorCal = "Please provide calories per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.fats) {
-      errorMsg.errorFats = "Please provide grams of fat per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.carbs) {
-      errorMsg.errorCarbs = "Please provide grams of carbs per serving.";
-      errorMsg.error = true;
-    }
-    if (!this.state.newAddFood.proteins) {
-      errorMsg.errorProteins = "Please provide grams of protein per serving.";
-      errorMsg.error = true;
-    }
+
     if (!this.state.newAddFood.meal_category_id) {
       errorMsg.errorCategory = "Please provide meal category.";
       errorMsg.error = true;
@@ -206,10 +180,11 @@ class ModifiedEntryForm extends Component {
                   proteins: null,
                   edamam_id: null,
                   meal_category_id: null,
-                  date: "",
+                  date: moment().format("YYYY-MM-DD"),
                   servingQty: null
                 }
               });
+              this.props.resetSelected();
             })
             .catch(err => {
               console.log("food entry error", err);
@@ -224,7 +199,7 @@ class ModifiedEntryForm extends Component {
                   proteins: null,
                   edamam_id: null,
                   meal_category_id: null,
-                  date: "",
+                  date: moment().format("YYYY-MM-DD"),
                   servingQty: null
                 }
               });
@@ -267,7 +242,7 @@ class ModifiedEntryForm extends Component {
                 proteins: null,
                 edamam_id: null,
                 meal_category_id: null,
-                date: "",
+                date: moment().format("YYYY-MM-DD"),
                 servingQty: null
               }
             });
@@ -285,7 +260,7 @@ class ModifiedEntryForm extends Component {
                 proteins: null,
                 edamam_id: null,
                 meal_category_id: null,
-                date: "",
+                date: moment().format("YYYY-MM-DD"),
                 servingQty: null
               }
             });
@@ -350,10 +325,18 @@ class ModifiedEntryForm extends Component {
 
     if (this.props.selectedFood) {
       foodName = this.props.selectedFood.label;
-      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL;
-      fats = this.props.selectedFood.nutrients.FAT;
-      carbs = this.props.selectedFood.nutrients.CHOCDF;
-      proteins = this.props.selectedFood.nutrients.PROCNT;
+      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL
+        ? this.props.selectedFood.nutrients.ENERC_KCAL
+        : 0;
+      fats = this.props.selectedFood.nutrients.FAT
+        ? this.props.selectedFood.nutrients.FAT
+        : 0;
+      carbs = this.props.selectedFood.nutrients.CHOCDF
+        ? this.props.selectedFood.nutrients.CHOCDF
+        : 0;
+      proteins = this.props.selectedFood.nutrients.PROCNT
+        ? this.props.selectedFood.nutrients.PROCNT
+        : 0;
       edamam_id = this.props.selectedFood.foodId;
       this.setState({
         newAddFood: {
@@ -362,7 +345,8 @@ class ModifiedEntryForm extends Component {
           fats: fats,
           carbs: carbs,
           proteins: proteins,
-          edamam_id: edamam_id
+          edamam_id: edamam_id,
+          date: moment().format("YYYY-MM-DD")
         }
       });
       this.edamamExistCheck(this.props.selectedFood.foodId);
@@ -371,50 +355,65 @@ class ModifiedEntryForm extends Component {
 
   componentDidUpdate(prevProps) {
     let foodName;
-    let caloriesPerServ;
-    let fats;
-    let carbs;
-    let proteins;
     let edamam_id;
+    let caloriesPerServ = 0;
+    let fats = 0;
+    let carbs = 0;
+    let proteins = 0;
 
     if (prevProps.selectedFood !== this.props.selectedFood) {
-      foodName = this.props.selectedFood.label;
-      caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL;
-      fats = this.props.selectedFood.nutrients.FAT;
-      carbs = this.props.selectedFood.nutrients.CHOCDF;
-      proteins = this.props.selectedFood.nutrients.PROCNT;
-      edamam_id = this.props.selectedFood.foodId;
-      this.setState({
-        newAddFood: {
-          foodName: foodName,
-          caloriesPerServ: caloriesPerServ,
-          fats: fats,
-          carbs: carbs,
-          proteins: proteins,
-          edamam_id: edamam_id
+      if (this.props.selectedFood) {
+        foodName = this.props.selectedFood.label;
+        edamam_id = this.props.selectedFood.foodId;
+
+        if (this.props.selectedFood.nutrients) {
+          caloriesPerServ = this.props.selectedFood.nutrients.ENERC_KCAL;
+          fats = this.props.selectedFood.nutrients.FAT;
+          carbs = this.props.selectedFood.nutrients.CHOCDF;
+          proteins = this.props.selectedFood.nutrients.PROCNT;
         }
+
+        this.edamamExistCheck(this.props.selectedFood.foodId);
+      }
+
+      this.setState(prevState => {
+        return {
+          newAddFood: {
+            ...prevState.newAddFood,
+            foodName: foodName,
+            caloriesPerServ: caloriesPerServ,
+            fats: fats,
+            carbs: carbs,
+            proteins: proteins,
+            edamam_id: edamam_id
+          }
+        };
       });
-      this.edamamExistCheck(this.props.selectedFood.foodId);
     }
   }
 
   render() {
+    const { classes } = this.props;
     this.getCurrentUser(localStorage.getItem("token"));
     return (
-      <Form>
-        <h1>Modified Food Entry</h1>
-        <label htmlFor="foodName">Food</label>
+      <Container className="form-container">
+        <Typography className={classes.formTitle} variant="h4">
+          Add food entry
+        </Typography>
 
-        <h3>{this.state.newAddFood.foodName}</h3>
+        <Typography className={classes.foodTitle}>
+          Food: {this.state.newAddFood.foodName}
+        </Typography>
 
-        <InputLabel htmlFor="meal_category_id">Meal Category</InputLabel>
+        <InputLabel className={classes.label} htmlFor="meal_category_id">
+          Meal Category
+        </InputLabel>
         <Select
           autoFocus
           margin="dense"
           error={this.state.errorMsg.errorCategory}
           label="Meal Category"
           required
-          className="form-field"
           name="meal_category_id"
           type="number"
           value={this.state.newAddFood.meal_category_id}
@@ -422,10 +421,18 @@ class ModifiedEntryForm extends Component {
           aria-describedby="errorCategory-text"
         >
           <MenuItem>Select Meal Category</MenuItem>
-          <MenuItem value="1">breakfast</MenuItem>
-          <MenuItem value="2">lunch</MenuItem>
-          <MenuItem value="4">dinner</MenuItem>
-          <MenuItem value="3">snack</MenuItem>
+          <MenuItem value="1" className={classes.category}>
+            breakfast
+          </MenuItem>
+          <MenuItem value="2" className={classes.category}>
+            lunch
+          </MenuItem>
+          <MenuItem value="4" className={classes.category}>
+            dinner
+          </MenuItem>
+          <MenuItem value="3" className={classes.category}>
+            snack
+          </MenuItem>
         </Select>
         <FormHelperText id="errorCategory-text">
           {this.state.errorMsg.errorCategory}
@@ -434,68 +441,89 @@ class ModifiedEntryForm extends Component {
         <TextField
           autoFocus
           margin="dense"
+          error={this.state.errorMsg.errorQty}
           label="Serving Quantity"
           className="form-field"
           type="number"
           name="servingQty"
           onChange={this.onInputChange}
+          value={
+            this.state.newAddFood.servingQty
+              ? this.state.newAddFood.servingQty
+              : ""
+          }
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
+          required
+          aria-describedby="errorQty-text"
         />
 
-        <label htmlFor="caloriesPerServ">Calories per serving</label>
-        <h3>
+        <Typography className={classes.foodTitle}>
+          Calories per Serving:{" "}
           {this.state.newAddFood.caloriesPerServ
             ? this.state.newAddFood.caloriesPerServ.toFixed(2)
             : 0}
-        </h3>
+        </Typography>
 
-        <label htmlFor="proteins">Grams of Protein per Serving</label>
-        <h3>
+        <Typography className={classes.foodTitle}>
+          Grams of Protein per Serving:{" "}
           {this.state.newAddFood.proteins
             ? this.state.newAddFood.proteins.toFixed(2)
             : 0}
-        </h3>
-        <label htmlFor="carbs">Grams of Carbs per Serving</label>
-        <h3>
-          {" "}
+        </Typography>
+
+        <Typography className={classes.foodTitle}>
+          Grams of Carbs per Serving:{" "}
           {this.state.newAddFood.carbs
             ? this.state.newAddFood.carbs.toFixed(2)
             : 0}
-        </h3>
-        <label htmlFor="fats">Grams of Fat per Serving</label>
-        <h3>
+        </Typography>
+
+        <Typography className={classes.foodTitle}>
+          Grams of Fat per Serving:{" "}
           {this.state.newAddFood.fats
             ? this.state.newAddFood.fats.toFixed(2)
             : ""}
-        </h3>
-
+        </Typography>
         <TextField
           label="Date"
           className="form-field"
           type="date"
           name="date"
           error={this.state.errorMsg.errorDate}
+          defaultValue={moment().format("YYYY-MM-DD")}
           onChange={this.onInputChange}
           required
           aria-describedby="errorDate-text"
           value={this.state.newAddFood.date ? this.state.newAddFood.date : ""}
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
         />
         <FormHelperText id="errorDate-text">
           {this.state.errorMsg.errorDate}
         </FormHelperText>
 
         <Button
-          className="form-field"
+          className={classes.formButton}
           type="submit"
           onClick={this.onEntrySubmit}
         >
           Add Entry
         </Button>
-        <Button onClick={this.props.handleShowFood}>
+        <Button
+          className={classes.formButton}
+          onClick={this.props.handleShowFood}
+        >
           I'll add my own entry
         </Button>
-      </Form>
+      </Container>
     );
   }
 }
-
-export default ModifiedEntryForm;
+export default withStyles(styles)(ModifiedEntryForm);

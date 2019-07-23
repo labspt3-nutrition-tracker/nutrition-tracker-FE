@@ -4,7 +4,6 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import PersonIcon from "@material-ui/icons/Person";
 
 import MessageInfo from "./MessageInfo";
 
@@ -12,29 +11,34 @@ const styles = theme => ({
   root: {
     margin: "20px auto",
     maxWidth: "1200px",
+    maxHeight: "80vh",
+    overflow: "auto",
     padding: 15,
-    fontFamily: "Oxygen",
+    fontFamily: "Oswald",
     height: "100vh"
   },
-  tabs: {
-    display: "flex",
-    flexDirection: "column"
+  flex: {
+    justifyContent: "space-evenly"
   },
   tab: {
-    fontSize: "1.2rem",
-    color: "#3685B5",
-    fontFamily: "Oxygen",
-    margin: "10px 0"
+    fontSize: "1.6rem",
+    color: "#5E366A",
+    fontFamily: "Oswald",
+    margin: "20px 0",
+    padding: "1px 6px",
+    width: "100px",
+    border: "1px solid #5E366A",
+    "&:hover": {
+      backgroundColor: "#5E366A",
+      color: "white"
+    }
   },
   indicator: {
-    backgroundColor: "#F4B4C3",
+    backgroundColor: "#5E366A",
     color: "white"
   },
   noIndicator: {
     backgroundColor: "white"
-  },
-  icon: {
-    fontSize: "1.5rem"
   }
 });
 
@@ -42,56 +46,67 @@ class MessageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCoach: 0
+      option: 0
     };
   }
 
-  handleCoachChange = (event, newCoach) => {
-    this.setState({ selectedCoach: newCoach });
+  handleChange = (event, newOption) => {
+    this.setState({ option: newOption });
   };
 
   render() {
-    const { selectedCoach } = this.state;
-    const { messages, coaches, classes, showMessage } = this.props;
+    const { option } = this.state;
+    const {
+      type,
+      messages,
+      coaches,
+      trainees,
+      classes,
+      showMessage,
+      deleteMessage
+    } = this.props;
+
     return (
       <Paper className={classes.root}>
-        <Grid container justify='center' alignItems='center'>
-          <Grid item md={4} xs={12}>
-            {coaches.length > 0 ? (
-              <>
-                <Tabs
-                  value={selectedCoach}
-                  onChange={this.handleCoachChange}
-                  className={classes.tabs}
-                  centered
-                  classes={{
-                    indicator: classes.noIndicator,
-                    flexContainer: classes.tabs
-                  }}
-                >
-                  {coaches.map((coach, index) => (
-                    <Tab
-                      label={coach.name}
-                      icon={<PersonIcon className={classes.icon} />}
-                      className={classes.tab}
-                      tabIndex={index}
-                      key={coach.id}
-                      classes={{
-                        selected: classes.indicator
-                      }}
-                    />
-                  ))}
-                </Tabs>
-              </>
-            ) : (
-              <div>You have no coaches.</div>
-            )}
+        <Grid container justify="center" alignItems="center">
+          <Grid item xs={12}>
+            <Tabs
+              value={option}
+              onChange={this.handleChange}
+              classes={{
+                indicator: classes.noIndicator,
+                flexContainer: classes.flex
+              }}
+            >
+              <Tab
+                label="Coaches"
+                className={classes.tab}
+                classes={{
+                  selected: classes.indicator
+                }}
+              />
+              <Tab
+                label="Trainees"
+                className={classes.tab}
+                classes={{
+                  selected: classes.indicator
+                }}
+              />
+            </Tabs>
           </Grid>
-          <Grid item md={8} xs={12}>
+          <Grid item xs={12}>
             {messages.length > 0 ? (
-              <MessageInfo messages={messages} sender={coaches[selectedCoach]} showMessage={showMessage} />
+              <MessageInfo
+                type={type}
+                messages={messages}
+                option={option}
+                coaches={coaches}
+                trainees={trainees}
+                showMessage={showMessage}
+                deleteMessage={deleteMessage}
+              />
             ) : (
-              <div>You have no coaches.</div>
+              <div>You have no messages</div>
             )}
           </Grid>
         </Grid>

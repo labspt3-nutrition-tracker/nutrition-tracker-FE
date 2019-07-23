@@ -19,7 +19,10 @@ class ExerciseStats extends Component {
   };
 
   componentDidUpdate = prevProps => {
-    if (prevProps.exerciseEntries !== this.props.exerciseEntries || prevProps.days !== this.props.days)
+    if (
+      prevProps.exerciseEntries !== this.props.exerciseEntries ||
+      prevProps.days !== this.props.days
+    )
       this.updateEntries();
   };
 
@@ -35,8 +38,8 @@ class ExerciseStats extends Component {
     this.setState({ entries: entries, labels: days });
   };
   render() {
-    defaults.global.defaultFontColor = "#3685B5";
-    defaults.global.defaultFontFamily = "Oxygen";
+    defaults.global.defaultFontColor = "#60B5A9";
+    defaults.global.defaultFontFamily = "Oswald";
     const { classes, days } = this.props;
     const labels = this.state.labels.map(day => moment(day).format("MM/DD"));
     const lineColor = makeRandomColor();
@@ -57,19 +60,24 @@ class ExerciseStats extends Component {
     return (
       <div className={classes.root}>
         <h2 className={classes.header}>
-          Calories burnt during exercise for the last {days.length === 365 ? "Year" : days.length + " days"}
+          Calories burnt during exercise for the last{" "}
+          {days.length === 365 ? "Year" : days.length + " days"}
         </h2>
         {this.state.entries.length !== 0 ? (
-          <Grid container justify='center' alignItems='center'>
-            <Grid item xs={3}>
+          <Grid container justify="center" alignItems="center">
+            <Grid item md={3} xs={12}>
               {this.state.entries.map((entry, i) => (
                 <div key={labels[i]} className={classes.dataInfo}>
-                  <span className={classes.title}>{moment(new Date(labels[i])).format("MMM Do")}</span>
-                  <div className={classes.value}>{entry === 0 ? "No Entry" : entry.toFixed(2)}</div>
+                  <span className={classes.title}>
+                    {moment(new Date(labels[i])).format("MMM Do")}
+                  </span>
+                  <div className={classes.value}>
+                    {entry === 0 ? "No Entry" : entry.toFixed(2)}
+                  </div>
                 </div>
               ))}
             </Grid>
-            <Grid item xs={9} className={classes.graph}>
+            <Grid item md={9} xs={12} className={classes.graph}>
               <Line
                 data={data}
                 height={350}
@@ -90,39 +98,39 @@ class ExerciseStats extends Component {
 const styles = theme => ({
   root: {
     width: "100%",
-    margin: "50px auto",
+    margin: "30px auto",
     maxWidth: "1200px",
     padding: "20px"
   },
   graph: {
-    border: "3px solid #F4B4C3",
-    padding: "20px"
+    border: "3px solid #5E366A",
+    padding: "20px",
+    marginTop: 10
   },
   header: {
     textAlign: "center",
     fontSize: "2.5rem",
     marginBottom: "20px",
-    color: "#3685B5",
+    color: "#545454",
     textTransform: "uppercase",
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   title: {
-    color: "#3685B5",
-    fontSize: "1.4rem",
-    width: "40%",
-    fontFamily: "Oxygen"
+    color: "#60B5A9",
+    fontSize: "1.8rem",
+    width: "50%",
+    fontFamily: "Oswald"
   },
   value: {
-    margin: "10px 0",
-    fontSize: "1.4rem",
+    fontSize: "1.8rem",
     paddingLeft: "10px",
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   dataInfo: {
     display: "flex",
     justifyContent: "flex-start",
-    alignItems: "center"
-    // borderBottom: "1px solid #F4B4C3"
+    alignItems: "center",
+    margin: "15px 0"
   }
 });
 

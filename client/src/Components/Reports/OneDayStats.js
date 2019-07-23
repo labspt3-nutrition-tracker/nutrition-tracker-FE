@@ -37,8 +37,8 @@ class WeekFoodLogStats extends Component {
   };
 
   render() {
-    defaults.global.defaultFontColor = "#3685B5";
-    defaults.global.defaultFontFamily = "Oxygen";
+    defaults.global.defaultFontColor = "#60B5A9";
+    defaults.global.defaultFontFamily = "Oswald";
     const { classes } = this.props;
     const label = moment(this.props.days[0]).format("MMM Do YYYY");
     const lineColor = makeRandomColor();
@@ -55,32 +55,45 @@ class WeekFoodLogStats extends Component {
         }
       ]
     };
-  console.log('stats props', this.props)
     return (
       <div className={classes.root}>
         <h2 className={classes.header}>
-          {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data} for{" "}
-          {moment(this.props.days[0]).format("MMMM Do YYYY")}
+          {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data}{" "}
+          for {moment(this.props.days[0]).format("MMMM Do YYYY")}
         </h2>
         {this.state.entries.length !== 0 ? (
-          <Grid container justify='center' alignItems='center'>
+          <Grid container justify="center" alignItems="center">
             <Grid item md={3} xs={12}>
               {this.state.entries.map((entry, i) => (
                 <div key={this.state.labels[i]} className={classes.dataInfo}>
                   <span className={classes.title}>{this.state.labels[i]}</span>
-                  <div className={classes.value}>{entry === 0 ? "No Entry" : entry.toFixed(2)}</div>
+                  <div className={classes.value}>
+                    {entry === 0 ? "No Entry" : entry.toFixed(2)}
+                  </div>
                 </div>
               ))}
               <div className={classes.dataInfo}>
                 <span className={classes.title}>
-                  Total {this.props.data === "caloriesPerServ" ? "Calories" : this.props.data}
+                  Total{" "}
+                  {this.props.data === "caloriesPerServ"
+                    ? "Calories"
+                    : this.props.data}
                 </span>
-                <div className={classes.value}>{this.state.entries.reduce((total, d) => total + d, 0).toFixed(2)}</div>
+                <div className={classes.value}>
+                  {this.state.entries
+                    .reduce((total, d) => total + d, 0)
+                    .toFixed(2)}
+                </div>
               </div>
             </Grid>
             <Grid item md={9} xs={12} className={classes.graph}>
-              <h2>{this.props.data === "caloriesPerServ" ? "Calories" : this.props.data} / Meal Category</h2>
-              <Line ref='chart' data={data} />
+              <h2>
+                {this.props.data === "caloriesPerServ"
+                  ? "Calories"
+                  : this.props.data}{" "}
+                / Meal Category
+              </h2>
+              <Line ref="chart" data={data} />
             </Grid>
           </Grid>
         ) : (
@@ -94,7 +107,7 @@ class WeekFoodLogStats extends Component {
 const styles = theme => ({
   root: {
     width: "100%",
-    margin: "50px auto",
+    margin: "30px auto",
     maxWidth: "1200px",
     padding: "20px"
   },
@@ -103,31 +116,31 @@ const styles = theme => ({
     textAlign: "center",
     fontSize: "2.5rem",
     marginBottom: "20px",
-    color: "#3685B5",
+    color: "#545454",
     textTransform: "uppercase",
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   graph: {
-    border: "3px solid #F4B4C3",
-    padding: "20px"
+    border: "3px solid #5E366A",
+    padding: "20px",
+    marginTop: 10
   },
   title: {
-    color: "#3685B5",
-    fontSize: "1.4rem",
-    width: "40%",
-    fontFamily: "Oxygen"
+    color: "#60B5A9",
+    fontSize: "1.8rem",
+    width: "50%",
+    fontFamily: "Oswald"
   },
   value: {
-    margin: "10px 0",
-    fontSize: "1.4rem",
+    fontSize: "1.8rem",
     paddingLeft: "10px",
-    fontFamily: "Oxygen"
+    fontFamily: "Oswald"
   },
   dataInfo: {
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
-    height: "50px"
+    margin: "15px 0"
   }
 });
 

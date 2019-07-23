@@ -15,7 +15,7 @@ const styles = theme => ({
     margin: "20px auto",
     maxWidth: "1200px",
     padding: 15,
-    fontFamily: "Oxygen",
+    fontFamily: "Oswald",
     height: "100vh"
   },
   formWrapper: {
@@ -24,16 +24,33 @@ const styles = theme => ({
   },
   textField: {
     width: "80%",
-    marginTop: 20
+    marginTop: 20,
+    fontSize: "1.6rem"
   },
   select: {
-    width: "90%",
-    marginTop: 20
+    width: "80%",
+    marginTop: 5,
+    fontSize: "1.4rem"
+  },
+  menuItem: {
+    fontSize: "1.4rem"
+  },
+  label: {
+    fontSize: "1.4rem",
+    color: "#6CBBAF",
+    fontFamily: "Oswald"
   },
   btn: {
-    backgroundColor: "#F4B4C3",
+    border: "1px solid #5E366A",
+    backgroundColor: "#5E366A",
     color: "white",
-    margin: 30
+    margin: 30,
+    fontSize: "1.4rem",
+    "&:hover": {
+      border: "1px solid #5E366A",
+      backgroundColor: "white",
+      color: "#5E366A"
+    }
   }
 });
 
@@ -41,7 +58,7 @@ class NewMessage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      recipient: this.props.recipient ? this.props.recipient : undefined,
+      recipient: null,
       message: "",
       errorText: "",
       error: false,
@@ -49,6 +66,11 @@ class NewMessage extends React.Component {
       formErrorText: ""
     };
   }
+
+  componentDidMount = () => {
+    if (this.props.recipient)
+      this.setState({ recipient: this.props.recipient });
+  };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -61,41 +83,72 @@ class NewMessage extends React.Component {
     } else {
       this.setState({ error: false });
       if (!this.state.recipient) {
-        this.setState({ selectError: true, formErrorText: "Please select a recipient" });
+        this.setState({
+          selectError: true,
+          formErrorText: "Please select a recipient"
+        });
       } else {
-        this.setState({ selectError: false });
-        console.log("Submitting message: ", this.state);
-        this.props.sendMessage({ recipient: this.state.recipient, message: this.state.message });
+        this.props.sendMessage({
+          recipient: this.state.recipient,
+          message: this.state.message
+        });
+        this.setState({
+          selectError: false,
+          recipient: undefined,
+          message: ""
+        });
       }
     }
   };
 
   render() {
-    const { classes, coaches } = this.props;
+    const { classes, coaches, trainees } = this.props;
     const { recipient, message } = this.state;
+    //combine coaches and trainees in one array - no repeats
+    const people = [...coaches];
+    trainees.forEach(trainee => {
+      const name = coaches.find(
+        coach =>
+          `${coach.firstName} ${coach.lastName}` ===
+          `${trainee.firstName} ${trainee.lastName}`
+      );
+      if (!name) people.push(trainee);
+    });
     return (
       <Paper className={classes.root}>
-        {coaches.length > 0 ? (
+        {coaches.length > 0 || trainees.length > 0 ? (
           <div className={classes.formWrapper}>
-            <Grid container justify='center' alignItems='center'>
+            <Grid container justify="center" alignItems="center">
               <Grid item xs={12}>
-                <FormControl className={classes.select} error={this.state.selectError}>
-                  <InputLabel htmlFor='recipient'>Recipient</InputLabel>
+                <FormControl
+                  className={classes.select}
+                  error={this.state.selectError}
+                >
+                  <InputLabel
+                    htmlFor="recipient"
+                    classes={{ root: classes.label }}
+                  >
+                    Recipient
+                  </InputLabel>
                   <Select
                     value={recipient}
                     onChange={this.handleChange}
-                    className={classes.select}
                     inputProps={{
                       name: "recipient",
-                      id: "recipient"
+                      id: "recipient",
+                      style: { fontSize: "1.4rem" }
                     }}
+                    classes={{ root: classes.select }}
                   >
-                    {coaches.map(coach => (
-                      <MenuItem value={coach.id} key={coach.id}>
-                        {coach.name}
+                    {people.map(user => (
+                      <MenuItem
+                        value={user.id}
+                        key={user.id}
+                        classes={{ root: classes.menuItem }}
+                      >
+                        {`${user.firstName} ${user.lastName}`}
                       </MenuItem>
                     ))}
-                    )
                   </Select>
                   <FormHelperText>{this.state.formErrorText}</FormHelperText>
                 </FormControl>
@@ -105,18 +158,30 @@ class NewMessage extends React.Component {
                   required
                   error={this.state.error}
                   helperText={this.state.errorText}
-                  label='Message'
+                  label="Message"
                   multiline
                   value={message}
                   onChange={this.handleChange}
-                  className={classes.textField}
                   inputProps={{
-                    name: "message"
+                    name: "message",
+                    style: { fontSize: "1.4rem" }
                   }}
+                  InputLabelProps={{
+                    style: {
+                      fontSize: "1.4rem",
+                      color: "#6CBBAF",
+                      fontFamily: "Oswald",
+                      marginBottom: 10
+                    }
+                  }}
+                  classes={{ root: classes.textField }}
                 />
               </Grid>
               <Grid item xs={6}>
-                <Button className={classes.btn} onClick={this.props.handleCancel}>
+                <Button
+                  className={classes.btn}
+                  onClick={this.props.handleCancel}
+                >
                   Cancel
                 </Button>
               </Grid>
@@ -128,7 +193,13 @@ class NewMessage extends React.Component {
             </Grid>
           </div>
         ) : (
-          <h2>You do not have any coach. Please request a coach first to send a message.</h2>
+          <>
+            <h2>You do not have any coach or trainee.</h2>
+            <h2>
+              To send a message, please request to be someone's coach, or get a
+              coach to follow you.
+            </h2>
+          </>
         )}
       </Paper>
     );

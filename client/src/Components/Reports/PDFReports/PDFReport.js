@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as moment from "moment";
-import { Document, Page, Text, View, Font, StyleSheet } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
 import { getLastXDays } from "../../../util/getLastXDays";
 import { filterByDays } from "../../../util/filterByDays";
@@ -23,12 +23,12 @@ const styles = StyleSheet.create({
     margin: 20,
     fontSize: 25,
     textAlign: "center",
-    color: "#3685B5",
+    color: "#5E366A",
     textTransform: "uppercase"
   },
   subTitle: {
     textAlign: "center",
-    color: "#3685B5",
+    color: "#5E366A",
     textTransform: "uppercase",
     marginBottom: 20,
     fontSize: 20
@@ -36,10 +36,10 @@ const styles = StyleSheet.create({
   category: {
     marginBottom: 10,
     marginTop: 20,
-    color: "#3685B5"
+    color: "#60B5A9"
   },
   hr: {
-    color: "#F4B4C3"
+    color: "#5E366A"
   },
   date: {
     fontSize: 18,
@@ -50,18 +50,23 @@ const styles = StyleSheet.create({
 
 const PDFReport = props => {
   const { currentUser, foodEntries, exerciseEntries } = props;
-  const [days, setDays] = useState(getLastXDays(7));
-  const [foods, setFoods] = useState(filterByDays(foodEntries, days, "date"));
-  const [totalCal, setTotalCal] = useState(getTotalData(foodEntries, "caloriesPerServ", days));
-  const [exercises, setExercises] = useState(filterByDays(exerciseEntries, days, "exerciseEntryDate"));
-  const [totalExer, setTotalExer] = useState(getExercises(exerciseEntries, days));
+  const [days] = useState(getLastXDays(7));
+  const [foods] = useState(filterByDays(foodEntries, days, "date"));
+  const [totalCal] = useState(
+    getTotalData(foodEntries, "caloriesPerServ", days)
+  );
+  const [exercises] = useState(
+    filterByDays(exerciseEntries, days, "exerciseEntryDate")
+  );
+  const [totalExer] = useState(getExercises(exerciseEntries, days));
   return (
     <>
       <Document>
-        <Page size='A4'>
+        <Page size="A4">
           <View>
             <Text style={styles.title}>
-              Last 7 days: {moment(days[0]).format("MM/DD")} - {moment(days[6]).format("MM/DD")}
+              Last 7 days: {moment(days[0]).format("MM/DD")} -{" "}
+              {moment(days[6]).format("MM/DD")}
             </Text>
             {currentUser && (
               <Text style={styles.subTitle}>
@@ -81,12 +86,17 @@ const PDFReport = props => {
                         <List>
                           {food.map((entry, j) => (
                             <Item key={j}>
-                              {entry.servingQty} {entry.food_id.foodName} for {entry.meal_category_id.mealCategoryName}
+                              {entry.servingQty} {entry.food_id.foodName} for{" "}
+                              {entry.meal_category_id.mealCategoryName}
                             </Item>
                           ))}
                         </List>
-                        <Text style={styles.date}>Total Calories: {totalCal[i]} kcal.</Text>
-                        <Text style={styles.hr}>---------------------------------------</Text>
+                        <Text style={styles.date}>
+                          Total Calories: {totalCal[i]} kcal.
+                        </Text>
+                        <Text style={styles.hr}>
+                          ---------------------------------------
+                        </Text>
                       </>
                     )}
                   </>
@@ -101,16 +111,23 @@ const PDFReport = props => {
                     <>
                       {exercise.length > 0 && (
                         <>
-                          <Text style={styles.date}>-- {exercise[0].exerciseEntryDate}: </Text>
+                          <Text style={styles.date}>
+                            -- {exercise[0].exerciseEntryDate}:{" "}
+                          </Text>
                           <List key={i}>
                             {exercise.map((entry, j) => (
                               <Item key={j}>
-                                {entry.exerciseName}, burned {entry.caloriesBurned}
+                                {entry.exerciseName}, burned{" "}
+                                {entry.caloriesBurned}
                               </Item>
                             ))}
                           </List>
-                          <Text style={styles.date}>Total Calories: {totalExer[i]} kcal.</Text>
-                          <Text style={styles.hr}>---------------------------------------</Text>
+                          <Text style={styles.date}>
+                            Total Calories: {totalExer[i]} kcal.
+                          </Text>
+                          <Text style={styles.hr}>
+                            ---------------------------------------
+                          </Text>
                         </>
                       )}
                     </>
