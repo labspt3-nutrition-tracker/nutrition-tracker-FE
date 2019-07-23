@@ -243,7 +243,6 @@ class StatsView extends React.Component {
                     <PDFReport
                       currentUser={currentUser}
                       foodEntries={foodEntries}
-                      // weightEntries={weightEntries}
                       exerciseEntries={exerciseEntries}
                     />
                   </PDFViewer>
@@ -280,7 +279,6 @@ const styles = theme => ({
   },
   tooltip: {
     fontSize: "1.4rem",
-    // color: "white",
     backgroundColor: "#60B5A9"
   }
 });

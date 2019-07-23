@@ -92,7 +92,6 @@ class JournalEntry extends React.Component {
     this.state = {
       foodEntries: foodEntries,
       edamamExist: false,
-      // journalEntry: {
       date: null,
       foodName: null,
       servingQty: null,
@@ -107,7 +106,6 @@ class JournalEntry extends React.Component {
       showModal: false,
       currentUser: 0,
       mealCategoryName: null
-      // }
     };
   }
 
@@ -242,7 +240,6 @@ class JournalEntry extends React.Component {
   render() {
     const { classes, datePicked } = this.props;
     const ModifiedEntry = this.state.foodEntries.filter(function(entry) {
-      //  return entry.date === datePicked;
       return (
         moment(new Date(entry.date)).format("MM/DD") ===
         moment(new Date(datePicked)).format("MM/DD")
@@ -303,7 +300,7 @@ class JournalEntry extends React.Component {
               id="form-dialog-title"
               classes={{ root: classes.title }}
             >
-              <span className={classes.title}> Edit Entry</span>
+              <span className={classes.title}> Edit Entry </span>
             </DialogTitle>
             <DialogContent classes={{ root: classes.dialogBox }} dividers>
               <DialogContentText classes={{ root: classes.food }}>
@@ -372,6 +369,21 @@ class JournalEntry extends React.Component {
                     label="Calories Per Serving"
                     defaultValue={this.state.mealEntry.food_id.caloriesPerServ}
                     margin="dense"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
                   />
                   <TextField
                     disabled
@@ -379,6 +391,21 @@ class JournalEntry extends React.Component {
                     label="Proteins"
                     defaultValue={this.state.mealEntry.food_id.proteins}
                     margin="dense"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
                   />
                   <TextField
                     disabled
@@ -386,6 +413,21 @@ class JournalEntry extends React.Component {
                     label="Carbs"
                     defaultValue={this.state.mealEntry.food_id.carbs}
                     margin="dense"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
                   />
                   <TextField
                     disabled
@@ -393,6 +435,21 @@ class JournalEntry extends React.Component {
                     label="Fats"
                     defaultValue={this.state.mealEntry.food_id.fats}
                     margin="dense"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: {
+                        fontSize: "2rem",
+                        color: "#60B5A9",
+                        fontFamily: "Oswald"
+                      }
+                    }}
+                    inputProps={{
+                      style: {
+                        fontSize: "1.5rem",
+                        lineHeight: "1.5",
+                        marginTop: "12px"
+                      }
+                    }}
                   />
                 </>
               )}

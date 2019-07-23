@@ -30,7 +30,7 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
-      premiumUser: true,
+      userType: true,
       datePicked: "",
       foodEntry: [],
       errors: [],
@@ -38,21 +38,12 @@ class Journal extends React.Component {
     };
   }
 
-  handleDateClick = (date, premium) => {
-    console.log(premium);
-    if (premium) {
+  handleDateClick = (date, type) => {
+    console.log("user type", type);
       this.setState({
         datePicked: date,
-        premiumUser: premium,
-        info: ""
+        userType: type
       });
-    } else {
-      this.setState({
-        datePicked: date,
-        premiumUser: premium,
-        info: ""
-      });
-    }
   };
 
   componentDidMount = async () => {
@@ -62,7 +53,6 @@ class Journal extends React.Component {
       let date = moment().format("ddd MMMM D YYYY");
       this.setState({ datePicked: date, currentUser: user.id });
     } catch (err) {
-      console.log(err);
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -90,7 +80,6 @@ class Journal extends React.Component {
         foodEntry: response.data.getFoodEntriesByUserId
       });
     } catch (err) {
-      console.log(err);
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -101,7 +90,6 @@ class Journal extends React.Component {
   };
 
   deleteMealEntry = async id => {
-    console.log(id);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com"
     });
@@ -123,7 +111,6 @@ class Journal extends React.Component {
         info: "The food entry has been deleted."
       });
     } catch (err) {
-      console.log(err);
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -182,7 +169,6 @@ class Journal extends React.Component {
         info: "The food entry has been edited successfully."
       });
     } catch (err) {
-      console.log(err);
       const error = err.message.split(":")[1];
       this.setState(prevState => {
         const errors = prevState.errors;
@@ -193,7 +179,7 @@ class Journal extends React.Component {
   };
 
   premiumCheck = () => {
-    if (!this.state.premiumUser) {
+    if (!this.state.userType) {
       return (
         <div>
           <h2>In order to see meal entries you must upgrade to premium!</h2>
@@ -225,7 +211,7 @@ class Journal extends React.Component {
               classes={{ root: classes.gridContainer }}
             >
               <Grid item md={4} xs={12}>
-                {this.state.foodEntry.length > 1 && this.state.premiumUser ? (
+                {this.state.foodEntry.length > 1 && this.state.userType ? (
                   <JournalEntry
                     foodEntries={this.state.foodEntry}
                     datePicked={this.state.datePicked}

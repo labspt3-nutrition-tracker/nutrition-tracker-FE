@@ -8,6 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { withStyles } from "@material-ui/core/styles";
 import * as moment from "moment";
+import { FadeInLeft, FadeInRight } from "animate-css-styled-components";
 
 const styles = theme => ({
   text: {
@@ -38,7 +39,7 @@ const styles = theme => ({
       width: "100%",
       marginBottom: 10
     },
-    [theme.breakpoints.between("sm", "lg")]: {
+    [theme.breakpoints.between("sm", "xl")]: {
       marginRight: 10,
       width: "30%"
     }
@@ -50,7 +51,7 @@ const styles = theme => ({
       width: "95%",
       marginBottom: 20
     },
-    [theme.breakpoints.between("sm", "lg")]: {
+    [theme.breakpoints.between("sm", "xl")]: {
       width: "75%"
     }
   },
@@ -60,7 +61,7 @@ const styles = theme => ({
       flexDirection: "column",
       alignItems: "center"
     },
-    [theme.breakpoints.between("sm", "lg")]: {
+    [theme.breakpoints.between("sm", "xl")]: {
       flexDirection: "row"
     }
   }
@@ -116,7 +117,7 @@ const MessageInfo = props => {
                 onClick={() => props.showMessage(message)}
                 classes={{ root: classes.message }}
               >
-                <div className={classes.flexName}>
+                <FadeInLeft duration="1s" className={classes.flexName}>
                   {!message.read ? (
                     <ListItemIcon className={classes.icon}>
                       <UnreadIcon />
@@ -133,7 +134,6 @@ const MessageInfo = props => {
                       }`}
                       classes={{
                         primary: classes.textRoot
-                        // root: classes.textRoot
                       }}
                     />
                   ) : (
@@ -144,13 +144,12 @@ const MessageInfo = props => {
                         }`}
                         classes={{
                           primary: classes.textRoot
-                          // root: classes.textRoot
                         }}
                       />
                     )
                   )}
-                </div>
-                <div className={classes.flexText}>
+                </FadeInLeft>
+                <FadeInRight duration="1s" className={classes.flexText}>
                   <ListItemText
                     primary={message.text.substring(0, 20) + "..."}
                     classes={{
@@ -171,7 +170,7 @@ const MessageInfo = props => {
                       classes={{ root: classes.delete }}
                     />
                   </ListItemIcon>
-                </div>
+                </FadeInRight>
               </ListItem>
             </React.Fragment>
           ))}

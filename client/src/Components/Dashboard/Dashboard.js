@@ -174,7 +174,7 @@ class Dashboard extends Component {
       .catch(err => console.log(err));
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.selectedFood !== this.props.selectedFood) {
       this.setState({ showFoodForm: false });
       const idToken = localStorage.getItem("token");
@@ -303,21 +303,8 @@ class Dashboard extends Component {
     });
   };
 
-  onFoodChange = e => {
-    this.setState({
-      foodEntry: {
-        food_id: {
-          ...this.state.foodEntry.food_id,
-          [e.target.name]:
-            e.target.type === "number"
-              ? parseInt(e.target.value)
-              : e.target.value
-        }
-      }
-    });
-  };
-
   editFoodEntry = (editId, editEntry, idToken) => {
+    console.log("edit entry dashboard", editEntry);
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
@@ -327,7 +314,11 @@ class Dashboard extends Component {
       ? editEntry.food_id.edamam_id
       : null;
     const foodId = parseInt(editEntry.food_id.id);
-    const mealCategoryId = parseInt(editEntry.meal_category_id);
+    const mealCategoryId = parseInt(
+      editEntry.meal_category_id.id
+        ? editEntry.meal_category_id.id
+        : editEntry.meal_category_id
+    );
     const foodInput = {
       foodName: editEntry.food_id.foodName,
       caloriesPerServ: parseInt(editEntry.food_id.caloriesPerServ),
@@ -546,8 +537,6 @@ class Dashboard extends Component {
                     deleteFoodEntry={this.deleteFoodEntry}
                     foodEntry={this.state.foodEntry}
                     onFoodEntryChange={this.onFoodEntryChange}
-                    onFoodChange={this.onFoodChange}
-                    onMealChange={this.onMealChange}
                     editFoodEntry={this.editFoodEntry}
                     passFoodData={this.passFoodData}
                   />
@@ -645,8 +634,6 @@ class Dashboard extends Component {
                     deleteFoodEntry={this.deleteFoodEntry}
                     foodEntry={this.state.foodEntry}
                     onFoodEntryChange={this.onFoodEntryChange}
-                    onFoodChange={this.onFoodChange}
-                    onMealChange={this.onMealChange}
                     editFoodEntry={this.editFoodEntry}
                     passFoodData={this.passFoodData}
                   />

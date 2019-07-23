@@ -11,6 +11,8 @@ const styles = theme => ({
   root: {
     margin: "20px auto",
     maxWidth: "1200px",
+    maxHeight: "80vh",
+    overflow: "auto",
     padding: 15,
     fontFamily: "Oswald",
     height: "100vh"

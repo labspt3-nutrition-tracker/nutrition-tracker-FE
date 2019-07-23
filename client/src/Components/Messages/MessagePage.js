@@ -290,7 +290,6 @@ class MessagePage extends React.Component {
       //delete the alert message
       const variables = { id: this.state.currentMessage.id };
       await client.mutate({ mutation: DELETE_MESSAGE_MUTATION, variables });
-      // this.getData();
     } catch (err) {
       const error = err.message.split(":")[1];
       console.log(error);

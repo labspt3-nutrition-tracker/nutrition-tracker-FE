@@ -47,7 +47,7 @@ const MealFoods = props => {
               <Fragment key={food.id}>
                 <ListItem button onClick={() => passMealData(food)}>
                   <ListItemText
-                    primary={food.food_id.foodName}
+                    primary={food.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
                     classes={{ primary: classes.foodEntry }}
                   />
                 </ListItem>

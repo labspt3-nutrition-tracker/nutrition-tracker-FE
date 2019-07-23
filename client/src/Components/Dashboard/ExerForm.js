@@ -5,9 +5,6 @@ import moment from "moment";
 import { GET_CURRENT_USER_QUERY } from "../../graphql/queries";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-// import MenuItem from "@material-ui/core/MenuItem";
-// import Select from "@material-ui/core/Select";
-// import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -103,7 +100,6 @@ class ExerForm extends Component {
   };
 
   validate = () => {
-    // debugger;
     const errorMsg = {
       error: false,
       errorName: "",
@@ -152,7 +148,6 @@ class ExerForm extends Component {
 
   render() {
     const { classes } = this.props;
-    const { newExerEntry } = this.state;
     return (
       <Form>
         <Typography className={classes.formTitle} variant="h4">
@@ -183,15 +178,11 @@ class ExerForm extends Component {
 
         <TextField
           label="Date"
-          // className="form-field"
           type="date"
           name="exerciseEntryDate"
-          // error={this.state.errorMsg.errorDate}
           onChange={this.onInputChange}
-          // required
           defaultValue={moment().format("YYYY-MM-DD")}
           autoFocus
-          // aria-describedby="errorDate-text"
           value={
             this.state.newExerEntry.exerciseEntryDate
               ? this.state.newExerEntry.exerciseEntryDate
@@ -203,9 +194,6 @@ class ExerForm extends Component {
             }
           }}
         />
-        {/* <FormHelperText id="errorDate-text">
-          {this.state.errorMsg.errorDate}
-        </FormHelperText> */}
 
         <TextField
           autoFocus

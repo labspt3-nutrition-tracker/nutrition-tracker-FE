@@ -103,7 +103,6 @@ class EntryForm extends Component {
   };
 
   validate = () => {
-    // debugger;
     const errorMsg = {
       errorFood: "",
       errorCal: "",
@@ -184,7 +183,6 @@ class EntryForm extends Component {
             });
           })
           .catch(err => {
-            console.log("food entry error", err);
             this.setState({
               edamamExist: false,
               newFoodEntry: {
@@ -394,7 +392,6 @@ class EntryForm extends Component {
           autoFocus
           margin="dense"
           label="Food"
-          className="form-field"
           type="text"
           placeholder="Add food here..."
           onChange={this.onInputChange}
@@ -559,9 +556,7 @@ class EntryForm extends Component {
           className="form-field"
           type="date"
           name="date"
-          // error={this.state.errorMsg.errorDate}
           onChange={this.onInputChange}
-          // required
           aria-describedby="errorDate-text"
           defaultValue={moment().format("YYYY-MM-DD")}
           value={
@@ -575,9 +570,6 @@ class EntryForm extends Component {
             }
           }}
         />
-        {/* <FormHelperText id="errorDate-text">
-          {this.state.errorMsg.errorDate}
-        </FormHelperText> */}
         <Button
           className={classes.formButton}
           type="submit"
@@ -590,7 +582,7 @@ class EntryForm extends Component {
             className={classes.formButton}
             onClick={this.props.closeFoodForm}
           >
-            {" "}
+            {" "} 
             Add searched Item
           </Button>
         )}

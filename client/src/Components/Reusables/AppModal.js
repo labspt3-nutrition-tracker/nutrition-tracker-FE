@@ -20,7 +20,7 @@ const ResultDiv = styled.div`
     text-decoration: none;
   }
   &:hover {
-    background: rgba(94,54,106, 0.1);
+    background: rgba(94, 54, 106, 0.1);
   }
 `;
 const ResultTitle = styled.h1`
@@ -93,10 +93,9 @@ const customStyles = {
     height: "50%",
     width: "50%",
     transform: "translate(-50%, -50%)",
-    position: "absolute",
+    position: "absolute"
   }
 };
-
 
 Modal.setAppElement("#root");
 
@@ -150,8 +149,6 @@ const AppModal = props => {
                     <ResultInfoP>
                       <ResultSpan>carbs:</ResultSpan> {carbs}
                     </ResultInfoP>
-                    {/* </ResultInfo>
-                  <ResultInfo> */}
                     <ResultInfoP>
                       <ResultSpan>protein:</ResultSpan> {protein}{" "}
                     </ResultInfoP>
