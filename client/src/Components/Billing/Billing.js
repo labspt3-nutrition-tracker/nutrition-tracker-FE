@@ -100,7 +100,7 @@ card: {
   }
   getCurrentUser = async idToken => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "http://localhost:4000",
       headers: { authorization: idToken }
     });
 
@@ -121,7 +121,7 @@ card: {
 
   getRecentBilling = async id => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "http://localhost:4000"
     });
 
     await client

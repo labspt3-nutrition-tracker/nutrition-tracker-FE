@@ -114,7 +114,7 @@ class JournalEntry extends React.Component {
   componentDidMount() {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "http://localhost:4000",
       headers: { authorization: idToken }
     });
 
@@ -143,7 +143,7 @@ class JournalEntry extends React.Component {
 
   passMealData = async mealEntry => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "http://localhost:4000"
     });
     try {
       const foodquery = await client.query({

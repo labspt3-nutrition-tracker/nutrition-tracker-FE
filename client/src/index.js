@@ -10,7 +10,7 @@ import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 
 const httpLink = createHttpLink({
-  uri: "https://nutrition-tracker-be.herokuapp.com"
+  uri: "http://localhost:4000"
 });
 
 const client = new ApolloClient({
@@ -40,7 +40,7 @@ ReactDOM.render(
 // import { AUTH_TOKEN } from './constants'
 
 // const httpLink = createHttpLink({
-//   uri: "https://nutrition-tracker-be.herokuapp.com/"
+//   uri: "http://localhost:4000/"
 // });
 
 // const authLink = setContext((_, { headers }) => {

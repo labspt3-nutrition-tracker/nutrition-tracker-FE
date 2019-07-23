@@ -31,7 +31,7 @@ class BillingHistory extends React.Component{
 
     getCurrentUser = idToken => {
         const client = new ApolloClient({
-        uri: "https://nutrition-tracker-be.herokuapp.com",
+        uri: "http://localhost:4000",
         headers: { authorization: idToken }
         });
 

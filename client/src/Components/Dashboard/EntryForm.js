@@ -73,7 +73,7 @@ class EntryForm extends Component {
 
   getCurrentUser = idToken => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "http://localhost:4000",
       headers: { authorization: idToken }
     });
 
@@ -150,7 +150,7 @@ class EntryForm extends Component {
           edamam_id: this.state.newAddFood.edamam_id
         };
         const client = new ApolloClient({
-          uri: "https://nutrition-tracker-be.herokuapp.com"
+          uri: "http://localhost:4000"
         });
         client
           .mutate({
@@ -201,7 +201,7 @@ class EntryForm extends Component {
           });
       } else {
         const client = new ApolloClient({
-          uri: "https://nutrition-tracker-be.herokuapp.com"
+          uri: "http://localhost:4000"
         });
         client
           .query({
@@ -263,7 +263,7 @@ class EntryForm extends Component {
 
   edamamExistCheck = edamam_id => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "http://localhost:4000"
     });
     client
       .query({
@@ -288,7 +288,7 @@ class EntryForm extends Component {
 
   getEdamamData = edamam_id => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "http://localhost:4000"
     });
     client
       .query({

@@ -152,7 +152,7 @@ class FoodEntry extends React.Component {
 
   passFoodEntryData = async entry => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "http://localhost:4000"
     });
     try {
       const foodquery = await client.query({
@@ -198,7 +198,7 @@ class FoodEntry extends React.Component {
 
   getCurrentUser = idToken => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "http://localhost:4000",
       headers: { authorization: idToken }
     });
     client
