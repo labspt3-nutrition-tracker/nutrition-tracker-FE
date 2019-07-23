@@ -265,7 +265,7 @@ class FoodEntry extends React.Component {
                     <div>
                       <span className="bullet">&#8226;</span>
                       {" "}
-                      {entry.food_id.foodName.charAt(0).toUpperCase() + entry.food_id.foodName.slice(1).toLowerCase()}
+                      {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
                     </div>
                   </div>
                 ))}
@@ -284,7 +284,7 @@ class FoodEntry extends React.Component {
                     >
                       <div>
                         <span className="bullet">&#8226;</span>{" "}
-                        {entry.food_id.foodName.charAt(0).toUpperCase() + entry.food_id.foodName.slice(1).toLowerCase()}
+                        {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
                       </div>
                     </div>
                   </div>
@@ -300,7 +300,7 @@ class FoodEntry extends React.Component {
                     <div onClick={() => this.passFoodEntryData(entry)}>
                       <div>
                         <span className="bullet">&#8226;</span>{" "}
-                        {entry.food_id.foodName.charAt(0).toUpperCase() + entry.food_id.foodName.slice(1).toLowerCase()}
+                        {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
                       </div>
                     </div>
                   </div>
@@ -318,10 +318,7 @@ class FoodEntry extends React.Component {
                     <div onClick={() => this.passFoodEntryData(entry)}>
                       <div >
                         <span className="bullet">&#8226;</span>{" "}
-                        {
-                           entry.food_id.foodName.charAt(0).toUpperCase() + entry.food_id.foodName.slice(1).toLowerCase()
-                        }
-                          
+                      {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}  
                       </div>
                     </div>
                   </div>
