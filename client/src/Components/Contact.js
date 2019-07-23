@@ -1,5 +1,11 @@
 import React from "react";
-import { Typography, TextField, FormHelperText, Card, Button } from "@material-ui/core";
+import {
+  Typography,
+  TextField,
+  FormHelperText,
+  Card,
+  Button
+} from "@material-ui/core";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -38,7 +44,6 @@ const styles = theme => ({
     fontSize: 16,
     width: "100%",
     maxWidth: 400,
-    // minWidth: 300,
     margin: "0 auto",
     lineHeight: 1.2
   },
@@ -58,77 +63,59 @@ const About = props => {
       </Typography>
       <Hr />
       <Card className={classes.root}>
-      <TextField
-        required
-        // error={this.state.errorMsg.errorName}
-        autoFocus
-        // margin="dense"
-        label="Name"
-        // className="form-field"
-        type="text"
-        placeholder="Name"
-        fullWidth
-        // onChange={this.onInputChange}
-        name="contactName"
-        aria-describedby="errorName-text"
-        InputProps={{
-          classes: {
-            input: classes.input
-          }
-        }}
-      />
-      <FormHelperText id="errorName-text">
-        {/* {this.state.errorMsg.errorName} */}
-      </FormHelperText>
-      
-      <TextField
-        required
-        // error={this.state.errorMsg.errorName}
-        autoFocus
-        // margin="dense"
-        label="Email"
-        // classEmail="form-field"
-        type="text"
-        placeholder="Email"
-        fullWidth
-        // onChange={this.onInputChange}
-        name="contactEmail"
-        aria-describedby="errorEmail-text"
-        InputProps={{
-          classes: {
-            input: classes.input
-          }
-        }}
-      />
-      <FormHelperText id="errorEmail-text">
-        {/* {this.state.errorMsg.errorMsg} */}
-      </FormHelperText>
+        <TextField
+          required
+          autoFocus
+          label="Name"
+          type="text"
+          placeholder="Name"
+          fullWidth
+          name="contactName"
+          aria-describedby="errorName-text"
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
+        />
+        <FormHelperText id="errorName-text" />
 
-      <TextField
-        required
-        // error={this.state.errorMsg.errorMsg}
-        autoFocus
-        // margin="dense"
-        label="Message"
-        // className="form-field"
-        type="text"
-        placeholder="Your Message"
-        fullWidth
-        // onChange={this.onInputChange}
-        name="contactMsg"
-        aria-describedby="errorMsg-text"
-        multiline={true}
-        InputProps={{
-          classes: {
-            input: classes.input
-          }
-        }}
-      />
-      <FormHelperText id="errorMsg-text">
-        {/* {this.state.errorMsg.errorMsg} */}
-      </FormHelperText>
+        <TextField
+          required
+          autoFocus
+          label="Email"
+          type="text"
+          placeholder="Email"
+          fullWidth
+          name="contactEmail"
+          aria-describedby="errorEmail-text"
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
+        />
+        <FormHelperText id="errorEmail-text" />
 
-      <Button className={classes.formButton}>Submit</Button>
+        <TextField
+          required
+          autoFocus
+          label="Message"
+          type="text"
+          placeholder="Your Message"
+          fullWidth
+          name="contactMsg"
+          aria-describedby="errorMsg-text"
+          multiline={true}
+          InputProps={{
+            classes: {
+              input: classes.input
+            }
+          }}
+        />
+        <FormHelperText id="errorMsg-text" />
+
+        <Button className={classes.formButton}>Submit</Button>
       </Card>
     </div>
   );

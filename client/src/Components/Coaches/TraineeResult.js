@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
@@ -31,12 +29,15 @@ const styles = theme => ({
       color: "#545454"
     },
     "&:disabled": {
-      cursor: "not-allowed"
+      cursor: "not-allowed",
+      pointerEvents: "all !important",
+      color: "white"
     }
   },
   upgrade: {
     color: "#40a798",
-    fontSize: "1.4rem"
+    fontSize: "1.4rem",
+    marginTop: 10
   }
 });
 
@@ -71,8 +72,9 @@ const TraineeResult = props => {
               className={classes.button}
               aria-label="Follow"
               disabled={
-                props.trainees.length === 1 &&
-                props.currentUser.userType !== "coach"
+                (props.trainees.length === 1 &&
+                  props.currentUser.userType !== "coach") ||
+                props.currentUser.userType === "basic"
               }
               onClick={props.request}
             >
@@ -91,6 +93,18 @@ const TraineeResult = props => {
                   </Typography>
                 </>
               )}
+            {props.currentUser.userType === "basic" && (
+              <>
+                <Typography
+                  gutterBottom
+                  variant="h4"
+                  classes={{ root: classes.upgrade }}
+                >
+                  Please <Link to="/billing">Upgrade</Link> to Premium or Coach
+                  to follow one or more persons.
+                </Typography>
+              </>
+            )}
           </>
         )}
       </Paper>

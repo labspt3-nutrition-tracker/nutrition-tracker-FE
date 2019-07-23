@@ -15,9 +15,12 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import moment from "moment";
 
-import { GET_CURRENT_USER_QUERY, GET_FOOD_BY_ID} from "../../graphql/queries";
+import { GET_CURRENT_USER_QUERY, GET_FOOD_BY_ID } from "../../graphql/queries";
 
 const FoodEntryContainer = styled.div`
   width: 100%;
@@ -48,7 +51,7 @@ const styles = theme => ({
   },
   dialogBox: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   entryContainer: {
     display: "flex",
@@ -111,7 +114,7 @@ class FoodEntry extends React.Component {
       currentUser: "",
       showModal: false,
       foodEntry: [],
-      edamamExist: false, 
+      edamamExist: false,
       editFoodObj: {
         date: "",
         foodName: "",
@@ -163,11 +166,11 @@ class FoodEntry extends React.Component {
       });
       if (foodquery.data.getFoodById.edamam_id) {
         this.setState({
-          edamamExist: true,
+          edamamExist: true
         });
       } else {
         this.setState({
-          edamamExist: false,
+          edamamExist: false
         });
       }
     } catch (err) {
@@ -212,15 +215,13 @@ class FoodEntry extends React.Component {
   };
 
   render() {
-    console.log("edamamExist!!", this.state.edamamExist)
-    console.log("regular props", this.props)
+    
     const { classes } = this.props;
     const dateToday = new Date();
     const month = dateToday.getMonth();
     const day = dateToday.getDate();
     const year = dateToday.getFullYear();
     let foodEntries = this.props.foodEntries;
-    console.log("food entry...", this.props.foodEntry)
     foodEntries = foodEntries.filter(entry => {
       const dateEntry = new Date(entry.date);
       const entryMonth = dateEntry.getMonth();
@@ -244,6 +245,8 @@ class FoodEntry extends React.Component {
     const Snack = foodEntries.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Snack";
     });
+
+
     return (
       <div className={classes.root}>
         <FoodEntryContainer>
@@ -259,9 +262,10 @@ class FoodEntry extends React.Component {
                     key={entry.id}
                     onClick={() => this.passFoodEntryData(entry)}
                   >
-                    <div entry={entry}>
-                      <span className="bullet">&#8226;</span>{" "}
-                      {entry.food_id.foodName}
+                    <div>
+                      <span className="bullet">&#8226;</span>
+                      {" "}
+                      {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
                     </div>
                   </div>
                 ))}
@@ -280,7 +284,7 @@ class FoodEntry extends React.Component {
                     >
                       <div>
                         <span className="bullet">&#8226;</span>{" "}
-                        {entry.food_id.foodName}
+                        {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
                       </div>
                     </div>
                   </div>
@@ -296,7 +300,7 @@ class FoodEntry extends React.Component {
                     <div onClick={() => this.passFoodEntryData(entry)}>
                       <div>
                         <span className="bullet">&#8226;</span>{" "}
-                        {entry.food_id.foodName}
+                        {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
                       </div>
                     </div>
                   </div>
@@ -308,18 +312,20 @@ class FoodEntry extends React.Component {
                 </Typography>
                 <hr />
                 {Snack.map(entry => (
+  
                   <div key={entry.id} onClick={this.openModal}>
+                      
                     <div onClick={() => this.passFoodEntryData(entry)}>
-                      <div>
+                      <div >
                         <span className="bullet">&#8226;</span>{" "}
-                        {entry.food_id.foodName}
+                      {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}  
                       </div>
                     </div>
                   </div>
                 ))}
               </CardContent>
 
-               <Dialog
+              <Dialog
                 open={this.state.showModal}
                 onClose={this.closeModal}
                 aria-labelledby="form-dialog-title"
@@ -330,14 +336,11 @@ class FoodEntry extends React.Component {
                 }}
               >
                 <DialogTitle
-                              id="form-dialog-title"
-                              classes={{ root: classes.title }}
-                            >
-                              <span className={classes.title}>
-                                {" "}
-                                Edit Food Entry
-                              </span>
-                            </DialogTitle>
+                  id="form-dialog-title"
+                  classes={{ root: classes.title }}
+                >
+                  <span className={classes.title}> Edit Food Entry</span>
+                </DialogTitle>
                 <DialogContent classes={{ root: classes.dialogBox }} dividers>
                   <DialogContentText classes={{ root: classes.food }}>
                     <span className={classes.food}>
@@ -345,35 +348,66 @@ class FoodEntry extends React.Component {
                         this.props.foodEntry.food_id &&
                         this.props.foodEntry.meal_category_id && (
                           <div className={classes.entryContainer}>
-
                             {this.state.edamamExist && (
-                            <>
-                              <TextField
-                                disabled
-                                id="standard-disabled"
-                                className={classes.food}
-                                value={this.props.foodEntry.food_id.foodName}
-                                aria-describedby="errorFood-text"
-                              />
-                            </>
+                              <>
+                                <TextField
+                                  disabled
+                                  id="standard-disabled"
+                                  className={classes.food}
+                                  value={this.props.foodEntry.food_id.foodName}
+                                  aria-describedby="errorFood-text"
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: {
+                                      fontSize: "2rem",
+                                      color: "#60B5A9",
+                                      fontFamily: "Oswald"
+                                    }
+                                  }}
+                                  inputProps={{
+                                    style: {
+                                      fontFamily: "Oswald",
+                                      fontSize: "2rem",
+                                      lineHeight: "1.5",
+                                      marginTop: "12px"
+                                    }
+                                  }}
+                                />
+                              </>
                             )}
-                        {!this.state.edamamExist && (
-                            <>
-                              <TextField
-                                required
-                                error={this.state.errorMsg.errorFood}
-                                autoFocus
-                                margin="dense"
-                                className={classes.food}
-                                type="text"
-                                name="foodName"
-                                onChange={this.props.onFoodEntryChange}
-                                value={this.props.foodEntry.food_id.foodName}
-                                aria-describedby="errorFood-text"
-                              />
-                            </>
+                            {!this.state.edamamExist && (
+                              <>
+                                <TextField
+                                  required
+                                  error={this.state.errorMsg.errorFood}
+                                  autoFocus
+                                  margin="dense"
+                                  className={classes.food}
+                                  type="text"
+                                  name="foodName"
+                                  onChange={this.props.onFoodEntryChange}
+                                  value={this.props.foodEntry.food_id.foodName}
+                                  aria-describedby="errorFood-text"
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: {
+                                      fontSize: "2rem",
+                                      color: "#60B5A9",
+                                      fontFamily: "Oswald"
+                                    }
+                                  }}
+                                  inputProps={{
+                                    style: {
+                                      fontFamily: "Oswald",
+                                      fontSize: "2rem",
+                                      lineHeight: "1.5",
+                                      marginTop: "12px"
+                                    }
+                                  }}
+                                />
+                              </>
                             )}
-                           <TextField
+                            <TextField
                               label="Date"
                               className="form-field"
                               type="date"
@@ -398,13 +432,14 @@ class FoodEntry extends React.Component {
                               }}
                               inputProps={{
                                 style: {
-                                  fontSize: "1.5rem",
+                                  fontFamily: "Oswald",
+                                  fontSize: "2rem",
                                   lineHeight: "1.5",
                                   marginTop: "12px"
                                 }
                               }}
                             />
-                             <FormHelperText id="errorDate-text">
+                            <FormHelperText id="errorDate-text">
                               {this.state.errorMsg.errorDate}
                             </FormHelperText>
                             <TextField
@@ -438,188 +473,260 @@ class FoodEntry extends React.Component {
 
                             {this.state.edamamExist && (
                               <>
-                            <TextField
-                              disabled
-                              id="standard-disabled"
-                              label="Calories Per Serving"
-                              name="caloriesPerServ"
-                              defaultValue={ this.props.foodEntry.food_id.caloriesPerServ}
-                            />
-                            <FormHelperText id="errorCal-text">
-                              {this.state.errorMsg.errorCal}
-                            </FormHelperText>
-                            <TextField
-                              disabled
-                              id="standard-disabled"
-                              label="Grams of Protein per Serving"
-                              name="proteins"
-                              defaultValue={this.props.foodEntry.food_id.proteins}
-                            />
-                            <FormHelperText id="errorProteins-text">
-                              {this.state.errorMsg.errorProteins}
-                            </FormHelperText>
-                            <TextField
-                              disabled
-                              id="standard-disabled"
-                              label="Grams of Carbs per Serving"
-                              name="carbs"
-                              defaultValue={this.props.foodEntry.food_id.carbs}
-                            />
-                            <FormHelperText id="errorCarbs-text">
-                              {this.state.errorMsg.errorCarbs}
-                            </FormHelperText>
-                            <TextField
-                              disabled
-                              id="standard-disabled"
-                              label="Grams of Fat per Serving"
-                              name="fats"
-                              defaultValue={this.props.foodEntry.food_id.fats}
-                            />
-                            <FormHelperText id="errorFats-text">
-                              {this.state.errorMsg.errorFats}
-                            </FormHelperText>
-                            </>
-                          )}
-                          {!this.state.edamamExist && (
-                            <>
-                            <TextField
-                              required
-                              error={this.state.errorMsg.errorFood}
-                              autoFocus
-                              margin="dense"
-                              label="Calories Per Serving"
-                              className="form-field"
-                              type="number"
-                              placeholder="Add food here..."
-                              name="caloriesPerServ"
-                              onChange={this.props.onFoodEntryChange}
-                              value={
-                                this.props.foodEntry.food_id.caloriesPerServ
-                              }
-                              aria-describedby="errorCal-text"
-                              InputLabelProps={{
-                                shrink: true,
-                                style: {
-                                  fontSize: "2rem",
-                                  color: "#60B5A9",
-                                  fontFamily: "Oswald"
-                                }
-                              }}
-                              inputProps={{
-                                style: {
-                                  fontSize: "1.5rem",
-                                  lineHeight: "1.5",
-                                  marginTop: "12px"
-                                }
-                              }}
-                            />
-                            <FormHelperText id="errorCal-text">
-                              {this.state.errorMsg.errorCal}
-                            </FormHelperText>
-                            <TextField
-                            required
-                              autoFocus
-                              margin="dense"
-                              label="Grams of Protein per Serving"
-                              className="form-field"
-                              type="number"
-                              name="proteins"
-                              error={this.state.errorMsg.errorProteins}
-                              onChange={this.props.onFoodEntryChange}
-                              value={this.props.foodEntry.food_id.proteins}
-                              InputLabelProps={{
-                                shrink: true,
-                                style: {
-                                  fontSize: "2rem",
-                                  color: "#60B5A9",
-                                  fontFamily: "Oswald"
-                                }
-                              }}
-                              inputProps={{
-                                style: {
-                                  fontSize: "1.5rem",
-                                  lineHeight: "1.5",
-                                  marginTop: "12px"
-                                }
-                              }}
-                              aria-describedby="errorProteins-text"
-                            />
-                            <FormHelperText id="errorProteins-text">
-                              {this.state.errorMsg.errorProteins}
-                            </FormHelperText>
-                            <TextField
-                              label="Grams of Carbs per Serving"
-                              className="form-field"
-                              type="number"
-                              name="carbs"
-                              error={this.state.errorMsg.errorCarbs}
-                              onChange={this.props.onFoodEntryChange}
-                              value={this.props.foodEntry.food_id.carbs}
-                              required
-                              aria-describedby="errorCarbs-text"
-                              InputLabelProps={{
-                                shrink: true,
-                                style: {
-                                  fontSize: "2rem",
-                                  color: "#60B5A9",
-                                  fontFamily: "Oswald"
-                                }
-                              }}
-                              inputProps={{
-                                style: {
-                                  fontSize: "1.5rem",
-                                  lineHeight: "1.5",
-                                  marginTop: "12px"
-                                }
-                              }}
-                            />
-                            <FormHelperText id="errorCarbs-text">
-                              {this.state.errorMsg.errorCarbs}
-                            </FormHelperText>
-                            <TextField
-                              label="Grams of Fat per Serving"
-                              className="form-field"
-                              type="number"
-                              name="fats"
-                              error={this.state.errorMsg.errorFats}
-                              onChange={this.props.onFoodEntryChange}
-                              value={this.props.foodEntry.food_id.fats}
-                              required
-                              aria-describedby="errorFats-text"
-                              InputLabelProps={{
-                                shrink: true,
-                                style: {
-                                  fontSize: "2rem",
-                                  color: "#60B5A9",
-                                  fontFamily: "Oswald"
-                                }
-                              }}
-                              inputProps={{
-                                style: {
-                                  fontSize: "1.5rem",
-                                  lineHeight: "1.5",
-                                  marginTop: "12px"
-                                }
-                              }}
-                            />
-                            <FormHelperText id="errorFats-text">
-                              {this.state.errorMsg.errorFats}
-                            </FormHelperText>
-                            </>
-                          )}
-                            <InputLabel htmlFor="meal-simple" className={classes.label}>
+                                <TextField
+                                  disabled
+                                  id="standard-disabled"
+                                  label="Calories Per Serving"
+                                  name="caloriesPerServ"
+                                  defaultValue={
+                                    this.props.foodEntry.food_id.caloriesPerServ
+                                  }
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: {
+                                      fontSize: "2rem",
+                                      color: "#60B5A9",
+                                      fontFamily: "Oswald"
+                                    }
+                                  }}
+                                  inputProps={{
+                                    style: {
+                                      fontSize: "1.5rem",
+                                      lineHeight: "1.5",
+                                      marginTop: "12px"
+                                    }
+                                  }}
+                                />
+                                <FormHelperText id="errorCal-text">
+                                  {this.state.errorMsg.errorCal}
+                                </FormHelperText>
+                                <TextField
+                                  disabled
+                                  id="standard-disabled"
+                                  label="Grams of Protein per Serving"
+                                  name="proteins"
+                                  defaultValue={
+                                    this.props.foodEntry.food_id.proteins
+                                  }
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: {
+                                      fontSize: "2rem",
+                                      color: "#60B5A9",
+                                      fontFamily: "Oswald"
+                                    }
+                                  }}
+                                  inputProps={{
+                                    style: {
+                                      fontSize: "1.5rem",
+                                      lineHeight: "1.5",
+                                      marginTop: "12px"
+                                    }
+                                  }}
+                                />
+                                <FormHelperText id="errorProteins-text">
+                                  {this.state.errorMsg.errorProteins}
+                                </FormHelperText>
+                                <TextField
+                                  disabled
+                                  id="standard-disabled"
+                                  label="Grams of Carbs per Serving"
+                                  name="carbs"
+                                  defaultValue={
+                                    this.props.foodEntry.food_id.carbs
+                                  }
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: {
+                                      fontSize: "2rem",
+                                      color: "#60B5A9",
+                                      fontFamily: "Oswald"
+                                    }
+                                  }}
+                                  inputProps={{
+                                    style: {
+                                      fontSize: "1.5rem",
+                                      lineHeight: "1.5",
+                                      marginTop: "12px"
+                                    }
+                                  }}
+                                />
+                                <FormHelperText id="errorCarbs-text">
+                                  {this.state.errorMsg.errorCarbs}
+                                </FormHelperText>
+                                <TextField
+                                  disabled
+                                  id="standard-disabled"
+                                  label="Grams of Fat per Serving"
+                                  name="fats"
+                                  defaultValue={
+                                    this.props.foodEntry.food_id.fats
+                                  }
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: {
+                                      fontSize: "2rem",
+                                      color: "#60B5A9",
+                                      fontFamily: "Oswald"
+                                    }
+                                  }}
+                                  inputProps={{
+                                    style: {
+                                      fontSize: "1.5rem",
+                                      lineHeight: "1.5",
+                                      marginTop: "12px"
+                                    }
+                                  }}
+                                />
+                                <FormHelperText id="errorFats-text">
+                                  {this.state.errorMsg.errorFats}
+                                </FormHelperText>
+                              </>
+                            )}
+                            {!this.state.edamamExist && (
+                              <>
+                                <TextField
+                                  required
+                                  error={this.state.errorMsg.errorFood}
+                                  autoFocus
+                                  margin="dense"
+                                  label="Calories Per Serving"
+                                  className="form-field"
+                                  type="number"
+                                  placeholder="Add food here..."
+                                  name="caloriesPerServ"
+                                  onChange={this.props.onFoodEntryChange}
+                                  value={
+                                    this.props.foodEntry.food_id.caloriesPerServ
+                                  }
+                                  aria-describedby="errorCal-text"
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: {
+                                      fontSize: "2rem",
+                                      color: "#60B5A9",
+                                      fontFamily: "Oswald"
+                                    }
+                                  }}
+                                  inputProps={{
+                                    style: {
+                                      fontSize: "1.5rem",
+                                      lineHeight: "1.5",
+                                      marginTop: "12px"
+                                    }
+                                  }}
+                                />
+                                <FormHelperText id="errorCal-text">
+                                  {this.state.errorMsg.errorCal}
+                                </FormHelperText>
+                                <TextField
+                                  required
+                                  autoFocus
+                                  margin="dense"
+                                  label="Grams of Protein per Serving"
+                                  className="form-field"
+                                  type="number"
+                                  name="proteins"
+                                  error={this.state.errorMsg.errorProteins}
+                                  onChange={this.props.onFoodEntryChange}
+                                  value={this.props.foodEntry.food_id.proteins}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: {
+                                      fontSize: "2rem",
+                                      color: "#60B5A9",
+                                      fontFamily: "Oswald"
+                                    }
+                                  }}
+                                  inputProps={{
+                                    style: {
+                                      fontSize: "1.5rem",
+                                      lineHeight: "1.5",
+                                      marginTop: "12px"
+                                    }
+                                  }}
+                                  aria-describedby="errorProteins-text"
+                                />
+                                <FormHelperText id="errorProteins-text">
+                                  {this.state.errorMsg.errorProteins}
+                                </FormHelperText>
+                                <TextField
+                                  label="Grams of Carbs per Serving"
+                                  className="form-field"
+                                  type="number"
+                                  name="carbs"
+                                  error={this.state.errorMsg.errorCarbs}
+                                  onChange={this.props.onFoodEntryChange}
+                                  value={this.props.foodEntry.food_id.carbs}
+                                  required
+                                  aria-describedby="errorCarbs-text"
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: {
+                                      fontSize: "2rem",
+                                      color: "#60B5A9",
+                                      fontFamily: "Oswald"
+                                    }
+                                  }}
+                                  inputProps={{
+                                    style: {
+                                      fontSize: "1.5rem",
+                                      lineHeight: "1.5",
+                                      marginTop: "12px"
+                                    }
+                                  }}
+                                />
+                                <FormHelperText id="errorCarbs-text">
+                                  {this.state.errorMsg.errorCarbs}
+                                </FormHelperText>
+                                <TextField
+                                  label="Grams of Fat per Serving"
+                                  className="form-field"
+                                  type="number"
+                                  name="fats"
+                                  error={this.state.errorMsg.errorFats}
+                                  onChange={this.props.onFoodEntryChange}
+                                  value={this.props.foodEntry.food_id.fats}
+                                  required
+                                  aria-describedby="errorFats-text"
+                                  InputLabelProps={{
+                                    shrink: true,
+                                    style: {
+                                      fontSize: "2rem",
+                                      color: "#60B5A9",
+                                      fontFamily: "Oswald"
+                                    }
+                                  }}
+                                  inputProps={{
+                                    style: {
+                                      fontSize: "1.5rem",
+                                      lineHeight: "1.5",
+                                      marginTop: "12px"
+                                    }
+                                  }}
+                                />
+                                <FormHelperText id="errorFats-text">
+                                  {this.state.errorMsg.errorFats}
+                                </FormHelperText>
+                              </>
+                            )}
+                            <InputLabel
+                              htmlFor="meal-simple"
+                              className={classes.label}
+                            >
                               Meal Category
                             </InputLabel>
                             <Select
                               autoFocus
                               margin="dense"
                               error={this.state.errorMsg.errorCategory}
-                              // label="Meal Category"
                               required
-                              // className="form-field"
-                              // name="meal_category_id"
                               type="number"
-                              value={this.props.foodEntry.meal_category_id.id ? this.props.foodEntry.meal_category_id.id  : this.props.foodEntry.meal_category_id} 
+                              value={
+                                this.props.foodEntry.meal_category_id.id
+                                  ? this.props.foodEntry.meal_category_id.id
+                                  : this.props.foodEntry.meal_category_id
+                              }
                               onChange={this.props.onFoodEntryChange}
                               aria-describedby="errorCategory-text"
                               inputProps={{
@@ -628,9 +735,7 @@ class FoodEntry extends React.Component {
                               }}
                               className={classes.category}
                             >
-                              <MenuItem>
-                                Select Meal Category
-                              </MenuItem>
+                              <MenuItem>Select Meal Category</MenuItem>
                               <MenuItem value="1">breakfast</MenuItem>
                               <MenuItem value="2">lunch</MenuItem>
                               <MenuItem value="4">dinner</MenuItem>
@@ -658,7 +763,7 @@ class FoodEntry extends React.Component {
                     Delete
                   </Button>
                 </DialogActions>
-             </Dialog> 
+              </Dialog>
             </CardContent>
           </div>
         </FoodEntryContainer>

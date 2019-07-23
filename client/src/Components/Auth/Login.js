@@ -74,18 +74,6 @@ const LoginMessage = styled.div`
   color: #5e366a;
 `;
 
-const MadeWithLove = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Built with love by the "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Material-UI
-      </Link>
-      {" team."}
-    </Typography>
-  );
-};
-
 class LoginOrRegister extends React.Component {
   constructor(props) {
     super(props);
