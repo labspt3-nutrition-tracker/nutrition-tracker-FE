@@ -30,7 +30,7 @@ class Journal extends React.Component {
     super(props);
     this.state = {
       currentUser: null,
-      userType: false,
+      userType: true,
       datePicked: "",
       foodEntry: [],
       errors: [],

@@ -15,6 +15,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import moment from "moment";
 
 import { GET_CURRENT_USER_QUERY, GET_FOOD_BY_ID } from "../../graphql/queries";
@@ -212,6 +215,7 @@ class FoodEntry extends React.Component {
   };
 
   render() {
+    
     const { classes } = this.props;
     const dateToday = new Date();
     const month = dateToday.getMonth();
@@ -241,6 +245,8 @@ class FoodEntry extends React.Component {
     const Snack = foodEntries.filter(entry => {
       return entry.meal_category_id.mealCategoryName === "Snack";
     });
+
+
     return (
       <div className={classes.root}>
         <FoodEntryContainer>
@@ -256,9 +262,10 @@ class FoodEntry extends React.Component {
                     key={entry.id}
                     onClick={() => this.passFoodEntryData(entry)}
                   >
-                    <div entry={entry}>
-                      <span className="bullet">&#8226;</span>{" "}
-                      {entry.food_id.foodName}
+                    <div>
+                      <span className="bullet">&#8226;</span>
+                      {" "}
+                      {entry.food_id.foodName.charAt(0).toUpperCase() + entry.food_id.foodName.slice(1).toLowerCase()}
                     </div>
                   </div>
                 ))}
@@ -277,7 +284,7 @@ class FoodEntry extends React.Component {
                     >
                       <div>
                         <span className="bullet">&#8226;</span>{" "}
-                        {entry.food_id.foodName}
+                        {entry.food_id.foodName.charAt(0).toUpperCase() + entry.food_id.foodName.slice(1).toLowerCase()}
                       </div>
                     </div>
                   </div>
@@ -293,7 +300,7 @@ class FoodEntry extends React.Component {
                     <div onClick={() => this.passFoodEntryData(entry)}>
                       <div>
                         <span className="bullet">&#8226;</span>{" "}
-                        {entry.food_id.foodName}
+                        {entry.food_id.foodName.charAt(0).toUpperCase() + entry.food_id.foodName.slice(1).toLowerCase()}
                       </div>
                     </div>
                   </div>
@@ -305,11 +312,16 @@ class FoodEntry extends React.Component {
                 </Typography>
                 <hr />
                 {Snack.map(entry => (
+  
                   <div key={entry.id} onClick={this.openModal}>
+                      
                     <div onClick={() => this.passFoodEntryData(entry)}>
-                      <div>
+                      <div >
                         <span className="bullet">&#8226;</span>{" "}
-                        {entry.food_id.foodName}
+                        {
+                           entry.food_id.foodName.charAt(0).toUpperCase() + entry.food_id.foodName.slice(1).toLowerCase()
+                        }
+                          
                       </div>
                     </div>
                   </div>
