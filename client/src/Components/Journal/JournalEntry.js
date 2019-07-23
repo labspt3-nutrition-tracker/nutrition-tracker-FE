@@ -145,6 +145,7 @@ class JournalEntry extends React.Component {
             fats: mealEntry.fats,
           })
         }
+      }
       })
       .catch(err => console.log(err));
 
@@ -992,15 +993,15 @@ class JournalEntry extends React.Component {
                           inputProps={{
                             name: "meal_category_id",
                             id: "meal-simple"
-                          }}
-=======
+                          }}>
+                          <MenuItem>
                             <em>None</em>
                           </MenuItem>
                           <MenuItem value={1}>Breakfast</MenuItem>
                           <MenuItem value={2}>Lunch</MenuItem>
                           <MenuItem value={4}>Dinner</MenuItem>
                           <MenuItem value={3}>Snack</MenuItem>
-                          </Select>
+                        </Select>
                     </form>
                     <div>
                       <Button onClick={this.deleteMealEntry} variant='contained' color='secondary'>
@@ -1011,7 +1012,7 @@ class JournalEntry extends React.Component {
                       </Button>
                     </div>
                   </MealModal>
-                  }
+                  )}
 
                   {this.state.mealEntry && this.state.edamamExist &&
                     <MealModal
@@ -1080,7 +1081,7 @@ class JournalEntry extends React.Component {
                         </Button>{" "}
                       </div>{" "}
                     </MealModal>
-                  )}{" "}
+                  }{" "}
                 </div>
               );
             })

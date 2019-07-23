@@ -136,14 +136,15 @@ class Journal extends React.Component {
         variables: {
           userId: this.state.currentUser
         }
-      }).then(response => {
+      })
+      .then(response => {
         this.setState(prevState => ({
           foodEntry: response.data.getFoodEntriesByUserId
-        }))
-      })
+        }));
+      });
 
-      console.log(this.state.foodEntry)
-  }
+    console.log(this.state.foodEntry);
+  };
 
   deleteMealEntry = id => {
     console.log(id);
@@ -209,7 +210,7 @@ class Journal extends React.Component {
         });
       })
       .then(response => {
-        console.log(response)
+        console.log(response);
         client.query({
           query: FOODENTRYQUERY,
           variables: {
@@ -217,36 +218,34 @@ class Journal extends React.Component {
           }
         });
       })
-      .then( response => {
+      .then(response => {
         this.setState({
           foodEntry: response.data.getFoodEntriesByUserId
-        })
+        });
+      })
       .then(response => {
-       console.log('response from journal', response)
-       console.log(this.props)
+        console.log("response from journal", response);
+        console.log(this.props);
       })
       .catch(err => console.log(err));
   };
 
   render() {
-      return(
-          <JournalContainer>
-            <JournalEntryDiv>
-              <JournalEntry
-                foodEntries={this.state.foodEntry}
-                datePicked={this.state.datePicked}
-                deleteMeal={this.deleteMealEntry}
-                editMeal={this.editMealEntry}
-              />
-            </JournalEntryDiv>
-            <CalendarDiv>
-              <Calendar
-                datePicked={this.state.datePicked}
-                handleDateClick={this.handleDateClick}
-              />
-            </CalendarDiv>
-          </JournalContainer>
-      )
+    return (
+      <JournalContainer>
+        <JournalEntryDiv>
+          <JournalEntry
+            foodEntries={this.state.foodEntry}
+            datePicked={this.state.datePicked}
+            deleteMeal={this.deleteMealEntry}
+            editMeal={this.editMealEntry}
+          />
+        </JournalEntryDiv>
+        <CalendarDiv>
+          <Calendar datePicked={this.state.datePicked} handleDateClick={this.handleDateClick} />
+        </CalendarDiv>
+      </JournalContainer>
+    );
   }
 }
 
