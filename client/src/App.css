@@ -234,6 +234,19 @@ button {
   background-color: #5e366a !important;
 }
 
+.Checkout .is-desktop .Button {
+  background: #5e366a !important;
+  background-image:none !important;
+  background-color: #5e366a !important;
+}
+
+ .Button-animationWrapper-child--primary button{
+  background: #5e366a !important;
+  background-image:none !important;
+  background-color: #5e366a !important;
+}
+
+
 /* ------------ MEDIA QUERIES ------------ */
 
 @media (max-width: 800px) {
