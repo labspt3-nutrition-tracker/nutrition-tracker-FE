@@ -15,15 +15,16 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import moment from "moment";
 
 import { GET_CURRENT_USER_QUERY, GET_FOOD_BY_ID } from "../../graphql/queries";
 
 const FoodEntryContainer = styled.div`
   width: 100%;
+`;
+
+const FoodEntrySubContainer = styled.div`
+  padding: 5px 0;
 `;
 
 const styles = theme => ({
@@ -262,11 +263,11 @@ class FoodEntry extends React.Component {
                     key={entry.id}
                     onClick={() => this.passFoodEntryData(entry)}
                   >
-                    <div>
+                    <FoodEntrySubContainer>
                       <span className="bullet">&#8226;</span>
                       {" "}
                       {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
-                    </div>
+                    </FoodEntrySubContainer>
                   </div>
                 ))}
               </CardContent>
@@ -282,10 +283,10 @@ class FoodEntry extends React.Component {
                       key={entry.id}
                       onClick={() => this.passFoodEntryData(entry)}
                     >
-                      <div>
+                      <FoodEntrySubContainer>
                         <span className="bullet">&#8226;</span>{" "}
                         {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
-                      </div>
+                      </FoodEntrySubContainer>
                     </div>
                   </div>
                 ))}
@@ -298,10 +299,10 @@ class FoodEntry extends React.Component {
                 {Dinner.map(entry => (
                   <div key={entry.id} onClick={this.openModal}>
                     <div onClick={() => this.passFoodEntryData(entry)}>
-                      <div>
+                      <FoodEntrySubContainer>
                         <span className="bullet">&#8226;</span>{" "}
                         {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
-                      </div>
+                      </FoodEntrySubContainer>
                     </div>
                   </div>
                 ))}
@@ -316,10 +317,10 @@ class FoodEntry extends React.Component {
                   <div key={entry.id} onClick={this.openModal}>
                       
                     <div onClick={() => this.passFoodEntryData(entry)}>
-                      <div >
+                      <FoodEntrySubContainer>
                         <span className="bullet">&#8226;</span>{" "}
                       {entry.food_id.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}  
-                      </div>
+                      </FoodEntrySubContainer>
                     </div>
                   </div>
                 ))}

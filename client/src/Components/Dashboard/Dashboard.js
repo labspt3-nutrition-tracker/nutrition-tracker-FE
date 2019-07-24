@@ -577,7 +577,8 @@ class Dashboard extends Component {
                     {!this.state.exerIsLoading ? (
                       <Container className={classes.flexDataConFirst}>
                         <Typography className={classes.heading}>
-                          Activity
+                          Activities
+                          <hr />
                         </Typography>
                         <ExerciseEntry
                           exerEntries={this.state.exerEntries}
