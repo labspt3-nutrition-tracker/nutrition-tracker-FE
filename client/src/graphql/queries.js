@@ -8,7 +8,6 @@ export const GET_FOOD_ENTRIES_BY_USER_QUERY = gql`
       date
       servingQty
       user_id {
-        username
         firstName
         lastName
         email
@@ -35,7 +34,6 @@ export const GET_CURRENT_USER_QUERY = gql`
   {
     getCurrentUser {
       id
-      username
       firstName
       lastName
       email
@@ -66,7 +64,6 @@ export const USER_EXIST_QUERY = gql`
 export const SEARCH_USER_BY_EMAIL = gql`
   query getUserBy($param: String!, $value: String!) {
     getUserBy(param: $param, value: $value) {
-      username
       email
       id
       firstName
@@ -186,7 +183,6 @@ export const GET_MESSAGES_QUERY = gql`
 export const GET_TRAINEES = gql`
   query getTrainees($coach_id: ID!) {
     getTrainees(coach_id: $coach_id) {
-      username
       email
       id
       firstName
@@ -201,7 +197,6 @@ export const GET_COACHES = gql`
   query getCoaches($trainee_id: ID!) {
     getCoaches(trainee_id: $trainee_id) {
       id
-      username
       firstName
       lastName
       email

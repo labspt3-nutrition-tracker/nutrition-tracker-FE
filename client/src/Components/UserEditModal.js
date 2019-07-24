@@ -91,7 +91,6 @@ class UserEditModal extends Component {
           const {
             firstName,
             lastName,
-            username,
             email,
             userType,
             weight
@@ -99,7 +98,6 @@ class UserEditModal extends Component {
           const newUser = {
             firstName,
             lastName,
-            username,
             email,
             userType,
             weight,

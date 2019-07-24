@@ -64,7 +64,6 @@ class LoginForm extends React.Component {
     }
     if (errors.length === 0) {
       const userInfo = {
-        username: "username",
         calorieGoal: Number(this.state.calorieGoal),
         weight: Number(this.state.weight)
       };
