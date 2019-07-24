@@ -100,7 +100,7 @@ card: {
   }
   getCurrentUser = async idToken => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
 
@@ -121,7 +121,7 @@ card: {
 
   getRecentBilling = async id => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "https://nutrition-tracker-be.herokuapp.com/"
     });
 
     await client
@@ -180,7 +180,8 @@ card: {
                 <p className={classes.paraDiv}> Subscription Until: <p className={classes.paraDivValue}> {this.state.subscriptionLapse}</p></p>
               ) : (null)
             }
-          <Mutation mutation={CREATE_SUBSCRIPTION} onError={err => {console.log(err)}}>
+          <Mutation mutation={CREATE_SUBSCRIPTION}  onError={err => {console.log(err)}}>
+            
             {mutation => (
               <div className={classes.subscriptionDiv}>
                 <div style={
