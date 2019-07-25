@@ -6,7 +6,7 @@
 
 A nutrition tracking application that provides a visualization of eating patterns and nutritional data to empower people to take control of their health.
 
-DEMO: https://nutrition-tracker-lambda.netlify.com/
+DEMO: https://hello-melon-lambda.netlify.com/
 
 ## Table of Contents
 
@@ -63,7 +63,7 @@ To run this project, install it locally using npm:
 
 Or to use our live project to get started:
 
-[HelloMelon](https://nutrition-tracker-lambda.netlify.com/)
+[HelloMelon](https://hello-melon-lambda.netlify.com/)
 
 ## Authors
 

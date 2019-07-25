@@ -63,7 +63,6 @@ export const ADD_FOOD_ENTRY = gql`
       }
       user_id {
         id
-        username
       }
       servingQty
       meal_category_id {
@@ -180,14 +179,12 @@ export const UPDATE_MESSAGE_MUTATION = gql`
       type
       recipient {
         id
-        username
         firstName
         lastName
         email
       }
       sender {
         id
-        username
         firstName
         lastName
         email
@@ -202,7 +199,6 @@ export const ADD_TRAINEE = gql`
   mutation addTrainees($coach_id: ID!, $trainee_id: ID!) {
     addTrainees(coach_id: $coach_id, trainee_id: $trainee_id) {
       id
-      username
       firstName
       lastName
       email
