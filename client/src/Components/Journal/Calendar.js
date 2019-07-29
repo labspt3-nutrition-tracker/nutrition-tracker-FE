@@ -39,7 +39,7 @@ class Calendar extends React.Component {
   }
   getCurrentUser = async idToken => {
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
@@ -58,7 +58,7 @@ class Calendar extends React.Component {
 
   getRecentBilling = async id => {
     const client = new ApolloClient({
-      uri: "http://localhost:4000"
+      uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
     await client
@@ -117,6 +117,7 @@ class Calendar extends React.Component {
           dateClick={this.pickDate}
           selectable="true"
           handleWindowResize="true"
+          todayDisabled="false"
         />
       </div>
     );

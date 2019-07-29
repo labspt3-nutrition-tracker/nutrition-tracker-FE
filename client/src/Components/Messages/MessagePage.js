@@ -141,7 +141,7 @@ class MessagePage extends React.Component {
     const idToken = localStorage.getItem("token");
 
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
@@ -193,7 +193,7 @@ class MessagePage extends React.Component {
   showMessage = async message => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
     // Update message to read
@@ -233,7 +233,7 @@ class MessagePage extends React.Component {
   coachExistCheck = async (coachId, traineeId) => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
@@ -262,7 +262,7 @@ class MessagePage extends React.Component {
   handleAccept = async senderId => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
@@ -313,7 +313,7 @@ class MessagePage extends React.Component {
   sendMessage = async ({ recipient, message }) => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
     const NewMessage = {
@@ -343,7 +343,7 @@ class MessagePage extends React.Component {
     event.stopPropagation();
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
     const variables = { id: messageId };

@@ -7,7 +7,7 @@ export const getCurrentWeight = async userId => {
   const idToken = localStorage.getItem("token");
  
   const client = new ApolloClient({
-    uri: "http://localhost:4000",
+    uri: "https://nutrition-tracker-be.herokuapp.com",
     headers: { authorization: idToken }
   });
   const variables = { userId: userId };

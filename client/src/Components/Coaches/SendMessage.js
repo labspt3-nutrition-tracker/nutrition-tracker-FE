@@ -65,7 +65,7 @@ class SendMessageFromCoach extends React.Component {
   sendMessage = message => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
     const NewMessage = {

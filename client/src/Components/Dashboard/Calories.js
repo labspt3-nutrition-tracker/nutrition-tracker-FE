@@ -76,7 +76,7 @@ class Calories extends React.Component {
 
   getCurrentUser = idToken => {
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 

@@ -7,7 +7,7 @@ export const updateUserData = async (userId, newUser) => {
   const idToken = localStorage.getItem("token");
 
   const client = new ApolloClient({
-    uri: "http://localhost:4000",
+    uri: "https://nutrition-tracker-be.herokuapp.com",
     headers: { authorization: idToken }
   });
   const variables = { id: userId, input: newUser };

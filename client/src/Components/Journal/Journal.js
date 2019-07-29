@@ -61,12 +61,19 @@ class Journal extends React.Component {
       });
     }
 
+    const test = document.getElementsByClassName("fc-today-button").disabled = false;
+
+    console.log(test)
+    const today = document.getElementsByClassName("fc-today-button")
+    if(today[0].onclick()){
+      console.log("today has been clicked")
+    }
     this.loadFoodEntries();
   };
 
   loadFoodEntries = async () => {
     const client = new ApolloClient({
-      uri: "http://localhost:4000"
+      uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
     try {
@@ -91,7 +98,7 @@ class Journal extends React.Component {
 
   deleteMealEntry = async id => {
     const client = new ApolloClient({
-      uri: "http://localhost:4000"
+      uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
     try {
@@ -138,7 +145,7 @@ class Journal extends React.Component {
       meal_category_id: foodEntry.meal_category_id
     };
     const client = new ApolloClient({
-      uri: "http://localhost:4000"
+      uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
     try {

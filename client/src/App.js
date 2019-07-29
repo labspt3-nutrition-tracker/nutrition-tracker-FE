@@ -80,7 +80,7 @@ class App extends React.Component {
 
   getCurrentUser = async idToken => {
     const client = new ApolloClient({
-      uri: "http://localhost:4000",
+      uri: "https://nutrition-tracker-be.herokuapp.com",
       headers: { authorization: idToken }
     });
 
@@ -97,7 +97,7 @@ class App extends React.Component {
 
   checkUser = async id => {
     const client = new ApolloClient({
-      uri: "http://localhost:4000"
+      uri: "https://nutrition-tracker-be.herokuapp.com"
     });
 
     await client
