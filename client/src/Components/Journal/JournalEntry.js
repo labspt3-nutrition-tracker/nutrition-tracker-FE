@@ -112,7 +112,7 @@ class JournalEntry extends React.Component {
   componentDidMount() {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
 
@@ -127,10 +127,7 @@ class JournalEntry extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.foodEntries !== this.props.foodEntries ||
-      prevProps.datePicked !== this.props.datePicked
-    ) {
+    if (prevProps.foodEntries !== this.props.foodEntries || prevProps.datePicked !== this.props.datePicked) {
       this.setState({ foodEntries: this.props.foodEntries });
     }
 
@@ -141,7 +138,7 @@ class JournalEntry extends React.Component {
 
   passMealData = async mealEntry => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "https://nutrition-tracker-be.herokuapp.com/"
     });
     try {
       const foodquery = await client.query({
@@ -204,31 +201,19 @@ class JournalEntry extends React.Component {
       caloriesPerServ: this.state.caloriesPerServ
         ? parseInt(this.state.caloriesPerServ)
         : this.state.mealEntry.food_id.caloriesPerServ,
-      fats: this.state.fats
-        ? parseInt(this.state.fats)
-        : this.state.mealEntry.food_id.fats,
-      carbs: this.state.carbs
-        ? parseInt(this.state.carbs)
-        : this.state.mealEntry.food_id.carbs,
-      proteins: this.state.proteins
-        ? parseInt(this.state.proteins)
-        : this.state.mealEntry.food_id.proteins,
+      fats: this.state.fats ? parseInt(this.state.fats) : this.state.mealEntry.food_id.fats,
+      carbs: this.state.carbs ? parseInt(this.state.carbs) : this.state.mealEntry.food_id.carbs,
+      proteins: this.state.proteins ? parseInt(this.state.proteins) : this.state.mealEntry.food_id.proteins,
       date: this.state.date ? this.state.date : this.state.mealEntry.date,
       food_id: this.state.mealEntry.food_id.id,
       user_id: this.state.currentUser,
       meal_category_id: this.state.meal_category_id
         ? this.state.meal_category_id
         : this.state.mealEntry.meal_category_id.id,
-      servingQty: this.state.servingQty
-        ? parseInt(this.state.servingQty)
-        : this.state.mealEntry.servingQty
+      servingQty: this.state.servingQty ? parseInt(this.state.servingQty) : this.state.mealEntry.servingQty
     };
 
-    this.props.editMeal(
-      this.state.mealEntry.id,
-      this.state.mealEntry.food_id.id,
-      foodEntry
-    );
+    this.props.editMeal(this.state.mealEntry.id, this.state.mealEntry.food_id.id, foodEntry);
 
     this.setState({
       mealEntry: null,
@@ -240,10 +225,7 @@ class JournalEntry extends React.Component {
   render() {
     const { classes, datePicked } = this.props;
     const ModifiedEntry = this.state.foodEntries.filter(function(entry) {
-      return (
-        moment(new Date(entry.date)).format("MM/DD") ===
-        moment(new Date(datePicked)).format("MM/DD")
-      );
+      return moment(new Date(entry.date)).format("MM/DD") === moment(new Date(datePicked)).format("MM/DD");
     });
     // set as new foodentries
     const Breakfast = ModifiedEntry.filter(entry => {
@@ -289,35 +271,28 @@ class JournalEntry extends React.Component {
           <Dialog
             open={this.state.showModal}
             onClose={this.closeModal}
-            aria-labelledby="form-dialog-title"
+            aria-labelledby='form-dialog-title'
             PaperProps={{
               style: {
                 minWidth: "300px"
               }
             }}
           >
-            <DialogTitle
-              id="form-dialog-title"
-              classes={{ root: classes.title }}
-            >
+            <DialogTitle id='form-dialog-title' classes={{ root: classes.title }}>
               <span className={classes.title}> Edit Entry </span>
             </DialogTitle>
             <DialogContent classes={{ root: classes.dialogBox }} dividers>
               <DialogContentText classes={{ root: classes.food }}>
-                <span className={classes.food}>
-                  {this.state.mealEntry.food_id.foodName}
-                </span>
+                <span className={classes.food}>{this.state.mealEntry.food_id.foodName}</span>
               </DialogContentText>
               <TextField
                 onChange={this.handleChange}
-                name="date"
-                id="date"
-                label="Day"
+                name='date'
+                id='date'
+                label='Day'
                 value={this.state.date}
-                defaultValue={moment(
-                  new Date(this.state.mealEntry.date)
-                ).format("YYYY-MM-DD")}
-                type="date"
+                defaultValue={moment(new Date(this.state.mealEntry.date)).format("YYYY-MM-DD")}
+                type='date'
                 InputLabelProps={{
                   shrink: true,
                   style: {
@@ -333,16 +308,16 @@ class JournalEntry extends React.Component {
                     marginTop: "12px"
                   }
                 }}
-                margin="normal"
+                margin='normal'
               />
               <TextField
-                id="Serving Quantity"
-                name="servingQty"
-                label="Serving Quantity"
+                id='Serving Quantity'
+                name='servingQty'
+                label='Serving Quantity'
                 placeholder={this.state.mealEntry.servingQty}
                 value={this.state.servingQty}
                 defaultValue={this.state.mealEntry.servingQty}
-                margin="dense"
+                margin='dense'
                 onChange={this.handleChange}
                 InputLabelProps={{
                   shrink: true,
@@ -365,10 +340,10 @@ class JournalEntry extends React.Component {
                 <>
                   <TextField
                     disabled
-                    id="standard-disabled"
-                    label="Calories Per Serving"
+                    id='standard-disabled'
+                    label='Calories Per Serving'
                     defaultValue={this.state.mealEntry.food_id.caloriesPerServ}
-                    margin="dense"
+                    margin='dense'
                     InputLabelProps={{
                       shrink: true,
                       style: {
@@ -387,10 +362,10 @@ class JournalEntry extends React.Component {
                   />
                   <TextField
                     disabled
-                    id="standard-disabled"
-                    label="Proteins"
+                    id='standard-disabled'
+                    label='Proteins'
                     defaultValue={this.state.mealEntry.food_id.proteins}
-                    margin="dense"
+                    margin='dense'
                     InputLabelProps={{
                       shrink: true,
                       style: {
@@ -409,10 +384,10 @@ class JournalEntry extends React.Component {
                   />
                   <TextField
                     disabled
-                    id="standard-disabled"
-                    label="Carbs"
+                    id='standard-disabled'
+                    label='Carbs'
                     defaultValue={this.state.mealEntry.food_id.carbs}
-                    margin="dense"
+                    margin='dense'
                     InputLabelProps={{
                       shrink: true,
                       style: {
@@ -431,10 +406,10 @@ class JournalEntry extends React.Component {
                   />
                   <TextField
                     disabled
-                    id="standard-disabled"
-                    label="Fats"
+                    id='standard-disabled'
+                    label='Fats'
                     defaultValue={this.state.mealEntry.food_id.fats}
-                    margin="dense"
+                    margin='dense'
                     InputLabelProps={{
                       shrink: true,
                       style: {
@@ -457,14 +432,12 @@ class JournalEntry extends React.Component {
               {!this.state.edamamExist && (
                 <>
                   <TextField
-                    id="Calories Per Serving"
-                    name="caloriesPerServ"
-                    label="Calories Per Serving"
-                    defaultValue={`${
-                      this.state.mealEntry.food_id.caloriesPerServ
-                    }`}
+                    id='Calories Per Serving'
+                    name='caloriesPerServ'
+                    label='Calories Per Serving'
+                    defaultValue={`${this.state.mealEntry.food_id.caloriesPerServ}`}
                     value={this.state.caloriesPerServ}
-                    margin="dense"
+                    margin='dense'
                     onChange={this.handleChange}
                     InputLabelProps={{
                       shrink: true,
@@ -483,12 +456,12 @@ class JournalEntry extends React.Component {
                     }}
                   />
                   <TextField
-                    id="Protein"
-                    name="proteins"
-                    label="Protein"
+                    id='Protein'
+                    name='proteins'
+                    label='Protein'
                     defaultValue={`${this.state.mealEntry.food_id.proteins}`}
                     value={this.state.proteins}
-                    margin="dense"
+                    margin='dense'
                     onChange={this.handleChange}
                     InputLabelProps={{
                       shrink: true,
@@ -507,12 +480,12 @@ class JournalEntry extends React.Component {
                     }}
                   />
                   <TextField
-                    id="Carbs"
-                    name="carbs"
-                    label="Carbs"
+                    id='Carbs'
+                    name='carbs'
+                    label='Carbs'
                     defaultValue={`${this.state.mealEntry.food_id.carbs}`}
                     value={this.state.carbs}
-                    margin="dense"
+                    margin='dense'
                     onChange={this.handleChange}
                     InputLabelProps={{
                       shrink: true,
@@ -531,12 +504,12 @@ class JournalEntry extends React.Component {
                     }}
                   />
                   <TextField
-                    id="Fats"
-                    name="fats"
-                    label="Fats"
+                    id='Fats'
+                    name='fats'
+                    label='Fats'
                     defaultValue={`${this.state.mealEntry.food_id.fats}`}
                     value={this.state.fats}
-                    margin="dense"
+                    margin='dense'
                     onChange={this.handleChange}
                     InputLabelProps={{
                       shrink: true,
@@ -557,7 +530,7 @@ class JournalEntry extends React.Component {
                 </>
               )}
 
-              <InputLabel htmlFor="meal-simple" className={classes.label}>
+              <InputLabel htmlFor='meal-simple' className={classes.label}>
                 MealCategory
               </InputLabel>
               <Select

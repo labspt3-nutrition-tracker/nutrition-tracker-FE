@@ -73,7 +73,7 @@ class Journal extends React.Component {
 
   loadFoodEntries = async () => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "https://nutrition-tracker-be.herokuapp.com/"
     });
 
     try {
@@ -98,7 +98,7 @@ class Journal extends React.Component {
 
   deleteMealEntry = async id => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "https://nutrition-tracker-be.herokuapp.com/"
     });
 
     try {
@@ -145,7 +145,7 @@ class Journal extends React.Component {
       meal_category_id: foodEntry.meal_category_id
     };
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "https://nutrition-tracker-be.herokuapp.com/"
     });
 
     try {

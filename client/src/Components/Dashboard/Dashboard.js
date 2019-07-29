@@ -131,7 +131,7 @@ class Dashboard extends Component {
     }
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
     client
@@ -179,7 +179,7 @@ class Dashboard extends Component {
       this.setState({ showFoodForm: false });
       const idToken = localStorage.getItem("token");
       const client = new ApolloClient({
-        uri: "https://nutrition-tracker-be.herokuapp.com",
+        uri: "https://nutrition-tracker-be.herokuapp.com/",
         headers: { authorization: idToken }
       });
       client
@@ -220,7 +220,7 @@ class Dashboard extends Component {
 
   addFoodEntry = newFoodEntry => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "https://nutrition-tracker-be.herokuapp.com/"
     });
 
     client
@@ -250,7 +250,7 @@ class Dashboard extends Component {
 
   addExerEntry = newExerEntry => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com"
+      uri: "https://nutrition-tracker-be.herokuapp.com/"
     });
 
     client
@@ -306,7 +306,7 @@ class Dashboard extends Component {
   editFoodEntry = (editId, editEntry, idToken) => {
     console.log("edit entry dashboard", editEntry);
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
 
@@ -374,7 +374,7 @@ class Dashboard extends Component {
 
   editExerEntry = (editId, editEntry, idToken) => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
     client
@@ -403,7 +403,7 @@ class Dashboard extends Component {
 
   deleteFoodEntry = (id, idToken) => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
     client
@@ -432,7 +432,7 @@ class Dashboard extends Component {
 
   deleteExerEntry = (id, idToken) => {
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
     client
@@ -577,7 +577,8 @@ class Dashboard extends Component {
                     {!this.state.exerIsLoading ? (
                       <Container className={classes.flexDataConFirst}>
                         <Typography className={classes.heading}>
-                          Activity
+                          Activities
+                          <hr />
                         </Typography>
                         <ExerciseEntry
                           exerEntries={this.state.exerEntries}

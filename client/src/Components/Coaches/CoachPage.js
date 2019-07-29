@@ -69,7 +69,7 @@ class CoachPage extends React.Component {
   componentDidMount() {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
 
@@ -106,7 +106,7 @@ class CoachPage extends React.Component {
     email = this.state.traineeSearchInput;
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
     client
@@ -141,7 +141,7 @@ class CoachPage extends React.Component {
     const idToken = localStorage.getItem("token");
     const userId = this.state.currentUser.id;
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
 
@@ -171,7 +171,7 @@ class CoachPage extends React.Component {
   traineeExistCheck = async (coachId, traineeId) => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
 
@@ -200,7 +200,7 @@ class CoachPage extends React.Component {
   handleRequest = async () => {
     const idToken = localStorage.getItem("token");
     const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com",
+      uri: "https://nutrition-tracker-be.herokuapp.com/",
       headers: { authorization: idToken }
     });
     const userId = this.state.currentUser.id;

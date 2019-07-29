@@ -120,17 +120,14 @@ class Settings extends React.Component {
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (
-      prevState.currentUser !== this.state.currentUser ||
-      prevState.currentWeight !== this.state.currentWeight
-    )
+    if (prevState.currentUser !== this.state.currentUser || prevState.currentWeight !== this.state.currentWeight)
       this.getData();
   };
 
   getData = () => {
     getCurrentUser(localStorage.getItem("token"))
       .then(currentUser => {
-        getCurrentWeight(currentUser.id).then(weight => {
+        getCurrentWeight(currentUser).then(weight => {
           this.setState({ currentUser: currentUser, currentWeight: weight });
         });
       })
@@ -159,9 +156,9 @@ class Settings extends React.Component {
           md={8}
           xs={12}
           container
-          justify="center"
-          alignItems="center"
-          border="1px solid black"
+          justify='center'
+          alignItems='center'
+          border='1px solid black'
           classes={{ root: classes.gridContainer }}
         >
           <UserEditModal
@@ -176,20 +173,10 @@ class Settings extends React.Component {
               <CardContent>
                 <div className={classes.cardContent}>
                   <div className={classes.header}>
-                    <Typography
-                      gutterBottom
-                      variant="h3"
-                      component="h2"
-                      className={classes.user}
-                    >
+                    <Typography gutterBottom variant='h3' component='h2' className={classes.user}>
                       {currentUser.firstName} {currentUser.lastName}
                     </Typography>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="h2"
-                      className={classes.listItemText}
-                    >
+                    <Typography gutterBottom variant='h5' component='h2' className={classes.listItemText}>
                       {currentUser.email}
                     </Typography>
                   </div>
@@ -199,7 +186,7 @@ class Settings extends React.Component {
                         <FolderIcon className={classes.icon} />
                       </ListItemIcon>
                       <ListItemText
-                        primary="User Type"
+                        primary='User Type'
                         secondary={currentUser.userType}
                         classes={{
                           primary: classes.listItemText,
@@ -207,11 +194,8 @@ class Settings extends React.Component {
                         }}
                       />
                       {currentUser.userType !== "coach" && (
-                        <HeadShake delay="2s" duration="1s">
-                          <EditIcon
-                            className={classes.editIcon}
-                            onClick={() => this.openModal("userType")}
-                          />
+                        <HeadShake delay='2s' duration='1s'>
+                          <EditIcon className={classes.editIcon} onClick={() => this.openModal("userType")} />
                         </HeadShake>
                       )}
                     </ListItem>{" "}
@@ -220,22 +204,15 @@ class Settings extends React.Component {
                         <FolderIcon className={classes.icon} />
                       </ListItemIcon>
                       <ListItemText
-                        primary="Current Weight"
-                        secondary={
-                          this.state.currentWeight
-                            ? this.state.currentWeight
-                            : "No current weight entered"
-                        }
+                        primary='Current Weight'
+                        secondary={this.state.currentWeight ? this.state.currentWeight : "No current weight entered"}
                         classes={{
                           primary: classes.listItemText,
                           secondary: classes.listItemText2
                         }}
                       />
-                      <HeadShake delay="2s" duration="1s">
-                        <EditIcon
-                          className={classes.editIcon}
-                          onClick={() => this.openModal("weight")}
-                        />
+                      <HeadShake delay='2s' duration='1s'>
+                        <EditIcon className={classes.editIcon} onClick={() => this.openModal("weight")} />
                       </HeadShake>
                     </ListItem>
                     <ListItem>
@@ -243,18 +220,15 @@ class Settings extends React.Component {
                         <FolderIcon className={classes.icon} />
                       </ListItemIcon>
                       <ListItemText
-                        primary="Calories Daily Goal"
+                        primary='Calories Daily Goal'
                         secondary={currentUser.calorieGoal}
                         classes={{
                           primary: classes.listItemText,
                           secondary: classes.listItemText2
                         }}
                       />
-                      <HeadShake delay="2s" duration="1s">
-                        <EditIcon
-                          className={classes.editIcon}
-                          onClick={() => this.openModal("caloriesGoal")}
-                        />
+                      <HeadShake delay='2s' duration='1s'>
+                        <EditIcon className={classes.editIcon} onClick={() => this.openModal("caloriesGoal")} />
                       </HeadShake>
                     </ListItem>
                   </List>
