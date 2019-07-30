@@ -211,7 +211,7 @@ class Journal extends React.Component {
               classes={{ root: classes.gridContainer }}
             >
               <Grid item md={4} xs={12}>
-                {this.state.foodEntry.length > 1 && this.state.userType ? (
+                {this.state.foodEntry.length >= 1 && this.state.userType ? (
                   <JournalEntry
                     foodEntries={this.state.foodEntry}
                     datePicked={this.state.datePicked}

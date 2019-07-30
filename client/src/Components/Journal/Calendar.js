@@ -117,6 +117,7 @@ class Calendar extends React.Component {
           dateClick={this.pickDate}
           selectable="true"
           handleWindowResize="true"
+          todayDisabled="false"
         />
       </div>
     );
