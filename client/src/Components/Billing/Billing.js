@@ -98,6 +98,14 @@ card: {
   componentDidMount(){
     this.getCurrentUser(localStorage.getItem("token"))
   }
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevState.userType !== this.state.userType){
+      this.setState({
+        userType: this.state.userType
+      })
+    }
+  }
   getCurrentUser = async idToken => {
     const client = new ApolloClient({
       uri: "https://nutrition-tracker-be.herokuapp.com/",
@@ -181,7 +189,7 @@ card: {
               ) : (null)
             }
           <Mutation mutation={CREATE_SUBSCRIPTION}  onError={err => {console.log(err)}}>
-            
+
             {mutation => (
               <div className={classes.subscriptionDiv}>
                 <div style={
@@ -208,7 +216,11 @@ card: {
                         amount: premium
                       }
                     });
-                    console.log(response)
+                    if(response.data.createSubscription){
+                      this.setState({
+                        userType: "premium"
+                      })
+                    }
                   }}
                   zipcode
                 />
@@ -233,7 +245,11 @@ card: {
                         amount: coach
                       }
                     });
-                    console.log(response)
+                    if(response.data.createSubscription){
+                      this.setState({
+                        userType: "coach"
+                      })
+                    }
                   }}
                   zipcode
                 />

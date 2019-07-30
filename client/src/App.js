@@ -89,7 +89,6 @@ class App extends React.Component {
         query: GET_CURRENT_USER_QUERY
       })
       .then(response => {
-        console.log(response.data.getCurrentUser.id);
         this.checkUser(response.data.getCurrentUser.id);
       })
       .catch(err => console.log(err));
@@ -108,7 +107,7 @@ class App extends React.Component {
         }
       })
       .then(response => {
-        console.log(response);
+        const res = response
       });
   };
 
