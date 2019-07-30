@@ -61,13 +61,6 @@ class Journal extends React.Component {
       });
     }
 
-    const test = document.getElementsByClassName("fc-today-button").disabled = false;
-
-    console.log(test)
-    const today = document.getElementsByClassName("fc-today-button")
-    if(today[0].onclick()){
-      console.log("today has been clicked")
-    }
     this.loadFoodEntries();
   };
 
@@ -218,7 +211,7 @@ class Journal extends React.Component {
               classes={{ root: classes.gridContainer }}
             >
               <Grid item md={4} xs={12}>
-                {this.state.foodEntry.length > 1 && this.state.userType ? (
+                {this.state.foodEntry.length >= 1 && this.state.userType ? (
                   <JournalEntry
                     foodEntries={this.state.foodEntry}
                     datePicked={this.state.datePicked}
