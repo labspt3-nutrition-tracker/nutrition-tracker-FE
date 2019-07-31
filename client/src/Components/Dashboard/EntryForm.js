@@ -423,6 +423,7 @@ class EntryForm extends Component {
           value={this.state.newAddFood.meal_category_id}
           onChange={this.onInputChange}
           aria-describedby="errorCategory-text"
+          
         >
           <MenuItem>Select Meal Category</MenuItem>
           <MenuItem value="1" className={classes.category}>

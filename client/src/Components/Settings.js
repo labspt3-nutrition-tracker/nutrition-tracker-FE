@@ -128,8 +128,11 @@ class Settings extends React.Component {
     getCurrentUser(localStorage.getItem("token"))
       .then(currentUser => {
         getCurrentWeight(currentUser).then(weight => {
+
           this.setState({ currentUser: currentUser, currentWeight: weight });
+          
         });
+       
       })
       .catch(err => console.log(err));
   };

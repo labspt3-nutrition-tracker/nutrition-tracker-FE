@@ -58,8 +58,6 @@ class UserEditModal extends Component {
   };
 
   handleEdit = editType => {
-    console.log({ editType });
-    console.log("new value: ", this.state.editInput);
     if (editType === "userType") {
       this.props.handleClose();
       this.props.history.push("/billing");
@@ -78,6 +76,7 @@ class UserEditModal extends Component {
             weight: Number(this.state.editInput),
             user_id: Number(this.props.currentUser.id)
           };
+   
           addWeightEntry(input)
             .then(entry => {
               this.setState({ editInput: "" });
