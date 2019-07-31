@@ -177,13 +177,7 @@ function About(props) {
               </a>
             </Contact>
             <Typography className={classes.desc}>
-              We're acquainted with the wormhole phenomenon, but this... Is a
-              remarkable piece of bio-electronic engineering by which I see much
-              of the EM spectrum ranging from heat and infrared through radio
-              waves, et cetera, and forgive me if I've said and listened to this
-              a thousand times. This planet's interior heat provides an
-              abundance of geothermal energy. We need to neutralize the homing
-              signal.
+              Alando is a dedicated Software Development Student at Lambda School, using the MERN stack (Mongo, Express, React, Node). 
             </Typography>
           </Grid>
         </Grid>
