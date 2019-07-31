@@ -13,6 +13,6 @@ export const getCurrentWeight = async user => {
   let weights = await client.query({ query: GET_WEIGHT_ENTRIES_QUERY, variables });
   weights = weights.data.getWeightEntriesByUserId;
   weights.sort((a, b) => (new Date(a.date) > new Date(b.date) ? 1 : -1));
-  const currentWeight = weights.length > 0 ? weights.pop().weight : user.weight;
+  const currentWeight = weights.length > 0 ? weights.shift().weight : user.weight;
   return currentWeight;
 };
