@@ -177,7 +177,7 @@ function About(props) {
               </a>
             </Contact>
             <Typography className={classes.desc}>
-              Alando is dedicated Software Development Student at Lambda School, using the MERN stack (Mongo, Express, React, Node). 
+              Alando is a dedicated Software Development Student at Lambda School, using the MERN stack (Mongo, Express, React, Node). 
             </Typography>
           </Grid>
         </Grid>
