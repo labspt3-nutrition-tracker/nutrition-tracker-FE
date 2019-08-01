@@ -97,15 +97,14 @@ const useStyles = makeStyles({
 export default function HomeFooter(props) {
   const classes = useStyles();
   const [loggedIn, setValue] = React.useState(false);
-
+  const token = localStorage.getItem("token");
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
       setValue(true);
     } else {
       setValue(false);
     }
-  });
+  },[token]);
 
   return (
     <>
