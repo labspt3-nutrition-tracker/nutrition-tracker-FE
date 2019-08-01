@@ -14,12 +14,11 @@ export const addWeightEntry = async entry => {
   // Check if weight entry exist with same date
   let weights = await client.query({ query: GET_WEIGHT_ENTRIES_QUERY, variables: { userId: entry.user_id } });
   weights = weights.data.getWeightEntriesByUserId;
-  const dayEntry = weights.find(
-    wEntry => moment(new Date(wEntry.date)).format("MM/DD/YY") === moment(new Date(entry.date)).format("MM/DD/YY")
-  );
+  const dayEntry = weights.find(wEntry => moment(new Date(wEntry.date)).format("YYYY-MM-DD") === entry.date);
   if (!dayEntry) {
     // If no entry exists, create new one
     const variables = { input: entry };
+    console.log({ variables });
     const weightEntry = await client.mutate({ mutation: ADD_WEIGHT_ENTRY_MUTATION, variables });
     return weightEntry.data.addWeightEntry;
   } else {
