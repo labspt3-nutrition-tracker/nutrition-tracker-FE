@@ -40,55 +40,95 @@ const GET_CURRENT = gql`
   }
 `;
 
-class Header extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loggedOut: false
-    };
-  }
+// class Header extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     loggedOut: false
+  //   };
+  // }
 
-  componentDidMount() {
-    this.getCurrentUser(localStorage.getItem("token"));
-  }
+  // componentDidMount() {
+  //   this.getCurrentUser(localStorage.getItem("token"));
+  // }
 
-  getCurrentUser = idToken => {
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com/",
-      headers: { authorization: idToken }
-    });
+  // componentDidUpdate() {
+  //   const token = this.getCurrentUser(localStorage.getItem("token"));
+  //   if (token) {
+  //     this.setState({
+  //       loggedOut: false
+  //     })
+  //   } else if (token === "") {
+  //     this.setState({
+  //       loggedOut: true
+  //     })
+  //   }
+  // }
 
-    client
-      .query({
-        query: GET_CURRENT
-      })
-      .then(response => {
-        if (response.data.getCurrentUser) {
-          this.setState({
-            loggedOut: true
-          });
-        }
-      })
-      .catch(err => console.log(err));
-  };
+  // getCurrentUser = idToken => {
+  //   const client = new ApolloClient({
+  //     uri: "https://nutrition-tracker-be.herokuapp.com/",
+  //     headers: { authorization: idToken }
+  //   });
 
-  logIn = () => {
-    this.setState({
-      loggedOut: !this.state.loggedOut
-    });
-  };
-  logOut = () => {
-    console.log(localStorage.getItem("token"));
-    if (this.state.loggedOut) {
-      localStorage.removeItem("token");
-      this.setState({
-        loggedOut: !this.state.loggedOut
-      });
+  //   client
+  //     .query({
+  //       query: GET_CURRENT
+  //     })
+  //     .then(response => {
+  //       if (response.data.getCurrentUser) {
+  //         this.setState({
+  //           loggedOut: true
+  //         });
+  //       }
+  //     })
+  //     .catch(err => console.log(err));
+  // };
+
+  // logIn = () => {
+  //   this.setState({
+  //     loggedOut: !this.state.loggedOut
+  //   });
+  // };
+  // logOut = () => {
+  //   console.log(localStorage.getItem("token"));
+  //   if (this.state.loggedOut) {
+  //     localStorage.removeItem("token");
+  //     this.setState({
+  //       loggedOut: !this.state.loggedOut
+  //     });
+  //   } 
+  // };
+
+  // render() {
+  //  const loggedOut = this.state.loggedOut;
+ // const  setValue = React.useState(false);
+  //const token = localStorage.getItem("token");
+  // React.useEffect(() => {
+  //   if (token) {
+  //     setValue(true);
+  //   } else {
+  //     setValue(false);
+  //   }
+  // },[token]);
+  const Header = props => {
+  const [loggedIn, setValue] = React.useState(false);
+  const token = localStorage.getItem("token");
+  React.useEffect(() => {
+    if (token) {
+      setValue(true);
+    } else {
+      setValue(false);
+      
     }
-  };
-
-  render() {
-    const loggedOut = this.state.loggedOut;
+  },[token]);
+  const logIn = () => {
+      setValue(true);
+    };
+    const logOut = () => {
+      localStorage.removeItem("token");
+      setValue(false);
+    };
     return (
       <div>
         <LogoContainer>
@@ -96,12 +136,12 @@ class Header extends React.Component {
             <img src={logo} alt="Created my free logo at LogoMakr.com" />
           </Logo>
           <LogInOutContainer>
-            {loggedOut ? (
-              <NavLink to="/" onClick={() => this.logOut()}>
+            {loggedIn ? (
+              <NavLink to="/" onClick={() => logOut()}>
                 <p>Logout</p>
               </NavLink>
             ) : (
-              <NavLink to="/login" onClick={() => this.logIn()}>
+              <NavLink to="/login" onClick={() => logIn()}>
                 <p>Login</p>
               </NavLink>
             )}
@@ -109,11 +149,11 @@ class Header extends React.Component {
         </LogoContainer>
 
         <AppBar
-          getFoodData={this.props.getFoodData}
+          getFoodData={props.getFoodData}
         />
       </div>
     );
-  }
+  // }
 }
 
 export default Header;
