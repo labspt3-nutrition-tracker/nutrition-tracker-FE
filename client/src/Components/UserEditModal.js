@@ -72,11 +72,11 @@ class UserEditModal extends Component {
       } else {
         if (editType === "weight") {
           const input = {
-            date: Date.now(),
+            date: new Date(),
             weight: Number(this.state.editInput),
             user_id: Number(this.props.currentUser.id)
           };
-   
+
           addWeightEntry(input)
             .then(entry => {
               this.setState({ editInput: "" });
@@ -87,13 +87,7 @@ class UserEditModal extends Component {
           const newGoal = this.state.editInput.trim()
             ? Number(this.state.editInput)
             : this.props.currentUser.calorieGoal;
-          const {
-            firstName,
-            lastName,
-            email,
-            userType,
-            weight
-          } = this.props.currentUser;
+          const { firstName, lastName, email, userType, weight } = this.props.currentUser;
           const newUser = {
             firstName,
             lastName,
@@ -116,39 +110,23 @@ class UserEditModal extends Component {
   };
 
   render() {
-    const {
-      classes,
-      open,
-      handleClose,
-      editType,
-      currentUser,
-      currentWeight
-    } = this.props;
+    const { classes, open, handleClose, editType, currentUser, currentWeight } = this.props;
     let label;
     let message;
     if (editType === "weight") {
-      message =
-        "Your current weight is " +
-        currentWeight +
-        ". Do you want to update it?";
+      message = "Your current weight is " + currentWeight + ". Do you want to update it?";
       label = "Current Weight";
     } else if (editType === "caloriesGoal") {
-      message =
-        "Current daily calories goal is " +
-        currentUser.calorieGoal +
-        ". What is your new daily calories goal?";
+      message = "Current daily calories goal is " + currentUser.calorieGoal + ". What is your new daily calories goal?";
       label = "Calories Goal";
     } else if (editType === "userType") {
-      message =
-        currentUser.userType === "basic"
-          ? "Please upgrade to Premium"
-          : "Please upgrade to coach";
+      message = currentUser.userType === "basic" ? "Please upgrade to Premium" : "Please upgrade to coach";
     }
     return (
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="form-dialog-title"
+        aria-labelledby='form-dialog-title'
         PaperProps={{
           style: {
             minHeight: "25vh",
@@ -156,12 +134,10 @@ class UserEditModal extends Component {
           }
         }}
       >
-        <DialogTitle id="form-dialog-title">
+        <DialogTitle id='form-dialog-title'>
           <span className={classes.title}>
             {" "}
-            {editType === "userType"
-              ? "Upgrade your account"
-              : "Update Your Data"}
+            {editType === "userType" ? "Upgrade your account" : "Update Your Data"}
           </span>
         </DialogTitle>
         <DialogContent>
@@ -176,10 +152,10 @@ class UserEditModal extends Component {
               error={this.state.error}
               helperText={this.state.errorText}
               autoFocus
-              margin="dense"
-              id="name"
+              margin='dense'
+              id='name'
               label={label}
-              type="email"
+              type='email'
               fullWidth
               onChange={this.handleInput}
               value={this.state.editInput}
@@ -207,7 +183,7 @@ class UserEditModal extends Component {
               this.handleCancel();
               handleClose();
             }}
-            color="primary"
+            color='primary'
             className={classes.btn}
           >
             Cancel
@@ -217,7 +193,7 @@ class UserEditModal extends Component {
               this.handleEdit(editType);
               // handleClose();
             }}
-            color="secondary"
+            color='secondary'
             className={classes.btn}
           >
             {editType === "userType" ? "Upgrade" : "Update"}
