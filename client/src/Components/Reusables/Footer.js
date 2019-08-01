@@ -97,15 +97,14 @@ const useStyles = makeStyles({
 export default function HomeFooter(props) {
   const classes = useStyles();
   const [loggedIn, setValue] = React.useState(false);
-
+  const token = localStorage.getItem("token");
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
       setValue(true);
     } else {
       setValue(false);
     }
-  });
+  },[token]);
 
   return (
     <>
@@ -171,6 +170,7 @@ export default function HomeFooter(props) {
               <div className={classes.lDiv}>
                 <a
                   target="_blank"
+                  rel="noopener noreferrer"
                   className={`${classes.href} footer-link`}
                   href="https://github.com/labspt3-nutrition-tracker"
                 >

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Typography, Grid } from "@material-ui/core";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
@@ -92,16 +92,16 @@ function About(props) {
         <Grid item xs={12} sm={6} md={4} justify="center">
           <Grid container justify="center" className={classes.teamMember}>
             <ImgCon>
-              <img src={leila} alt="photo of leila" />
+              <img src={leila} alt="pic of leila" />
             </ImgCon>
             <Typography className={classes.name}>Leila Berrouayel</Typography>
             <Contact>
-              <a target="_blank" href="https://github.com/leila100">
+              <a target="_blank"    rel="noopener noreferrer" href="https://github.com/leila100">
                 <ImgCon>
                   <img className="icon" src={github} alt="GitHub icon" />
                 </ImgCon>
               </a>
-              <a target="_blank" href="https://www.linkedin.com/in/leila-berrouayel/">
+              <a target="_blank"    rel="noopener noreferrer" href="https://www.linkedin.com/in/leila-berrouayel/">
                 <ImgCon>
                   <img className="icon" src={linkedin} alt="LinkedIn icon" />
                 </ImgCon>
@@ -115,16 +115,16 @@ function About(props) {
         <Grid item xs={12} sm={6} md={4} justify="center">
           <Grid container justify="center" className={classes.teamMember}>
             <ImgCon>
-              <img src={jamar} alt="photo of jamar" />
+              <img src={jamar} alt="pic of jamar" />
             </ImgCon>
             <Typography className={classes.name}>Jamar Torres</Typography>
             <Contact>
-              <a target="_blank" href="https://github.com/jrizza88">
+              <a target="_blank"    rel="noopener noreferrer" href="https://github.com/jrizza88">
                 <ImgCon>
                   <img className="icon" src={github} alt="GitHub icon" />
                 </ImgCon>
               </a>
-              <a target="_blank" href="https://www.linkedin.com/in/jamartorres/">
+              <a target="_blank"    rel="noopener noreferrer" href="https://www.linkedin.com/in/jamartorres/">
                 <ImgCon>
                   <img className="icon" src={linkedin} alt="LinkedIn icon" />
                 </ImgCon>
@@ -138,16 +138,16 @@ function About(props) {
         <Grid item xs={12} sm={6} md={4} justify="center">
           <Grid container justify="center" className={classes.teamMember}>
             <ImgCon>
-              <img src={david} alt="photo of david" />
+              <img src={david} alt="pic of david" />
             </ImgCon>
             <Typography className={classes.name}>David Chua</Typography>
             <Contact>
-              <a target="_blank" href="https://github.com/david-chua">
+              <a target="_blank" rel="noopener noreferrer" href="https://github.com/david-chua">
                 <ImgCon>
                   <img className="icon" src={github} alt="GitHub icon" />
                 </ImgCon>
               </a>
-              <a target="_blank" href="https://www.linkedin.com/in/dpchua/">
+              <a target="_blank"  rel="noopener noreferrer" href="https://www.linkedin.com/in/dpchua/">
                 <ImgCon>
                   <img className="icon" src={linkedin} alt="LinkedIn icon" />
                 </ImgCon>
@@ -161,16 +161,16 @@ function About(props) {
         <Grid item xs={12} sm={6} md={4} justify="center">
           <Grid container justify="center" className={classes.teamMember}>
             <ImgCon>
-              <img src={alando} alt="photo of alando" />
+              <img src={alando} alt="pic of alando" />
             </ImgCon>
             <Typography className={classes.name}>Alando Appling</Typography>
             <Contact>
-              <a target="_blank" href="https://github.com/Landoooooo">
+              <a target="_blank"   rel="noopener noreferrer" href="https://github.com/Landoooooo">
                 <ImgCon>
                   <img className="icon" src={github} alt="GitHub icon" />
                 </ImgCon>
               </a>
-              <a target="_blank" href="https://www.linkedin.com/in/alando-appling-30ab1371/">
+              <a target="_blank"    rel="noopener noreferrer" href="https://www.linkedin.com/in/alando-appling-30ab1371/">
                 <ImgCon>
                   <img className="icon" src={linkedin} alt="LinkedIn icon" />
                 </ImgCon>
@@ -184,16 +184,16 @@ function About(props) {
         <Grid item xs={12} sm={6} md={4} justify="center">
           <Grid container justify="center" className={classes.teamMember}>
             <ImgCon>
-              <img src={christene} alt="photo of christene" />
+              <img src={christene}  rel="noopener noreferrer" alt="pic of christene" />
             </ImgCon>
             <Typography className={classes.name}>Christene Bennett</Typography>
             <Contact>
-              <a target="_blank" href="https://github.com/christenebennett">
+              <a target="_blank"  rel="noopener noreferrer" href="https://github.com/christenebennett">
                 <ImgCon>
                   <img className="icon" src={github} alt="GitHub icon" />
                 </ImgCon>
               </a>
-              <a target="_blank" href="https://www.linkedin.com/in/christene-bennett/">
+              <a target="_blank"  rel="noopener noreferrer" href="https://www.linkedin.com/in/christene-bennett/">
                 <ImgCon>
                   <img className="icon" src={linkedin} alt="LinkedIn icon" />
                 </ImgCon>

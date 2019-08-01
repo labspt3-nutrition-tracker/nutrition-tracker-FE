@@ -721,7 +721,10 @@ class FoodEntry extends React.Component {
                               autoFocus
                               margin="dense"
                               error={this.state.errorMsg.errorCategory}
+                              label="Meal Category"
                               required
+                              className="form-field"
+                              name="meal_category_id"
                               type="number"
                               value={
                                 this.props.foodEntry.meal_category_id.id
@@ -730,11 +733,27 @@ class FoodEntry extends React.Component {
                               }
                               onChange={this.props.onFoodEntryChange}
                               aria-describedby="errorCategory-text"
-                              inputProps={{
-                                name: "meal_category_id",
-                                id: "meal-simple"
+                              style= {{
+                                fontSize: "2rem",
+                                fontFamily: "Oswald"
                               }}
-                              className={classes.category}
+                              // inputProps={{
+                              //   name: "meal_category_id",
+                              //   id: "meal-simple",
+                              //   style: {
+                              //     fontSize: "1.5rem",
+                              //     lineHeight: "1.5",
+                              //     marginTop: "12px"
+                              //   }
+                              // }}
+                              // InputLabelProps={{
+                              //   shrink: true,
+                              //   style: {
+                              //     fontSize: "2rem",
+                              //     color: "#60B5A9",
+                              //     fontFamily: "Oswald"
+                              //   }
+                              // }}
                             >
                               <MenuItem>Select Meal Category</MenuItem>
                               <MenuItem value="1">breakfast</MenuItem>

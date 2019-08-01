@@ -2,8 +2,6 @@ import React from "react";
 import AppBar from "./AppBar";
 import styled from "styled-components";
 import logo from "../../Assets/logo-black.png";
-import ApolloClient from "apollo-boost";
-import { gql } from "apollo-boost";
 import { NavLink } from "react-router-dom";
 
 const LogoContainer = styled.div`
@@ -31,89 +29,48 @@ const LogInOutContainer = styled.div`
   }
 `;
 
-const GET_CURRENT = gql`
-  query getCurrentUser {
-    getCurrentUser {
-      id
-      email
-    }
-  }
-`;
+  const Header = props => {
+    const [loggedIn, setValue] = React.useState(false);
+    const token = localStorage.getItem("token");
+    React.useEffect(() => {
+      if (token) {
+        setValue(true);
+      } else {
+        setValue(false);
+        
+      }
+    },[token]);
+    const logIn = () => {
+        setValue(true);
+      };
+      const logOut = () => {
+        localStorage.removeItem("token");
+        setValue(false);
+      };
+      return (
+        <div>
+          <LogoContainer>
+            <Logo>
+              <img src={logo} alt="Created my free logo at LogoMakr.com" />
+            </Logo>
+            <LogInOutContainer>
+              {loggedIn ? (
+                <NavLink to="/" onClick={() => logOut()}>
+                  <p>Logout</p>
+                </NavLink>
+              ) : (
+                <NavLink to="/login" onClick={() => logIn()}>
+                  <p>Login</p>
+                </NavLink>
+              )}
+            </LogInOutContainer>
+          </LogoContainer>
 
-class Header extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loggedOut: false
-    };
-  }
-
-  componentDidMount() {
-    this.getCurrentUser(localStorage.getItem("token"));
-  }
-
-  getCurrentUser = idToken => {
-    const client = new ApolloClient({
-      uri: "https://nutrition-tracker-be.herokuapp.com/",
-      headers: { authorization: idToken }
-    });
-
-    client
-      .query({
-        query: GET_CURRENT
-      })
-      .then(response => {
-        if (response.data.getCurrentUser) {
-          this.setState({
-            loggedOut: true
-          });
-        }
-      })
-      .catch(err => console.log(err));
-  };
-
-  logIn = () => {
-    this.setState({
-      loggedOut: !this.state.loggedOut
-    });
-  };
-  logOut = () => {
-    console.log(localStorage.getItem("token"));
-    if (this.state.loggedOut) {
-      localStorage.removeItem("token");
-      this.setState({
-        loggedOut: !this.state.loggedOut
-      });
-    }
-  };
-
-  render() {
-    const loggedOut = this.state.loggedOut;
-    return (
-      <div>
-        <LogoContainer>
-          <Logo>
-            <img src={logo} alt="Created my free logo at LogoMakr.com" />
-          </Logo>
-          <LogInOutContainer>
-            {loggedOut ? (
-              <NavLink to="/" onClick={() => this.logOut()}>
-                <p>Logout</p>
-              </NavLink>
-            ) : (
-              <NavLink to="/login" onClick={() => this.logIn()}>
-                <p>Login</p>
-              </NavLink>
-            )}
-          </LogInOutContainer>
-        </LogoContainer>
-
-        <AppBar
-          getFoodData={this.props.getFoodData}
-        />
-      </div>
-    );
-  }
+          <AppBar
+            getFoodData={props.getFoodData}
+          />
+        </div>
+      );
 }
 
 export default Header;
