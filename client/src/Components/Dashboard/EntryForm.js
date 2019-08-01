@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import moment from "moment";
-import styled from "styled-components";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -35,11 +34,6 @@ const styles = theme => ({
   }
 });
 
-const Error = styled.div`
-  color: red;
-  font-weight: bold;
-  font-size: 2rem;
-`;
 
 class EntryForm extends Component {
   constructor(props) {
@@ -408,7 +402,8 @@ class EntryForm extends Component {
           {this.state.errorMsg.errorFood}
         </FormHelperText>
 
-        <InputLabel className={classes.label} htmlFor="meal_category_id">
+        <InputLabel className={classes.label} htmlFor="meal_category_id"
+        >
           Meal Category
         </InputLabel>
         <Select
@@ -423,10 +418,14 @@ class EntryForm extends Component {
           value={this.state.newAddFood.meal_category_id}
           onChange={this.onInputChange}
           aria-describedby="errorCategory-text"
-          
+          style= {{
+            fontSize: "2rem",
+            fontFamily: "Oswald"
+          }}
         >
-          <MenuItem>Select Meal Category</MenuItem>
-          <MenuItem value="1" className={classes.category}>
+          <MenuItem className={classes.category}>Select Meal Category</MenuItem>
+          <MenuItem value="1" className={classes.category}
+          >
             breakfast
           </MenuItem>
           <MenuItem value="2" className={classes.category}>

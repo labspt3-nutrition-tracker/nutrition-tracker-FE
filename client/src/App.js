@@ -107,7 +107,7 @@ class App extends React.Component {
         }
       })
       .then(response => {
-        const res = response
+        return response
       });
   };
 

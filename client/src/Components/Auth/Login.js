@@ -11,8 +11,6 @@ import LoginForm from "./LoginForm";
 import { ADD_USER_MUTATION } from "../../graphql/mutations";
 import { USER_EXIST_QUERY } from "../../graphql/queries";
 
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
 
 // add min width for logo
 const LoginOrRegisterContainer = styled.div`

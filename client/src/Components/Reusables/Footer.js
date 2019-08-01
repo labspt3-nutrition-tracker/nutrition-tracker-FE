@@ -171,6 +171,7 @@ export default function HomeFooter(props) {
               <div className={classes.lDiv}>
                 <a
                   target="_blank"
+                  rel="noopener noreferrer"
                   className={`${classes.href} footer-link`}
                   href="https://github.com/labspt3-nutrition-tracker"
                 >
