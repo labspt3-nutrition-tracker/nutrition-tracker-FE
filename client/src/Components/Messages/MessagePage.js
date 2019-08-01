@@ -12,12 +12,7 @@ import { CircularProgress } from "@material-ui/core";
 import MessageList from "./MessageList";
 import NewMessage from "./NewMessage";
 import AlertsList from "./AlertsList";
-import {
-  GET_MESSAGES_QUERY,
-  GET_CURRENT_USER_QUERY,
-  GET_COACHES,
-  GET_TRAINEES
-} from "../../graphql/queries";
+import { GET_MESSAGES_QUERY, GET_CURRENT_USER_QUERY, GET_COACHES, GET_TRAINEES } from "../../graphql/queries";
 import {
   DELETE_MESSAGE_MUTATION,
   ADD_MESSAGE_MUTATION,
@@ -129,11 +124,7 @@ class MessagePage extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.modalOpen !== this.state.modalOpen &&
-      this.state.modalOpen === false
-    )
-      this.getData();
+    if (prevState.modalOpen !== this.state.modalOpen && this.state.modalOpen === false) this.getData();
   }
 
   getData = async () => {
@@ -266,9 +257,7 @@ class MessagePage extends React.Component {
       headers: { authorization: idToken }
     });
 
-    const coach = `${this.state.currentMessage.sender.firstName} ${
-      this.state.currentMessage.sender.lastName
-    }`;
+    const coach = `${this.state.currentMessage.sender.firstName} ${this.state.currentMessage.sender.lastName}`;
     try {
       // Check if link already exists
       await this.coachExistCheck(this.state.currentUser.id, senderId);
@@ -399,12 +388,10 @@ class MessagePage extends React.Component {
                 flexContainer: classes.flex
               }}
             >
-              <Tab label="Inbox" className={classes.tab} />
-              <Tab label="Sent" className={classes.tab} />
-              <Tab label="New Message" className={classes.tab} />
-              {alerts.length > 0 && (
-                <Tab label="Alerts" className={classes.tab} />
-              )}
+              <Tab label='Inbox' className={classes.tab} />
+              <Tab label='Sent' className={classes.tab} />
+              <Tab label='New Message' className={classes.tab} />
+              {alerts.length > 0 && <Tab label='Alerts' className={classes.tab} />}
             </Tabs>
             {this.state.loading && (
               <LoadingDiv>
@@ -413,7 +400,7 @@ class MessagePage extends React.Component {
             )}
             {option === 0 ? (
               <MessageList
-                type="inbox"
+                type='inbox'
                 messages={messages}
                 coaches={coaches}
                 trainees={trainees}
@@ -422,7 +409,7 @@ class MessagePage extends React.Component {
               />
             ) : option === 1 ? (
               <MessageList
-                type="sent"
+                type='sent'
                 messages={sentMessages}
                 coaches={coaches}
                 trainees={trainees}
@@ -435,9 +422,7 @@ class MessagePage extends React.Component {
                 trainees={trainees}
                 recipient={
                   currentMessage &&
-                  (currentUser.id !== currentMessage.sender.id
-                    ? currentMessage.sender.id
-                    : currentMessage.recipient.id)
+                  (currentUser.id !== currentMessage.sender.id ? currentMessage.sender.id : currentMessage.recipient.id)
                 }
                 handleCancel={this.handleCancel}
                 sendMessage={this.sendMessage}
@@ -447,38 +432,25 @@ class MessagePage extends React.Component {
             )}
             {currentMessage && (
               <Modal
-                aria-labelledby="display message"
-                aria-describedby="display message"
+                aria-labelledby='display message'
+                aria-describedby='display message'
                 open={modalOpen}
                 onClose={this.handleClose}
               >
                 <div className={classes.modal}>
-                  <Typography variant="h4" id="modal-title">
+                  <Typography variant='h4' id='modal-title'>
                     {option === 0
-                      ? `${currentMessage.sender.firstName} ${
-                          currentMessage.sender.lastName
-                        }`
-                      : `${currentMessage.recipient.firstName} ${
-                          currentMessage.recipient.lastName
-                        }`}
+                      ? `${currentMessage.sender.firstName} ${currentMessage.sender.lastName}`
+                      : `${currentMessage.recipient.firstName} ${currentMessage.recipient.lastName}`}
                   </Typography>
-                  <Typography
-                    variant="h4"
-                    id="simple-modal-description"
-                    className={classes.text}
-                  >
+                  <Typography variant='h4' id='simple-modal-description' className={classes.text}>
                     {currentMessage.text}
                   </Typography>
                   <Button onClick={this.handleClose} className={classes.btn}>
                     Close
                   </Button>
                   {currentMessage.type === "alert" ? (
-                    <Button
-                      onClick={() =>
-                        this.handleAccept(currentMessage.sender.id)
-                      }
-                      className={classes.btn}
-                    >
+                    <Button onClick={() => this.handleAccept(currentMessage.sender.id)} className={classes.btn}>
                       Accept
                     </Button>
                   ) : (
