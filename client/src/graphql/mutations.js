@@ -99,6 +99,16 @@ export const DELETE_FOOD_ENTRY = gql`
 `;
 
 // Weight
+export const UPDATE_WEIGHT_ENTRY_MUTATION = gql`
+  mutation($id: ID!, $input: WeightEntryInput!) {
+    updateWeightEntry(id: $id, input: $input) {
+      id
+      weight
+      date
+    }
+  }
+`;
+
 export const ADD_WEIGHT_ENTRY_MUTATION = gql`
   mutation($input: WeightEntryInput!) {
     addWeightEntry(input: $input) {
@@ -216,11 +226,7 @@ export const DELETE_TRAINEE = gql`
 
 //Subscriptions
 export const CREATE_SUBSCRIPTION = gql`
-  mutation createSubscription(
-    $source: String!
-    $email: String!
-    $amount: Int!
-  ) {
+  mutation createSubscription($source: String!, $email: String!, $amount: Int!) {
     createSubscription(source: $source, email: $email, amount: $amount) {
       id
     }
@@ -228,7 +234,7 @@ export const CREATE_SUBSCRIPTION = gql`
 `;
 
 export const CHECK_USER_TYPE = gql`
-  mutation updateUserType($id: ID!){
+  mutation updateUserType($id: ID!) {
     updateUserType(id: $id)
   }
-`
+`;

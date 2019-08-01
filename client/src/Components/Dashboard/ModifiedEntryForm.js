@@ -402,7 +402,8 @@ class ModifiedEntryForm extends Component {
         </Typography>
 
         <Typography className={classes.foodTitle}>
-          Food: {this.state.newAddFood.foodName}
+          Food: {this.state.newAddFood.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
+
         </Typography>
 
         <InputLabel className={classes.label} htmlFor="meal_category_id">
@@ -419,8 +420,12 @@ class ModifiedEntryForm extends Component {
           value={this.state.newAddFood.meal_category_id}
           onChange={this.onInputChange}
           aria-describedby="errorCategory-text"
+          style= {{
+            fontSize: "2rem",
+            fontFamily: "Oswald"
+          }}
         >
-          <MenuItem>Select Meal Category</MenuItem>
+          <MenuItem className={classes.category}>Select Meal Category</MenuItem>
           <MenuItem value="1" className={classes.category}>
             breakfast
           </MenuItem>
