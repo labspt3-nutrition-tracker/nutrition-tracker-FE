@@ -8,6 +8,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { withStyles } from "@material-ui/core/styles";
+import * as moment from "moment";
 
 import { addWeightEntry } from "../util/addWeightEntry";
 import { updateUserData } from "../util/updateUserData";
@@ -72,7 +73,7 @@ class UserEditModal extends Component {
       } else {
         if (editType === "weight") {
           const input = {
-            date: new Date(),
+            date: moment(Date.now()).format("YYYY-MM-DD"),
             weight: Number(this.state.editInput),
             user_id: Number(this.props.currentUser.id)
           };
