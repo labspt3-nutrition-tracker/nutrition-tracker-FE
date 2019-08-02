@@ -17,5 +17,7 @@
     "url": "https://github.com/labspt3-nutrition-tracker/nutrition-tracker-FE/issues"
   },
   "homepage": "https://github.com/labspt3-nutrition-tracker/nutrition-tracker-FE#readme",
-  "dependencies": {}
+  "dependencies": {
+    "moment-timezone": "^0.5.26"
+  }
 }
