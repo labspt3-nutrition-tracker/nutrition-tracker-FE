@@ -8,6 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { withStyles } from "@material-ui/core/styles";
 import * as moment from "moment";
+import momentTz from "moment-timezone";
 import { FadeInLeft, FadeInRight } from "animate-css-styled-components";
 
 const styles = theme => ({
@@ -73,14 +74,9 @@ const MessageInfo = props => {
     coaches.forEach(coach => {
       var coachMessage = [];
       if (type === "inbox") {
-        coachMessage = messages.filter(
-          message => message.sender.id === coach.id && message.type === "text"
-        );
+        coachMessage = messages.filter(message => message.sender.id === coach.id && message.type === "text");
       } else if (type === "sent") {
-        coachMessage = messages.filter(
-          message =>
-            message.recipient.id === coach.id && message.type === "text"
-        );
+        coachMessage = messages.filter(message => message.recipient.id === coach.id && message.type === "text");
       }
       messagesArr = [...messagesArr, ...coachMessage];
     });
@@ -88,21 +84,15 @@ const MessageInfo = props => {
     trainees.forEach(trainee => {
       var traineeMessage = [];
       if (type === "inbox") {
-        traineeMessage = messages.filter(
-          message => message.sender.id === trainee.id && message.type === "text"
-        );
+        traineeMessage = messages.filter(message => message.sender.id === trainee.id && message.type === "text");
       } else if (type === "sent") {
-        traineeMessage = messages.filter(
-          message =>
-            message.recipient.id === trainee.id && message.type === "text"
-        );
+        traineeMessage = messages.filter(message => message.recipient.id === trainee.id && message.type === "text");
       }
       messagesArr = [...messagesArr, ...traineeMessage];
     });
   }
   messagesArr.sort((a, b) => {
-    if (moment(new Date(a.created_at)).isSameOrBefore(new Date(b.created_at)))
-      return 1;
+    if (moment(new Date(a.created_at)).isSameOrBefore(new Date(b.created_at))) return 1;
     else return -1;
   });
 
@@ -112,12 +102,8 @@ const MessageInfo = props => {
         <List>
           {messagesArr.map(message => (
             <React.Fragment key={message.id}>
-              <ListItem
-                button
-                onClick={() => props.showMessage(message)}
-                classes={{ root: classes.message }}
-              >
-                <FadeInLeft duration="1s" className={classes.flexName}>
+              <ListItem button onClick={() => props.showMessage(message)} classes={{ root: classes.message }}>
+                <FadeInLeft duration='1s' className={classes.flexName}>
                   {!message.read ? (
                     <ListItemIcon className={classes.icon}>
                       <UnreadIcon />
@@ -129,9 +115,7 @@ const MessageInfo = props => {
                   )}
                   {type === "inbox" ? (
                     <ListItemText
-                      primary={`${message.sender.firstName} ${
-                        message.sender.lastName
-                      }`}
+                      primary={`${message.sender.firstName} ${message.sender.lastName}`}
                       classes={{
                         primary: classes.textRoot
                       }}
@@ -139,9 +123,7 @@ const MessageInfo = props => {
                   ) : (
                     type === "sent" && (
                       <ListItemText
-                        primary={`${message.recipient.firstName} ${
-                          message.recipient.lastName
-                        }`}
+                        primary={`${message.recipient.firstName} ${message.recipient.lastName}`}
                         classes={{
                           primary: classes.textRoot
                         }}
@@ -149,7 +131,7 @@ const MessageInfo = props => {
                     )
                   )}
                 </FadeInLeft>
-                <FadeInRight duration="1s" className={classes.flexText}>
+                <FadeInRight duration='1s' className={classes.flexText}>
                   <ListItemText
                     primary={message.text.substring(0, 20) + "..."}
                     classes={{
@@ -158,7 +140,9 @@ const MessageInfo = props => {
                     }}
                   />
                   <ListItemText
-                    secondary={message.created_at}
+                    secondary={momentTz(message.created_at)
+                      .tz("America/Chicago")
+                      .format("DD-MMM-YYYY")}
                     classes={{
                       secondary: classes.secondaryText,
                       root: classes.textRoot
