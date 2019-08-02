@@ -402,8 +402,7 @@ class ModifiedEntryForm extends Component {
         </Typography>
 
         <Typography className={classes.foodTitle}>
-          Food: {this.state.newAddFood.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
-
+          Food: {this.state.newAddFood.foodName ? this.state.newAddFood.foodName.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ') : this.state.newAddFood.foodName}
         </Typography>
 
         <InputLabel className={classes.label} htmlFor="meal_category_id">
